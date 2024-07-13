@@ -1,6 +1,6 @@
 from typer import Typer
 
-from ww.commands.custom.resonator import app as resonator
+from ww.commands.custom.resonators import app as resonators
 
 app = Typer(name="custom")
-app.add_typer(resonator)
+app.add_typer(resonators)

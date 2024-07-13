@@ -4,13 +4,13 @@ import pandas as pd
 from html2image import Html2Image
 from typer import Argument, Option, Typer
 
-from ww.commands.custom.resonator.calc import calc
-from ww.model.resonator import ResonatorEnum
+from ww.commands.custom.resonators.calc import calc
+from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonators import ResonatorsTable
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
-app = Typer(name="resonator")
+app = Typer(name="resonators")
 
 
 # @app.command()
@@ -49,7 +49,7 @@ def list():
 
 
 @app.command()
-def search(id: str, col: ResonatorEnum = Argument(...)):
+def search(id: str, col: ResonatorsEnum = Argument(...)):
     table = ResonatorsTable()
     cell = table.search(id, col)
 

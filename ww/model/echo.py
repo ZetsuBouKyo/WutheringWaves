@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class EchoesEnum(str, Enum):
+    ID: str = "代稱"
     PREFIX: str = "字首"
     SUFFIX: str = "字尾"
     NAME: str = "名稱"
