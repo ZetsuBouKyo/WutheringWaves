@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "wutheringwaves"
+version = "0.1.0"
+description = ""
+authors = ["ZetsuBouKyo <116266262+ZetsuBouKyo@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = "^0.12.3"
+jinja2 = "^3.1.4"
+pandas = "2.0.3"
+rich = "^13.7.1"
+html2image = "^2.0.4.3"
+black = "^24.4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

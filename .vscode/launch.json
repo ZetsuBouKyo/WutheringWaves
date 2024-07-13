@@ -1,0 +1,67 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: pytest",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": ["-m", "info", "-s", "${file}"],
+            "showReturnValue": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: pytest-cov",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "--cov=back",
+                "--cov=command",
+                "--cov=dags",
+                "--cov=lib",
+                "--cov=tests",
+                "--cov-report",
+                "term-missing",
+                "${file}"
+            ],
+            "showReturnValue": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: pytest-cov all",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "pytest",
+                "--cov=back",
+                "--cov=command",
+                "--cov=dags",
+                "--cov=lib",
+                "--cov=tests",
+                "--cov-report",
+                "term-missing tests/"
+            ],
+            "showReturnValue": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: App",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "app.py",
+            "console": "integratedTerminal",
+            "justMyCode": false
+        },
+        {
+            "name": "Python: CLI run",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "cli.py",
+            "args": ["run"],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+    ]
+}
