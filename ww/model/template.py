@@ -1,4 +1,26 @@
 from enum import Enum
 
 
-class TemplateEnum(str, Enum): ...
+class TemplateEnum(str, Enum):
+    RESONATOR_NAME: str = "角色名稱"
+    REAL_DMG_NO_CRIT: str = "無暴擊"
+    REAL_DMG_CRIT: str = "暴擊"
+    ACTION: str = "操作"
+    SKILL_ID: str = "代稱"
+    BONUS_TYPE: str = "加成種類"
+    BONUS_MAGNIFIER: str = "倍率"
+    BONUS_AMPLIFIER: str = "加深"
+    BONUS_ATK_P: str = "攻擊%"
+    BONUS_ATK: str = "攻擊"
+    BONUS_CRIT_RATE: str = "暴擊"
+    BONUS_CRIT_DMG: str = "暴擊傷害"
+    BONUS_ADDITION: str = "加成"
+    BONUS_SKILL_DMG_P: str = "招式倍率(加區)"
+    BONUS_IGNORE_DEF: str = "忽視防禦"
+    BONUS_REDUCE_RES: str = "抗性降低"
+    RESONATING_SPIN_CONCERTO_REGEN: str = "協奏能量"
+    ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN: str = "累積協奏"
+    TIME_START: str = "起手秒數"
+    TIME_END: str = "結束秒數"
+    CUMULATIVE_TIME: str = "累積結束秒數"
+    FRAME: str = "幀數"
