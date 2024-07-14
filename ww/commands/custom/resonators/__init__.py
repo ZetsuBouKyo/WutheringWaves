@@ -4,11 +4,13 @@ import pandas as pd
 from html2image import Html2Image
 from typer import Argument, Option, Typer
 
-from ww.commands.custom.resonators.calc import calc
+from ww.commands.custom.resonators.calc import get_calculated_resonators_df
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonators import ResonatorsTable
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
+
+CALCULATED_RESONATOR_PATH = "./cache/[計算用]角色"
 
 app = Typer(name="resonators")
 
@@ -31,10 +33,22 @@ app = Typer(name="resonators")
 #         save_as=RESONATOR_PNG_FNAME,
 #     )
 
+# html = Path(CALCULATED_RESONATOR_HTML_PATH)
+# calculated_resonators_df.to_html(html)
+
+# print(df.transpose())
+
+# print(resonators.head(2).T)
+# print_transpose_table("", resonators.head(2).T)
+# print(resonators.head(2).T)
+# print_transpose_table("", calculated_resonators_df.head(5).T)
+
 
 @app.command()
-def gem_calc():
-    calc()
+def calc():
+    df = get_calculated_resonators_df()
+    fpath = Path(CALCULATED_RESONATOR_PATH)
+    df.to_csv(fpath, sep="\t")
 
 
 @app.command()

@@ -61,6 +61,8 @@ class CalculatedResonatorsEnum(str, Enum):
     HP = "角色生命"
     ATK = "角色攻擊"
     DEF = "角色防禦"
+
+    # Resonator Base Stat
     BASE_CRIT_RATE = "角色基礎暴擊"
     BASE_CRIT_DMG = "角色基礎暴擊傷害"
     BASE_ENERGY_REGEN = "角色基礎共鳴效率"
@@ -133,14 +135,3 @@ class CalculatedResonatorsEnum(str, Enum):
     ECHO_SPECTRO_DMG_BONUS = "聲骸衍射加成"
     ECHO_HAVOC_DMG_BONUS = "聲骸湮滅加成"
     ECHO_HEALING_BONUS = "聲骸治療效果加成百分比"
-
-    # Echo Sonata
-    ECHO_SONATA_ATK_P = "聲骸合鳴攻擊百分比"
-    ECHO_SONATA_ENERGY_REGEN = "聲骸合鳴共鳴效率"
-    ECHO_SONATA_GLACIO_DMG_BONUS = "聲骸合鳴冷凝加成"
-    ECHO_SONATA_FUSION_DMG_BONUS = "聲骸合鳴熱熔加成"
-    ECHO_SONATA_ELECTRO_DMG_BONUS = "聲骸合鳴導電加成"
-    ECHO_SONATA_AERO_DMG_BONUS = "聲骸合鳴氣動加成"
-    ECHO_SONATA_SPECTRO_DMG_BONUS = "聲骸合鳴衍射加成"
-    ECHO_SONATA_HAVOC_DMG_BONUS = "聲骸合鳴湮滅加成"
-    ECHO_SONATA_HEALING_BONUS = "聲骸合鳴治療效果加成百分比"
