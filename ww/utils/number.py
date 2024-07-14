@@ -1,9 +1,11 @@
-from typing import Optional
+import numpy as np
 
 
-def get_number(n: Optional[str]) -> Optional[float]:
+def get_number(n: str) -> float:
     if n is None:
-        return None
+        return 0.0
+    elif n is np.nan:
+        return 0.0
 
     if "," in n:
         n = n.replace(",", "")

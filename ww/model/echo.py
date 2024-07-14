@@ -1,6 +1,18 @@
 from enum import Enum
 
 
+class EchoSonataEnum(str, Enum):
+    LINGERING_TUNES: str = "不絕餘音"
+    MOONLIT_CLOUDS: str = "輕雲出月"
+    FREEZING_FROST: str = "凝夜白霜"
+    MOLTEN_RIFT: str = "熔山裂谷"
+    VOID_THUNDER: str = "徹空冥雷"
+    SIERRA_GALE: str = "嘯谷長風"
+    CELESTIAL_LIGHT: str = "浮星祛暗"
+    SUN_SINKING_ECLIPSE: str = "沉日劫明"
+    REJUVENATING_GLOW: str = "隱世回光"
+
+
 class EchoesEnum(str, Enum):
     ID: str = "代稱"
     PREFIX: str = "字首"
