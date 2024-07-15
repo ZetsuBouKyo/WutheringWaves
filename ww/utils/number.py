@@ -1,9 +1,10 @@
 from decimal import Decimal
+from typing import Optional
 
 import numpy as np
 
 
-def get_number(n: str) -> float:
+def get_number(n: Optional[str]) -> float:
     if n is None:
         return Decimal("0.0")
     elif n is np.nan:

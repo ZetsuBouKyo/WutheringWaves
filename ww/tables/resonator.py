@@ -6,12 +6,12 @@ from ww.tables.crud import search
 from ww.utils.pd import get_df
 
 RESONATOR_STAT_HOME_PATH = "./data/角色"
-RESONATOR_STAT = "屬性"
+RESONATOR_STAT_FNAME = "屬性.tsv"
 
 
 class ResonatorStatTable:
     def __init__(self, name):
-        _stat_path = Path(RESONATOR_STAT_HOME_PATH) / name / RESONATOR_STAT
+        _stat_path = Path(RESONATOR_STAT_HOME_PATH) / name / RESONATOR_STAT_FNAME
         self.df = get_df(_stat_path)
 
     def search(self, id: str, col: ResonatorEnum) -> Optional[Any]:

@@ -4,7 +4,7 @@ from ww.model.monsters import MonstersEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-MONSTERS_PATH = "./data/自訂/怪物"
+MONSTERS_PATH = "./data/自訂/怪物.tsv"
 
 
 class MonstersTable:

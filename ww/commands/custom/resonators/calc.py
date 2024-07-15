@@ -656,9 +656,11 @@ def get_calculated_resonators_df() -> pd.DataFrame:
     resonators_table = ResonatorsTable()
     resonators_df = resonators_table.df
 
-    calculated_resonators_cols = [e.value for e in CalculatedResonatorsEnum]
+    calculated_resonators_columns = [e.value for e in CalculatedResonatorsEnum]
 
-    calculated_resonators_dict = {col: [] for col in calculated_resonators_cols}
+    calculated_resonators_dict = {
+        column: [] for column in calculated_resonators_columns
+    }
 
     c = 0
     for _, row in resonators_df.iterrows():
@@ -666,7 +668,7 @@ def get_calculated_resonators_df() -> pd.DataFrame:
         try:
             new_resonator = CalculatedResonator(row)
             new_resonator_dict = new_resonator.get_row_dict()
-            for col in calculated_resonators_cols:
+            for col in calculated_resonators_columns:
                 cell = new_resonator_dict.get(col, None)
                 calculated_resonators_dict[col].append(cell)
 

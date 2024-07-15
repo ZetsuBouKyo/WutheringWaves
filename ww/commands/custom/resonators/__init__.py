@@ -6,7 +6,11 @@ from typer import Argument, Option, Typer
 
 from ww.commands.custom.resonators.calc import get_calculated_resonators_df
 from ww.model.resonators import ResonatorsEnum
-from ww.tables.resonators import CALCULATED_RESONATOR_PATH, ResonatorsTable
+from ww.tables.resonators import (
+    CALCULATED_RESONATOR_PATH,
+    CalculatedResonatorsTable,
+    ResonatorsTable,
+)
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
@@ -66,3 +70,12 @@ def search(id: str, col: ResonatorsEnum = Argument(...)):
     cell = table.search(id, col)
 
     print(cell)
+
+
+@app.command()
+def list_calc():
+    table = CalculatedResonatorsTable()
+    df = table.df
+
+    table_title = "角色"
+    print_transpose_table(table_title, df.head(5).T)

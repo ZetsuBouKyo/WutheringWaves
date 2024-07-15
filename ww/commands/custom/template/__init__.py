@@ -8,11 +8,12 @@ app = Typer(name="template")
 @app.command()
 def damage(
     template_id: str = Argument(...),
-    r1: str = Option(default=None, help="Resonator ID 1"),
-    r2: str = Option(default=None, help="Resonator ID 2"),
-    r3: str = Option(default=None, help="Resonator ID 3"),
+    monster_name: str = Argument(...),
+    r_id_1: str = Option(default=None, help="Resonator ID 1"),
+    r_id_2: str = Option(default=None, help="Resonator ID 2"),
+    r_id_3: str = Option(default=None, help="Resonator ID 3"),
 ):
-    get_damage(template_id, r1, r2, r3)
+    get_damage(template_id, monster_name, r_id_1, r_id_2, r_id_3)
 
 
 @app.command()
