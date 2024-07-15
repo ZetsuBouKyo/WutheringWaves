@@ -6,13 +6,15 @@ authors = ["ZetsuBouKyo <116266262+ZetsuBouKyo@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-typer = "^0.12.3"
+python = ">=3.8,<3.13"
+black = "^24.4.2"
+html2image = "^2.0.4.3"
 jinja2 = "^3.1.4"
 pandas = "2.0.3"
+pyinstaller = "^6.9.0"
 rich = "^13.7.1"
-html2image = "^2.0.4.3"
-black = "^24.4.2"
+typer = "^0.12.3"
+tksheet = "^7.2.12"
 
 
 [build-system]

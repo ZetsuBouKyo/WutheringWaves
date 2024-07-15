@@ -6,11 +6,9 @@ from typer import Argument, Option, Typer
 
 from ww.commands.custom.resonators.calc import get_calculated_resonators_df
 from ww.model.resonators import ResonatorsEnum
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonators import CALCULATED_RESONATOR_PATH, ResonatorsTable
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
-
-CALCULATED_RESONATOR_PATH = "./cache/[計算用]角色"
 
 app = Typer(name="resonators")
 

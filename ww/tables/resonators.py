@@ -8,10 +8,20 @@ RESONATORS_PATH = "./data/自訂/角色"
 RESONATORS_HTML_PATH = "./cache/角色.html"
 RESONATORS_PNG_FNAME = "角色.png"
 
+CALCULATED_RESONATOR_PATH = "./cache/[計算用]角色"
+
 
 class ResonatorsTable:
     def __init__(self):
         self.df = get_df(RESONATORS_PATH)
+
+    def search(self, id: str, col: ResonatorsEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorsEnum.ID.value)
+
+
+class CalculatedResonatorsTable:
+    def __init__(self):
+        self.df = get_df(CALCULATED_RESONATOR_PATH)
 
     def search(self, id: str, col: ResonatorsEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorsEnum.ID.value)
