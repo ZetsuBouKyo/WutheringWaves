@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 from html2image import Html2Image
+from PIL import Image
 from typer import Argument, Option, Typer
 
 from ww.commands.custom.resonators.calc import get_calculated_resonators_df
@@ -14,6 +15,11 @@ from ww.tables.resonators import (
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
+CACHE_PATH = "./cache"
+CALCULATED_RESONATOR_HTML_PATH = "./cache/[計算用]角色.html"
+RESONATORS_HTML_PATH = "./cache/角色.html"
+RESONATORS_PNG_FNAME = "角色.png"
+
 app = Typer(name="resonators")
 
 
@@ -24,16 +30,31 @@ app = Typer(name="resonators")
 #     df.to_html(html)
 
 
-# @app.command()
-# def gen_png():
-#     h2png = Html2Image(
-#         custom_flags=["--no-sandbox"],
-#         output_path=CACHE_PATH,
-#     )
-#     h2png.screenshot(
-#         html_file=RESONATOR_HTML_PATH,
-#         save_as=RESONATOR_PNG_FNAME,
-#     )
+@app.command()
+def gen_png():
+    h2png = Html2Image(
+        custom_flags=["--no-sandbox"], output_path=CACHE_PATH, size=(3000, 3000)
+    )
+    h2png.screenshot(
+        html_file=RESONATORS_HTML_PATH,
+        save_as=RESONATORS_PNG_FNAME,
+    )
+
+    png_path = Path(CACHE_PATH) / RESONATORS_PNG_FNAME
+
+    # open the PNG again, and crop it to the content.
+
+    img = Image.open(png_path)
+
+    # Get the content bounds.
+    content = img.getbbox()
+
+    # Crop the image.
+    img = img.crop(content)
+
+    # Save the image.
+    img.save(png_path)
+
 
 # html = Path(CALCULATED_RESONATOR_HTML_PATH)
 # calculated_resonators_df.to_html(html)

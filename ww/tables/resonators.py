@@ -5,8 +5,6 @@ from ww.tables.crud import search
 from ww.utils.pd import get_df
 
 RESONATORS_PATH = "./data/自訂/角色.tsv"
-RESONATORS_HTML_PATH = "./cache/角色.html"
-RESONATORS_PNG_FNAME = "角色.png"
 
 CALCULATED_RESONATOR_PATH = "./cache/[計算用]角色.tsv"
 

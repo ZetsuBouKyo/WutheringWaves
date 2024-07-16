@@ -17,9 +17,6 @@ from ww.utils.table import print_transpose_table
 
 ECHO_PATH = "./data/自訂/聲骸"
 
-CACHE_PATH = "./cache"
-CALCULATED_RESONATOR_HTML_PATH = "./cache/[計算用]角色.html"
-
 RESONATOR_HOME_PATH = "./data/角色"
 RESONATOR_STAT = "屬性"
 
