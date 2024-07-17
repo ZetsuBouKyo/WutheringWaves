@@ -18,3 +18,11 @@ def get_number(n: Optional[str]) -> float:
         return Decimal(n) / Decimal("100.0")
 
     return Decimal(n)
+
+
+def get_string(n: Optional[str]) -> Optional[str]:
+    if n is None:
+        return ""
+    elif n is np.nan:
+        return ""
+    return str(n)

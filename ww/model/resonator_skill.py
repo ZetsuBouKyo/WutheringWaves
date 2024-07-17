@@ -7,13 +7,24 @@ class ResonatorSkillBaseAttrEnum(str, Enum):
     DEF: str = "防禦"
 
 
-class ResonatorSkillTypeBonusEnum(str, Enum):
+class ResonatorSkillTypeEnum(str, Enum):
+    NORMAL_ATTACK: str = "常態攻擊"
+    RESONANCE_SKILL: str = "共鳴技能"
+    RESONANCE_LIBERATION: str = "共鳴解放"
+    INTRO_SKILL: str = "變奏技能"
+    OUTRO_SKILL: str = "延奏技能"
+    FORTE_CIRCUIT: str = "共鳴回路"
+
+
+class ResonatorSkillBonusTypeEnum(str, Enum):
     BASIC: str = "普攻"
     HEAVY: str = "重擊"
     SKILL: str = "共鳴技能"
     LIBERATION: str = "共鳴解放"
     INTRO: str = "變奏"
     OUTRO: str = "延奏"
+    ECHO: str = "聲骸"
+    NONE: str = "無"
 
 
 class ResonatorSkillEnum(str, Enum):
