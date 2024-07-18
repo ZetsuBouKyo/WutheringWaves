@@ -3,7 +3,7 @@
 
 a = Analysis(
     ['app.py'],
-    pathex=['D:\\Project\\WutheringWaves'],
+    pathex=['.'],
     binaries=[],
     datas=[],
     hiddenimports=[],
