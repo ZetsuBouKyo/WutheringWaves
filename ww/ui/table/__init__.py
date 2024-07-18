@@ -37,7 +37,7 @@ class Table:
         # Add a self.canvas in that frame
         self.canvas = Canvas(self.frame_canvas)
         self.canvas.grid(row=0, column=0, sticky="nw")
-        self.frame_canvas.update()
+        self.frame_canvas.update_idletasks()
 
         # Link a scrollbar to the self.canvas
         self.scrollbar_y = Scrollbar(
@@ -68,26 +68,25 @@ class Table:
                 cell.insert(END, data[i][j])
                 cells[i][j] = cell
 
-        self.canvas.update()
+        self.canvas.update_idletasks()
         self.scrollbar_y_width = self.scrollbar_y.winfo_width()
         self.scrollbar_x_height = self.scrollbar_x.winfo_height()
-
-        columns_width = self.root.winfo_width() - self.scrollbar_y_width
-        rows_height = self.root.winfo_height() - self.scrollbar_x_height
-        print(columns_width, rows_height, self.scrollbar_y.winfo_width())
-
-        self.canvas.config(width=columns_width, height=rows_height)
 
         # Set the self.canvas scrolling region
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
 
-    def resize(self):
-        self.canvas.update()
-        self.scrollbar_y_width = self.scrollbar_y.winfo_width()
-        self.scrollbar_x_height = self.scrollbar_x.winfo_height()
-
-        columns_width = self.root.winfo_width() - self.scrollbar_y_width
-        rows_height = self.root.winfo_height() - self.scrollbar_x_height
-        # print(columns_width, rows_height, self.scrollbar_y.winfo_width())
+    def resize(self, width, height):
+        columns_width = width - self.scrollbar_y_width - 5
+        rows_height = height - self.scrollbar_x_height - 1
+        print(columns_width, rows_height, self.scrollbar_y.winfo_width())
 
         self.canvas.config(width=columns_width, height=rows_height)
+        # self.canvas.update_idletasks()
+        # self.scrollbar_y_width = self.scrollbar_y.winfo_width()
+        # self.scrollbar_x_height = self.scrollbar_x.winfo_height()
+
+        # columns_width = self.root.winfo_width() - self.scrollbar_y_width
+        # rows_height = self.root.winfo_height() - self.scrollbar_x_height
+        # # print(columns_width, rows_height, self.scrollbar_y.winfo_width())
+
+        # self.canvas.config(width=columns_width, height=rows_height)
