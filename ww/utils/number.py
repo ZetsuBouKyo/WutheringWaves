@@ -5,9 +5,7 @@ import numpy as np
 
 
 def get_number(n: Optional[str]) -> float:
-    if n is None:
-        return Decimal("0.0")
-    elif n is np.nan:
+    if n is None or n == "" or n == np.nan:
         return Decimal("0.0")
 
     if "," in n:

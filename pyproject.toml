@@ -6,7 +6,7 @@ authors = ["ZetsuBouKyo <116266262+ZetsuBouKyo@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = ">=3.8,<3.13"
+python = ">=3.8,<3.11"
 black = "^24.4.2"
 html2image = "^2.0.4.3"
 jinja2 = "^3.1.4"
@@ -16,6 +16,7 @@ rich = "^13.7.1"
 typer = "^0.12.3"
 tksheet = "^7.2.12"
 pillow = "^10.4.0"
+pyside2 = "^5.15.2.1"
 
 
 [build-system]

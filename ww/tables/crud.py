@@ -5,10 +5,7 @@ import pandas as pd
 
 
 def search(df: pd.DataFrame, id: str, col: Enum, id_col_name: str) -> Optional[Any]:
-    if df is None:
-        return None
-
-    if col not in df.columns:
+    if not id or df is None or col not in df.columns:
         return None
 
     rows = df.loc[df[id_col_name] == id]

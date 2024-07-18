@@ -1,16 +1,24 @@
-from tkinter.ttk import Frame
+from PySide2.QtWidgets import QTableWidget, QTableWidgetItem
 
 from ww.tables.resonators import ResonatorsTable
-from ww.ui.table import Table
 
 
-class Resonators:
-    def __init__(self, root, text: str):
-        self.root = root
-        self.frame = Frame(root)
-        self.frame.grid(row=0, column=0, sticky="nw")
-        self.root.add(self.frame, text=text)
+class ResonatorsTableUI:
+    def __init__(self):
+        self.resonators_table = ResonatorsTable()
+        data = self.resonators_table.df.values.tolist()
 
-        resonators_table = ResonatorsTable()
-        data = resonators_table.df.values.tolist()
-        self.table = Table(self.frame, data)
+        column_names = self.resonators_table.df.columns
+
+        rows = len(data)
+        columns = len(data[0])
+
+        self.table = QTableWidget(rows, columns)  # 5 rows and 3 columns
+        self.table.setHorizontalHeaderLabels(column_names)
+
+        # Fill the table with some data
+        for row in range(rows):
+            for col in range(columns):
+                cell = data[row][col]
+                item = QTableWidgetItem(cell)
+                self.table.setItem(row, col, item)

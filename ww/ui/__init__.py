@@ -1,38 +1,59 @@
-import tkinter as tk
-from tkinter import BOTH, LEFT, Scrollbar, ttk
+import sys
 
-from ww.ui.resonators import Resonators
-from ww.ui.table import Table
+from PySide2.QtWidgets import (
+    QApplication,
+    QLabel,
+    QMainWindow,
+    QTableWidget,
+    QTableWidgetItem,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+)
 
-root_width = 1920
-root_height = 1080
-
-root = tk.Tk()
-root.title("Wuthering Waves Damage calculator")
-root.geometry(f"{root_width}x{root_height}")
-root.resizable(True, True)
-root.update_idletasks()
-
-# style = ttk.Style()
-# style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [4, 2]}}})
-# style.theme_use("default")
-
-tabs = ttk.Notebook(root)
-tabs.grid(row=0, column=0, sticky="nw")
+from ww.ui.resonators import ResonatorsTableUI
 
 
-# calculated_resonators = ttk.Frame()
-resonators = Resonators(tabs, "共鳴者")
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-echoes = ttk.Frame(tabs)
-templates = ttk.Frame(tabs)
+        self.setWindowTitle("PySide2 Tab Example")
+        self.setGeometry(100, 100, 600, 400)
 
-# tabs.add(calculated_resonators, text="[]")
-tabs.add(echoes, text="聲骸")
-tabs.add(templates, text="模板")
+        # Create a QTabWidget
+        tab_widget = QTabWidget()
 
-tabs.update_idletasks()
-tabs_height = tabs.winfo_height()
-tabs_container_height = root_height - tabs_height
+        # Create tabs
+        tab1 = QWidget()
+        tab2 = QWidget()
+        tab3 = QWidget()
 
-resonators.table.resize(root_width, 1000)
+        # Add tabs to the QTabWidget
+        tab_widget.addTab(tab1, "Tab 1")
+        tab_widget.addTab(tab2, "Tab 2")
+        tab_widget.addTab(tab3, "Tab 3")
+
+        # Set up layout for tab 1
+        tab1_layout = QVBoxLayout()
+        tab1_label = QLabel("This is Tab 1")
+        tab1_layout.addWidget(tab1_label)
+        tab1.setLayout(tab1_layout)
+
+        # Set up layout for tab 2
+        tab2_layout = QVBoxLayout()
+        tab2_label = QLabel("This is Tab 2")
+        tab2_layout.addWidget(tab2_label)
+
+        resonators_table_ui = ResonatorsTableUI()
+        tab2_layout.addWidget(resonators_table_ui.table)
+        tab2.setLayout(tab2_layout)
+
+        # Set up layout for tab 3
+        tab3_layout = QVBoxLayout()
+        tab3_label = QLabel("This is Tab 3")
+        tab3_layout.addWidget(tab3_label)
+        tab3.setLayout(tab3_layout)
+
+        # Set the central widget of the main window
+        self.setCentralWidget(tab_widget)
