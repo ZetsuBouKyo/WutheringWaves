@@ -3,22 +3,21 @@ from PySide2.QtWidgets import QTableWidget, QTableWidgetItem
 from ww.tables.resonators import ResonatorsTable
 
 
-class ResonatorsTableUI:
-    def __init__(self):
-        self.resonators_table = ResonatorsTable()
-        data = self.resonators_table.df.values.tolist()
+def get_resonators_table_ui():
+    resonators_table = ResonatorsTable()
+    data = resonators_table.df.values.tolist()
 
-        column_names = self.resonators_table.df.columns
+    column_names = resonators_table.df.columns
 
-        rows = len(data)
-        columns = len(data[0])
+    rows = len(data)
+    columns = len(data[0])
 
-        self.table = QTableWidget(rows, columns)  # 5 rows and 3 columns
-        self.table.setHorizontalHeaderLabels(column_names)
+    table = QTableWidget(rows, columns)  # 5 rows and 3 columns
+    table.setHorizontalHeaderLabels(column_names)
 
-        # Fill the table with some data
-        for row in range(rows):
-            for col in range(columns):
-                cell = data[row][col]
-                item = QTableWidgetItem(cell)
-                self.table.setItem(row, col, item)
+    for row in range(rows):
+        for col in range(columns):
+            cell = data[row][col]
+            item = QTableWidgetItem(cell)
+            table.setItem(row, col, item)
+    return table
