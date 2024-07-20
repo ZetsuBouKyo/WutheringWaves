@@ -1,12 +1,15 @@
+from functools import partial
 from pathlib import Path
 from typing import List
 
+from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QComboBox, QCompleter, QTableWidgetItem
 
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.resonators import ResonatorsTable
 from ww.tables.weapon import WEAPON_HOME_PATH
+from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget
 
 
@@ -52,27 +55,18 @@ def get_weapon_ranks() -> List[str]:
     return ranks
 
 
-def set_combobox(table, row: int, column: int, name: str, names: List[str]):
-    combobox = QComboBox()
-    # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-    combobox.setEditable(True)
-    combobox.addItems(names)
-    combobox.setCurrentText(name)
-
-    completer = QCompleter(combobox.model())
-    combobox.setCompleter(completer)
-    table.setCellWidget(row, column, combobox)
-
-
 class QResonatorsTable(QDraggableTableWidget):
     def __init__(self):
         resonators_table = ResonatorsTable()
-        data = resonators_table.df.values.tolist()
+        self.data = resonators_table.df.values.tolist()
 
         self.column_names = resonators_table.df.columns
+        self.column_names_table = {
+            self.column_names[i]: i for i in range(len(self.column_names))
+        }
 
-        rows = len(data)
-        columns = len(data[0])
+        rows = len(self.data)
+        columns = len(self.data[0])
         super().__init__(rows, columns)
 
         self.setHorizontalHeaderLabels(self.column_names)
@@ -81,7 +75,7 @@ class QResonatorsTable(QDraggableTableWidget):
 
         for row in range(rows):
             for col in range(columns):
-                cell = data[row][col]
+                cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
     def _init_combobox(self):
@@ -98,33 +92,140 @@ class QResonatorsTable(QDraggableTableWidget):
         for col in range(len(self.column_names)):
             self.set_cell("", row, col)
 
+    def get_row_id(self, row: int) -> str:
+        _id = []
+
+        _prefix_i = self.column_names_table[ResonatorsEnum.PREFIX.value]
+        _prefix = self.data[row][_prefix_i]
+        if _prefix:
+            _id.append(_prefix)
+
+        _chain_i = self.column_names_table[ResonatorsEnum.RESONANCE_CHAIN.value]
+        _chain = self.data[row][_chain_i]
+        if _chain:
+            _id.append(f"{_chain}鏈")
+
+        _level_i = self.column_names_table[ResonatorsEnum.LEVEL.value]
+        _level = self.data[row][_level_i]
+        _name_i = self.column_names_table[ResonatorsEnum.NAME.value]
+        _name = self.data[row][_name_i]
+        if _name:
+            _id.append(_level + _name)
+
+        _weapon_rank_i = self.column_names_table[ResonatorsEnum.WEAPON_RANK.value]
+        _weapon_rank = self.data[row][_weapon_rank_i]
+        if _weapon_rank:
+            _id.append(f"{_weapon_rank}振")
+
+        _weapon_level_i = self.column_names_table[ResonatorsEnum.WEAPON_LEVEL.value]
+        _weapon_level = self.data[row][_weapon_level_i]
+        _weapon_name_i = self.column_names_table[ResonatorsEnum.WEAPON_NAME.value]
+        _weapon_name = self.data[row][_weapon_name_i]
+        if _weapon_name:
+            _id.append(_weapon_level + _weapon_name)
+
+        _suffix_i = self.column_names_table[ResonatorsEnum.SUFFIX.value]
+        _suffix = self.data[row][_suffix_i]
+        if _suffix:
+            _id.append(_suffix)
+
+        id = " ".join(_id)
+        return id
+
+    def update_row_id(self, row: int, col: int, value: str):
+        prefix_col = self.column_names_table[ResonatorsEnum.PREFIX.value]
+        suffix_col = self.column_names_table[ResonatorsEnum.SUFFIX.value]
+        if prefix_col == col or suffix_col == col:
+            return
+        id_col = self.column_names_table[ResonatorsEnum.ID.value]
+        self.data[row][col] = value
+        id = self.get_row_id(row)
+        self.set_id_cell(id, row, id_col)
+
+    def update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
+        self.update_row_id(row, col, values[i])
+
+    def update_row_id_by_item(self, item):
+        row = item.row()
+        col = item.column()
+        value = item.text()
+        self.update_row_id(row, col, value)
+
+    def set_id_cell(self, value: str, row: int, col: int):
+        item = QTableWidgetItem(value)
+        item.setFlags(~Qt.ItemIsEditable)
+        self.setItem(row, col, item)
+
     def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == ResonatorsEnum.NAME.value:
-            set_combobox(self, row, col, value, self._resonator_names)
+        if self.column_names[col] == ResonatorsEnum.ID.value:
+            id = self.get_row_id(row)
+            assert id == value
+            self.set_id_cell(value, row, col)
+
+        elif self.column_names[col] == ResonatorsEnum.NAME.value:
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._resonator_names,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         elif self.column_names[col] == ResonatorsEnum.LEVEL.value:
-            set_combobox(self, row, col, value, self._resonator_levels)
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._resonator_levels,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         elif self.column_names[col] == ResonatorsEnum.RESONANCE_CHAIN.value:
-            set_combobox(self, row, col, value, self._resonator_chains)
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._resonator_chains,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         elif self.column_names[col] == ResonatorsEnum.NORMAL_ATTACK_LV.value:
-            set_combobox(self, row, col, value, self._resonator_skill_levels)
+            self.set_combobox(row, col, value, self._resonator_skill_levels)
         elif self.column_names[col] == ResonatorsEnum.RESONANCE_SKILL_LV.value:
-            set_combobox(self, row, col, value, self._resonator_skill_levels)
+            self.set_combobox(row, col, value, self._resonator_skill_levels)
         elif self.column_names[col] == ResonatorsEnum.RESONANCE_LIBERATION_LV.value:
-            set_combobox(self, row, col, value, self._resonator_skill_levels)
+            self.set_combobox(row, col, value, self._resonator_skill_levels)
         elif self.column_names[col] == ResonatorsEnum.FORTE_CIRCUIT_LV.value:
-            set_combobox(self, row, col, value, self._resonator_skill_levels)
+            self.set_combobox(row, col, value, self._resonator_skill_levels)
         elif self.column_names[col] == ResonatorsEnum.INTRO_SKILL_LV.value:
-            set_combobox(self, row, col, value, self._resonator_skill_levels)
+            self.set_combobox(row, col, value, self._resonator_skill_levels)
+        elif self.column_names[col] == ResonatorsEnum.OUTRO_SKILL_LV.value:
+            self.set_combobox(row, col, value, ["1"])
         elif self.column_names[col] == ResonatorsEnum.INHERENT_SKILL_1.value:
-            set_combobox(self, row, col, value, self._inherent_skills)
+            self.set_combobox(row, col, value, self._inherent_skills)
         elif self.column_names[col] == ResonatorsEnum.INHERENT_SKILL_2.value:
-            set_combobox(self, row, col, value, self._inherent_skills)
+            self.set_combobox(row, col, value, self._inherent_skills)
         elif self.column_names[col] == ResonatorsEnum.WEAPON_NAME.value:
-            set_combobox(self, row, col, value, self._weapon_names)
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._weapon_names,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         elif self.column_names[col] == ResonatorsEnum.WEAPON_LEVEL.value:
-            set_combobox(self, row, col, value, self._weapon_levels)
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._weapon_levels,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         elif self.column_names[col] == ResonatorsEnum.WEAPON_RANK.value:
-            set_combobox(self, row, col, value, self._weapon_ranks)
+            self.set_combobox(
+                row,
+                col,
+                value,
+                self._weapon_ranks,
+                currentIndexChanged=self.update_row_id_by_combobox,
+            )
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)

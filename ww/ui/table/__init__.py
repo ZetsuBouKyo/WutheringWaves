@@ -1,8 +1,12 @@
+from functools import partial
+from typing import List
+
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QAction,
     QApplication,
     QComboBox,
+    QCompleter,
     QHBoxLayout,
     QInputDialog,
     QMainWindow,
@@ -13,6 +17,8 @@ from PySide2.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+
+from ww.ui.combobox import QCustomComboBox
 
 
 class QDraggableTableWidget(QTableWidget):
@@ -74,6 +80,40 @@ class QDraggableTableWidget(QTableWidget):
         )
 
         menu.exec_(header.viewport().mapToGlobal(position))
+
+    def set_combobox(
+        self,
+        row: int,
+        column: int,
+        name: str,
+        names: List[str],
+        currentIndexChanged=None,
+    ):
+        combobox = QCustomComboBox()
+        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
+        combobox.setEditable(True)
+        combobox.addItems(names)
+        combobox.setCurrentText(name)
+
+        if currentIndexChanged is not None:
+            combobox.currentIndexChanged.connect(
+                partial(currentIndexChanged, row, column, names)
+            )
+
+        completer = QCompleter(combobox.model())
+        combobox.setCompleter(completer)
+        self.setCellWidget(row, column, combobox)
+
+    def set_uneditable_cell(self, row: int, column: int, name: str, names: List[str]):
+        combobox = QCustomComboBox()
+        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
+        combobox.setEditable(True)
+        combobox.addItems(names)
+        combobox.setCurrentText(name)
+
+        completer = QCompleter(combobox.model())
+        combobox.setCompleter(completer)
+        self.setCellWidget(row, column, combobox)
 
     def _row_index_ctx_fill_row(self, row):
         pass
