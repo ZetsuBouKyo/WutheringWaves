@@ -41,11 +41,11 @@ def get_public_data_tabs():
     # Set up layout for tab 1
     resonators_tab_layout = QVBoxLayout()
     resonators_tab_toolbar_layout = QHBoxLayout()
-    # Create delete row button
+
     q_resonators_table = QResonatorsTable()
-    delete_row_button = QPushButton("Delete Selected Row")
-    delete_row_button.clicked.connect(partial(delete_selected_row, q_resonators_table))
-    resonators_tab_toolbar_layout.addWidget(delete_row_button)
+    q_resonators_table_save_btn = QPushButton("Save")
+    q_resonators_table_save_btn.clicked.connect(q_resonators_table.save)
+    resonators_tab_toolbar_layout.addWidget(q_resonators_table_save_btn)
     resonators_tab_layout.addLayout(resonators_tab_toolbar_layout)
     resonators_tab_layout.addWidget(q_resonators_table)
     resonators_tab.setLayout(resonators_tab_layout)
