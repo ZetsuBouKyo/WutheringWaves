@@ -1,3 +1,4 @@
+import csv
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -17,9 +18,11 @@ def save_tsv(
     fpath: Union[str, Path],
     data: List[List[str]],
     columns: List[str],
-    index: bool = False,
 ):
     if type(fpath) is str:
         fpath = Path(fpath)
-    df = pd.DataFrame(data, columns=columns)
-    df.to_csv(fpath, sep="\t", index=index)
+    with fpath.open(mode="w", encoding="utf-8", newline="") as fp:
+        tsv = csv.writer(fp, delimiter="\t")
+        tsv.writerow(columns)
+        for row in data:
+            tsv.writerow(row)

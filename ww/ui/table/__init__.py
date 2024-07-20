@@ -12,6 +12,7 @@ from PySide2.QtWidgets import (
     QMainWindow,
     QMenu,
     QMessageBox,
+    QProgressBar,
     QTableWidget,
     QTableWidgetItem,
     QVBoxLayout,
@@ -19,11 +20,32 @@ from PySide2.QtWidgets import (
 )
 
 from ww.ui.combobox import QCustomComboBox
+from ww.utils.pd import save_tsv
 
 
 class QDraggableTableWidget(QTableWidget):
-    def __init__(self, rows, columns):
+
+    def __init__(
+        self,
+        rows: int,
+        columns: int,
+        data: List[List[str]] = [],
+        column_id_name: str = None,
+        column_names: List[str] = [],
+        tsv_fpath: str = None,
+        progress: QProgressBar = None,
+    ):
         super().__init__(rows, columns)
+
+        self.data = data
+        self.column_id_name = column_id_name
+        self.column_names = column_names
+        self.column_names_table = {
+            self.column_names[i]: i for i in range(len(self.column_names))
+        }
+        self.tsv_fpath = tsv_fpath
+        self.progress = progress
+
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
         self.setDragDropMode(QTableWidget.InternalMove)
@@ -80,6 +102,11 @@ class QDraggableTableWidget(QTableWidget):
         )
 
         menu.exec_(header.viewport().mapToGlobal(position))
+
+    def set_id_cell(self, value: str, row: int, col: int):
+        item = QTableWidgetItem(value)
+        item.setFlags(~Qt.ItemIsEditable)
+        self.setItem(row, col, item)
 
     def set_combobox(
         self,
@@ -148,3 +175,37 @@ class QDraggableTableWidget(QTableWidget):
         if confirmation == QMessageBox.Yes:
             for row in reversed(selected_rows):
                 self.removeRow(row)
+
+    def get_row_id(self) -> str:
+        return None
+
+    def save(self):
+        progress_value = 0.0
+        if self.progress is not None:
+            self.progress.setValue(progress_value)
+
+        progress_tick = 100.0 / (self.rowCount() + 1)
+
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                item = self.item(row, col)
+                cell = self.cellWidget(row, col)
+                if item is not None:
+                    self.data[row][col] = item.text()
+                elif cell is not None:
+                    self.data[row][col] = cell.currentText()
+            id_col = self.column_names_table[self.column_id_name]
+            id = self.get_row_id(row)
+            if id is not None:
+                self.data[row][id_col] = id
+
+            progress_value += progress_tick
+            if self.progress is not None:
+                self.progress.setValue(progress_value)
+
+        if self.tsv_fpath is not None:
+            save_tsv(self.tsv_fpath, self.data, self.column_names)
+        self._init_cells()
+
+        if self.progress is not None:
+            self.progress.setValue(100)

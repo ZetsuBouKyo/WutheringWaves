@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import List
 
 from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QComboBox, QCompleter, QTableWidgetItem
+from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
 
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonator import RESONATOR_HOME_PATH
@@ -11,7 +11,6 @@ from ww.tables.resonators import RESONATORS_PATH, ResonatorsTable
 from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget
-from ww.utils.pd import save_tsv
 
 
 def get_resonator_names() -> List[str]:
@@ -57,18 +56,22 @@ def get_weapon_ranks() -> List[str]:
 
 
 class QResonatorsTable(QDraggableTableWidget):
-    def __init__(self):
+    def __init__(self, progress: QProgressBar = None):
         resonators_table = ResonatorsTable()
-        self.data = resonators_table.df.values.tolist()
 
-        self.column_names = resonators_table.df.columns
-        self.column_names_table = {
-            self.column_names[i]: i for i in range(len(self.column_names))
-        }
+        data = resonators_table.df.values.tolist()
+        rows = len(data)
+        columns = len(data[0])
 
-        self._rows: int = len(self.data)
-        self._columns: int = len(self.data[0])
-        super().__init__(self._rows, self._columns)
+        super().__init__(
+            rows,
+            columns,
+            data=data,
+            column_id_name=ResonatorsEnum.ID.value,
+            column_names=resonators_table.df.columns,
+            tsv_fpath=RESONATORS_PATH,
+            progress=progress,
+        )
 
         self.setHorizontalHeaderLabels(self.column_names)
 
@@ -88,8 +91,8 @@ class QResonatorsTable(QDraggableTableWidget):
         self._weapon_ranks = get_weapon_ranks()
 
     def _init_cells(self):
-        for row in range(self._rows):
-            for col in range(self._columns):
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
@@ -155,11 +158,6 @@ class QResonatorsTable(QDraggableTableWidget):
         col = item.column()
         value = item.text()
         self.data[row][col] = value
-
-    def set_id_cell(self, value: str, row: int, col: int):
-        item = QTableWidgetItem(value)
-        item.setFlags(~Qt.ItemIsEditable)
-        self.setItem(row, col, item)
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == ResonatorsEnum.ID.value:
@@ -232,19 +230,3 @@ class QResonatorsTable(QDraggableTableWidget):
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)
-
-    def save(self):
-        for row in range(self._rows):
-            for col in range(self._columns):
-                item = self.item(row, col)
-                cell = self.cellWidget(row, col)
-                if item is not None:
-                    self.data[row][col] = item.text()
-                elif cell is not None:
-                    self.data[row][col] = cell.currentText()
-            id_col = self.column_names_table[ResonatorsEnum.ID.value]
-            id = self.get_row_id(row)
-            self.data[row][id_col] = id
-
-        save_tsv(RESONATORS_PATH, self.data, self.column_names)
-        self._init_cells()
