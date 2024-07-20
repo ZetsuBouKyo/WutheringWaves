@@ -9,7 +9,6 @@ __pycache__
 *.db
 build
 cache
-data
 dev
 dist
 etc
