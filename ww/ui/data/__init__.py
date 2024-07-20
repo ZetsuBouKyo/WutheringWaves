@@ -76,10 +76,4 @@ def get_public_data_tabs():
     echoes_tab_layout.addLayout(q_echoes_progress_bar_layout)
     echoes_tab.setLayout(echoes_tab_layout)
 
-    # Set up layout for tab 3
-    template_layout = QVBoxLayout()
-    tab3_label = QLabel("This is Tab 3")
-    template_layout.addWidget(tab3_label)
-    template_tab.setLayout(template_layout)
-
     return tabs_widget
