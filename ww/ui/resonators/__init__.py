@@ -75,6 +75,8 @@ class QResonatorsTable(QDraggableTableWidget):
         self._init_combobox()
         self._init_cells()
 
+        self.itemChanged.connect(self._update_data)
+
     def _init_combobox(self):
         self._resonator_names = get_resonator_names()
         self._resonator_levels = get_levels()
@@ -135,7 +137,7 @@ class QResonatorsTable(QDraggableTableWidget):
         id = " ".join(_id)
         return id
 
-    def update_row_id(self, row: int, col: int, value: str):
+    def _update_row_id(self, row: int, col: int, value: str):
         prefix_col = self.column_names_table[ResonatorsEnum.PREFIX.value]
         suffix_col = self.column_names_table[ResonatorsEnum.SUFFIX.value]
         if prefix_col == col or suffix_col == col:
@@ -145,14 +147,14 @@ class QResonatorsTable(QDraggableTableWidget):
         id = self.get_row_id(row)
         self.set_id_cell(id, row, id_col)
 
-    def update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
-        self.update_row_id(row, col, values[i])
+    def _update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
+        self._update_row_id(row, col, values[i])
 
-    def update_row_id_by_item(self, item):
+    def _update_data(self, item):
         row = item.row()
         col = item.column()
         value = item.text()
-        self.update_row_id(row, col, value)
+        self.data[row][col] = value
 
     def set_id_cell(self, value: str, row: int, col: int):
         item = QTableWidgetItem(value)
@@ -169,7 +171,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._resonator_names,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.LEVEL.value:
             self.set_combobox(
@@ -177,7 +179,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._resonator_levels,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.RESONANCE_CHAIN.value:
             self.set_combobox(
@@ -185,7 +187,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._resonator_chains,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.NORMAL_ATTACK_LV.value:
             self.set_combobox(row, col, value, self._resonator_skill_levels)
@@ -209,7 +211,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._weapon_names,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.WEAPON_LEVEL.value:
             self.set_combobox(
@@ -217,7 +219,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._weapon_levels,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.WEAPON_RANK.value:
             self.set_combobox(
@@ -225,7 +227,7 @@ class QResonatorsTable(QDraggableTableWidget):
                 col,
                 value,
                 self._weapon_ranks,
-                currentIndexChanged=self.update_row_id_by_combobox,
+                currentIndexChanged=self._update_row_id_by_combobox,
             )
         else:
             item = QTableWidgetItem(value)
