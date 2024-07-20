@@ -15,7 +15,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.ui.public_data import get_public_data_tabs
+from ww.ui.data import get_public_data_tabs
 
 ICON_PATH = "./cache/icon.webp"
 

@@ -57,6 +57,15 @@ class QDraggableTableWidget(QTableWidget):
             self.show_header_context_menu
         )
 
+        self._init_cells()
+        self.itemChanged.connect(self._update_data)
+
+    def _init_cells(self):
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                cell = self.data[row][col]
+                self.set_cell(cell, row, col)
+
     def drop_event(self, event):
         source = event.source()
         if source == self:
@@ -108,6 +117,10 @@ class QDraggableTableWidget(QTableWidget):
         item.setFlags(~Qt.ItemIsEditable)
         self.setItem(row, col, item)
 
+    def set_cell(self, value: str, row: int, col: int):
+        item = QTableWidgetItem(value)
+        self.setItem(row, col, item)
+
     def set_combobox(
         self,
         row: int,
@@ -143,7 +156,8 @@ class QDraggableTableWidget(QTableWidget):
         self.setCellWidget(row, column, combobox)
 
     def _row_index_ctx_fill_row(self, row):
-        pass
+        for col in range(len(self.column_names)):
+            self.set_cell("", row, col)
 
     def _row_index_ctx_add_rows(self, row):
         num_rows, ok = QInputDialog.getInt(
@@ -175,6 +189,12 @@ class QDraggableTableWidget(QTableWidget):
         if confirmation == QMessageBox.Yes:
             for row in reversed(selected_rows):
                 self.removeRow(row)
+
+    def _update_data(self, item):
+        row = item.row()
+        col = item.column()
+        value = item.text()
+        self.data[row][col] = value
 
     def get_row_id(self) -> str:
         return None

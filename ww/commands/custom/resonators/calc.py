@@ -3,7 +3,7 @@ from typing import Optional
 
 import pandas as pd
 
-from ww.model.echo import EchoesEnum, EchoSonataEnum
+from ww.model.echoes import EchoesEnum, EchoSonataEnum
 from ww.model.resonator import ResonatorEnum
 from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum

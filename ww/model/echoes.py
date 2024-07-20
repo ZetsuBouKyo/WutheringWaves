@@ -13,8 +13,14 @@ class EchoSonataEnum(str, Enum):
     REJUVENATING_GLOW: str = "隱世回光"
 
 
+class EchoListEnum(str, Enum):
+    ID: str = "名稱"
+    COST: str = "COST"
+
+
 class EchoesEnum(str, Enum):
     ID: str = "代稱"
+    COST: str = "COST"
     PREFIX: str = "字首"
     SUFFIX: str = "字尾"
     NAME: str = "名稱"

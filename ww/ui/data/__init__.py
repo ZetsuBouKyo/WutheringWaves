@@ -15,7 +15,8 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.ui.resonators import QResonatorsTable
+from ww.ui.data.echoes import QEchoesTable
+from ww.ui.data.resonators import QResonatorsTable
 
 
 def delete_selected_row(table):
@@ -30,11 +31,11 @@ def get_public_data_tabs():
 
     # Tabs
     resonators_tab = QWidget()
-    echo_tab = QWidget()
+    echoes_tab = QWidget()
     template_tab = QWidget()
 
     tabs_widget.addTab(resonators_tab, "共鳴者")
-    tabs_widget.addTab(echo_tab, "聲骸")
+    tabs_widget.addTab(echoes_tab, "聲骸")
     tabs_widget.addTab(template_tab, "模板")
 
     # Resonators
@@ -56,12 +57,24 @@ def get_public_data_tabs():
     resonators_tab_layout.addLayout(q_resonators_progress_bar_layout)
     resonators_tab.setLayout(resonators_tab_layout)
 
-    # Set up layout for tab 2
-    echo_layout = QVBoxLayout()
-    tab2_label = QLabel("This is Tab 2")
-    echo_layout.addWidget(tab2_label)
+    # Echoes
+    echoes_tab_layout = QVBoxLayout()
+    echoes_tab_toolbar_layout = QHBoxLayout()
 
-    echo_tab.setLayout(echo_layout)
+    q_echoes_progress_bar = QProgressBar()
+    q_echoes_progress_bar.setMinimum(0)
+    q_echoes_progress_bar.setMaximum(100)
+    q_echoes_table = QEchoesTable(progress=q_echoes_progress_bar)
+    q_echoes_table_save_btn = QPushButton("Save")
+    q_echoes_table_save_btn.clicked.connect(q_echoes_table.save)
+    q_echoes_progress_bar_layout = QHBoxLayout()
+    q_echoes_progress_bar_layout.addStretch()
+    q_echoes_progress_bar_layout.addWidget(q_echoes_progress_bar)
+    echoes_tab_toolbar_layout.addWidget(q_echoes_table_save_btn)
+    echoes_tab_layout.addLayout(echoes_tab_toolbar_layout)
+    echoes_tab_layout.addWidget(q_echoes_table)
+    echoes_tab_layout.addLayout(q_echoes_progress_bar_layout)
+    echoes_tab.setLayout(echoes_tab_layout)
 
     # Set up layout for tab 3
     template_layout = QVBoxLayout()

@@ -63,6 +63,7 @@ class QResonatorsTable(QDraggableTableWidget):
         rows = len(data)
         columns = len(data[0])
 
+        self._init_combobox()
         super().__init__(
             rows,
             columns,
@@ -75,11 +76,6 @@ class QResonatorsTable(QDraggableTableWidget):
 
         self.setHorizontalHeaderLabels(self.column_names)
 
-        self._init_combobox()
-        self._init_cells()
-
-        self.itemChanged.connect(self._update_data)
-
     def _init_combobox(self):
         self._resonator_names = get_resonator_names()
         self._resonator_levels = get_levels()
@@ -89,16 +85,6 @@ class QResonatorsTable(QDraggableTableWidget):
         self._weapon_names = get_weapon_names()
         self._weapon_levels = get_levels()
         self._weapon_ranks = get_weapon_ranks()
-
-    def _init_cells(self):
-        for row in range(self.rowCount()):
-            for col in range(self.columnCount()):
-                cell = self.data[row][col]
-                self.set_cell(cell, row, col)
-
-    def _row_index_ctx_fill_row(self, row):
-        for col in range(len(self.column_names)):
-            self.set_cell("", row, col)
 
     def get_row_id(self, row: int) -> str:
         _id = []
@@ -152,12 +138,6 @@ class QResonatorsTable(QDraggableTableWidget):
 
     def _update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
         self._update_row_id(row, col, values[i])
-
-    def _update_data(self, item):
-        row = item.row()
-        col = item.column()
-        value = item.text()
-        self.data[row][col] = value
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == ResonatorsEnum.ID.value:
