@@ -32,11 +32,9 @@ def get_public_data_tabs():
     # Tabs
     resonators_tab = QWidget()
     echoes_tab = QWidget()
-    template_tab = QWidget()
 
     tabs_widget.addTab(resonators_tab, "共鳴者")
     tabs_widget.addTab(echoes_tab, "聲骸")
-    tabs_widget.addTab(template_tab, "模板")
 
     # Resonators
     resonators_tab_layout = QVBoxLayout()

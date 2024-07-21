@@ -50,6 +50,14 @@ class QEchoesTable(QDraggableTableWidget):
 
         self.setHorizontalHeaderLabels(self.column_names)
 
+    def _init(self):
+        self._init_cells()
+        self._init_combobox()
+
+    def _init_column_width(self):
+        col = self.column_names_table[EchoesEnum.ID.value]
+        self.setColumnWidth(col, 400)
+
     def _init_combobox(self):
         self._echo_list = get_echo_list()
         self._elements = get_elements()

@@ -5,12 +5,20 @@ from typing import List
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
 
+from ww.model.echoes import EchoesEnum
 from ww.model.resonators import ResonatorsEnum
+from ww.tables.echoes import EchoesTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.resonators import RESONATORS_PATH, ResonatorsTable
 from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget
+
+
+def get_echoes() -> List[str]:
+    echoes_table = EchoesTable()
+    echoes = echoes_table.df[EchoesEnum.ID]
+    return echoes.to_list()
 
 
 def get_resonator_names() -> List[str]:
@@ -76,7 +84,24 @@ class QResonatorsTable(QDraggableTableWidget):
 
         self.setHorizontalHeaderLabels(self.column_names)
 
+    def _init(self):
+        self._init_cells()
+        self._init_combobox()
+
+    def _init_column_width(self):
+        cols = [
+            self.column_names_table[ResonatorsEnum.ID.value],
+            self.column_names_table[ResonatorsEnum.ECHO_1.value],
+            self.column_names_table[ResonatorsEnum.ECHO_2.value],
+            self.column_names_table[ResonatorsEnum.ECHO_3.value],
+            self.column_names_table[ResonatorsEnum.ECHO_4.value],
+            self.column_names_table[ResonatorsEnum.ECHO_5.value],
+        ]
+        for col in cols:
+            self.setColumnWidth(col, 400)
+
     def _init_combobox(self):
+        self._echoes = get_echoes()
         self._resonator_names = get_resonator_names()
         self._resonator_levels = get_levels()
         self._resonator_chains = get_resonator_chains()
@@ -207,6 +232,16 @@ class QResonatorsTable(QDraggableTableWidget):
                 self._weapon_ranks,
                 currentIndexChanged=self._update_row_id_by_combobox,
             )
+        elif self.column_names[col] == ResonatorsEnum.ECHO_1.value:
+            self.set_combobox(row, col, value, self._echoes)
+        elif self.column_names[col] == ResonatorsEnum.ECHO_2.value:
+            self.set_combobox(row, col, value, self._echoes)
+        elif self.column_names[col] == ResonatorsEnum.ECHO_3.value:
+            self.set_combobox(row, col, value, self._echoes)
+        elif self.column_names[col] == ResonatorsEnum.ECHO_4.value:
+            self.set_combobox(row, col, value, self._echoes)
+        elif self.column_names[col] == ResonatorsEnum.ECHO_5.value:
+            self.set_combobox(row, col, value, self._echoes)
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)

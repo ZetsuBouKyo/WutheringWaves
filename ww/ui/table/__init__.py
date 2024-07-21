@@ -57,8 +57,14 @@ class QDraggableTableWidget(QTableWidget):
             self.show_header_context_menu
         )
 
-        self._init_cells()
+        self._init()
+        self._init_column_width()
         self.itemChanged.connect(self._update_data)
+
+    def _init(self):
+        self._init_cells()
+
+    def _init_column_width(self): ...
 
     def _init_cells(self):
         for row in range(self.rowCount()):
@@ -225,7 +231,7 @@ class QDraggableTableWidget(QTableWidget):
 
         if self.tsv_fpath is not None:
             save_tsv(self.tsv_fpath, self.data, self.column_names)
-        self._init_cells()
+        self._init()
 
         if self.progress is not None:
             self.progress.setValue(100)
