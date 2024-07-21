@@ -134,20 +134,26 @@ class QDraggableTableWidget(QTableWidget):
         name: str,
         names: List[str],
         currentIndexChanged=None,
+        getOptions=None,
     ):
-        combobox = QCustomComboBox()
+
+        if getOptions is None:
+            combobox = QCustomComboBox()
+            combobox.addItems(names)
+            combobox.setCurrentText(name)
+            completer = QCompleter(combobox.model())
+            combobox.setCompleter(completer)
+        else:
+            combobox = QCustomComboBox(getOptions=getOptions)
+            combobox.setCurrentText(name)
+
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-        combobox.setEditable(True)
-        combobox.addItems(names)
-        combobox.setCurrentText(name)
 
         if currentIndexChanged is not None:
             combobox.currentIndexChanged.connect(
                 partial(currentIndexChanged, row, column, names)
             )
 
-        completer = QCompleter(combobox.model())
-        combobox.setCompleter(completer)
         self.setCellWidget(row, column, combobox)
 
     def set_uneditable_cell(self, row: int, column: int, name: str, names: List[str]):

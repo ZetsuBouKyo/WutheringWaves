@@ -15,7 +15,8 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.ui.data import get_public_data_tabs
+from ww.ui.calc import QCalcTabs
+from ww.ui.data import QDataTabs
 
 ICON_PATH = "./cache/icon.webp"
 
@@ -24,7 +25,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Wuthering Waves")
+        self.setWindowTitle("Wuthering Waves Calculator")
         self.setGeometry(100, 100, 1920, 1080)
 
         icon_path = Path(ICON_PATH)
@@ -34,12 +35,12 @@ class MainWindow(QMainWindow):
         # Tabs
         tabs_widget = QTabWidget()
 
-        public_data_tabs = get_public_data_tabs()
+        public_data_tabs = QDataTabs()
         dev_tabs = QWidget()
-        result_tabs = QWidget()
+        calc_tabs = QCalcTabs()
 
         tabs_widget.addTab(public_data_tabs, "數據")
         tabs_widget.addTab(dev_tabs, "開發者")
-        tabs_widget.addTab(result_tabs, "結果")
+        tabs_widget.addTab(calc_tabs, "計算")
 
         self.setCentralWidget(tabs_widget)

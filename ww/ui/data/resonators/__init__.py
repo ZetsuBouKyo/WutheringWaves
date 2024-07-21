@@ -233,15 +233,15 @@ class QResonatorsTable(QDraggableTableWidget):
                 currentIndexChanged=self._update_row_id_by_combobox,
             )
         elif self.column_names[col] == ResonatorsEnum.ECHO_1.value:
-            self.set_combobox(row, col, value, self._echoes)
+            self.set_combobox(row, col, value, self._echoes, getOptions=get_echoes)
         elif self.column_names[col] == ResonatorsEnum.ECHO_2.value:
-            self.set_combobox(row, col, value, self._echoes)
+            self.set_combobox(row, col, value, self._echoes, getOptions=get_echoes)
         elif self.column_names[col] == ResonatorsEnum.ECHO_3.value:
-            self.set_combobox(row, col, value, self._echoes)
+            self.set_combobox(row, col, value, self._echoes, getOptions=get_echoes)
         elif self.column_names[col] == ResonatorsEnum.ECHO_4.value:
-            self.set_combobox(row, col, value, self._echoes)
+            self.set_combobox(row, col, value, self._echoes, getOptions=get_echoes)
         elif self.column_names[col] == ResonatorsEnum.ECHO_5.value:
-            self.set_combobox(row, col, value, self._echoes)
+            self.set_combobox(row, col, value, self._echoes, getOptions=get_echoes)
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)
