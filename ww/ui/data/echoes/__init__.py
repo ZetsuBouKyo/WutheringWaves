@@ -7,6 +7,7 @@ from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetI
 
 from ww.model.echoes import EchoesEnum, EchoListEnum, EchoSonataEnum
 from ww.model.element import ElementEnum
+from ww.tables.calculated_resonators import calc
 from ww.tables.echoes import ECHOES_PATH, EchoesTable, EchoListTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.weapon import WEAPON_HOME_PATH
@@ -51,6 +52,8 @@ class QEchoesTable(QDraggableTableWidget):
         self.setHorizontalHeaderLabels(self.column_names)
 
     def _init(self):
+        self.set_save_event(calc)
+
         self._init_cells()
         self._init_combobox()
 

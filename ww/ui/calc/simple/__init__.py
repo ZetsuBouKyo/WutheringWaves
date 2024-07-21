@@ -51,9 +51,17 @@ class QDamageSimple(QWidget):
 
         self.resonator_names_combobox = QCustomComboBox(getOptions=get_resonator_names)
         self.resonator_names_combobox.setFixedWidth(400)
+        self.resonator_names_combobox.currentTextChanged.connect(self._update_resonator)
         resonators_layout.addWidget(self.resonator_names_combobox)
 
         self.layout.addLayout(resonators_layout)
+
+    def _update_resonator(self, resonator_id: str):
+        if resonator_id == "":
+            return
+        resonators_table = ResonatorsTable()
+        resonator = resonators_table.get_row(resonator_id)
+        print(resonator)
 
     def _get_resonator_name(self) -> str:
         return self.resonator_names_combobox.currentText()

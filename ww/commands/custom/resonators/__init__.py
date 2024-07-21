@@ -5,8 +5,8 @@ from html2image import Html2Image
 from PIL import Image
 from typer import Argument, Option, Typer
 
-from ww.commands.custom.resonators.calc import get_calculated_resonators_df
 from ww.model.resonators import ResonatorsEnum
+from ww.tables.calculated_resonators import calc as _calc
 from ww.tables.resonators import (
     CALCULATED_RESONATOR_PATH,
     CalculatedResonatorsTable,
@@ -69,9 +69,7 @@ def gen_png():
 
 @app.command()
 def calc():
-    df = get_calculated_resonators_df()
-    fpath = Path(CALCULATED_RESONATOR_PATH)
-    df.to_csv(fpath, sep="\t")
+    _calc()
 
 
 @app.command()

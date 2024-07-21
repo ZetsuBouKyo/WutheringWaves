@@ -27,8 +27,15 @@ class QCustomComboBox(QComboBox):
 
     def showPopup(self):
         if self.getOptions is not None:
+            text = self.currentText()
             self.clear()
-            options = self.getOptions()
+
+            new_options = self.getOptions()
+            try:
+                new_options.remove(text)
+            except ValueError:
+                ...
+            options = [text] + new_options
             self.addItems(options)
             completer = QCompleter(self.model())
             self.setCompleter(completer)

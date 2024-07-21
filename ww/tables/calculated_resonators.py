@@ -9,7 +9,7 @@ from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.echoes import EchoesTable
 from ww.tables.resonator import ResonatorStatTable
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonators import CALCULATED_RESONATOR_PATH, ResonatorsTable
 from ww.tables.weapon import WeaponRankTable, WeaponStatTable
 from ww.utils.number import get_number
 from ww.utils.pd import get_df
@@ -674,3 +674,9 @@ def get_calculated_resonators_df() -> pd.DataFrame:
 
     calculated_resonators_df = pd.DataFrame(calculated_resonators_dict)
     return calculated_resonators_df
+
+
+def calc():
+    df = get_calculated_resonators_df()
+    fpath = Path(CALCULATED_RESONATOR_PATH)
+    df.to_csv(fpath, sep="\t", index=False)

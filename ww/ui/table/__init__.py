@@ -62,6 +62,8 @@ class QDraggableTableWidget(QTableWidget):
         self.itemChanged.connect(self._update_data)
 
     def _init(self):
+        self._save_event = None
+
         self._init_cells()
 
     def _init_column_width(self): ...
@@ -167,6 +169,9 @@ class QDraggableTableWidget(QTableWidget):
         combobox.setCompleter(completer)
         self.setCellWidget(row, column, combobox)
 
+    def set_save_event(self, event):
+        self._save_event = event
+
     def _row_index_ctx_fill_row(self, row):
         for col in range(len(self.column_names)):
             self.set_cell("", row, col)
@@ -238,6 +243,9 @@ class QDraggableTableWidget(QTableWidget):
         if self.tsv_fpath is not None:
             save_tsv(self.tsv_fpath, self.data, self.column_names)
         self._init()
+
+        if self._save_event is not None:
+            self._save_event()
 
         if self.progress is not None:
             self.progress.setValue(100)

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 import pandas as pd
 
@@ -16,6 +16,29 @@ def search(df: pd.DataFrame, id: str, col: Enum, id_col_name: str) -> Optional[A
 
     cells = rows[col].values
     assert len(cells) <= 1, f"Column name: {col} must be unique"
+    if len(cells) == 0:
+        # print(f"ID: {id} with column: {col} not found")
+        return None
+
+    return cells[0]
+
+
+def get_row(df: pd.DataFrame, id: str, id_col_name: str) -> Optional[pd.DataFrame]:
+    if not id or df is None:
+        return None
+
+    rows = df.loc[df[id_col_name] == id]
+    assert len(rows.values) <= 1, f"ID: {id} must be unique"
+    if len(rows.values) == 0:
+        # print(f"ID: {id} not found")
+        return None
+
+    return rows
+
+
+def get_cell_by_row(df: pd.DataFrame, col_name: str) -> Optional[Any]:
+    cells = df[col_name].values
+    assert len(cells) <= 1, f"Column name: {col_name} must be unique"
     if len(cells) == 0:
         # print(f"ID: {id} with column: {col} not found")
         return None

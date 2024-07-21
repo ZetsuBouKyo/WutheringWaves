@@ -1,7 +1,7 @@
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from ww.model.resonators import ResonatorsEnum
-from ww.tables.crud import search
+from ww.tables.crud import get_row, search
 from ww.utils.pd import get_df
 
 RESONATORS_PATH = "./cache/自訂/角色.tsv"
@@ -15,6 +15,9 @@ class ResonatorsTable:
 
     def search(self, id: str, col: ResonatorsEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorsEnum.ID.value)
+
+    def get_row(self, id: str) -> Optional[List[Any]]:
+        return get_row(self.df, id, ResonatorsEnum.ID.value)
 
 
 class CalculatedResonatorsTable:

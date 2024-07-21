@@ -15,6 +15,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.ui.calc.calculated_resonators import QCalculatedResonatorsTable
 from ww.ui.calc.simple import QDamageSimple
 from ww.ui.data.echoes import QEchoesTable
 from ww.ui.data.resonators import QResonatorsTable
@@ -25,10 +26,12 @@ class QCalcTabs(QTabWidget):
         super().__init__()
 
         # Tabs
+        calculated_resonators_tab = QCalculatedResonatorsTable()
         dmg_simple_tab = QDamageSimple()
         dmg_diff_tab = QWidget()
         dmg_detailed_tab = QWidget()
 
+        self.addTab(calculated_resonators_tab, "共鳴者")
         self.addTab(dmg_simple_tab, "簡易傷害")
         self.addTab(dmg_diff_tab, "比較傷害")
         self.addTab(dmg_detailed_tab, "詳細傷害")
