@@ -1,6 +1,6 @@
 from typer import Argument, Option, Typer
 
-from ww.commands.custom.template.damage import get_damage
+from ww.calc.damage import get_damage
 
 app = Typer(name="template")
 
