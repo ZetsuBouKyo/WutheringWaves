@@ -19,7 +19,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.model.resonators import ResonatorsEnum
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.combobox import QCustomComboBox
 
 
@@ -60,8 +60,10 @@ class QDamageSimple(QWidget):
         if resonator_id == "":
             return
         resonators_table = ResonatorsTable()
-        resonator = resonators_table.get_row(resonator_id)
-        print(resonator)
+        self._resonator = resonators_table.get_row(resonator_id)
+
+        calculated_resonators_table = CalculatedResonatorsTable()
+        calculated_resonator = calculated_resonators_table.get_row(resonator_id)
 
     def _get_resonator_name(self) -> str:
         return self.resonator_names_combobox.currentText()
