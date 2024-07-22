@@ -54,8 +54,11 @@ def get_resonator_skills(name: str) -> List[str]: ...
 class QDamageSimple(QWidget):
     def __init__(self):
         super().__init__()
-        self.layout = QVBoxLayout()
-        self.layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.layout = QHBoxLayout()
+
+        # Left
+        self.layout_left = QVBoxLayout()
+        self.layout_left.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
         self._init_base()
         self._combobox_resonator_ids = self._init_combobox_resonator_ids()
@@ -73,6 +76,14 @@ class QDamageSimple(QWidget):
         self._input_bonus_ignore_def = self._init_input_bonus_ignore_def()
         self._button_save = self._init_button_save()
 
+        # Right
+        self.layout_right = QVBoxLayout()
+        self.layout_right.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self._init_label_result_title()
+
+        self.layout.addLayout(self.layout_left)
+        self.layout.addLayout(self.layout_right)
+        self.layout.addStretch()
         self.setLayout(self.layout)
 
     def _init_base(self):
@@ -96,22 +107,9 @@ class QDamageSimple(QWidget):
         combobox.currentTextChanged.connect(currentTextChanged)
         layout.addWidget(combobox)
 
-        self.layout.addLayout(layout)
+        self.layout_left.addLayout(layout)
 
         return combobox
-
-    def _init_combobox_resonator_ids(self):
-        return self._init_combobox(
-            "共鳴者", get_resonator_names, self._combobox_event_update_resonator
-        )
-
-    def _get_monster_ids(self):
-        names = [
-            name
-            for name in self._monsters_table.df[MonstersEnum.NAME].to_list()
-            if name
-        ]
-        return names
 
     def _combobox_event_update_resonator(self, resonator_id: str):
         if resonator_id == "":
@@ -122,6 +120,22 @@ class QDamageSimple(QWidget):
         self._calculated_resonators_table = CalculatedResonatorsTable()
 
         # TODO: resonator skill -> row
+
+    def _init_combobox_resonator_ids(self):
+        return self._init_combobox(
+            "共鳴者", get_resonator_names, self._combobox_event_update_resonator
+        )
+
+    def _init_combobox_resonator_skills(self):
+        return self._init_combobox("共鳴者技能", None, None)
+
+    def _get_monster_ids(self):
+        names = [
+            name
+            for name in self._monsters_table.df[MonstersEnum.NAME].to_list()
+            if name
+        ]
+        return names
 
     def _init_combobox_monster_ids(self):
         return self._init_combobox(
@@ -156,7 +170,7 @@ class QDamageSimple(QWidget):
             line.setToolTip(tooltip)
         layout.addWidget(line)
 
-        self.layout.addLayout(layout)
+        self.layout_left.addLayout(layout)
 
         return line
 
@@ -222,7 +236,31 @@ class QDamageSimple(QWidget):
         btn.clicked.connect(self._calculate)
 
         layout.addWidget(btn)
-        self.layout.addLayout(layout)
+        self.layout_left.addLayout(layout)
         return btn
 
     def _calculate(self): ...
+
+    def _init_label_result_title(self):
+        layout = QHBoxLayout()
+        layout.setAlignment(Qt.AlignLeft)
+
+        label = QLabel("計算結果")
+        label.setFixedWidth(self._label_width)
+        layout.addWidget(label)
+
+        self.layout_right.addLayout(layout)
+
+    def _init_label_result(self, title: str, result: str):
+        layout = QHBoxLayout()
+        layout.setAlignment(Qt.AlignLeft)
+
+        label_title = QLabel(title)
+        label_title.setFixedWidth(self._label_width)
+        label_result = QLabel(result)
+        label_result.setFixedWidth(self._input_width)
+
+        layout.addWidget(label_title)
+        layout.addWidget(label_result)
+
+        self.layout_right.addLayout(layout)
