@@ -2,6 +2,7 @@ import sys
 from functools import partial
 from typing import List
 
+import pandas as pd
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QApplication,
@@ -73,6 +74,7 @@ class QDamageSimple(QWidget):
             self._init_input_bonus_skill_dmg_addition()
         )
         self._input_bonus_ignore_def = self._init_input_bonus_ignore_def()
+        self._input_bonus_reduce_res = self._init_input_bonus_reduce_res()
         self._button_save = self._init_button_save()
 
         # Right
@@ -153,7 +155,11 @@ class QDamageSimple(QWidget):
         self._resonator_skill_id = skill_id
 
     def _init_combobox_resonator_skills(self):
-        return self._init_combobox("共鳴者技能", self._get_resonator_skills, None)
+        return self._init_combobox(
+            "共鳴者技能",
+            self._get_resonator_skills,
+            self._combobox_event_update_resonator_skill,
+        )
 
     def _get_monster_ids(self):
         names = [
@@ -266,12 +272,65 @@ class QDamageSimple(QWidget):
         return btn
 
     def _calculate(self):
+        if (
+            not hasattr(self, "_resonator_name")
+            or not self._resonator_name
+            or not hasattr(self, "_resonator_skill_id")
+            or not self._resonator_skill_id
+            or not hasattr(self, "_monster_id")
+            or not self._monster_id
+        ):
+            return
+
+        bonus_magnifier = self._input_bonus_magnifier.text()
+        bonus_amplifier = self._input_bonus_amplifier.text()
+        bonus_atk_p = self._input_bonus_atk_p.text()
+        bonus_atk = self._input_bonus_atk.text()
 
         row = {
-            TemplateEnum.RESONATOR_NAME.value: resonator_name,
-            TemplateEnum.SKILL_ID.value: None,
+            TemplateEnum.RESONATOR_NAME.value: [self._resonator_name],
+            TemplateEnum.REAL_DMG_NO_CRIT.value: [""],
+            TemplateEnum.REAL_DMG_CRIT.value: [""],
+            TemplateEnum.ACTION.value: [""],
+            TemplateEnum.SKILL_ID.value: [self._resonator_skill_id],
+            TemplateEnum.BONUS_TYPE.value: [""],
+            TemplateEnum.BONUS_MAGNIFIER.value: [bonus_magnifier],
+            TemplateEnum.BONUS_AMPLIFIER.value: [bonus_amplifier],
+            TemplateEnum.BONUS_ATK_P.value: [bonus_atk_p],
+            TemplateEnum.BONUS_ATK.value: [bonus_atk],
+            TemplateEnum.BONUS_CRIT_RATE.value: [""],
+            TemplateEnum.BONUS_CRIT_DMG.value: [""],
+            TemplateEnum.BONUS_ADDITION.value: [""],
+            TemplateEnum.BONUS_SKILL_DMG_ADDITION.value: [""],
+            TemplateEnum.BONUS_IGNORE_DEF.value: [""],
+            TemplateEnum.BONUS_REDUCE_RES.value: [""],
+            TemplateEnum.RESONATING_SPIN_CONCERTO_REGEN.value: [""],
+            TemplateEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value: [""],
+            TemplateEnum.TIME_START.value: [""],
+            TemplateEnum.TIME_END.value: [""],
+            TemplateEnum.CUMULATIVE_TIME.value: [""],
+            TemplateEnum.FRAME.value: [""],
         }
-        get_row_damage()
+        print(row)
+
+        df = pd.DataFrame(row)
+        df_row = df.iloc[0]
+        calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
+        results = get_row_damage(
+            df_row,
+            self._resonator_id,
+            self._resonator_name,
+            self._monster_id,
+            self._monster_level,
+            self._monster_def,
+            self._resonators_table,
+            self._calculated_resonators_table,
+            self._echo_skill_table,
+            self._monsters_table,
+            calculated_template_columns,
+        )
+
+        print(results)
 
     def _init_label_result_title(self):
         layout = QHBoxLayout()
