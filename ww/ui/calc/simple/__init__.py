@@ -19,6 +19,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.calc.damage import get_row_damage
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
@@ -48,9 +49,6 @@ def get_resonator_names() -> List[str]:
     return names
 
 
-def get_resonator_skills(name: str) -> List[str]: ...
-
-
 class QDamageSimple(QWidget):
     def __init__(self):
         super().__init__()
@@ -62,6 +60,7 @@ class QDamageSimple(QWidget):
 
         self._init_base()
         self._combobox_resonator_ids = self._init_combobox_resonator_ids()
+        self._combobox_resonator_skills = self._init_combobox_resonator_skills()
         self._combobox_monster_ids = self._init_combobox_monster_ids()
         self._input_bonus_magnifier = self._init_input_bonus_magifier()
         self._input_bonus_amplifier = self._init_input_bonus_amplifier()
@@ -104,7 +103,8 @@ class QDamageSimple(QWidget):
 
         combobox = QCustomComboBox(getOptions=getOptions)
         combobox.setFixedWidth(self._input_width)
-        combobox.currentTextChanged.connect(currentTextChanged)
+        if currentTextChanged is not None:
+            combobox.currentTextChanged.connect(currentTextChanged)  # not working
         layout.addWidget(combobox)
 
         self.layout_left.addLayout(layout)
@@ -115,9 +115,16 @@ class QDamageSimple(QWidget):
         if resonator_id == "":
             return
 
+        self._combobox_resonator_skills.clear()
+
         self._resonator_id = resonator_id
         self._resonators_table = ResonatorsTable()
         self._calculated_resonators_table = CalculatedResonatorsTable()
+
+        self._resonator_name = self._resonators_table.search(
+            self._resonator_id, ResonatorsEnum.NAME
+        )
+        self._resonator_skills_table = ResonatorSkillTable(self._resonator_name)
 
         # TODO: resonator skill -> row
 
@@ -126,8 +133,27 @@ class QDamageSimple(QWidget):
             "共鳴者", get_resonator_names, self._combobox_event_update_resonator
         )
 
+    def _get_resonator_skills(self):
+        if not hasattr(self, "_resonator_skills_table"):
+            return []
+        if self._resonator_skills_table.df is None:
+            return []
+        names = [
+            name
+            for name in self._resonator_skills_table.df[
+                ResonatorSkillEnum.SKILL_ID.value
+            ].to_list()
+            if name
+        ]
+        return names
+
+    def _combobox_event_update_resonator_skill(self, skill_id: str):
+        if not skill_id:
+            return
+        self._resonator_skill_id = skill_id
+
     def _init_combobox_resonator_skills(self):
-        return self._init_combobox("共鳴者技能", None, None)
+        return self._init_combobox("共鳴者技能", self._get_resonator_skills, None)
 
     def _get_monster_ids(self):
         names = [
@@ -137,14 +163,9 @@ class QDamageSimple(QWidget):
         ]
         return names
 
-    def _init_combobox_monster_ids(self):
-        return self._init_combobox(
-            "怪物", self._get_monster_ids, self._combobox_event_update_resonator
-        )
-
-    def _combobox_event_update_resonator(self, monster_id: str):
+    def _combobox_event_update_monster_id(self, monster_id: str):
         # TODO: monster name -> monster id
-        if monster_id == "":
+        if not monster_id:
             return
 
         self._monster_id = monster_id
@@ -153,6 +174,11 @@ class QDamageSimple(QWidget):
         )
         self._monster_def = get_number(
             self._monsters_table.search(self._monster_id, MonstersEnum.DEF)
+        )
+
+    def _init_combobox_monster_ids(self):
+        return self._init_combobox(
+            "怪物", self._get_monster_ids, self._combobox_event_update_monster_id
         )
 
     def _init_input(self, label_name: str, tooltip: str = None):
@@ -239,7 +265,13 @@ class QDamageSimple(QWidget):
         self.layout_left.addLayout(layout)
         return btn
 
-    def _calculate(self): ...
+    def _calculate(self):
+
+        row = {
+            TemplateEnum.RESONATOR_NAME.value: resonator_name,
+            TemplateEnum.SKILL_ID.value: None,
+        }
+        get_row_damage()
 
     def _init_label_result_title(self):
         layout = QHBoxLayout()
