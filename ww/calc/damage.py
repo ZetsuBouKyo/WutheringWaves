@@ -1,3 +1,6 @@
+from decimal import Decimal
+from typing import Dict, Union
+
 import pandas as pd
 
 from ww.model.echo_skill import EchoSkillEnum
@@ -34,7 +37,7 @@ def get_row_damage(
     echo_skill_table,
     monsters_table: MonstersTable,
     calculated_template_columns,
-):
+) -> Dict[CalculatedTemplateEnum, Union[str, Decimal]]:
     if resonator_id is None:
         return
 
@@ -307,11 +310,17 @@ def get_row_damage(
     #     region_def,
     #     region_bonus_reduce_res,
     # )
-    print(calculated_template_row_dict)
 
     dmg_crit = dmg_no_crit * region_crit_dmg
     dmg_avg = dmg_no_crit * region_crit
-    print(dmg_avg, dmg_no_crit, dmg_crit)
+
+    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE.value] = int(dmg_avg)
+    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_NO_CRIT.value] = int(
+        dmg_no_crit
+    )
+    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_CRIT.value] = int(
+        dmg_crit
+    )
 
     return calculated_template_row_dict
 

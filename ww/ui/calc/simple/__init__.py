@@ -81,6 +81,7 @@ class QDamageSimple(QWidget):
         self.layout_right = QVBoxLayout()
         self.layout_right.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self._init_label_result_title()
+        self._init_label_results()
 
         self.layout.addLayout(self.layout_left)
         self.layout.addLayout(self.layout_right)
@@ -286,6 +287,12 @@ class QDamageSimple(QWidget):
         bonus_amplifier = self._input_bonus_amplifier.text()
         bonus_atk_p = self._input_bonus_atk_p.text()
         bonus_atk = self._input_bonus_atk.text()
+        bonus_crit_rate = self._input_bonus_crit_rate.text()
+        bonus_crit_dmg = self._input_bonus_crit_dmg.text()
+        bonus_addition = self._input_bonus_addition.text()
+        bonus_skill_dmg_addition = self._input_bonus_skill_dmg_addition.text()
+        bonus_ignore_def = self._input_bonus_ignore_def.text()
+        bonus_reduce_res = self._input_bonus_reduce_res.text()
 
         row = {
             TemplateEnum.RESONATOR_NAME.value: [self._resonator_name],
@@ -298,12 +305,12 @@ class QDamageSimple(QWidget):
             TemplateEnum.BONUS_AMPLIFIER.value: [bonus_amplifier],
             TemplateEnum.BONUS_ATK_P.value: [bonus_atk_p],
             TemplateEnum.BONUS_ATK.value: [bonus_atk],
-            TemplateEnum.BONUS_CRIT_RATE.value: [""],
-            TemplateEnum.BONUS_CRIT_DMG.value: [""],
-            TemplateEnum.BONUS_ADDITION.value: [""],
-            TemplateEnum.BONUS_SKILL_DMG_ADDITION.value: [""],
-            TemplateEnum.BONUS_IGNORE_DEF.value: [""],
-            TemplateEnum.BONUS_REDUCE_RES.value: [""],
+            TemplateEnum.BONUS_CRIT_RATE.value: [bonus_crit_rate],
+            TemplateEnum.BONUS_CRIT_DMG.value: [bonus_crit_dmg],
+            TemplateEnum.BONUS_ADDITION.value: [bonus_addition],
+            TemplateEnum.BONUS_SKILL_DMG_ADDITION.value: [bonus_skill_dmg_addition],
+            TemplateEnum.BONUS_IGNORE_DEF.value: [bonus_ignore_def],
+            TemplateEnum.BONUS_REDUCE_RES.value: [bonus_reduce_res],
             TemplateEnum.RESONATING_SPIN_CONCERTO_REGEN.value: [""],
             TemplateEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value: [""],
             TemplateEnum.TIME_START.value: [""],
@@ -311,7 +318,6 @@ class QDamageSimple(QWidget):
             TemplateEnum.CUMULATIVE_TIME.value: [""],
             TemplateEnum.FRAME.value: [""],
         }
-        print(row)
 
         df = pd.DataFrame(row)
         df_row = df.iloc[0]
@@ -330,7 +336,10 @@ class QDamageSimple(QWidget):
             calculated_template_columns,
         )
 
-        print(results)
+        for label_title in CalculatedTemplateEnum:
+            result = get_string(results[label_title.value])
+            label = self._results[label_title.value]
+            label.setText(result)
 
     def _init_label_result_title(self):
         layout = QHBoxLayout()
@@ -355,3 +364,11 @@ class QDamageSimple(QWidget):
         layout.addWidget(label_result)
 
         self.layout_right.addLayout(layout)
+
+        return label_result
+
+    def _init_label_results(self):
+        self._results = {}
+        for title in CalculatedTemplateEnum:
+            label_title = title.value
+            self._results[label_title] = self._init_label_result(label_title, "")
