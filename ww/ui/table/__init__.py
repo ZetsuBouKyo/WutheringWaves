@@ -1,26 +1,60 @@
 from functools import partial
 from typing import List
 
+import pandas as pd
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QAction,
-    QApplication,
-    QComboBox,
     QCompleter,
-    QHBoxLayout,
     QInputDialog,
-    QMainWindow,
     QMenu,
     QMessageBox,
     QProgressBar,
     QTableWidget,
     QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
 )
 
+from ww.model.echoes import EchoListEnum
+from ww.tables.echoes import EchoListTable
 from ww.ui.combobox import QCustomComboBox
 from ww.utils.pd import save_tsv
+
+echo_list_table = EchoListTable()
+echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
+
+
+class QUneditableTable(QTableWidget):
+    def __init__(self, df: pd.DataFrame):
+        self.data = df.values.tolist()
+        self.column_names = df.columns
+        self.column_names_table = {
+            self.column_names[i]: i for i in range(len(self.column_names))
+        }
+
+        rows = len(self.data)
+        columns = len(self.data[0])
+        super().__init__(rows, columns)
+
+        self.setHorizontalHeaderLabels(self.column_names)
+
+        self._init()
+        self._init_column_width()
+
+    def _init(self):
+        self._init_cells()
+
+    def _init_cells(self):
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                cell = self.data[row][col]
+                self.set_cell(cell, row, col)
+
+    def _init_column_width(self): ...
+
+    def set_cell(self, value: str, row: int, col: int):
+        item = QTableWidgetItem(value)
+        item.setFlags(~Qt.ItemIsEditable)
+        self.setItem(row, col, item)
 
 
 class QDraggableTableWidget(QTableWidget):
