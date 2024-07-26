@@ -40,17 +40,17 @@ from ww.tables.monsters import MonstersTable
 from ww.tables.resonator_skill import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
+from ww.ui.calc.compare.table import QDamageCompareTable
 from ww.ui.combobox import QCustomComboBox
 from ww.utils.number import get_number, get_string
-
-
-def get_resonator_names() -> List[str]:
-    resonators_table = ResonatorsTable()
-    names = [name for name in resonators_table.df[ResonatorsEnum.ID].to_list() if name]
-    return names
 
 
 class QDamageCompare(QWidget):
     def __init__(self):
         super().__init__()
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
+
+        self.q_damage_compare_table = QDamageCompareTable()
+
+        self.layout.addWidget(self.q_damage_compare_table)
+        self.setLayout(self.layout)

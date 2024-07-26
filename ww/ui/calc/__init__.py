@@ -16,6 +16,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.ui.calc.calculated_resonators import QCalculatedResonatorsTable
+from ww.ui.calc.compare import QDamageCompare
 from ww.ui.calc.simple import QDamageSimple
 from ww.ui.data.echoes import QEchoesTable
 from ww.ui.data.resonators import QResonatorsTable
@@ -28,7 +29,7 @@ class QCalcTabs(QTabWidget):
         # Tabs
         calculated_resonators_tab = QCalculatedResonatorsTable()
         dmg_simple_tab = QDamageSimple()
-        dmg_diff_tab = QWidget()
+        dmg_diff_tab = QDamageCompare()
         dmg_detailed_tab = QWidget()
 
         self.addTab(calculated_resonators_tab, "共鳴者")

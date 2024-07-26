@@ -83,8 +83,6 @@ class QResonatorsTable(QDraggableTableWidget):
             progress=progress,
         )
 
-        self.setHorizontalHeaderLabels(self.column_names)
-
     def _init(self):
         self.set_save_event(calc)
 

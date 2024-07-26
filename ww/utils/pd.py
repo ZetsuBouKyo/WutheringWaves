@@ -14,6 +14,11 @@ def get_df(fpath: Union[str, Path]) -> Optional[pd.DataFrame]:
     return df
 
 
+def get_empty_df(column_names: List[str]) -> pd.DataFrame:
+    data = {column_name: [""] for column_name in column_names}
+    return pd.DataFrame(data)
+
+
 def save_tsv(
     fpath: Union[str, Path],
     data: List[List[str]],

@@ -1,5 +1,6 @@
 from functools import partial
-from typing import List
+from pathlib import Path
+from typing import List, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
@@ -66,7 +67,7 @@ class QDraggableTableWidget(QTableWidget):
         data: List[List[str]] = [],
         column_id_name: str = None,
         column_names: List[str] = [],
-        tsv_fpath: str = None,
+        tsv_fpath: Union[str, Path] = None,
         progress: QProgressBar = None,
     ):
         super().__init__(rows, columns)
@@ -93,7 +94,9 @@ class QDraggableTableWidget(QTableWidget):
 
         self._init()
         self._init_column_width()
-        self.itemChanged.connect(self._update_data)
+        # self.itemChanged.connect(self._update_data)
+
+        self.setHorizontalHeaderLabels(self.column_names)
 
     def _init(self):
         self._save_event = None
@@ -241,11 +244,11 @@ class QDraggableTableWidget(QTableWidget):
             for row in reversed(selected_rows):
                 self.removeRow(row)
 
-    def _update_data(self, item):
-        row = item.row()
-        col = item.column()
-        value = item.text()
-        self.data[row][col] = value
+    # def _update_data(self, item):
+    #     row = item.row()
+    #     col = item.column()
+    #     value = item.text()
+    #     self.data[row][col] = value
 
     def get_row_id(self) -> str:
         return None
