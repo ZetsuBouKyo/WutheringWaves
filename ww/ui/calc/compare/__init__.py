@@ -40,7 +40,7 @@ from ww.tables.monsters import MonstersTable
 from ww.tables.resonator_skill import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
-from ww.ui.calc.compare.table import QDamageCompareTable
+from ww.ui.calc.compare.table import QDamageCompareTable, QDamageCompareUneditableTable
 from ww.ui.combobox import QCustomComboBox
 from ww.utils.number import get_number, get_string
 
@@ -51,6 +51,18 @@ class QDamageCompare(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_damage_compare_table = QDamageCompareTable()
+        self.q_damage_compare_uneditable_table = QDamageCompareUneditableTable()
 
+        self.q_calculated_label = QLabel("計算結果")
+
+        self.q_calculate_btn_layout = QHBoxLayout()
+        self.q_calculate_btn = QPushButton("計算")
+        # self.q_calculate_btn.clicked.connect()
+        self.q_calculate_btn_layout.addStretch()
+        self.q_calculate_btn_layout.addWidget(self.q_calculate_btn)
+
+        self.layout.addLayout(self.q_calculate_btn_layout)
         self.layout.addWidget(self.q_damage_compare_table)
+        self.layout.addWidget(self.q_calculated_label)
+        self.layout.addWidget(self.q_damage_compare_uneditable_table)
         self.setLayout(self.layout)

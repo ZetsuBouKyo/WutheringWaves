@@ -93,18 +93,22 @@ class QDamageCompareTable(QDraggableTableWidget):
             )
 
 
+class QDamageCompareUneditableTableEnum(str, Enum):
+    RESONATOR_LEVEL: str = "[角色]等級"
+    RESONATOR_CHAIN: str = "[角色]共鳴鏈"
+    RESONATOR_NAME: str = "[角色]名稱"
+    WEAPON_LEVEL: str = "[武器]等級"
+    WEAPON_RANK: str = "[武器]諧振"
+    WEAPON_NAME: str = "[武器]名稱"
+    DAMAGE: str = "[計算]傷害"
+    DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
+    DAMAGE_CRIT: str = "[計算]暴擊傷害"
+
+
 class QDamageCompareUneditableTable(QUneditableTable):
     def __init__(self):
-        calculated_resonators_table = CalculatedResonatorsTable()
-        calculated_resonators_table_df = calculated_resonators_table.df
-        super().__init__(calculated_resonators_table_df)
+        column_names = [e.value for e in QDamageCompareUneditableTableEnum]
+        self.df = get_empty_df(column_names)
+        super().__init__(self.df)
 
-    def _init_column_width(self):
-        for e in CalculatedResonatorsEnum:
-            if e.value == CalculatedResonatorsEnum.ID.value:
-                col = self.column_names_table[e.value]
-                self.setColumnWidth(col, 500)
-            else:
-                width = len(e.value) * 20 + 50
-                col = self.column_names_table[e.value]
-                self.setColumnWidth(col, width)
+    def _init_column_width(self): ...
