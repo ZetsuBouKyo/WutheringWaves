@@ -23,6 +23,12 @@ def search(df: pd.DataFrame, id: str, col: Enum, id_col_name: str) -> Optional[A
     return cells[0]
 
 
+def get_col(df: pd.DataFrame, col_name: str, ignore_empty: bool = True) -> List[str]:
+    if ignore_empty:
+        return [cell for cell in df[col_name].to_list() if cell]
+    return [cell for cell in df[col_name].to_list()]
+
+
 def get_row(df: pd.DataFrame, id: str, id_col_name: str) -> Optional[pd.DataFrame]:
     if not id or df is None:
         return None
