@@ -1,18 +1,24 @@
+import sys
 from functools import partial
 from pathlib import Path
 from typing import List, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
+from PySide2.QtGui import QDropEvent
 from PySide2.QtWidgets import (
+    QAbstractItemView,
     QAction,
+    QApplication,
     QCompleter,
+    QHBoxLayout,
     QInputDialog,
     QMenu,
     QMessageBox,
     QProgressBar,
     QTableWidget,
     QTableWidgetItem,
+    QWidget,
 )
 
 from ww.model.echoes import EchoListEnum
@@ -83,8 +89,13 @@ class QDraggableTableWidget(QTableWidget):
 
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
-        self.setDragDropMode(QTableWidget.InternalMove)
-        self.setSelectionBehavior(QTableWidget.SelectRows)
+        self.viewport().setAcceptDrops(True)
+        self.setDragDropOverwriteMode(False)
+        self.setDropIndicatorShown(True)
+
+        self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.setDragDropMode(QAbstractItemView.InternalMove)
 
         # Connect context menu for vertical header
         self.verticalHeader().setContextMenuPolicy(Qt.CustomContextMenu)
@@ -111,27 +122,52 @@ class QDraggableTableWidget(QTableWidget):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
-    def drop_event(self, event):
-        source = event.source()
-        if source == self:
-            selected_rows = self.selectionModel().selectedRows()
-            source_row = selected_rows[0].row()
+    def dropEvent(self, event: QDropEvent):
+        if not event.isAccepted() and event.source() == self:
+            drop_row = self.drop_on(event)
 
-            target_row = self.rowAt(event.pos().y())
-            if target_row == -1:
-                target_row = self.rowCount() - 1
+            rows = sorted(set(item.row() for item in self.selectedItems()))
+            rows_to_move = [
+                [self.get_cell(row, col) for col in range(self.columnCount())]
+                for row in rows
+            ]
+            for row_index in reversed(rows):
+                self.removeRow(row_index)
+                if row_index < drop_row:
+                    drop_row -= 1
 
-            self.insertRow(target_row)
-            for column in range(self.columnCount()):
-                self.setItem(target_row, column, self.takeItem(source_row, column))
+            for row_index, data in enumerate(rows_to_move):
+                row_index += drop_row
+                self.insertRow(row_index)
+                for column_index, column_data in enumerate(data):
+                    self.set_cell(column_data, row_index, column_index)
 
-            if target_row < source_row:
-                source_row += 1
-
-            self.removeRow(source_row)
             event.accept()
-        else:
-            super().drop_event(event)
+            for row_index in range(len(rows_to_move)):
+                self.item(drop_row + row_index, 0).setSelected(True)
+                self.item(drop_row + row_index, 1).setSelected(True)
+        super().dropEvent(event)
+
+    def drop_on(self, event):
+        index = self.indexAt(event.pos())
+        if not index.isValid():
+            return self.rowCount()
+
+        return index.row() + 1 if self.is_below(event.pos(), index) else index.row()
+
+    def is_below(self, pos, index):
+        rect = self.visualRect(index)
+        margin = 2
+        if pos.y() - rect.top() < margin:
+            return False
+        elif rect.bottom() - pos.y() < margin:
+            return True
+        # noinspection PyTypeChecker
+        return (
+            rect.contains(pos, True)
+            and not (int(self.model().flags(index)) & Qt.ItemIsDropEnabled)
+            and pos.y() >= rect.center().y()
+        )
 
     def show_header_context_menu(self, position):
         header = self.verticalHeader()
@@ -253,6 +289,15 @@ class QDraggableTableWidget(QTableWidget):
     def get_row_id(self) -> str:
         return None
 
+    def get_cell(self, row: int, col: int) -> str:
+        item = self.item(row, col)
+        cell = self.cellWidget(row, col)
+        if item is not None:
+            return item.text()
+        elif cell is not None:
+            return cell.currentText()
+        return ""
+
     def save(self):
         progress_value = 0.0
         if self.progress is not None:
@@ -262,12 +307,7 @@ class QDraggableTableWidget(QTableWidget):
 
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
-                item = self.item(row, col)
-                cell = self.cellWidget(row, col)
-                if item is not None:
-                    self.data[row][col] = item.text()
-                elif cell is not None:
-                    self.data[row][col] = cell.currentText()
+                self.data[row][col] = self.get_cell(row, col)
             id_col = self.column_names_table[self.column_id_name]
             id = self.get_row_id(row)
             if id is not None:
