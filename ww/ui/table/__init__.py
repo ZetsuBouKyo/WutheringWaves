@@ -31,6 +31,7 @@ from ww.model.echoes import EchoListEnum
 from ww.tables.echoes import EchoListTable
 from ww.ui.combobox import QCustomComboBox
 from ww.utils.pd import save_tsv
+from ww.utils.sorting import alphanum_sorting
 
 echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
@@ -307,7 +308,7 @@ class QDraggableTableWidget(QTableWidget):
     def get_selected_rows(self) -> List[int]:
         return sorted(set(item.row() for item in self.selectedIndexes()))
 
-    def get_row_id(self) -> str:
+    def get_row_id(self, row) -> str:
         return None
 
     def get_cell(self, row: int, col: int) -> str:
@@ -388,17 +389,44 @@ class QDraggableDataTableWidget(QWidget):
         self._progress_label.setText("存檔中...")
 
         self._progress_bar_init()
+        _ids = {}
+        _dup_ids = set()
+        _new_data = []
         for row in range(self._table.rowCount()):
+            _new_data_row = ["" for _ in range(self._table.columnCount())]
             for col in range(self._table.columnCount()):
-                self._table.data[row][col] = self._table.get_cell(row, col)
+                _new_data_row[col] = self._table.get_cell(row, col)
+
             id_col = self._table.column_names_table[self._table.column_id_name]
-            id = self._table.get_row_id(row)
+            id = self._table.get_row_id(_new_data_row)
+            if id in _ids:
+                _dup_ids.add(str(_ids[id] + 1))
+                _dup_ids.add(str(row + 1))
+            if id != "":
+                _ids[id] = row
 
             if id is not None:
-                self._table.data[row][id_col] = id
+                _new_data_row[id_col] = id
+            _new_data.append(_new_data_row)
 
             self._progress_bar_update_row()
+        if len(_dup_ids) > 0:
+            _dup_ids = list(_dup_ids)
+            _dup_ids = alphanum_sorting(_dup_ids)
+            ids_str = ", ".join(_dup_ids)
 
+            QMessageBox.question(
+                self,
+                "警告",
+                f"'{self._table.column_id_name}'中，第{ids_str}列字串重複，請加入字首或字尾，使'{self._table.column_id_name}'中的字串不重複。",
+                QMessageBox.Yes,
+            )
+            self._progress_label.setText("")
+            self._progress_bar.setValue(0.0)
+            self._lock = False
+            return
+
+        self._table.data = _new_data
         if self._tsv_fpath is not None:
             save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
 

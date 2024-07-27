@@ -104,40 +104,40 @@ class QResonatorsTable(QDraggableTableWidget):
         self._weapon_levels = get_levels()
         self._weapon_ranks = get_weapon_ranks()
 
-    def get_row_id(self, row: int) -> str:
+    def get_row_id(self, row: List[str]) -> str:
         _id = []
 
         _prefix_i = self.column_names_table[ResonatorsEnum.PREFIX.value]
-        _prefix = self.data[row][_prefix_i]
+        _prefix = row[_prefix_i]
         if _prefix:
             _id.append(_prefix)
 
         _chain_i = self.column_names_table[ResonatorsEnum.RESONANCE_CHAIN.value]
-        _chain = self.data[row][_chain_i]
+        _chain = row[_chain_i]
         if _chain:
             _id.append(f"{_chain}鏈")
 
         _level_i = self.column_names_table[ResonatorsEnum.LEVEL.value]
-        _level = self.data[row][_level_i]
+        _level = row[_level_i]
         _name_i = self.column_names_table[ResonatorsEnum.NAME.value]
-        _name = self.data[row][_name_i]
+        _name = row[_name_i]
         if _name:
             _id.append(_level + _name)
 
         _weapon_rank_i = self.column_names_table[ResonatorsEnum.WEAPON_RANK.value]
-        _weapon_rank = self.data[row][_weapon_rank_i]
+        _weapon_rank = row[_weapon_rank_i]
         if _weapon_rank:
             _id.append(f"{_weapon_rank}振")
 
         _weapon_level_i = self.column_names_table[ResonatorsEnum.WEAPON_LEVEL.value]
-        _weapon_level = self.data[row][_weapon_level_i]
+        _weapon_level = row[_weapon_level_i]
         _weapon_name_i = self.column_names_table[ResonatorsEnum.WEAPON_NAME.value]
-        _weapon_name = self.data[row][_weapon_name_i]
+        _weapon_name = row[_weapon_name_i]
         if _weapon_name:
             _id.append(_weapon_level + _weapon_name)
 
         _suffix_i = self.column_names_table[ResonatorsEnum.SUFFIX.value]
-        _suffix = self.data[row][_suffix_i]
+        _suffix = row[_suffix_i]
         if _suffix:
             _id.append(_suffix)
 
@@ -145,14 +145,15 @@ class QResonatorsTable(QDraggableTableWidget):
         return id
 
     def _update_row_id(self, row: int, col: int, value: str):
-        prefix_col = self.column_names_table[ResonatorsEnum.PREFIX.value]
-        suffix_col = self.column_names_table[ResonatorsEnum.SUFFIX.value]
-        if prefix_col == col or suffix_col == col:
-            return
-        id_col = self.column_names_table[ResonatorsEnum.ID.value]
-        self.data[row][col] = value
-        id = self.get_row_id(row)
-        self.set_id_cell(id, row, id_col)
+        # prefix_col = self.column_names_table[ResonatorsEnum.PREFIX.value]
+        # suffix_col = self.column_names_table[ResonatorsEnum.SUFFIX.value]
+        # if prefix_col == col or suffix_col == col:
+        #     return
+        # id_col = self.column_names_table[ResonatorsEnum.ID.value]
+        # self.data[row][col] = value
+        # id = self.get_row_id(row)
+        # self.set_id_cell(id, row, id_col)
+        ...
 
     def _update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
         try:

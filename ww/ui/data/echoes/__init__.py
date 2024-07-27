@@ -56,26 +56,26 @@ class QEchoesTable(QDraggableTableWidget):
         self._elements = get_elements()
         self._echo_sonatas = get_echo_sonatas()
 
-    def get_row_id(self, row: int) -> str:
+    def get_row_id(self, row: List[str]) -> str:
         _id = []
 
         _prefix_i = self.column_names_table[EchoesEnum.PREFIX.value]
-        _prefix = self.data[row][_prefix_i]
+        _prefix = row[_prefix_i]
         if _prefix:
             _id.append(_prefix)
 
         _element_i = self.column_names_table[EchoesEnum.ELEMENT.value]
-        _element = self.data[row][_element_i]
+        _element = row[_element_i]
         if _element:
             _id.append(_element)
 
         _name_i = self.column_names_table[EchoesEnum.NAME.value]
-        _name = self.data[row][_name_i]
+        _name = row[_name_i]
         if _name:
             _id.append(_name)
 
         _suffix_i = self.column_names_table[EchoesEnum.SUFFIX.value]
-        _suffix = self.data[row][_suffix_i]
+        _suffix = row[_suffix_i]
         if _suffix:
             _id.append(_suffix)
 

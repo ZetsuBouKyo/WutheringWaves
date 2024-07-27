@@ -1,4 +1,7 @@
 from enum import Enum
+from typing import List
+
+from pydantic import BaseModel
 
 
 class TemplateEnum(str, Enum):
@@ -58,3 +61,31 @@ class CalculatedTemplateEnum(str, Enum):
     DAMAGE: str = "[計算]傷害"
     DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
+
+
+class TemplateRowModel(BaseModel):
+    resonator_name: str = ""
+
+
+class TemplateModel(BaseModel):
+    resonator_1_name: str = ""
+    resonator_1_chain: str = ""
+    resonator_1_weapon_name: str = ""
+    resonator_1_weapon_rank: str = ""
+
+    resonator_2_name: str = ""
+    resonator_2_chain: str = ""
+    resonator_2_weapon_name: str = ""
+    resonator_2_weapon_rank: str = ""
+
+    resonator_3_name: str = ""
+    resonator_3_chain: str = ""
+    resonator_3_weapon_name: str = ""
+    resonator_3_weapon_rank: str = ""
+
+    title_prefix: str = ""
+    title_suffix: str = ""
+    monster_id: str = ""
+    description: str = ""
+
+    rows: List[TemplateRowModel] = []
