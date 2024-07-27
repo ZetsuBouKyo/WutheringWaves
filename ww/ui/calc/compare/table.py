@@ -50,7 +50,7 @@ class QDamageCompareTable(QDraggableTableWidget):
     def _init_column_width(self):
         for e in QDamageCompareTableEnum:
             col = self.column_names_table[e.value]
-            self.setColumnWidth(col, 500)
+            self.setColumnWidth(col, 600)
 
     def _init_combobox(self):
         self._resonator_ids = None
@@ -91,12 +91,14 @@ class QDamageCompareTable(QDraggableTableWidget):
 
 
 class QDamageCompareUneditableTableEnum(str, Enum):
-    RESONATOR_LEVEL: str = "[角色]等級"
-    RESONATOR_CHAIN: str = "[角色]共鳴鏈"
-    RESONATOR_NAME: str = "[角色]名稱"
-    WEAPON_LEVEL: str = "[武器]等級"
-    WEAPON_RANK: str = "[武器]諧振"
-    WEAPON_NAME: str = "[武器]名稱"
+    RESONATOR_ID: str = "[角色]代稱"
+    # RESONATOR_LEVEL: str = "[角色]等級"
+    # RESONATOR_CHAIN: str = "[角色]共鳴鏈"
+    # RESONATOR_NAME: str = "[角色]名稱"
+    # WEAPON_LEVEL: str = "[武器]等級"
+    # WEAPON_RANK: str = "[武器]諧振"
+    # WEAPON_NAME: str = "[武器]名稱"
+    MONSTER_ID: str = "[怪物]名稱"
     DAMAGE: str = "[計算]傷害"
     DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
     DAMAGE_CRIT: str = "[計算]暴擊傷害"

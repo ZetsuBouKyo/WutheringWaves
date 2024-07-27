@@ -2,7 +2,7 @@ import sys
 from copy import deepcopy
 from functools import partial
 from pathlib import Path
-from typing import List, Union
+from typing import Dict, List, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
@@ -50,11 +50,8 @@ class QUneditableTable(QTableWidget):
 
         self.setHorizontalHeaderLabels(self.column_names)
 
-        self._init()
-        self._init_column_width()
-
-    def _init(self):
         self._init_cells()
+        self._init_column_width()
 
     def _init_cells(self):
         for row in range(self.rowCount()):
@@ -68,6 +65,21 @@ class QUneditableTable(QTableWidget):
         item = QTableWidgetItem(value)
         item.setFlags(~Qt.ItemIsEditable)
         self.setItem(row, col, item)
+
+    def load_data(self, data: List[Dict[str, str]]):
+        new_data = []
+        for row in data:
+            r = [row.get(column_name, "") for column_name in self.column_names]
+            new_data.append(r)
+
+        self.data = new_data
+
+        rows = len(self.data)
+        columns = len(self.data[0])
+        self.setRowCount(rows)
+        self.setColumnCount(columns)
+
+        self._init_cells()
 
 
 class QDraggableTableWidget(QTableWidget):
@@ -306,6 +318,13 @@ class QDraggableTableWidget(QTableWidget):
         elif cell is not None:
             return cell.currentText()
         return ""
+
+    def get_current_data(self) -> List[List[str]]:
+        data = []
+        for row in range(self.rowCount()):
+            r = [self.get_cell(row, col) for col in range(self.columnCount())]
+            data.append(r)
+        return data
 
 
 class QDraggableDataTableWidget(QWidget):

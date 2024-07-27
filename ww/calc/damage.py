@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Dict, Union
+from typing import Dict, Optional, Union
 
 import pandas as pd
 
@@ -37,7 +37,7 @@ def get_row_damage(
     echo_skill_table,
     monsters_table: MonstersTable,
     calculated_template_columns,
-) -> Dict[CalculatedTemplateEnum, Union[str, Decimal]]:
+) -> Optional[Dict[CalculatedTemplateEnum, Union[str, Decimal]]]:
     if resonator_id is None:
         return
 
@@ -153,6 +153,7 @@ def get_row_damage(
 
     if resonator_skill_dmg is None:
         skill_dmg = echo_skill_dmg
+        resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_SKILL_DMG.value] = (
@@ -348,6 +349,7 @@ def get_damage(
         if n:
             resonators_name2id[n] = r_id
 
+    results = []
     for _, row in template_table.df.iterrows():
         resonator_name = row[TemplateEnum.RESONATOR_NAME]
         resonator_id = resonators_name2id.get(resonator_name, None)
@@ -366,3 +368,6 @@ def get_damage(
             monsters_table,
             calculated_template_columns,
         )
+        if calculated_template_row_dict is not None:
+            results.append(calculated_template_row_dict)
+    return results
