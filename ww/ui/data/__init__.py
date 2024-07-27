@@ -29,9 +29,9 @@ class QDataTabs(QTabWidget):
 
         # Resonators
         q_resonators_table = QResonatorsTable()
-        q_echoes_table = QEchoesTable()
 
         # Echoes
+        q_echoes_table = QEchoesTable()
 
         # Tabs
         resonators_tab = QDraggableDataTableWidget(

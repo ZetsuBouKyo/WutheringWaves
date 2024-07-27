@@ -104,11 +104,11 @@ class QDraggableTableWidget(QTableWidget):
             self.show_header_context_menu
         )
 
-        self._history = [deepcopy(self.data)]
+        self.data_0 = [deepcopy(self.data)]
 
         self._init_cells()
         self._init_column_width()
-        self.itemChanged.connect(self._update_data)
+        # self.itemChanged.connect(self._update_data)
 
         self.setHorizontalHeaderLabels(self.column_names)
 
@@ -289,8 +289,8 @@ class QDraggableTableWidget(QTableWidget):
             for row in reversed(selected_rows):
                 self.removeRow(row)
 
-    def _update_data(self, item):
-        print("update")
+    # def _update_data(self, item):
+    #     print("update")
 
     def get_selected_rows(self) -> List[int]:
         return sorted(set(item.row() for item in self.selectedIndexes()))
@@ -329,10 +329,13 @@ class QDraggableDataTableWidget(QWidget):
 
         # Progress
         self._layout_progress = QHBoxLayout()
+        self._progress_label = QLabel("")
+        self._progress_label.setFixedWidth(150)
         self._progress_bar = QProgressBar()
         self._progress_bar.setMinimum(0)
         self._progress_bar.setMaximum(100)
         self._layout_progress.addStretch()
+        self._layout_progress.addWidget(self._progress_label)
         self._layout_progress.addWidget(self._progress_bar)
 
         # Table
@@ -345,6 +348,7 @@ class QDraggableDataTableWidget(QWidget):
         self._layout.addLayout(self._layout_progress)
         self.setLayout(self._layout)
 
+        self._lock = False
         self._tsv_fpath = tsv_fpath
         self._event_save = event_save
 
@@ -359,13 +363,18 @@ class QDraggableDataTableWidget(QWidget):
         self._progress_bar.setValue(self._progress_bar_value)
 
     def save(self):
-        self._progress_bar_init()
+        if self._lock:
+            return
+        self._lock = True
+        self._progress_label.setText("存檔中...")
 
+        self._progress_bar_init()
         for row in range(self._table.rowCount()):
             for col in range(self._table.columnCount()):
                 self._table.data[row][col] = self._table.get_cell(row, col)
             id_col = self._table.column_names_table[self._table.column_id_name]
             id = self._table.get_row_id(row)
+
             if id is not None:
                 self._table.data[row][id_col] = id
 
@@ -374,15 +383,27 @@ class QDraggableDataTableWidget(QWidget):
         if self._tsv_fpath is not None:
             save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
 
-        self._progress_bar.setValue(100)
+        self._progress_bar_update_row()
 
         self._table._init_cells()
+
+        self._progress_bar.setValue(100)
 
         if self._event_save is not None:
             self._event_save()
 
+        self._lock = False
+        self._progress_label.setText("存檔完成。")
+
     def initialize(self):
-        self._table.data = self._table._history[0]
+        if self._lock:
+            return
+        self._lock = True
+        self._progress_label.setText("初始化...")
+
+        self._progress_bar_init()
+
+        self._table.data = self._table.data_0[0]
         self._table.column_names_table = {
             self._table.column_names[i]: i for i in range(len(self._table.column_names))
         }
@@ -393,6 +414,11 @@ class QDraggableDataTableWidget(QWidget):
         self._table.setColumnCount(columns)
 
         self._table.setHorizontalHeaderLabels(self._table.column_names)
+        self._progress_bar.setValue(10)
 
         self._table._init_cells()
         self._table._init_column_width()
+
+        self._progress_bar.setValue(100)
+        self._lock = False
+        self._progress_label.setText("初始化完成。")
