@@ -31,7 +31,7 @@ def get_echo_sonatas() -> List[str]:
 
 
 class QEchoesTable(QDraggableTableWidget):
-    def __init__(self, progress: QProgressBar = None):
+    def __init__(self):
         echoes_table = EchoesTable()
 
         data = echoes_table.df.values.tolist()
@@ -45,15 +45,7 @@ class QEchoesTable(QDraggableTableWidget):
             data=data,
             column_id_name=EchoesEnum.ID.value,
             column_names=echoes_table.df.columns,
-            tsv_fpath=ECHOES_PATH,
-            progress=progress,
         )
-
-    def _init(self):
-        self.set_save_event(calc)
-
-        self._init_cells()
-        self._init_combobox()
 
     def _init_column_width(self):
         col = self.column_names_table[EchoesEnum.ID.value]

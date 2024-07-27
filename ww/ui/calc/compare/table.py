@@ -28,7 +28,6 @@ class QDamageCompareTable(QDraggableTableWidget):
     def __init__(
         self,
         fname: str = DAMAGE_COMPARE_TABLE_CACHE_FNAME,
-        progress: QProgressBar = None,
     ):
         tsv_path = Path(DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
         column_names = [e.value for e in QDamageCompareTableEnum]
@@ -46,8 +45,6 @@ class QDamageCompareTable(QDraggableTableWidget):
             data=data,
             column_id_name=QDamageCompareTableEnum.ID.value,
             column_names=column_names,
-            tsv_fpath=tsv_path,
-            progress=progress,
         )
 
     def _init_column_width(self):

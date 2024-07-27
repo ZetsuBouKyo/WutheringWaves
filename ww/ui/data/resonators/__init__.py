@@ -65,7 +65,7 @@ def get_weapon_ranks() -> List[str]:
 
 
 class QResonatorsTable(QDraggableTableWidget):
-    def __init__(self, progress: QProgressBar = None):
+    def __init__(self):
         resonators_table = ResonatorsTable()
 
         data = resonators_table.df.values.tolist()
@@ -79,15 +79,7 @@ class QResonatorsTable(QDraggableTableWidget):
             data=data,
             column_id_name=ResonatorsEnum.ID.value,
             column_names=resonators_table.df.columns,
-            tsv_fpath=RESONATORS_PATH,
-            progress=progress,
         )
-
-    def _init(self):
-        self.set_save_event(calc)
-
-        self._init_cells()
-        self._init_combobox()
 
     def _init_column_width(self):
         cols = [
