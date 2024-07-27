@@ -126,26 +126,26 @@ class QDraggableTableWidget(QTableWidget):
         if not event.isAccepted() and event.source() == self:
             drop_row = self.drop_on(event)
 
-            rows = sorted(set(item.row() for item in self.selectedItems()))
+            rows = self.get_selected_rows()
             rows_to_move = [
                 [self.get_cell(row, col) for col in range(self.columnCount())]
                 for row in rows
             ]
-            for row_index in reversed(rows):
-                self.removeRow(row_index)
-                if row_index < drop_row:
+            for row in reversed(rows):
+                self.removeRow(row)
+                if row < drop_row:
                     drop_row -= 1
 
-            for row_index, data in enumerate(rows_to_move):
-                row_index += drop_row
-                self.insertRow(row_index)
-                for column_index, column_data in enumerate(data):
-                    self.set_cell(column_data, row_index, column_index)
+            for row, data in enumerate(rows_to_move):
+                row += drop_row
+                self.insertRow(row)
+                for col, column_data in enumerate(data):
+                    self.set_cell(column_data, row, col)
 
             event.accept()
-            for row_index in range(len(rows_to_move)):
-                self.item(drop_row + row_index, 0).setSelected(True)
-                self.item(drop_row + row_index, 1).setSelected(True)
+            for row in range(len(rows_to_move)):
+                self.item(drop_row + row, 0).setSelected(True)
+                self.item(drop_row + row, 1).setSelected(True)
         super().dropEvent(event)
 
     def drop_on(self, event):
@@ -285,6 +285,9 @@ class QDraggableTableWidget(QTableWidget):
     #     col = item.column()
     #     value = item.text()
     #     self.data[row][col] = value
+
+    def get_selected_rows(self) -> List[int]:
+        return sorted(set(item.row() for item in self.selectedItems()))
 
     def get_row_id(self) -> str:
         return None
