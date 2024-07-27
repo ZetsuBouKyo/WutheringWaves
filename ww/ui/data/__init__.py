@@ -39,9 +39,14 @@ class QDataTabs(QTabWidget):
         q_resonators_progress_bar.setMaximum(100)
         q_resonators_table = QResonatorsTable(progress=q_resonators_progress_bar)
 
+        q_resonators_table_initialization_btn = QPushButton("初始化")
+        q_resonators_table_initialization_btn.clicked.connect(
+            q_resonators_table.initialize
+        )
         q_resonators_table_save_btn = QPushButton("存檔")
         q_resonators_table_save_btn.clicked.connect(q_resonators_table.save)
         resonators_tab_toolbar_layout.addStretch()
+        resonators_tab_toolbar_layout.addWidget(q_resonators_table_initialization_btn)
         resonators_tab_toolbar_layout.addWidget(q_resonators_table_save_btn)
 
         q_resonators_progress_bar_layout = QHBoxLayout()

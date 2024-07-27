@@ -163,7 +163,10 @@ class QResonatorsTable(QDraggableTableWidget):
         self.set_id_cell(id, row, id_col)
 
     def _update_row_id_by_combobox(self, row: int, col: int, values: List[str], i: int):
-        self._update_row_id(row, col, values[i])
+        try:
+            self._update_row_id(row, col, values[i])
+        except IndexError:
+            ...
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == ResonatorsEnum.ID.value:

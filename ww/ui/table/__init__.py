@@ -1,4 +1,5 @@
 import sys
+from copy import deepcopy
 from functools import partial
 from pathlib import Path
 from typing import List, Union
@@ -65,7 +66,6 @@ class QUneditableTable(QTableWidget):
 
 
 class QDraggableTableWidget(QTableWidget):
-
     def __init__(
         self,
         rows: int,
@@ -103,16 +103,14 @@ class QDraggableTableWidget(QTableWidget):
             self.show_header_context_menu
         )
 
-        self._init()
-        self._init_column_width()
-        # self.itemChanged.connect(self._update_data)
-
-        self.setHorizontalHeaderLabels(self.column_names)
-
-    def _init(self):
+        self._history = [deepcopy(self.data)]
         self._save_event = None
 
         self._init_cells()
+        self._init_column_width()
+        self.itemChanged.connect(self._update_data)
+
+        self.setHorizontalHeaderLabels(self.column_names)
 
     def _init_column_width(self): ...
 
@@ -168,6 +166,20 @@ class QDraggableTableWidget(QTableWidget):
             and not (int(self.model().flags(index)) & Qt.ItemIsDropEnabled)
             and pos.y() >= rect.center().y()
         )
+
+    def keyPressEvent(self, event):
+        super().keyPressEvent(event)
+        if event.key() == Qt.Key_C and (event.modifiers() & Qt.ControlModifier):
+            self.copied_cells = sorted(self.selectedIndexes())
+        elif event.key() == Qt.Key_V and (event.modifiers() & Qt.ControlModifier):
+            r = self.currentRow() - self.copied_cells[0].row()
+            c = self.currentColumn() - self.copied_cells[0].column()
+            for cell in self.copied_cells:
+                self.set_cell(
+                    self.get_cell(cell.row(), cell.column()),
+                    cell.row() + r,
+                    cell.column() + c,
+                )
 
     def show_header_context_menu(self, position):
         header = self.verticalHeader()
@@ -265,7 +277,7 @@ class QDraggableTableWidget(QTableWidget):
         self._row_index_ctx_add_rows(row + 1)
 
     def _row_index_ctx_delete_selected_rows(self):
-        selected_rows = sorted(set(index.row() for index in self.selectedIndexes()))
+        selected_rows = self.get_selected_rows()
         if not selected_rows:
             QMessageBox.warning(self, "No Selection", "No rows selected to remove.")
             return
@@ -280,14 +292,11 @@ class QDraggableTableWidget(QTableWidget):
             for row in reversed(selected_rows):
                 self.removeRow(row)
 
-    # def _update_data(self, item):
-    #     row = item.row()
-    #     col = item.column()
-    #     value = item.text()
-    #     self.data[row][col] = value
+    def _update_data(self, item):
+        print("update")
 
     def get_selected_rows(self) -> List[int]:
-        return sorted(set(item.row() for item in self.selectedItems()))
+        return sorted(set(item.row() for item in self.selectedIndexes()))
 
     def get_row_id(self) -> str:
         return None
@@ -301,12 +310,24 @@ class QDraggableTableWidget(QTableWidget):
             return cell.currentText()
         return ""
 
-    def save(self):
-        progress_value = 0.0
+    def _progress_init(self):
+        self.progress_value = 0.0
         if self.progress is not None:
-            self.progress.setValue(progress_value)
+            self.progress.setValue(self.progress_value)
 
-        progress_tick = 100.0 / (self.rowCount() + 1)
+        self.progress_row_tick = 100.0 / (self.rowCount() + 1)
+
+    def _progress_update_row(self):
+        self.progress_value += self.progress_row_tick
+        if self.progress is not None:
+            self.progress.setValue(self.progress_value)
+
+    def _progress_set_value(self, value: int):
+        if self.progress is not None:
+            self.progress.setValue(value)
+
+    def save(self):
+        self._progress_init()
 
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
@@ -316,16 +337,30 @@ class QDraggableTableWidget(QTableWidget):
             if id is not None:
                 self.data[row][id_col] = id
 
-            progress_value += progress_tick
-            if self.progress is not None:
-                self.progress.setValue(progress_value)
+            self._progress_update_row()
 
         if self.tsv_fpath is not None:
             save_tsv(self.tsv_fpath, self.data, self.column_names)
-        self._init()
+
+        self._progress_set_value(100)
+
+        self._init_cells()
 
         if self._save_event is not None:
             self._save_event()
 
-        if self.progress is not None:
-            self.progress.setValue(100)
+    def initialize(self):
+        self.data = self._history[0]
+        self.column_names_table = {
+            self.column_names[i]: i for i in range(len(self.column_names))
+        }
+
+        rows = len(self.data)
+        columns = len(self.data[0])
+        self.setRowCount(rows)
+        self.setColumnCount(columns)
+
+        self.setHorizontalHeaderLabels(self.column_names)
+
+        self._init_cells()
+        self._init_column_width()
