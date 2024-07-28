@@ -64,7 +64,28 @@ class CalculatedTemplateEnum(str, Enum):
 
 
 class TemplateRowModel(BaseModel):
-    resonator_name: str = ""
+    resonator_name: str = "[角色]名稱"
+    real_dmg_no_crit: str = "[實戰]無暴擊"
+    real_dmg_crit: str = "[實戰]暴擊"
+    action: str = "[實戰]操作"
+    skill_id: str = "[實戰]技能代稱"
+    bonus_type: str = "[實戰]技能加成種類"
+    bonus_magnifier: str = "[額外]倍率"
+    bonus_amplifier: str = "[額外]加深"
+    bonus_atk_p: str = "[額外]攻擊百分比"
+    bonus_atk: str = "[額外]攻擊"
+    bonus_crit_rate: str = "[額外]暴擊"
+    bonus_crit_dmg: str = "[額外]暴擊傷害"
+    bonus_addition: str = "[額外]加成"
+    bonus_skill_dmg_addition: str = "[額外]招式倍率"
+    bonus_ignore_def: str = "[額外]忽視防禦"
+    bonus_reduce_res: str = "[額外]抗性降低"
+    resonating_spin_concerto_regen: str = "協奏能量"
+    accumulated_resonating_spin_concerto_regen: str = "累積協奏"
+    time_start: str = "[實戰]起手秒數"
+    time_end: str = "[實戰]結束秒數"
+    cumulative_time: str = "[實戰]累積結束秒數"
+    frame: str = "幀數"
 
 
 class TemplateModel(BaseModel):
