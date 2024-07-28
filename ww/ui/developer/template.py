@@ -17,17 +17,8 @@ from PySide2.QtWidgets import (
 
 from ww.ui.data.echoes import QEchoesTable
 from ww.ui.data.resonators import QResonatorsTable
-from ww.ui.developer.template import QTemplateTab
 
 
-class QDevTabs(QTabWidget):
+class QTemplateTab(QWidget):
     def __init__(self):
         super().__init__()
-
-        # Tabs
-
-        template_tab = QTemplateTab()
-        private_data_tab = QWidget()
-
-        self.addTab(template_tab, "模板")
-        self.addTab(private_data_tab, "內部數據")

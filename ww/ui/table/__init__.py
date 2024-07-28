@@ -320,7 +320,7 @@ class QDraggableTableWidget(QTableWidget):
         cell = self.cellWidget(row, col)
         if item is not None:
             return item.text()
-        elif cell is not None:
+        elif type(cell) == QCustomComboBox:
             return cell.currentText()
         return ""
 
