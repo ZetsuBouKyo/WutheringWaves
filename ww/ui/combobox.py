@@ -55,7 +55,6 @@ class QCustomComboBox(QComboBox):
 
 
 class QMultipleCheckableComboBox(QComboBox):
-    # Subclass Delegate to increase item height
     class Delegate(QStyledItemDelegate):
         def sizeHint(self, option, index):
             size = super().sizeHint(option, index)
@@ -92,7 +91,6 @@ class QMultipleCheckableComboBox(QComboBox):
         super().resizeEvent(event)
 
     def eventFilter(self, object, event):
-
         if object == self.lineEdit():
             if event.type() == QEvent.MouseButtonRelease:
                 if self.closeOnLineEditClick:

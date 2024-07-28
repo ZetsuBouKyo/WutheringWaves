@@ -2,7 +2,7 @@ import sys
 from copy import deepcopy
 from functools import partial
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Any, Dict, List, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
@@ -83,7 +83,49 @@ class QUneditableTable(QTableWidget):
         self._init_cells()
 
 
-class QDraggableTableWidget(QTableWidget):
+class QCustomTableWidget(QTableWidget):
+    def __init__(self, rows: int, columns: int, parent: Any = None):
+        super().__init__(rows, columns, parent=parent)
+
+    def set_combobox(
+        self,
+        row: int,
+        column: int,
+        name: str,
+        names: List[str],
+        currentIndexChanged=None,
+        getOptions=None,
+    ):
+        if getOptions is None:
+            combobox = QCustomComboBox()
+            combobox.addItems(names)
+            combobox.setCurrentText(name)
+            completer = QCompleter(combobox.model())
+            combobox.setCompleter(completer)
+        else:
+            combobox = QCustomComboBox(getOptions=getOptions)
+            combobox.setCurrentText(name)
+
+        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
+
+        if currentIndexChanged is not None:
+            combobox.currentIndexChanged.connect(
+                partial(currentIndexChanged, row, column, names)
+            )
+
+        self.setCellWidget(row, column, combobox)
+
+    def get_cell(self, row: int, col: int) -> str:
+        item = self.item(row, col)
+        cell = self.cellWidget(row, col)
+        if item is not None:
+            return item.text()
+        elif type(cell) == QCustomComboBox:
+            return cell.currentText()
+        return ""
+
+
+class QDraggableTableWidget(QCustomTableWidget):
     def __init__(
         self,
         rows: int,
@@ -231,35 +273,6 @@ class QDraggableTableWidget(QTableWidget):
         item = QTableWidgetItem(value)
         self.setItem(row, col, item)
 
-    def set_combobox(
-        self,
-        row: int,
-        column: int,
-        name: str,
-        names: List[str],
-        currentIndexChanged=None,
-        getOptions=None,
-    ):
-
-        if getOptions is None:
-            combobox = QCustomComboBox()
-            combobox.addItems(names)
-            combobox.setCurrentText(name)
-            completer = QCompleter(combobox.model())
-            combobox.setCompleter(completer)
-        else:
-            combobox = QCustomComboBox(getOptions=getOptions)
-            combobox.setCurrentText(name)
-
-        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-
-        if currentIndexChanged is not None:
-            combobox.currentIndexChanged.connect(
-                partial(currentIndexChanged, row, column, names)
-            )
-
-        self.setCellWidget(row, column, combobox)
-
     def set_uneditable_cell(self, row: int, column: int, name: str, names: List[str]):
         combobox = QCustomComboBox()
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
@@ -314,15 +327,6 @@ class QDraggableTableWidget(QTableWidget):
 
     def get_row_id(self, row) -> str:
         return None
-
-    def get_cell(self, row: int, col: int) -> str:
-        item = self.item(row, col)
-        cell = self.cellWidget(row, col)
-        if item is not None:
-            return item.text()
-        elif type(cell) == QCustomComboBox:
-            return cell.currentText()
-        return ""
 
     def get_current_data(self) -> List[List[str]]:
         data = []
