@@ -188,10 +188,14 @@ class QDraggableTableWidget(QTableWidget):
             r = self.currentRow() - self.copied_cells[0].row()
             c = self.currentColumn() - self.copied_cells[0].column()
             for cell in self.copied_cells:
+                new_row = cell.row() + r
+                new_col = cell.column() + c
+
+                if new_row >= self.rowCount() or new_col >= self.columnCount():
+                    continue
+
                 self.set_cell(
-                    self.get_cell(cell.row(), cell.column()),
-                    cell.row() + r,
-                    cell.column() + c,
+                    self.get_cell(cell.row(), cell.column()), new_row, new_col
                 )
 
     def show_header_context_menu(self, position):
