@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import List
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class TemplateEnum(str, Enum):
@@ -63,7 +63,7 @@ class CalculatedTemplateEnum(str, Enum):
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
 
 
-class TemplateResonatorModelEnum(BaseModel):
+class TemplateResonatorModelEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     RESONATOR_CHAIN: str = "[角色]共鳴鏈"
     RESONATOR_WEAPON_NAME: str = "[武器]名稱"
@@ -100,11 +100,14 @@ class TemplateRowModelEnum(str, Enum):
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
-    BUFF: str = "[額外]增益"
     BONUS_MAGNIFIER: str = "[額外]倍率"
     BONUS_AMPLIFIER: str = "[額外]加深"
+    BONUS_HP_P: str = "[額外]生命百分比"
+    BONUS_HP: str = "[額外]生命"
     BONUS_ATK_P: str = "[額外]攻擊百分比"
     BONUS_ATK: str = "[額外]攻擊"
+    BONUS_DEF_P: str = "[額外]防禦百分比"
+    BONUS_DEF: str = "[額外]防禦"
     BONUS_CRIT_RATE: str = "[額外]暴擊"
     BONUS_CRIT_DMG: str = "[額外]暴擊傷害"
     BONUS_ADDITION: str = "[額外]加成"
@@ -119,23 +122,52 @@ class TemplateRowModelEnum(str, Enum):
     FRAME: str = "幀數"
 
 
+class TemplateRowBuffEnum(str, Enum):
+    BONUS_MAGNIFIER: str = "[額外]倍率"
+    BONUS_AMPLIFIER: str = "[額外]加深"
+    BONUS_HP_P: str = "[額外]生命百分比"
+    BONUS_HP: str = "[額外]生命"
+    BONUS_ATK_P: str = "[額外]攻擊百分比"
+    BONUS_ATK: str = "[額外]攻擊"
+    BONUS_DEF_P: str = "[額外]防禦百分比"
+    BONUS_DEF: str = "[額外]防禦"
+    BONUS_CRIT_RATE: str = "[額外]暴擊"
+    BONUS_CRIT_DMG: str = "[額外]暴擊傷害"
+    BONUS_ADDITION: str = "[額外]加成"
+    BONUS_SKILL_DMG_ADDITION: str = "[額外]招式倍率"
+    BONUS_IGNORE_DEF: str = "[額外]忽視防禦"
+    BONUS_REDUCE_RES: str = "[額外]抗性降低"
+
+
+class TemplateRowBuffModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    name: str = ""
+    type: TemplateRowBuffEnum = None
+    value: str = ""
+
+
 class TemplateRowModel(BaseModel):
     resonator_name: str = ""
     real_dmg_no_crit: str = ""
     real_dmg_crit: str = ""
     action: str = ""
     skill_id: str = ""
-    bonus_type: str = ""
-    bonus_magnifier: str = ""
-    bonus_amplifier: str = ""
-    bonus_atk_p: str = ""
-    bonus_atk: str = ""
-    bonus_crit_rate: str = ""
-    bonus_crit_dmg: str = ""
-    bonus_addition: str = ""
-    bonus_skill_dmg_addition: str = ""
-    bonus_ignore_def: str = ""
-    bonus_reduce_res: str = ""
+    skill_bonus_type: str = ""
+    bonus_magnifier: List[TemplateRowBuffModel] = []
+    bonus_amplifier: List[TemplateRowBuffModel] = []
+    bonus_hp_p: List[TemplateRowBuffModel] = []
+    bonus_hp: List[TemplateRowBuffModel] = []
+    bonus_atk_p: List[TemplateRowBuffModel] = []
+    bonus_atk: List[TemplateRowBuffModel] = []
+    bonus_def_p: List[TemplateRowBuffModel] = []
+    bonus_def: List[TemplateRowBuffModel] = []
+    bonus_crit_rate: List[TemplateRowBuffModel] = []
+    bonus_crit_dmg: List[TemplateRowBuffModel] = []
+    bonus_addition: List[TemplateRowBuffModel] = []
+    bonus_skill_dmg_addition: List[TemplateRowBuffModel] = []
+    bonus_ignore_def: List[TemplateRowBuffModel] = []
+    bonus_reduce_res: List[TemplateRowBuffModel] = []
     resonating_spin_concerto_regen: str = ""
     accumulated_resonating_spin_concerto_regen: str = ""
     time_start: str = ""
