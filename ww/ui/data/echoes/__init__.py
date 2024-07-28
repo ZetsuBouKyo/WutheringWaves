@@ -5,6 +5,7 @@ from typing import List
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
 
+from ww.crud.echo import get_echo_names, get_echo_sonatas
 from ww.model.echoes import EchoesEnum, EchoListEnum, EchoSonataEnum
 from ww.model.element import ElementEnum
 from ww.tables.calculated_resonators import calc
@@ -14,20 +15,9 @@ from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget
 
-echo_list_table = EchoListTable()
-echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
-
-
-def get_echo_list() -> List[str]:
-    return echo_list
-
 
 def get_elements() -> List[str]:
     return [e.value for e in ElementEnum]
-
-
-def get_echo_sonatas() -> List[str]:
-    return [e.value for e in EchoSonataEnum]
 
 
 class QEchoesTable(QDraggableTableWidget):
@@ -52,7 +42,7 @@ class QEchoesTable(QDraggableTableWidget):
         self.setColumnWidth(col, 400)
 
     def _init_combobox(self):
-        self._echo_list = get_echo_list()
+        self._echo_names = get_echo_names()
         self._elements = get_elements()
         self._echo_sonatas = get_echo_sonatas()
 
@@ -88,7 +78,7 @@ class QEchoesTable(QDraggableTableWidget):
                 row,
                 col,
                 value,
-                self._echo_list,
+                self._echo_names,
             )
         elif self.column_names[col] == EchoesEnum.ELEMENT.value:
             self.set_combobox(

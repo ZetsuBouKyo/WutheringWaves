@@ -15,7 +15,6 @@ from PySide2.QtWidgets import (
 
 
 class QCustomComboBox(QComboBox):
-
     def __init__(
         self,
         *args,

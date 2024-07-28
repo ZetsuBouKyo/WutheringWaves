@@ -20,9 +20,16 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.crud.echo import get_echo_names, get_echo_sonatas
+from ww.crud.resonator import (
+    get_resonator_chains,
+    get_resonator_inherent_skills,
+    get_resonator_names,
+)
+from ww.crud.weapon import get_weapon_names, get_weapon_ranks
 from ww.model.echoes import EchoesEnum, EchoListEnum, EchoSonataEnum
 from ww.model.element import ElementEnum
-from ww.model.template import TemplateResonatorModelEnum
+from ww.model.template import TemplateResonatorModel, TemplateResonatorModelEnum
 from ww.tables.calculated_resonators import calc
 from ww.tables.echoes import ECHOES_PATH, EchoesTable, EchoListTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
@@ -49,31 +56,119 @@ def get_echo_sonatas() -> List[str]:
     return [e.value for e in EchoSonataEnum]
 
 
-class QTemplateTabResonatorTable(QDraggableTableWidget):
-    def __init__(self):
-        tsv_path = ""
-        column_names = [e.value for e in TemplateResonatorModelEnum]
+class QTemplateTabResonatorTable(QTableWidget):
+    def __init__(self, resonators: List[TemplateResonatorModel] = []):
+        self.column_names = [e.value for e in TemplateResonatorModelEnum]
+        self.resonators = resonators
+        if len(self.resonators) == 0:
+            self.data = [["" for _ in range(len(self.column_names))] for _ in range(3)]
 
-        # TODO:
-        # if tsv_path.exists():
-        #     self.df = get_df(tsv_path)
-        # else:
-        #     self.df = get_empty_df(column_names)
+        rows = 3
+        columns = len(self.column_names)
 
-        self.df = get_empty_df(column_names)
+        super().__init__(rows, columns)
+        self._init_cells()
+        self.setHorizontalHeaderLabels(self.column_names)
 
-        data = self.df.values.tolist()
-        rows = len(data)
-        columns = len(data[0])
+    def _init_cells(self):
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                cell = self.data[row][col]
+                self.set_cell(cell, row, col)
 
-        super().__init__(
-            rows,
-            columns,
-            data=data,
-            column_names=column_names,
-        )
+    def get_resonators(self) -> List[TemplateResonatorModel]:
+        return []
 
-    def _init_column_width(self): ...
+    def set_combobox(
+        self,
+        row: int,
+        column: int,
+        name: str,
+        names: List[str],
+        currentIndexChanged=None,
+        getOptions=None,
+    ):
+
+        if getOptions is None:
+            combobox = QCustomComboBox()
+            combobox.addItems(names)
+            combobox.setCurrentText(name)
+            completer = QCompleter(combobox.model())
+            combobox.setCompleter(completer)
+        else:
+            combobox = QCustomComboBox(getOptions=getOptions)
+            combobox.setCurrentText(name)
+
+        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
+
+        if currentIndexChanged is not None:
+            combobox.currentIndexChanged.connect(
+                partial(currentIndexChanged, row, column, names)
+            )
+
+        self.setCellWidget(row, column, combobox)
+
+    def set_cell(self, value: str, row: int, col: int):
+        if self.column_names[col] == TemplateResonatorModelEnum.RESONATOR_NAME.value:
+            self.set_combobox(row, col, value, [], getOptions=get_resonator_names)
+        elif self.column_names[col] == TemplateResonatorModelEnum.RESONATOR_CHAIN.value:
+            self.set_combobox(row, col, value, [], getOptions=get_resonator_chains)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_WEAPON_NAME.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_weapon_names)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_WEAPON_RANK.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_weapon_ranks)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_INHERENT_SKILL_1.value
+        ):
+            self.set_combobox(
+                row, col, value, [], getOptions=get_resonator_inherent_skills
+            )
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_INHERENT_SKILL_2.value
+        ):
+            self.set_combobox(
+                row, col, value, [], getOptions=get_resonator_inherent_skills
+            )
+        elif (
+            self.column_names[col] == TemplateResonatorModelEnum.RESONATOR_ECHO_1.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_names)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_1.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_sonatas)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_2.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_sonatas)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_3.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_sonatas)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_4.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_sonatas)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_5.value
+        ):
+            self.set_combobox(row, col, value, [], getOptions=get_echo_sonatas)
+        else:
+            item = QTableWidgetItem(value)
+            self.setItem(row, col, item)
 
 
 class QTemplateTab(QWidget):
@@ -87,11 +182,18 @@ class QTemplateTab(QWidget):
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_save_btn)
 
+        self.q_template_id_label = QLabel("模板ID")
+        self.q_template_ids = QCustomComboBox()
+        self.q_template_ids.setFixedWidth(700)
+        self.q_template_ids.setFixedHeight(40)
+
         self.q_resonator_label = QLabel("共鳴者")
         self.q_resonator_table = QTemplateTabResonatorTable()
         self.q_resonator_table.setFixedHeight(180)
 
         self.layout.addLayout(self.q_btns_layout)
+        self.layout.addWidget(self.q_template_id_label)
+        self.layout.addWidget(self.q_template_ids)
         self.layout.addWidget(self.q_resonator_label)
         self.layout.addWidget(self.q_resonator_table)
         self.layout.addStretch()

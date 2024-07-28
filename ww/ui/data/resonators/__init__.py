@@ -5,13 +5,17 @@ from typing import List
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
 
+from ww.crud.resonator import (
+    get_resonator_chains,
+    get_resonator_inherent_skills,
+    get_resonator_names,
+)
+from ww.crud.weapon import get_weapon_names, get_weapon_ranks
 from ww.model.echoes import EchoesEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.calculated_resonators import calc
 from ww.tables.echoes import EchoesTable
-from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.resonators import RESONATORS_PATH, ResonatorsTable
-from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget
 
@@ -22,22 +26,8 @@ def get_echoes() -> List[str]:
     return echoes.to_list()
 
 
-def get_resonator_names() -> List[str]:
-    home_path = Path(RESONATOR_HOME_PATH)
-    names = [p.name for p in home_path.glob("*")]
-    return names
-
-
-def get_resonator_chains() -> List[str]:
-    return [str(i) for i in range(1, 7)]
-
-
 def get_resonator_skill_levels() -> List[str]:
     return [str(i) for i in range(1, 11)]
-
-
-def get_inherent_skills() -> List[str]:
-    return ["0", "1"]
 
 
 def get_levels() -> List[str]:
@@ -51,17 +41,6 @@ def get_levels() -> List[str]:
     ]
     levels.sort()
     return levels
-
-
-def get_weapon_names() -> List[str]:
-    home_path = Path(WEAPON_HOME_PATH)
-    names = [p.name for p in home_path.glob("*")]
-    return names
-
-
-def get_weapon_ranks() -> List[str]:
-    ranks = [str(i) for i in range(1, 6)]
-    return ranks
 
 
 class QResonatorsTable(QDraggableTableWidget):
@@ -99,7 +78,7 @@ class QResonatorsTable(QDraggableTableWidget):
         self._resonator_levels = get_levels()
         self._resonator_chains = get_resonator_chains()
         self._resonator_skill_levels = get_resonator_skill_levels()
-        self._inherent_skills = get_inherent_skills()
+        self._resonator_inherent_skills = get_resonator_inherent_skills()
         self._weapon_names = get_weapon_names()
         self._weapon_levels = get_levels()
         self._weapon_ranks = get_weapon_ranks()
@@ -202,9 +181,9 @@ class QResonatorsTable(QDraggableTableWidget):
         elif self.column_names[col] == ResonatorsEnum.OUTRO_SKILL_LV.value:
             self.set_combobox(row, col, value, ["1"])
         elif self.column_names[col] == ResonatorsEnum.INHERENT_SKILL_1.value:
-            self.set_combobox(row, col, value, self._inherent_skills)
+            self.set_combobox(row, col, value, self._resonator_inherent_skills)
         elif self.column_names[col] == ResonatorsEnum.INHERENT_SKILL_2.value:
-            self.set_combobox(row, col, value, self._inherent_skills)
+            self.set_combobox(row, col, value, self._resonator_inherent_skills)
         elif self.column_names[col] == ResonatorsEnum.WEAPON_NAME.value:
             self.set_combobox(
                 row,
