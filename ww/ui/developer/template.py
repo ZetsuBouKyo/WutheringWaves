@@ -1,7 +1,7 @@
 import sys
 from functools import partial
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
@@ -59,6 +59,9 @@ def get_echo_sonatas() -> List[str]:
 class QTemplateTabResonatorTable(QTableWidget):
     def __init__(self, resonators: List[TemplateResonatorModel] = []):
         self.column_names = [e.value for e in TemplateResonatorModelEnum]
+        self.column_names_table: Dict[str, int] = {
+            self.column_names[i]: i for i in range(len(self.column_names))
+        }
         self.resonators = resonators
         if len(self.resonators) == 0:
             self.data = [["" for _ in range(len(self.column_names))] for _ in range(3)]
@@ -76,8 +79,110 @@ class QTemplateTabResonatorTable(QTableWidget):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
+    def get_cell(self, row: int, col: int) -> str:
+        item = self.item(row, col)
+        cell = self.cellWidget(row, col)
+        if item is not None:
+            return item.text()
+        elif type(cell) == QCustomComboBox:
+            return cell.currentText()
+        return ""
+
     def get_resonators(self) -> List[TemplateResonatorModel]:
-        return []
+        data = []
+        for row in range(self.rowCount()):
+            resonator = TemplateResonatorModel()
+            for col in range(self.columnCount()):
+                cell = self.get_cell(row, col)
+                if (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_NAME.value
+                    ]
+                ):
+                    resonator.resonator_name = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_CHAIN.value
+                    ]
+                ):
+                    resonator.resonator_chain = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_WEAPON_NAME.value
+                    ]
+                ):
+                    resonator.resonator_weapon_name = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_WEAPON_RANK.value
+                    ]
+                ):
+                    resonator.resonator_weapon_rank = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_INHERENT_SKILL_1.value
+                    ]
+                ):
+                    if cell != "":
+                        resonator.resonator_inherent_skill_1 = bool(int(cell))
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_INHERENT_SKILL_2.value
+                    ]
+                ):
+                    if cell != "":
+                        resonator.resonator_inherent_skill_2 = bool(int(cell))
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_1.value
+                    ]
+                ):
+                    resonator.resonator_echo_1 = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_1.value
+                    ]
+                ):
+                    resonator.resonator_echo_sonata_1 = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_2.value
+                    ]
+                ):
+                    resonator.resonator_echo_sonata_2 = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_3.value
+                    ]
+                ):
+                    resonator.resonator_echo_sonata_3 = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_4.value
+                    ]
+                ):
+                    resonator.resonator_echo_sonata_4 = cell
+                elif (
+                    col
+                    == self.column_names_table[
+                        TemplateResonatorModelEnum.RESONATOR_ECHO_SONATA_5.value
+                    ]
+                ):
+                    resonator.resonator_echo_sonata_5 = cell
+
+            data.append(resonator)
+        return data
 
     def set_combobox(
         self,
@@ -88,7 +193,6 @@ class QTemplateTabResonatorTable(QTableWidget):
         currentIndexChanged=None,
         getOptions=None,
     ):
-
         if getOptions is None:
             combobox = QCustomComboBox()
             combobox.addItems(names)
@@ -178,7 +282,7 @@ class QTemplateTab(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
         self.q_save_btn = QPushButton("存檔")
-        # self.q_save_btn.clicked.connect()
+        self.q_save_btn.clicked.connect(self.save)
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_save_btn)
 
@@ -198,3 +302,6 @@ class QTemplateTab(QWidget):
         self.layout.addWidget(self.q_resonator_table)
         self.layout.addStretch()
         self.setLayout(self.layout)
+
+    def save(self):
+        print(self.q_resonator_table.get_resonators())
