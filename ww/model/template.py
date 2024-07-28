@@ -63,6 +63,36 @@ class CalculatedTemplateEnum(str, Enum):
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
 
 
+class TemplateResonatorModelEnum(BaseModel):
+    RESONATOR_NAME: str = "[角色]名稱"
+    RESONATOR_CHAIN: str = "[角色]共鳴鏈"
+    RESONATOR_WEAPON_NAME: str = "[武器]名稱"
+    RESONATOR_WEAPON_RANK: str = "[武器]諧振"
+    RESONATOR_INHERENT_SKILL_1: bool = "[角色]固有1"
+    RESONATOR_INHERENT_SKILL_2: bool = "[角色]固有2"
+    RESONATOR_ECHO_1: str = "[聲骸]名稱"
+    RESONATOR_ECHO_SONATA_1: str = "[聲骸]合鳴1"
+    RESONATOR_ECHO_SONATA_2: str = "[聲骸]合鳴2"
+    RESONATOR_ECHO_SONATA_3: str = "[聲骸]合鳴3"
+    RESONATOR_ECHO_SONATA_4: str = "[聲骸]合鳴4"
+    RESONATOR_ECHO_SONATA_5: str = "[聲骸]合鳴5"
+
+
+class TemplateResonatorModel(BaseModel):
+    resonator_name: str = ""
+    resonator_chain: str = ""
+    resonator_weapon_name: str = ""
+    resonator_weapon_rank: str = ""
+    resonator_inherent_skill_1: bool = None
+    resonator_inherent_skill_2: bool = None
+    resonator_echo_1: str = ""
+    resonator_echo_sonata_1: str = ""
+    resonator_echo_sonata_2: str = ""
+    resonator_echo_sonata_3: str = ""
+    resonator_echo_sonata_4: str = ""
+    resonator_echo_sonata_5: str = ""
+
+
 class TemplateRowModelEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
@@ -90,49 +120,37 @@ class TemplateRowModelEnum(str, Enum):
 
 
 class TemplateRowModel(BaseModel):
-    resonator_name: str = "[角色]名稱"
-    real_dmg_no_crit: str = "[實戰]無暴擊"
-    real_dmg_crit: str = "[實戰]暴擊"
-    action: str = "[實戰]操作"
-    skill_id: str = "[實戰]技能代稱"
-    bonus_type: str = "[實戰]技能加成種類"
-    bonus_magnifier: str = "[額外]倍率"
-    bonus_amplifier: str = "[額外]加深"
-    bonus_atk_p: str = "[額外]攻擊百分比"
-    bonus_atk: str = "[額外]攻擊"
-    bonus_crit_rate: str = "[額外]暴擊"
-    bonus_crit_dmg: str = "[額外]暴擊傷害"
-    bonus_addition: str = "[額外]加成"
-    bonus_skill_dmg_addition: str = "[額外]招式倍率"
-    bonus_ignore_def: str = "[額外]忽視防禦"
-    bonus_reduce_res: str = "[額外]抗性降低"
-    resonating_spin_concerto_regen: str = "協奏能量"
-    accumulated_resonating_spin_concerto_regen: str = "累積協奏"
-    time_start: str = "[實戰]起手秒數"
-    time_end: str = "[實戰]結束秒數"
-    cumulative_time: str = "[實戰]累積結束秒數"
-    frame: str = "幀數"
+    resonator_name: str = ""
+    real_dmg_no_crit: str = ""
+    real_dmg_crit: str = ""
+    action: str = ""
+    skill_id: str = ""
+    bonus_type: str = ""
+    bonus_magnifier: str = ""
+    bonus_amplifier: str = ""
+    bonus_atk_p: str = ""
+    bonus_atk: str = ""
+    bonus_crit_rate: str = ""
+    bonus_crit_dmg: str = ""
+    bonus_addition: str = ""
+    bonus_skill_dmg_addition: str = ""
+    bonus_ignore_def: str = ""
+    bonus_reduce_res: str = ""
+    resonating_spin_concerto_regen: str = ""
+    accumulated_resonating_spin_concerto_regen: str = ""
+    time_start: str = ""
+    time_end: str = ""
+    cumulative_time: str = ""
+    frame: str = ""
 
 
 class TemplateModel(BaseModel):
-    resonator_1_name: str = ""
-    resonator_1_chain: str = ""
-    resonator_1_weapon_name: str = ""
-    resonator_1_weapon_rank: str = ""
-
-    resonator_2_name: str = ""
-    resonator_2_chain: str = ""
-    resonator_2_weapon_name: str = ""
-    resonator_2_weapon_rank: str = ""
-
-    resonator_3_name: str = ""
-    resonator_3_chain: str = ""
-    resonator_3_weapon_name: str = ""
-    resonator_3_weapon_rank: str = ""
+    id: str = ""
 
     title_prefix: str = ""
     title_suffix: str = ""
     monster_id: str = ""
     description: str = ""
 
+    resonators: List[TemplateResonatorModel] = []
     rows: List[TemplateRowModel] = []
