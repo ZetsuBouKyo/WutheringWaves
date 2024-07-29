@@ -1,5 +1,4 @@
-import sys
-from typing import List
+from typing import List, Optional
 
 from PySide2.QtCore import QEvent, Qt
 from PySide2.QtGui import QFontMetrics, QPalette, QStandardItem
@@ -54,6 +53,9 @@ class QCustomComboBox(QComboBox):
         super().showPopup()
 
 
+# Source: Stack Exchange, "QComboBox multiple selection - PyQT5",
+# https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
+# Accessed on: 2024-07-29
 class QMultipleCheckableComboBox(QComboBox):
     class Delegate(QStyledItemDelegate):
         def sizeHint(self, option, index):
@@ -141,9 +143,11 @@ class QMultipleCheckableComboBox(QComboBox):
         elidedText = metrics.elidedText(text, Qt.ElideRight, self.lineEdit().width())
         self.lineEdit().setText(elidedText)
 
-    def addItem(self, text, data=None):
+    def addItem(self, text: str, data: Optional[str] = None, tip: Optional[str] = None):
         item = QStandardItem()
         item.setText(text)
+        if tip is not None:
+            item.setToolTip(tip)
         if data is None:
             item.setData(text)
         else:
@@ -152,13 +156,22 @@ class QMultipleCheckableComboBox(QComboBox):
         item.setData(Qt.Unchecked, Qt.CheckStateRole)
         self.model().appendRow(item)
 
-    def addItems(self, texts: List[str], datalist=None):
+    def addItems(
+        self,
+        texts: List[str],
+        data_list: List[str] = [],
+        tips: List[str] = [],
+    ):
         for i, text in enumerate(texts):
             try:
-                data = datalist[i]
+                data = data_list[i]
             except (TypeError, IndexError):
                 data = None
-            self.addItem(text, data)
+            try:
+                tip = tips[i]
+            except (TypeError, IndexError):
+                tip = None
+            self.addItem(text, data=data, tip=tip)
 
     def currentData(self):
         # Return the list of selected items data

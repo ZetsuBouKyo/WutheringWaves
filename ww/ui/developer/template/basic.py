@@ -241,4 +241,29 @@ class QTemplateBasicTab(QWidget):
 
         self.setLayout(self.layout)
 
-    def get_template_id(self): ...
+    def get_template_id(self):
+        resonators = self.q_resonator_table.get_resonators()
+        strs = []
+        for resonator in resonators:
+            resonator_chain = resonator.resonator_chain
+            resonator_name = resonator.resonator_name
+            weapon_rank = resonator.resonator_weapon_rank
+            weapon_name = resonator.resonator_weapon_name
+            if not resonator_name:
+                continue
+
+            if resonator_chain == "":
+                resonator_chain = "0"
+            if weapon_rank == "":
+                weapon_rank = "1"
+
+            r = f"+{resonator_chain}{resonator_name}"
+            w = ""
+            if weapon_name:
+                w = f"+{weapon_rank}{weapon_name}"
+            strs.append(r + w)
+        id = ",".join(strs)
+        if not id:
+            return
+
+        self.q_template_ids.setCurrentText(id)
