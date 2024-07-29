@@ -2,6 +2,7 @@ import sys
 from copy import deepcopy
 from functools import partial
 from pathlib import Path
+from tkinter import Tk
 from typing import Any, Dict, List, Union
 
 import pandas as pd
@@ -222,23 +223,59 @@ class QDraggableTableWidget(QCustomTableWidget):
             and pos.y() >= rect.center().y()
         )
 
+    def _to_clipboard(self):
+        if not hasattr(self, "copied_cells"):
+            return
+
+        line = []
+        lines = []
+        row = self.copied_cells[0].row()
+        for cell in self.copied_cells:
+            r = cell.row()
+            c = cell.column()
+            line.append(self.get_cell(r, c))
+
+            if row != r:
+                lines.append("\t".join(line))
+                line = []
+                row = r
+        lines.append("\t".join(line))
+
+        text = "\n".join(lines)
+        tk = Tk()
+        tk.clipboard_clear()
+        tk.clipboard_append(text)
+
     def keyPressEvent(self, event):
         super().keyPressEvent(event)
         if event.key() == Qt.Key_C and (event.modifiers() & Qt.ControlModifier):
             self.copied_cells = sorted(self.selectedIndexes())
-        elif event.key() == Qt.Key_V and (event.modifiers() & Qt.ControlModifier):
-            r = self.currentRow() - self.copied_cells[0].row()
-            c = self.currentColumn() - self.copied_cells[0].column()
-            for cell in self.copied_cells:
-                new_row = cell.row() + r
-                new_col = cell.column() + c
+            self._to_clipboard()
+            return
+        if event.key() == Qt.Key_V and (event.modifiers() & Qt.ControlModifier):
+            if hasattr(self, "copied_cells"):
+                r = self.currentRow() - self.copied_cells[0].row()
+                c = self.currentColumn() - self.copied_cells[0].column()
+                for cell in self.copied_cells:
+                    new_row = cell.row() + r
+                    new_col = cell.column() + c
 
-                if new_row >= self.rowCount() or new_col >= self.columnCount():
-                    continue
-
-                self.set_cell(
-                    self.get_cell(cell.row(), cell.column()), new_row, new_col
-                )
+                    self.set_cell(
+                        self.get_cell(cell.row(), cell.column()), new_row, new_col
+                    )
+            else:
+                text = Tk().clipboard_get()
+                lines = text.split("\n")
+                for i in range(len(lines)):
+                    line = lines[i].split("\t")
+                    lines[i] = line
+                current_row = self.currentRow()
+                current_col = self.currentColumn()
+                for row in range(len(lines)):
+                    for col in range(len(lines[row])):
+                        self.set_cell(
+                            lines[row][col], row + current_row, col + current_col
+                        )
 
     def show_header_context_menu(self, position):
         header = self.verticalHeader()
@@ -270,6 +307,8 @@ class QDraggableTableWidget(QCustomTableWidget):
         self.setItem(row, col, item)
 
     def set_cell(self, value: str, row: int, col: int):
+        if row >= self.rowCount() or col >= self.columnCount():
+            return
         item = QTableWidgetItem(value)
         self.setItem(row, col, item)
 
