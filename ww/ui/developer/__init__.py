@@ -25,7 +25,6 @@ class QDevTabs(QTabWidget):
         super().__init__()
 
         # Tabs
-
         template_tab = QTemplateTabs()
         private_data_tab = QWidget()
 

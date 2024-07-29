@@ -179,8 +179,6 @@ class TemplateRowModel(BaseModel):
 class TemplateModel(BaseModel):
     id: str = ""
 
-    title_prefix: str = ""
-    title_suffix: str = ""
     monster_id: str = ""
     description: str = ""
 

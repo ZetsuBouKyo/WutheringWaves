@@ -1,8 +1,10 @@
 from typing import Dict, List
 
 from PySide2.QtWidgets import (
+    QHBoxLayout,
     QLabel,
     QPlainTextEdit,
+    QPushButton,
     QTableWidgetItem,
     QVBoxLayout,
     QWidget,
@@ -207,10 +209,20 @@ class QTemplateBasicTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
+        self.q_template_id_layout = QHBoxLayout()
         self.q_template_id_label = QLabel("模板ID")
         self.q_template_ids = QCustomComboBox()
         self.q_template_ids.setFixedWidth(700)
         self.q_template_ids.setFixedHeight(40)
+        self.q_btns_layout = QHBoxLayout()
+        self.q_get_template_id_btn = QPushButton("預設模板ID")
+        self.q_get_template_id_btn.clicked.connect(self.get_template_id)
+        self.q_get_template_id_btn.setFixedHeight(40)
+
+        self.q_template_id_layout.addWidget(self.q_template_id_label)
+        self.q_template_id_layout.addWidget(self.q_template_ids)
+        self.q_template_id_layout.addStretch()
+        self.q_template_id_layout.addWidget(self.q_get_template_id_btn)
 
         self.q_description_label = QLabel("描述")
         self.q_description = QPlainTextEdit()
@@ -220,8 +232,7 @@ class QTemplateBasicTab(QWidget):
         self.q_resonator_table = QTemplateTabResonatorTable()
         self.q_resonator_table.setFixedHeight(180)
 
-        self.layout.addWidget(self.q_template_id_label)
-        self.layout.addWidget(self.q_template_ids)
+        self.layout.addLayout(self.q_template_id_layout)
         self.layout.addWidget(self.q_description_label)
         self.layout.addWidget(self.q_description)
         self.layout.addWidget(self.q_resonator_label)
@@ -229,3 +240,5 @@ class QTemplateBasicTab(QWidget):
         self.layout.addStretch()
 
         self.setLayout(self.layout)
+
+    def get_template_id(self): ...
