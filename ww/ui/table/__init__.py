@@ -88,6 +88,16 @@ class QCustomTableWidget(QTableWidget):
     def __init__(self, rows: int, columns: int, parent: Any = None):
         super().__init__(rows, columns, parent=parent)
 
+    def set_cell(self, value: str, row: int, col: int):
+        if row >= self.rowCount() or col >= self.columnCount():
+            return
+        item = QTableWidgetItem(value)
+        self.setItem(row, col, item)
+
+    def set_row(self, row: int, data: List[Any]):
+        for col, column_data in enumerate(data):
+            self.set_cell(column_data, row, col)
+
     def set_combobox(
         self,
         row: int,
@@ -124,6 +134,12 @@ class QCustomTableWidget(QTableWidget):
         elif type(cell) == QCustomComboBox:
             return cell.currentText()
         return ""
+
+    def get_selected_rows(self) -> List[int]:
+        return sorted(set(item.row() for item in self.selectedIndexes()))
+
+    def get_row(self, row: int):
+        return [self.get_cell(row, col) for col in range(self.columnCount())]
 
 
 class QDraggableTableWidget(QCustomTableWidget):
@@ -181,10 +197,7 @@ class QDraggableTableWidget(QCustomTableWidget):
             drop_row = self.drop_on(event)
 
             rows = self.get_selected_rows()
-            rows_to_move = [
-                [self.get_cell(row, col) for col in range(self.columnCount())]
-                for row in rows
-            ]
+            rows_to_move = [self.get_row(row) for row in rows]
             for row in reversed(rows):
                 self.removeRow(row)
                 if row < drop_row:
@@ -193,8 +206,7 @@ class QDraggableTableWidget(QCustomTableWidget):
             for row, data in enumerate(rows_to_move):
                 row += drop_row
                 self.insertRow(row)
-                for col, column_data in enumerate(data):
-                    self.set_cell(column_data, row, col)
+                self.set_row(row, data)
 
             event.accept()
             for row in range(len(rows_to_move)):
@@ -306,12 +318,6 @@ class QDraggableTableWidget(QCustomTableWidget):
         item.setFlags(~Qt.ItemIsEditable)
         self.setItem(row, col, item)
 
-    def set_cell(self, value: str, row: int, col: int):
-        if row >= self.rowCount() or col >= self.columnCount():
-            return
-        item = QTableWidgetItem(value)
-        self.setItem(row, col, item)
-
     def set_uneditable_cell(self, row: int, column: int, name: str, names: List[str]):
         combobox = QCustomComboBox()
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
@@ -360,9 +366,6 @@ class QDraggableTableWidget(QCustomTableWidget):
 
     # def _update_data(self, item):
     #     print("update")
-
-    def get_selected_rows(self) -> List[int]:
-        return sorted(set(item.row() for item in self.selectedIndexes()))
 
     def get_row_id(self, row) -> str:
         return None
