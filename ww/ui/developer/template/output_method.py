@@ -1,7 +1,16 @@
 from typing import Dict, List
 
-from PySide2.QtWidgets import QTableWidgetItem, QVBoxLayout, QWidget
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import (
+    QDesktopWidget,
+    QDialog,
+    QPushButton,
+    QTableWidgetItem,
+    QVBoxLayout,
+    QWidget,
+)
 
+from ww.crud.resonator import get_resonator_names
 from ww.model.template import TemplateRowModel, TemplateRowModelEnum
 from ww.ui.combobox import QMultipleCheckableComboBox
 from ww.ui.table import QDraggableTableWidget
@@ -34,19 +43,30 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 self.set_cell(cell, row, col)
 
     def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == TemplateRowModelEnum.BONUS_MAGNIFIER.value:
-            combo = QMultipleCheckableComboBox()
-            combo.setToolTip("你好\n阿")
-            combo.addItems(
-                [
-                    "11111111111111111111111111111111",
-                    "2222222222222222 2222222222222222",
-                ]
-            )
-            self.setCellWidget(row, col, combo)
+        if self.column_names[col] == TemplateRowModelEnum.RESONATOR_NAME.value:
+            self.set_combobox(row, col, value, [], getOptions=get_resonator_names)
+        elif self.column_names[col] == TemplateRowModelEnum.BONUS_BUFF.value:
+            btn = QPushButton("+")
+            btn.clicked.connect(self.add_buff)
+            self.setCellWidget(row, col, btn)
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)
+
+    def add_buff(self):
+        width = 800
+        height = 600
+
+        center = QDesktopWidget().availableGeometry().center()
+
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves Template Buff")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+        dialog.exec_()
 
 
 class QTemplateOutputMethodTab(QWidget):

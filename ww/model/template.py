@@ -100,6 +100,7 @@ class TemplateRowModelEnum(str, Enum):
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
+    BONUS_BUFF: str = "[額外]增益"
     BONUS_MAGNIFIER: str = "[額外]倍率"
     BONUS_AMPLIFIER: str = "[額外]加深"
     BONUS_HP_P: str = "[額外]生命百分比"
@@ -123,20 +124,20 @@ class TemplateRowModelEnum(str, Enum):
 
 
 class TemplateRowBuffEnum(str, Enum):
-    BONUS_MAGNIFIER: str = "[額外]倍率"
-    BONUS_AMPLIFIER: str = "[額外]加深"
-    BONUS_HP_P: str = "[額外]生命百分比"
-    BONUS_HP: str = "[額外]生命"
-    BONUS_ATK_P: str = "[額外]攻擊百分比"
-    BONUS_ATK: str = "[額外]攻擊"
-    BONUS_DEF_P: str = "[額外]防禦百分比"
-    BONUS_DEF: str = "[額外]防禦"
-    BONUS_CRIT_RATE: str = "[額外]暴擊"
-    BONUS_CRIT_DMG: str = "[額外]暴擊傷害"
-    BONUS_ADDITION: str = "[額外]加成"
-    BONUS_SKILL_DMG_ADDITION: str = "[額外]招式倍率"
-    BONUS_IGNORE_DEF: str = "[額外]忽視防禦"
-    BONUS_REDUCE_RES: str = "[額外]抗性降低"
+    MAGNIFIER: str = "倍率"
+    AMPLIFIER: str = "加深"
+    HP_P: str = "生命百分比"
+    HP: str = "生命"
+    ATK_P: str = "攻擊百分比"
+    ATK: str = "攻擊"
+    DEF_P: str = "防禦百分比"
+    DEF: str = "防禦"
+    CRIT_RATE: str = "暴擊"
+    CRIT_DMG: str = "暴擊傷害"
+    ADDITION: str = "加成"
+    SKILL_DMG_ADDITION: str = "招式倍率"
+    IGNORE_DEF: str = "忽視防禦"
+    REDUCE_RES: str = "抗性降低"
 
 
 class TemplateRowBuffModel(BaseModel):

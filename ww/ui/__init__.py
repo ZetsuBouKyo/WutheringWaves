@@ -5,6 +5,7 @@ from pathlib import Path
 from PySide2 import QtGui
 from PySide2.QtWidgets import (
     QApplication,
+    QDesktopWidget,
     QLabel,
     QMainWindow,
     QPushButton,
@@ -51,3 +52,12 @@ class MainWindow(QMainWindow):
         tabs_widget.addTab(gacha_tab, "抽卡分析")
 
         self.setCentralWidget(tabs_widget)
+        self.center()
+
+    def center(self):
+        qr = self.frameGeometry()  # Get the frame geometry
+        cp = (
+            QDesktopWidget().availableGeometry().center()
+        )  # Get the center point of the screen
+        qr.moveCenter(cp)  # Move the center of the window to the center point
+        self.move(qr.topLeft())  # Move the top left of the window to the top left of qr
