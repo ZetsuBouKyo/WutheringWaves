@@ -1,9 +1,11 @@
+from functools import partial
 from typing import Dict, List
 
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QDesktopWidget,
     QDialog,
+    QHBoxLayout,
     QPushButton,
     QTableWidgetItem,
     QVBoxLayout,
@@ -11,27 +13,42 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.resonator import get_resonator_names
-from ww.model.template import TemplateRowModel, TemplateRowModelEnum
+from ww.model.template import (
+    TemplateRowBuffEnum,
+    TemplateRowBuffModel,
+    TemplateRowEnum,
+    TemplateRowModel,
+)
 from ww.ui.combobox import QMultipleCheckableComboBox
 from ww.ui.table import QDraggableTableWidget
 
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):
-    def __init__(self, ouput_methods: List[TemplateRowModel] = []):
-        column_names = [e.value for e in TemplateRowModelEnum]
 
-        self.ouput_methods = ouput_methods
-        if len(self.ouput_methods) == 0:
-            data = [["" for _ in range(len(column_names))]]
+    def __init__(self, ouput_methods: List[TemplateRowModel] = [TemplateRowModel()]):
+        column_names = [e.value for e in TemplateRowEnum]
 
-        rows = len(data)
+        rows = len(ouput_methods)
         columns = len(column_names)
 
-        super().__init__(rows, columns, data, column_names=column_names)
+        self.ouput_methods = ouput_methods
+
+        super().__init__(rows, columns, [], column_names=column_names)
         self.setHorizontalHeaderLabels(self.column_names)
 
+    def insertRow(self, row: int):
+        new_ouput_methods = (
+            self.ouput_methods[:row] + [TemplateRowModel()] + self.ouput_methods[row:]
+        )
+        self.ouput_methods = new_ouput_methods
+        super().insertRow(row)
+
+    def removeRow(self, row: int):
+        del self.ouput_methods[row]
+        super().removeRow(row)
+
     def _init_column_width(self):
-        for e in TemplateRowModelEnum:
+        for e in TemplateRowEnum:
             width = len(e.value) * 20 + 50
             col = self.column_names_table[e.value]
             self.setColumnWidth(col, width)
@@ -39,21 +56,52 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def _init_cells(self):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
-                cell = self.data[row][col]
-                self.set_cell(cell, row, col)
+                self.set_cell(None, row, col)
 
-    def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == TemplateRowModelEnum.RESONATOR_NAME.value:
-            self.set_combobox(row, col, value, [], getOptions=get_resonator_names)
-        elif self.column_names[col] == TemplateRowModelEnum.BONUS_BUFF.value:
+    def set_row(self, row: int, data: TemplateRowModel): ...
+
+    def get_row(self, row: int) -> TemplateRowModel:
+        return
+
+    def set_cell(self, _: str, row: int, col: int):
+        if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
+            self.set_combobox(
+                row,
+                col,
+                self.ouput_methods[row].resonator_name,
+                [],
+                getOptions=get_resonator_names,
+            )
+        elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
             btn = QPushButton("+")
-            btn.clicked.connect(self.add_buff)
+            btn.clicked.connect(partial(self.add_buff, row))
             self.setCellWidget(row, col, btn)
         else:
-            item = QTableWidgetItem(value)
+            item = QTableWidgetItem("")
             self.setItem(row, col, item)
 
-    def add_buff(self):
+    def get_row_buff(self, row: int) -> List[List[str]]:
+        data = []
+        output_method = self.ouput_methods[row]
+        field_names = output_method.model_fields
+        for field_name in field_names:
+            if not field_name.startswith("bonus"):
+                continue
+            buffs: List[TemplateRowBuffModel] = getattr(output_method, field_name)
+            for buff in buffs:
+                t = buff.type
+                if t is None:
+                    t = ""
+                data.append([buff.name, buff.type, buff.value, buff.stack])
+        if len(data) == 0:
+            return [["", "", "", ""]]
+        return data
+
+    def set_row_buff(self, row: int, table: QDraggableTableWidget):
+        data = table.get_data()
+        print(row, data)
+
+    def add_buff(self, row: int):
         width = 800
         height = 600
 
@@ -62,10 +110,34 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         x0 = center.x() - width // 2
         y0 = center.y() - height // 2
 
+        layout = QVBoxLayout()
+
         dialog = QDialog(self)
         dialog.setWindowTitle("Wuthering Waves Template Buff")
         dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         dialog.setGeometry(x0, y0, width, height)
+
+        data = self.get_row_buff(row)
+
+        column_names = [e.value for e in TemplateRowBuffEnum]
+        table = QDraggableTableWidget(
+            len(data),
+            len(column_names),
+            data=data,
+            column_names=column_names,
+        )
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QPushButton("OK")
+        ok_btn.clicked.connect(partial(self.set_row_buff, row, table))
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addWidget(table)
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
         dialog.exec_()
 
 

@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import List
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -63,7 +63,7 @@ class CalculatedTemplateEnum(str, Enum):
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
 
 
-class TemplateResonatorModelEnum(str, Enum):
+class TemplateResonatorEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     RESONATOR_CHAIN: str = "[角色]共鳴鏈"
     RESONATOR_WEAPON_NAME: str = "[武器]名稱"
@@ -93,7 +93,7 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_5: str = ""
 
 
-class TemplateRowModelEnum(str, Enum):
+class TemplateRowEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
@@ -123,7 +123,7 @@ class TemplateRowModelEnum(str, Enum):
     FRAME: str = "幀數"
 
 
-class TemplateRowBuffEnum(str, Enum):
+class TemplateRowBuffTypeEnum(str, Enum):
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"
     HP_P: str = "生命百分比"
@@ -140,12 +140,20 @@ class TemplateRowBuffEnum(str, Enum):
     REDUCE_RES: str = "抗性降低"
 
 
+class TemplateRowBuffEnum(str, Enum):
+    NAME: str = "名稱"
+    TYPE: TemplateRowBuffTypeEnum = "種類"
+    VALUE: str = "數值"
+    STACK: str = "層數"
+
+
 class TemplateRowBuffModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     name: str = ""
-    type: TemplateRowBuffEnum = None
+    type: Optional[TemplateRowBuffTypeEnum] = None
     value: str = ""
+    stack: str = ""
 
 
 class TemplateRowModel(BaseModel):

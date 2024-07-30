@@ -6,7 +6,7 @@ from tkinter import Tk
 from typing import Any, Dict, List, Union
 
 import pandas as pd
-from PySide2.QtCore import Qt
+from PySide2.QtCore import QModelIndex, Qt
 from PySide2.QtGui import QDropEvent
 from PySide2.QtWidgets import (
     QAbstractItemView,
@@ -140,6 +140,9 @@ class QCustomTableWidget(QTableWidget):
 
     def get_row(self, row: int):
         return [self.get_cell(row, col) for col in range(self.columnCount())]
+
+    def get_data(self):
+        return [self.get_row(row) for row in range(self.rowCount())]
 
 
 class QDraggableTableWidget(QCustomTableWidget):
