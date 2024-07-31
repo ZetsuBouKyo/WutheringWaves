@@ -3,7 +3,7 @@ from copy import deepcopy
 from functools import partial
 from pathlib import Path
 from tkinter import Tk
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from PySide2.QtCore import QModelIndex, Qt
@@ -126,14 +126,14 @@ class QCustomTableWidget(QTableWidget):
 
         self.setCellWidget(row, column, combobox)
 
-    def get_cell(self, row: int, col: int) -> str:
+    def get_cell(self, row: int, col: int) -> Optional[str]:
         item = self.item(row, col)
         cell = self.cellWidget(row, col)
         if item is not None:
             return item.text()
         elif type(cell) == QCustomComboBox:
             return cell.currentText()
-        return ""
+        return None
 
     def get_selected_rows(self) -> List[int]:
         return sorted(set(item.row() for item in self.selectedIndexes()))
@@ -213,8 +213,12 @@ class QDraggableTableWidget(QCustomTableWidget):
 
             event.accept()
             for row in range(len(rows_to_move)):
-                self.item(drop_row + row, 0).setSelected(True)
-                self.item(drop_row + row, 1).setSelected(True)
+                item_1 = self.item(drop_row + row, 0)
+                if item_1 is not None:
+                    item_1.setSelected(True)
+                item_2 = self.item(drop_row + row, 1)
+                if item_2 is not None:
+                    item_2.setSelected(True)
         super().dropEvent(event)
 
     def drop_on(self, event):
@@ -248,12 +252,13 @@ class QDraggableTableWidget(QCustomTableWidget):
         for cell in self.copied_cells:
             r = cell.row()
             c = cell.column()
-            line.append(self.get_cell(r, c))
-
             if row != r:
                 lines.append("\t".join(line))
                 line = []
                 row = r
+
+            line.append(self.get_cell(r, c))
+
         lines.append("\t".join(line))
 
         text = "\n".join(lines)
@@ -284,6 +289,7 @@ class QDraggableTableWidget(QCustomTableWidget):
                 for i in range(len(lines)):
                     line = lines[i].split("\t")
                     lines[i] = line
+                print(lines)
                 current_row = self.currentRow()
                 current_col = self.currentColumn()
                 for row in range(len(lines)):

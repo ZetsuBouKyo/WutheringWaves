@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Union
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 
 class TemplateEnum(str, Enum):
@@ -142,7 +142,7 @@ class TemplateRowBuffTypeEnum(str, Enum):
 
 class TemplateRowBuffEnum(str, Enum):
     NAME: str = "名稱"
-    TYPE: TemplateRowBuffTypeEnum = "種類"
+    TYPE: str = "種類"
     VALUE: str = "數值"
     STACK: str = "層數"
 
@@ -151,9 +151,16 @@ class TemplateRowBuffModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     name: str = ""
-    type: Optional[TemplateRowBuffTypeEnum] = None
+    type: Union[TemplateRowBuffTypeEnum, str] = ""
     value: str = ""
     stack: str = ""
+
+    @field_validator("type")
+    @classmethod
+    def name_must_contain_space(cls, v: Optional[str]) -> str:
+        if v not in TemplateRowBuffTypeEnum._value2member_map_:
+            return ""
+        return v
 
 
 class TemplateRowModel(BaseModel):
@@ -163,6 +170,7 @@ class TemplateRowModel(BaseModel):
     action: str = ""
     skill_id: str = ""
     skill_bonus_type: str = ""
+    buffs: List[TemplateRowBuffModel] = []
     bonus_magnifier: List[TemplateRowBuffModel] = []
     bonus_amplifier: List[TemplateRowBuffModel] = []
     bonus_hp_p: List[TemplateRowBuffModel] = []
