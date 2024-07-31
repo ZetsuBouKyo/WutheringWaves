@@ -303,21 +303,24 @@ class QDraggableTableWidget(QCustomTableWidget):
         row = header.logicalIndexAt(position)
 
         menu = QMenu()
-        add_above_action = QAction("Add rows above", self)
-        add_below_action = QAction("Add rows below", self)
-        delete_selected_rows_action = QAction("Delete selected rows", self)
+        add_above_action = QAction("向上插入列", self)
+        add_below_action = QAction("向下插入列", self)
+
         menu.addAction(add_above_action)
         menu.addAction(add_below_action)
-        menu.addAction(delete_selected_rows_action)
+
+        if len(self.get_selected_rows()) > 0:
+            delete_selected_rows_action = QAction("刪除所選擇的列", self)
+            menu.addAction(delete_selected_rows_action)
+            delete_selected_rows_action.triggered.connect(
+                self._row_index_ctx_delete_selected_rows
+            )
 
         add_above_action.triggered.connect(
             lambda: self._row_index_ctx_add_rows_above(row)
         )
         add_below_action.triggered.connect(
             lambda: self._row_index_ctx_add_rows_below(row)
-        )
-        delete_selected_rows_action.triggered.connect(
-            self._row_index_ctx_delete_selected_rows
         )
 
         menu.exec_(header.viewport().mapToGlobal(position))
@@ -343,9 +346,8 @@ class QDraggableTableWidget(QCustomTableWidget):
             self.set_cell("", row, col)
 
     def _row_index_ctx_add_rows(self, row):
-        num_rows, ok = QInputDialog.getInt(
-            self, "Number of Rows", "Enter number of rows to add:", 1, 1
-        )
+        dialog = QInputDialog()
+        num_rows, ok = dialog.getInt(self, "插入列", "插入多少列:", 1, 1)
         if ok:
             for _ in range(num_rows):
                 self.insertRow(row)
@@ -359,14 +361,16 @@ class QDraggableTableWidget(QCustomTableWidget):
 
     def _row_index_ctx_delete_selected_rows(self):
         selected_rows = self.get_selected_rows()
+        selected_rows_str = ", ".join([str(i + 1) for i in selected_rows])
+
         if not selected_rows:
-            QMessageBox.warning(self, "No Selection", "No rows selected to remove.")
+            QMessageBox.warning(self, "警告", "沒有可刪除的列。")
             return
 
         confirmation = QMessageBox.question(
             self,
-            "Remove Rows",
-            f"Are you sure you want to remove {len(selected_rows)} row(s)?",
+            "刪除列",
+            f"你確定要刪除第 {selected_rows_str} 列？",
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.Yes:
