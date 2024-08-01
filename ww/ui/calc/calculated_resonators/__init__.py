@@ -60,11 +60,11 @@ class QCalculatedResonatorsTable(QUneditableTable):
     def _init_column_width(self):
         for e in CalculatedResonatorsEnum:
             if e.value == CalculatedResonatorsEnum.ID.value:
-                col = self.column_names_table[e.value]
+                col = self.get_column_id(e.value)
                 self.setColumnWidth(col, 500)
             else:
                 width = len(e.value) * 20 + 50
-                col = self.column_names_table[e.value]
+                col = self.get_column_id(e.value)
                 self.setColumnWidth(col, width)
 
     def reload(self):

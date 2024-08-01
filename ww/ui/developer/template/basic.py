@@ -45,96 +45,63 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
+    def get_column_id(self, col_name: str) -> int:
+        return self.column_names_table[col_name]
+
     def get_resonators(self) -> List[TemplateResonatorModel]:
         data = []
         for row in range(self.rowCount()):
             resonator = TemplateResonatorModel()
             for col in range(self.columnCount()):
                 cell = self.get_cell(row, col)
-                if (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_NAME.value
-                    ]
+                if col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_NAME.value
                 ):
                     resonator.resonator_name = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_CHAIN.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_CHAIN.value
                 ):
                     resonator.resonator_chain = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_WEAPON_NAME.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_WEAPON_NAME.value
                 ):
                     resonator.resonator_weapon_name = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_WEAPON_RANK.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_WEAPON_RANK.value
                 ):
                     resonator.resonator_weapon_rank = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_INHERENT_SKILL_1.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_INHERENT_SKILL_1.value
                 ):
                     if cell != "":
                         resonator.resonator_inherent_skill_1 = bool(int(cell))
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_INHERENT_SKILL_2.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_INHERENT_SKILL_2.value
                 ):
                     if cell != "":
                         resonator.resonator_inherent_skill_2 = bool(int(cell))
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_1.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_1.value
                 ):
                     resonator.resonator_echo_1 = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_SONATA_1.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_SONATA_1.value
                 ):
                     resonator.resonator_echo_sonata_1 = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_SONATA_2.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_SONATA_2.value
                 ):
                     resonator.resonator_echo_sonata_2 = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_SONATA_3.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_SONATA_3.value
                 ):
                     resonator.resonator_echo_sonata_3 = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_SONATA_4.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_SONATA_4.value
                 ):
                     resonator.resonator_echo_sonata_4 = cell
-                elif (
-                    col
-                    == self.column_names_table[
-                        TemplateResonatorEnum.RESONATOR_ECHO_SONATA_5.value
-                    ]
+                elif col == self.get_column_id(
+                    TemplateResonatorEnum.RESONATOR_ECHO_SONATA_5.value
                 ):
                     resonator.resonator_echo_sonata_5 = cell
 

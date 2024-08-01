@@ -78,7 +78,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def _init_column_width(self):
         for e in TemplateRowEnum:
             width = len(e.value) * 20 + 50
-            col = self.column_names_table[e.value]
+            col = self.get_column_id(e.value)
             self.setColumnWidth(col, width)
 
     def _init_cells(self):

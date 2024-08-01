@@ -62,12 +62,12 @@ class QResonatorsTable(QDraggableTableWidget):
 
     def _init_column_width(self):
         cols = [
-            self.column_names_table[ResonatorsEnum.ID.value],
-            self.column_names_table[ResonatorsEnum.ECHO_1.value],
-            self.column_names_table[ResonatorsEnum.ECHO_2.value],
-            self.column_names_table[ResonatorsEnum.ECHO_3.value],
-            self.column_names_table[ResonatorsEnum.ECHO_4.value],
-            self.column_names_table[ResonatorsEnum.ECHO_5.value],
+            self.get_column_id(ResonatorsEnum.ID.value),
+            self.get_column_id(ResonatorsEnum.ECHO_1.value),
+            self.get_column_id(ResonatorsEnum.ECHO_2.value),
+            self.get_column_id(ResonatorsEnum.ECHO_3.value),
+            self.get_column_id(ResonatorsEnum.ECHO_4.value),
+            self.get_column_id(ResonatorsEnum.ECHO_5.value),
         ]
         for col in cols:
             self.setColumnWidth(col, 400)
@@ -86,36 +86,36 @@ class QResonatorsTable(QDraggableTableWidget):
     def get_row_id(self, row: List[str]) -> str:
         _id = []
 
-        _prefix_i = self.column_names_table[ResonatorsEnum.PREFIX.value]
+        _prefix_i = self.get_column_id(ResonatorsEnum.PREFIX.value)
         _prefix = row[_prefix_i]
         if _prefix:
             _id.append(_prefix)
 
-        _chain_i = self.column_names_table[ResonatorsEnum.RESONANCE_CHAIN.value]
+        _chain_i = self.get_column_id(ResonatorsEnum.RESONANCE_CHAIN.value)
         _chain = row[_chain_i]
         if _chain:
             _id.append(f"{_chain}鏈")
 
-        _level_i = self.column_names_table[ResonatorsEnum.LEVEL.value]
+        _level_i = self.get_column_id(ResonatorsEnum.LEVEL.value)
         _level = row[_level_i]
-        _name_i = self.column_names_table[ResonatorsEnum.NAME.value]
+        _name_i = self.get_column_id(ResonatorsEnum.NAME.value)
         _name = row[_name_i]
         if _name:
             _id.append(_level + _name)
 
-        _weapon_rank_i = self.column_names_table[ResonatorsEnum.WEAPON_RANK.value]
+        _weapon_rank_i = self.get_column_id(ResonatorsEnum.WEAPON_RANK.value)
         _weapon_rank = row[_weapon_rank_i]
         if _weapon_rank:
             _id.append(f"{_weapon_rank}振")
 
-        _weapon_level_i = self.column_names_table[ResonatorsEnum.WEAPON_LEVEL.value]
+        _weapon_level_i = self.get_column_id(ResonatorsEnum.WEAPON_LEVEL.value)
         _weapon_level = row[_weapon_level_i]
-        _weapon_name_i = self.column_names_table[ResonatorsEnum.WEAPON_NAME.value]
+        _weapon_name_i = self.get_column_id(ResonatorsEnum.WEAPON_NAME.value)
         _weapon_name = row[_weapon_name_i]
         if _weapon_name:
             _id.append(_weapon_level + _weapon_name)
 
-        _suffix_i = self.column_names_table[ResonatorsEnum.SUFFIX.value]
+        _suffix_i = self.get_column_id(ResonatorsEnum.SUFFIX.value)
         _suffix = row[_suffix_i]
         if _suffix:
             _id.append(_suffix)
@@ -124,11 +124,11 @@ class QResonatorsTable(QDraggableTableWidget):
         return id
 
     def _update_row_id(self, row: int, col: int, value: str):
-        # prefix_col = self.column_names_table[ResonatorsEnum.PREFIX.value]
-        # suffix_col = self.column_names_table[ResonatorsEnum.SUFFIX.value]
+        # prefix_col = self.get_column_id(ResonatorsEnum.PREFIX.value)
+        # suffix_col = self.get_column_id(ResonatorsEnum.SUFFIX.value)
         # if prefix_col == col or suffix_col == col:
         #     return
-        # id_col = self.column_names_table[ResonatorsEnum.ID.value]
+        # id_col = self.get_column_id(ResonatorsEnum.ID.value)
         # self.data[row][col] = value
         # id = self.get_row_id(row)
         # self.set_id_cell(id, row, id_col)

@@ -38,7 +38,7 @@ class QEchoesTable(QDraggableTableWidget):
         )
 
     def _init_column_width(self):
-        col = self.column_names_table[EchoesEnum.ID.value]
+        col = self.get_column_id(EchoesEnum.ID.value)
         self.setColumnWidth(col, 400)
 
     def _init_combobox(self):
@@ -49,22 +49,22 @@ class QEchoesTable(QDraggableTableWidget):
     def get_row_id(self, row: List[str]) -> str:
         _id = []
 
-        _prefix_i = self.column_names_table[EchoesEnum.PREFIX.value]
+        _prefix_i = self.get_column_id(EchoesEnum.PREFIX.value)
         _prefix = row[_prefix_i]
         if _prefix:
             _id.append(_prefix)
 
-        _element_i = self.column_names_table[EchoesEnum.ELEMENT.value]
+        _element_i = self.get_column_id(EchoesEnum.ELEMENT.value)
         _element = row[_element_i]
         if _element:
             _id.append(_element)
 
-        _name_i = self.column_names_table[EchoesEnum.NAME.value]
+        _name_i = self.get_column_id(EchoesEnum.NAME.value)
         _name = row[_name_i]
         if _name:
             _id.append(_name)
 
-        _suffix_i = self.column_names_table[EchoesEnum.SUFFIX.value]
+        _suffix_i = self.get_column_id(EchoesEnum.SUFFIX.value)
         _suffix = row[_suffix_i]
         if _suffix:
             _id.append(_suffix)

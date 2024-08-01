@@ -83,6 +83,9 @@ class QUneditableTable(QTableWidget):
 
         self._init_cells()
 
+    def get_column_id(self, col_name: str) -> int:
+        return self.column_names_table[col_name]
+
 
 class QCustomTableWidget(QTableWidget):
     def __init__(self, rows: int, columns: int, parent: Any = None):
@@ -398,6 +401,9 @@ class QDraggableTableWidget(QCustomTableWidget):
             data.append(r)
         return data
 
+    def get_column_id(self, col_name: str) -> int:
+        return self.column_names_table[col_name]
+
 
 class QDraggableDataTableWidget(QWidget):
     def __init__(
@@ -468,7 +474,7 @@ class QDraggableDataTableWidget(QWidget):
             for col in range(self._table.columnCount()):
                 _new_data_row[col] = self._table.get_cell(row, col)
 
-            id_col = self._table.column_names_table[self._table.column_id_name]
+            id_col = self._table.get_column_id(self._table.column_id_name)
             id = self._table.get_row_id(_new_data_row)
             if id in _ids:
                 _dup_ids.add(str(_ids[id] + 1))

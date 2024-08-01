@@ -49,7 +49,7 @@ class QDamageCompareTable(QDraggableTableWidget):
 
     def _init_column_width(self):
         for e in QDamageCompareTableEnum:
-            col = self.column_names_table[e.value]
+            col = self.get_column_id(e.value)
             self.setColumnWidth(col, 600)
 
     def _init_combobox(self):
