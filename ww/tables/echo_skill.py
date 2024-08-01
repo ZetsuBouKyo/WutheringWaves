@@ -5,7 +5,7 @@ from ww.model.echo_skill import EchoSkillEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-ECHO_SKILL_PATH = "./cache/v1/自訂/聲骸技能.tsv"
+ECHO_SKILL_PATH = "./data/v1/echo_skills.tsv"
 
 
 class EchoSkillTable:

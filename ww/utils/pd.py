@@ -1,4 +1,5 @@
 import csv
+import os
 from pathlib import Path
 from typing import List, Optional, Union
 
@@ -31,3 +32,19 @@ def save_tsv(
         tsv.writerow(columns)
         for row in data:
             tsv.writerow(row)
+
+
+def init_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFrame:
+    df = get_empty_df(column_names)
+    os.makedirs(fpath.parent, exist_ok=True)
+    data = df.values.tolist()
+    save_tsv(fpath, data, column_names)
+    return df
+
+
+def safe_get_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFrame:
+    df = get_df(fpath)
+    if df is not None:
+        return df
+    df = init_df(fpath, column_names)
+    return df
