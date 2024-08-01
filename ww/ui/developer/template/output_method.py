@@ -12,8 +12,9 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.crud.resonator import get_resonator_names
+from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
 from ww.model.template import (
+    TemplateRowActionEnum,
     TemplateRowBuffEnum,
     TemplateRowBuffModel,
     TemplateRowBuffTypeEnum,
@@ -42,7 +43,6 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         )
 
     def set_cell(self, value: str, row: int, col: int):
-        print(row, col)
         if self.column_names[col] == TemplateRowBuffEnum.TYPE.value:
             self.set_combobox(
                 row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
@@ -95,10 +95,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             for col in range(self.columnCount()):
                 self.set_cell(None, row, col)
 
-    def get_cell(self, row: int, col: int) -> Optional[str]:
+    def get_cell(self, row: int, col: int) -> str:
         cell = super().get_cell(row, col)
-        if cell is None:
-            return
+        if cell is not None:
+            return cell
+        return ""
 
     def set_cell(self, _: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
@@ -108,6 +109,27 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 self.ouput_methods[row].resonator_name,
                 [],
                 getOptions=get_resonator_names,
+            )
+        elif self.column_names[col] == TemplateRowEnum.REAL_DMG_NO_CRIT.value:
+            self.set_item(self.ouput_methods[row].real_dmg_no_crit, row, col)
+        elif self.column_names[col] == TemplateRowEnum.REAL_DMG_CRIT.value:
+            self.set_item(self.ouput_methods[row].real_dmg_crit, row, col)
+        elif self.column_names[col] == TemplateRowEnum.SKILL_ID.value:
+            self.set_combobox(
+                row,
+                col,
+                self.ouput_methods[row].skill_id,
+                [],
+                getOptions=partial(
+                    get_resonator_skill_ids, self.ouput_methods[row].resonator_name
+                ),
+            )
+        elif self.column_names[col] == TemplateRowEnum.ACTION.value:
+            self.set_combobox(
+                row,
+                col,
+                self.ouput_methods[row].action,
+                [e.value for e in TemplateRowActionEnum],
             )
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
             btn = QDataPushButton("+")

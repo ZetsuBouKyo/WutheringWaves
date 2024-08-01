@@ -98,6 +98,11 @@ class QCustomTableWidget(QTableWidget):
         for col, column_data in enumerate(data):
             self.set_cell(column_data, row, col)
 
+    def set_item(self, value: str, row: int, col: int):
+        item = QTableWidgetItem(value)
+        item.setFlags(~Qt.ItemIsEditable)
+        self.setItem(row, col, item)
+
     def set_combobox(
         self,
         row: int,
@@ -279,6 +284,9 @@ class QDraggableTableWidget(QCustomTableWidget):
                 for cell in self.copied_cells:
                     new_row = cell.row() + r
                     new_col = cell.column() + c
+
+                    if new_row >= self.rowCount() or new_col >= self.columnCount():
+                        continue
 
                     self.set_cell(
                         self.get_cell(cell.row(), cell.column()), new_row, new_col

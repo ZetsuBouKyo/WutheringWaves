@@ -123,6 +123,22 @@ class TemplateRowEnum(str, Enum):
     FRAME: str = "幀數"
 
 
+class TemplateRowActionEnum(str, Enum):
+    ATTACK: str = "普攻"
+    ATTACK_N: str = "普攻xN"
+    HEAVY_ATTACK: str = "重擊"
+    RESONANCE_SKILL: str = "共鳴技能"
+    RESONANCE_LIBERATION: str = "共鳴解放"
+    ECHO: str = "聲骸"
+    OUTRO: str = "延奏"
+    INTRO: str = "變奏"
+    SWITCH: str = "入場"
+    SWITCH_AIR: str = "空中入場"
+    GRAPPLE: str = "鉤索"
+    COORDINATED_ATTACK: str = "協同攻擊"
+    NONE: str = "無"
+
+
 class TemplateRowBuffTypeEnum(str, Enum):
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"
