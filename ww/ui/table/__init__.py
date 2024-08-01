@@ -111,7 +111,6 @@ class QCustomTableWidget(QTableWidget):
 
     def set_item(self, value: str, row: int, col: int):
         item = QTableWidgetItem(value)
-        item.setFlags(~Qt.ItemIsEditable)
         self.setItem(row, col, item)
 
     def set_combobox(

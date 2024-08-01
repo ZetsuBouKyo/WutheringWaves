@@ -23,6 +23,7 @@ from ww.model.template import (
     TemplateRowModel,
 )
 from ww.ui.button import QDataPushButton
+from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.table import QDraggableTableWidget
 
 
@@ -54,7 +55,9 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
 
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):
-    def __init__(self, ouput_methods: List[TemplateRowModel] = [TemplateRowModel()]):
+    def __init__(self, basic: QTemplateBasicTab):
+        ouput_methods = [TemplateRowModel()]
+
         column_names = [e.value for e in TemplateRowEnum]
 
         rows = len(ouput_methods)
@@ -154,7 +157,10 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             btn.clicked.connect(partial(self.add_buff, row, btn))
             self.setCellWidget(row, col, btn)
         elif (
-            self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
+            self.column_names[col] == TemplateRowEnum.DAMAGE.value
+            or self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
+            or self.column_names[col] == TemplateRowEnum.DAMAGE_CRIT.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_AMPLIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_HP_P.value
             or self.column_names[col] == TemplateRowEnum.BONUS_HP.value
@@ -245,11 +251,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
 
 class QTemplateOutputMethodTab(QWidget):
-    def __init__(self):
+    def __init__(self, basic: QTemplateBasicTab):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        self.q_output_method_table = QTemplateTabOutputMethodTable()
+        self.q_output_method_table = QTemplateTabOutputMethodTable(basic)
 
         self.layout.addWidget(self.q_output_method_table)
 

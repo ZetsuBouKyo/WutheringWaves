@@ -24,7 +24,9 @@ class QTemplateTabs(QWidget):
         # Basic
         self.q_template_basic_tab = QTemplateBasicTab()
         # Output method
-        self.q_template_output_method_tab = QTemplateOutputMethodTab()
+        self.q_template_output_method_tab = QTemplateOutputMethodTab(
+            self.q_template_basic_tab
+        )
 
         self.q_tabs.addTab(self.q_template_basic_tab, "基本資料")
         self.q_tabs.addTab(self.q_template_output_method_tab, "輸出手法")

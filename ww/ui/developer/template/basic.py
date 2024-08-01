@@ -204,6 +204,9 @@ class QTemplateBasicTab(QWidget):
 
         self.setLayout(self.layout)
 
+    def get_test_resonator_ids(self) -> List[str]:
+        return []
+
     def get_template_id(self):
         resonators = self.q_resonator_table.get_resonators()
         strs = []
