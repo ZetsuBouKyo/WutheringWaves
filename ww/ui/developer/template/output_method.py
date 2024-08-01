@@ -86,6 +86,14 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             for col in range(self.columnCount()):
                 self.set_cell(None, row, col)
 
+    def _get_resonator_skill_ids(self, row: int) -> str:
+        resonator_name = self._get_resonator_name(row)
+        return get_resonator_skill_ids(resonator_name)
+
+    def _get_resonator_name(self, row: int) -> str:
+        col = self.get_column_id(TemplateRowEnum.RESONATOR_NAME.value)
+        return self.get_cell(row, col)
+
     def get_row(self, row: int) -> TemplateRowModel:
         return self.ouput_methods[row]
 
@@ -97,9 +105,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def get_cell(self, row: int, col: int) -> str:
         cell = super().get_cell(row, col)
-        if cell is not None:
-            return cell
-        return ""
+        if cell is None:
+            cell = ""
+
+        if col == self.get_column_id(TemplateRowEnum.RESONATOR_NAME.value):
+            self.ouput_methods[row].resonator_name = cell
+        return cell
 
     def set_cell(self, _: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
@@ -120,9 +131,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 col,
                 self.ouput_methods[row].skill_id,
                 [],
-                getOptions=partial(
-                    get_resonator_skill_ids, self.ouput_methods[row].resonator_name
-                ),
+                getOptions=partial(self._get_resonator_skill_ids, row),
             )
         elif self.column_names[col] == TemplateRowEnum.ACTION.value:
             self.set_combobox(
