@@ -13,6 +13,7 @@ from PySide2.QtWidgets import (
 from ww.crud.echo import get_echo_names, get_echo_sonatas
 from ww.crud.resonator import (
     get_resonator_chains,
+    get_resonator_ids,
     get_resonator_inherent_skills,
     get_resonator_names,
 )
@@ -193,7 +194,7 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_1_layout = QHBoxLayout()
         self.q_test_resonator_1_label = QLabel("測試共鳴者1")
         self.q_test_resonator_1_label.setFixedWidth(150)
-        self.q_test_resonator_1_combobox = QCustomComboBox()
+        self.q_test_resonator_1_combobox = QCustomComboBox(getOptions=get_resonator_ids)
         self.q_test_resonator_1_combobox.setFixedWidth(700)
         self.q_test_resonator_1_combobox.setFixedHeight(40)
 
@@ -205,7 +206,7 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_2_layout = QHBoxLayout()
         self.q_test_resonator_2_label = QLabel("測試共鳴者2")
         self.q_test_resonator_2_label.setFixedWidth(150)
-        self.q_test_resonator_2_combobox = QCustomComboBox()
+        self.q_test_resonator_2_combobox = QCustomComboBox(getOptions=get_resonator_ids)
         self.q_test_resonator_2_combobox.setFixedWidth(700)
         self.q_test_resonator_2_combobox.setFixedHeight(40)
 
@@ -217,7 +218,7 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_3_layout = QHBoxLayout()
         self.q_test_resonator_3_label = QLabel("測試共鳴者3")
         self.q_test_resonator_3_label.setFixedWidth(150)
-        self.q_test_resonator_3_combobox = QCustomComboBox()
+        self.q_test_resonator_3_combobox = QCustomComboBox(getOptions=get_resonator_ids)
         self.q_test_resonator_3_combobox.setFixedWidth(700)
         self.q_test_resonator_3_combobox.setFixedHeight(40)
 

@@ -21,6 +21,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.calc.damage import get_row_damage
+from ww.crud.resonator import get_resonator_ids
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
@@ -42,12 +43,6 @@ from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
 from ww.ui.combobox import QCustomComboBox
 from ww.utils.number import get_number, get_string
-
-
-def get_resonator_names() -> List[str]:
-    resonators_table = ResonatorsTable()
-    names = [name for name in resonators_table.df[ResonatorsEnum.ID].to_list() if name]
-    return names
 
 
 class QDamageSimple(QWidget):
@@ -136,7 +131,7 @@ class QDamageSimple(QWidget):
 
     def _init_combobox_resonator_ids(self):
         return self._init_combobox(
-            "共鳴者", get_resonator_names, self._combobox_event_update_resonator
+            "共鳴者", get_resonator_ids, self._combobox_event_update_resonator
         )
 
     def _get_resonator_skills(self):

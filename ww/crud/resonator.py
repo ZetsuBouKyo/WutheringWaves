@@ -2,13 +2,21 @@ from pathlib import Path
 from typing import List, Optional
 
 from ww.model.resonator_skill import ResonatorSkillEnum
+from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.resonator_skill import ResonatorSkillTable
+from ww.tables.resonators import ResonatorsTable
 
 
 def get_resonator_names() -> List[str]:
     home_path = Path(RESONATOR_HOME_PATH)
     names = [p.name for p in home_path.glob("*")]
+    return names
+
+
+def get_resonator_ids() -> List[str]:
+    resonators_table = ResonatorsTable()
+    names = [name for name in resonators_table.df[ResonatorsEnum.ID].to_list() if name]
     return names
 
 

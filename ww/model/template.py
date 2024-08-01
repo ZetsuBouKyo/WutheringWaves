@@ -201,6 +201,10 @@ class TemplateRowModel(BaseModel):
 class TemplateModel(BaseModel):
     id: str = ""
 
+    test_resonator_id_1: str = ""
+    test_resonator_id_2: str = ""
+    test_resonator_id_3: str = ""
+
     monster_id: str = ""
     description: str = ""
 
