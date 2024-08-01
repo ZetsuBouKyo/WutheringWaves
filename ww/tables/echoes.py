@@ -4,11 +4,11 @@ from ww.model.echoes import EchoesEnum, EchoListEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-ECHOES_PATH = "./cache/自訂/聲骸.tsv"
-ECHOES_HTML_PATH = "./cache/聲骸.html"
+ECHOES_PATH = "./cache/v1/自訂/聲骸.tsv"
+ECHOES_HTML_PATH = "./cache/v1/聲骸.html"
 ECHOES_PNG_FNAME = "聲骸.png"
 
-ECHOES_LIST_PATH = "./data/聲骸列表.tsv"
+ECHOES_LIST_PATH = "./data/v1/聲骸列表.tsv"
 
 
 class EchoesTable:

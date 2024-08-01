@@ -16,8 +16,8 @@ from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
 CACHE_PATH = "./cache"
-CALCULATED_RESONATOR_HTML_PATH = "./cache/[計算用]角色.html"
-RESONATORS_HTML_PATH = "./cache/角色.html"
+CALCULATED_RESONATOR_HTML_PATH = "./cache/v1/[計算用]角色.html"
+RESONATORS_HTML_PATH = "./cache/v1/角色.html"
 RESONATORS_PNG_FNAME = "角色.png"
 
 app = Typer(name="resonators")

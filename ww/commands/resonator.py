@@ -5,7 +5,7 @@ from typer import Typer
 
 from ww.utils.table import print_table
 
-BASE_PATH = "./data/角色"
+BASE_PATH = "./data/v1/角色"
 STAT = "屬性"
 SKILL = "技能"
 

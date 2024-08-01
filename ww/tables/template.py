@@ -2,7 +2,7 @@ from pathlib import Path
 
 from ww.utils.pd import get_df
 
-TEMPLATE_HOME_PATH = "./cache/自訂/模板"
+TEMPLATE_HOME_PATH = "./cache/v1/自訂/模板"
 
 
 class TemplateTable:

@@ -15,9 +15,9 @@ from ww.utils.number import get_number
 from ww.utils.pd import get_df
 from ww.utils.table import print_transpose_table
 
-ECHO_PATH = "./cache/自訂/聲骸"
+ECHO_PATH = "./cache/v1/自訂/聲骸"
 
-RESONATOR_HOME_PATH = "./data/角色"
+RESONATOR_HOME_PATH = "./data/v1/角色"
 RESONATOR_STAT = "屬性"
 
 

@@ -5,7 +5,7 @@ from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-WEAPON_HOME_PATH = "./data/武器"
+WEAPON_HOME_PATH = "./data/v1/武器"
 WEAPON_STAT_FNAME = "屬性.tsv"
 WEAPON_RANK_FNAME = "諧振.tsv"
 

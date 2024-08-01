@@ -5,7 +5,7 @@ from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.crud import get_row, search
 from ww.utils.pd import get_df
 
-RESONATOR_HOME_PATH = "./data/角色"
+RESONATOR_HOME_PATH = "./data/v1/角色"
 RESONATOR_SKILL_FNAME = "技能.tsv"
 
 

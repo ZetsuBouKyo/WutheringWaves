@@ -5,7 +5,7 @@ from ww.model.resonator import ResonatorEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-RESONATOR_HOME_PATH = "./data/角色"
+RESONATOR_HOME_PATH = "./data/v1/角色"
 RESONATOR_STAT_FNAME = "屬性.tsv"
 
 

@@ -5,7 +5,7 @@ from ww.model.templates import TemplatesEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_df
 
-TEMPLATES_HOME_PATH = "./cache/自訂/模板"
+TEMPLATES_HOME_PATH = "./cache/v1/自訂/模板"
 
 
 def get_template_ids() -> List[str]:
