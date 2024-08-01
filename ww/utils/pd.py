@@ -36,6 +36,8 @@ def save_tsv(
 
 def init_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFrame:
     df = get_empty_df(column_names)
+    if type(fpath) is str:
+        fpath = Path(fpath)
     os.makedirs(fpath.parent, exist_ok=True)
     data = df.values.tolist()
     save_tsv(fpath, data, column_names)

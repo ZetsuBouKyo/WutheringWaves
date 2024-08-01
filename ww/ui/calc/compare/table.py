@@ -12,7 +12,7 @@ from ww.tables.monsters import MonstersEnum, MonstersTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.templates import get_template_ids
 from ww.ui.table import QDraggableTableWidget, QUneditableTable
-from ww.utils.pd import get_df, get_empty_df
+from ww.utils.pd import get_empty_df, safe_get_df
 
 DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/自訂/傷害比較"
 DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
@@ -31,10 +31,8 @@ class QDamageCompareTable(QDraggableTableWidget):
     ):
         tsv_path = Path(DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
         column_names = [e.value for e in QDamageCompareTableEnum]
-        if tsv_path.exists():
-            self.df = get_df(tsv_path)
-        else:
-            self.df = get_empty_df(column_names)
+        self.df = safe_get_df(tsv_path, column_names)
+
         data = self.df.values.tolist()
         rows = len(data)
         columns = len(data[0])

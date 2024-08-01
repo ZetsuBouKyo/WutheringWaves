@@ -15,14 +15,8 @@ from ww.utils.number import get_number
 from ww.utils.pd import get_df
 from ww.utils.table import print_transpose_table
 
-ECHO_PATH = "./cache/v1/自訂/聲骸"
-
 RESONATOR_HOME_PATH = "./data/v1/角色"
 RESONATOR_STAT = "屬性"
-
-
-def get_custom_echos() -> pd.DataFrame:
-    return get_df(ECHO_PATH)
 
 
 def get_custom_resonator_stat(name: str) -> Optional[pd.DataFrame]:

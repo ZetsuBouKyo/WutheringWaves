@@ -83,7 +83,7 @@ class QCalculatedResonatorsTable(QUneditableTable):
 
         self.setHorizontalHeaderLabels(self.column_names)
 
-        self._init()
+        self._init_cells()
         self._init_column_width()
 
 
@@ -96,12 +96,12 @@ class QCalculatedResonators(QWidget):
 
         self.q_calculated_label = QLabel("計算結果")
 
-        self.q_reload_btn_layout = QHBoxLayout()
+        self.q_btns_layout = QHBoxLayout()
         self.q_reload_btn = QPushButton("重新整理")
         self.q_reload_btn.clicked.connect(self.q_calculated_resonators_table.reload)
-        self.q_reload_btn_layout.addStretch()
-        self.q_reload_btn_layout.addWidget(self.q_reload_btn)
+        self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_reload_btn)
 
-        self.layout.addLayout(self.q_reload_btn_layout)
+        self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_calculated_resonators_table)
         self.setLayout(self.layout)
