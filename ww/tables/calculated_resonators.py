@@ -659,9 +659,16 @@ def get_calculated_resonators_df() -> pd.DataFrame:
         try:
             new_resonator = CalculatedResonator(row)
             new_resonator_dict = new_resonator.get_row_dict()
-            for col in calculated_resonators_columns:
-                cell = new_resonator_dict.get(col, None)
-                calculated_resonators_dict[col].append(cell)
+            new_resonator_id = new_resonator_dict.get(
+                CalculatedResonatorsEnum.ID.value, None
+            )
+            if not new_resonator_id:
+                for col in calculated_resonators_columns:
+                    calculated_resonators_dict[col].append("")
+            else:
+                for col in calculated_resonators_columns:
+                    cell = new_resonator_dict.get(col, None)
+                    calculated_resonators_dict[col].append(cell)
 
         except TypeError:
             continue
