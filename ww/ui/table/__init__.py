@@ -125,12 +125,10 @@ class QCustomTableWidget(QTableWidget):
         if getOptions is None:
             combobox = QCustomComboBox()
             combobox.addItems(names)
-            combobox.setCurrentText(name)
-            completer = QCompleter(combobox.model())
-            combobox.setCompleter(completer)
         else:
             combobox = QCustomComboBox(getOptions=getOptions)
-            combobox.setCurrentText(name)
+
+        combobox.setCurrentText(name)
 
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
 

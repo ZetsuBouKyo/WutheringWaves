@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from PySide2.QtCore import QEvent, Qt
+from PySide2.QtCore import QEvent, QStringListModel, Qt
 from PySide2.QtGui import QFontMetrics, QPalette, QStandardItem
 from PySide2.QtWidgets import (
     QApplication,
@@ -29,6 +29,18 @@ class QCustomComboBox(QComboBox):
         self.setEditable(True)
         self.setFocusPolicy(Qt.StrongFocus)
 
+        self.model = QStringListModel()
+        self.completer = QCompleter(self.model, self)
+        self.setCompleter(self.completer)
+        self.currentTextChanged.connect(self.update_completer)
+
+    def update_completer(self):
+        if self.getOptions is not None:
+            new_options = self.getOptions()
+        else:
+            new_options = [self.itemText(i) for i in range(self.count())]
+        self.model.setStringList(new_options)
+
     def wheelEvent(self, *args, **kwargs):
         # if self.hasFocus() and self.isVisible():
         #     return super().wheelEvent(*args, **kwargs)
@@ -46,9 +58,8 @@ class QCustomComboBox(QComboBox):
             except ValueError:
                 ...
             options = [text] + new_options
+
             self.addItems(options)
-            completer = QCompleter(self.model())
-            self.setCompleter(completer)
 
         super().showPopup()
 

@@ -15,9 +15,12 @@ class QTemplateTabs(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_btns_layout = QHBoxLayout()
+        self.q_load_btn = QPushButton("讀取模板ID")
+        self.q_load_btn.clicked.connect(self.load)
         self.q_save_btn = QPushButton("存檔")
         self.q_save_btn.clicked.connect(self.save)
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
 
         self.q_tabs = QTabWidget()
@@ -34,6 +37,9 @@ class QTemplateTabs(QWidget):
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_tabs)
         self.setLayout(self.layout)
+
+    def load(self):
+        self.q_template_output_method_tab.load()
 
     def save(self):
         ...

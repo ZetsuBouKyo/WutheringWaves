@@ -13,6 +13,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
+from ww.crud.template import get_template
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TemplateRowActionEnum,
@@ -56,6 +57,7 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def __init__(self, basic: QTemplateBasicTab):
+        self.basic = basic
         ouput_methods = [TemplateRowModel()]
 
         column_names = [e.value for e in TemplateRowEnum]
@@ -78,6 +80,15 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def removeRow(self, row: int):
         del self.ouput_methods[row]
         super().removeRow(row)
+
+    def load(self) -> List[TemplateRowModel]:
+        template_id = self.basic.get_template_id()
+        template = get_template(template_id)
+        if len(template.rows) == 0:
+            template.rows.append(TemplateRowModel())
+
+        self.ouput_methods = template.rows
+        self._init_cells()
 
     def _init_column_width(self):
         for e in TemplateRowEnum:
@@ -260,3 +271,6 @@ class QTemplateOutputMethodTab(QWidget):
         self.layout.addWidget(self.q_output_method_table)
 
         self.setLayout(self.layout)
+
+    def load(self):
+        self.q_output_method_table.load()
