@@ -13,6 +13,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
+from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TemplateRowActionEnum,
     TemplateRowBuffEnum,
@@ -107,10 +108,10 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         cell = super().get_cell(row, col)
         if cell is None:
             cell = ""
-
-        if col == self.get_column_id(TemplateRowEnum.RESONATOR_NAME.value):
-            self.ouput_methods[row].resonator_name = cell
         return cell
+
+    def update_cell(self, row: int, col: int, options: List[str], option_index: int):
+        print(self.get_cell(row, col))
 
     def set_cell(self, _: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
@@ -119,12 +120,20 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 col,
                 self.ouput_methods[row].resonator_name,
                 [],
+                currentIndexChanged=self.update_cell,
                 getOptions=get_resonator_names,
             )
         elif self.column_names[col] == TemplateRowEnum.REAL_DMG_NO_CRIT.value:
             self.set_item(self.ouput_methods[row].real_dmg_no_crit, row, col)
         elif self.column_names[col] == TemplateRowEnum.REAL_DMG_CRIT.value:
             self.set_item(self.ouput_methods[row].real_dmg_crit, row, col)
+        elif self.column_names[col] == TemplateRowEnum.ACTION.value:
+            self.set_combobox(
+                row,
+                col,
+                self.ouput_methods[row].action,
+                [e.value for e in TemplateRowActionEnum],
+            )
         elif self.column_names[col] == TemplateRowEnum.SKILL_ID.value:
             self.set_combobox(
                 row,
@@ -133,17 +142,35 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 [],
                 getOptions=partial(self._get_resonator_skill_ids, row),
             )
-        elif self.column_names[col] == TemplateRowEnum.ACTION.value:
+        elif self.column_names[col] == TemplateRowEnum.SKILL_BONUS_TYPE.value:
             self.set_combobox(
                 row,
                 col,
-                self.ouput_methods[row].action,
-                [e.value for e in TemplateRowActionEnum],
+                self.ouput_methods[row].skill_bonus_type,
+                [e.value for e in ResonatorSkillBonusTypeEnum],
             )
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
             btn = QDataPushButton("+")
             btn.clicked.connect(partial(self.add_buff, row, btn))
             self.setCellWidget(row, col, btn)
+        elif (
+            self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_AMPLIFIER.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_HP_P.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_HP.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_ATK_P.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_ATK.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_DEF_P.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_DEF.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_CRIT_RATE.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_CRIT_DMG.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_ADDITION.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_SKILL_DMG_ADDITION.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_IGNORE_DEF.value
+            or self.column_names[col] == TemplateRowEnum.BONUS_REDUCE_RES.value
+        ):
+            # self.get_buff(row, col)
+            self.set_uneditable_cell("", row, col)
         else:
             item = QTableWidgetItem("")
             self.setItem(row, col, item)
@@ -153,16 +180,17 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         output_method = self.ouput_methods[row]
 
         for buff in output_method.buffs:
-            # t = buff.type
-            # if t is None:
-            #     t = ""
             data.append([buff.name, buff.type, buff.value, buff.stack])
         if len(data) == 0:
             return [["", "", "", ""]]
         return data
 
     def set_row_buff(
-        self, row: int, table: QDraggableTableWidget, btn: QDataPushButton
+        self,
+        row: int,
+        dialog: QDialog,
+        table: QDraggableTableWidget,
+        btn: QDataPushButton,
     ):
         data = table.get_data()
         buffs = []
@@ -171,6 +199,10 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             buffs.append(buff)
         btn.set_data(buffs)
         self.ouput_methods[row].buffs = buffs
+
+        # Update following cells
+
+        dialog.done(1)
 
     def add_buff(self, row: int, btn: QDataPushButton):
         width = 800
@@ -200,7 +232,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         btns_layout = QHBoxLayout()
         ok_btn = QDataPushButton("OK")
-        ok_btn.clicked.connect(partial(self.set_row_buff, row, table, btn))
+        ok_btn.clicked.connect(partial(self.set_row_buff, row, dialog, table, btn))
         ok_btn.setFixedHeight(40)
         btns_layout.addStretch()
         btns_layout.addWidget(ok_btn)

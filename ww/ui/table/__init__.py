@@ -7,7 +7,7 @@ from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 from PySide2.QtCore import QModelIndex, Qt
-from PySide2.QtGui import QDropEvent
+from PySide2.QtGui import QColor, QDropEvent
 from PySide2.QtWidgets import (
     QAbstractItemView,
     QAction,
@@ -37,6 +37,16 @@ from ww.utils.sorting import alphanum_sorting
 echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
 
+UNEDITABLE_CELL_COLOR = (248, 248, 248)
+
+
+def set_uneditable_cell(table: QTableWidget, value: str, row: int, col: int):
+    item_color = QColor(*UNEDITABLE_CELL_COLOR)
+    item = QTableWidgetItem(value)
+    item.setBackgroundColor(item_color)
+    item.setFlags(~Qt.ItemIsEditable)
+    table.setItem(row, col, item)
+
 
 class QUneditableTable(QTableWidget):
     def __init__(self, df: pd.DataFrame):
@@ -64,9 +74,7 @@ class QUneditableTable(QTableWidget):
     def _init_column_width(self): ...
 
     def set_cell(self, value: str, row: int, col: int):
-        item = QTableWidgetItem(value)
-        item.setFlags(~Qt.ItemIsEditable)
-        self.setItem(row, col, item)
+        set_uneditable_cell(self, value, row, col)
 
     def load_data(self, data: List[Dict[str, str]]):
         new_data = []
@@ -337,20 +345,10 @@ class QDraggableTableWidget(QCustomTableWidget):
         menu.exec_(header.viewport().mapToGlobal(position))
 
     def set_id_cell(self, value: str, row: int, col: int):
-        item = QTableWidgetItem(value)
-        item.setFlags(~Qt.ItemIsEditable)
-        self.setItem(row, col, item)
+        set_uneditable_cell(self, value, row, col)
 
-    def set_uneditable_cell(self, row: int, column: int, name: str, names: List[str]):
-        combobox = QCustomComboBox()
-        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-        combobox.setEditable(True)
-        combobox.addItems(names)
-        combobox.setCurrentText(name)
-
-        completer = QCompleter(combobox.model())
-        combobox.setCompleter(completer)
-        self.setCellWidget(row, column, combobox)
+    def set_uneditable_cell(self, value: str, row: int, col: int):
+        set_uneditable_cell(self, value, row, col)
 
     def _row_index_ctx_fill_row(self, row):
         for col in range(len(self.column_names)):
