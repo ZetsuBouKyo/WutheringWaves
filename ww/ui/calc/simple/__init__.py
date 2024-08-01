@@ -106,6 +106,7 @@ class QDamageSimple(QWidget):
 
         combobox = QCustomComboBox(getOptions=getOptions)
         combobox.setFixedWidth(self._input_width)
+        combobox.setFixedHeight(40)
         if currentTextChanged is not None:
             combobox.currentTextChanged.connect(currentTextChanged)  # not working
         layout.addWidget(combobox)
@@ -127,6 +128,8 @@ class QDamageSimple(QWidget):
         self._resonator_name = self._resonators_table.search(
             self._resonator_id, ResonatorsEnum.NAME
         )
+        if self._resonator_name is None:
+            return
         self._resonator_skills_table = ResonatorSkillTable(self._resonator_name)
 
         # TODO: resonator skill -> row
@@ -194,10 +197,12 @@ class QDamageSimple(QWidget):
 
         label = QLabel(label_name)
         label.setFixedWidth(self._label_width)
+        label.setFixedHeight(40)
         layout.addWidget(label)
 
         line = QLineEdit()
         line.setFixedWidth(self._input_width)
+        line.setFixedHeight(40)
         line.setPlaceholderText("")
         if tooltip is not None:
             line.setToolTip(tooltip)
@@ -357,8 +362,10 @@ class QDamageSimple(QWidget):
 
         label_title = QLabel(title)
         label_title.setFixedWidth(self._label_width)
+        label_title.setFixedHeight(40)
         label_result = QLabel(result)
         label_result.setFixedWidth(self._input_width)
+        label_result.setFixedHeight(40)
 
         layout.addWidget(label_title)
         layout.addWidget(label_result)

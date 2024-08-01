@@ -33,6 +33,7 @@ class QCustomComboBox(QComboBox):
         self.completer = QCompleter(self.model, self)
         self.setCompleter(self.completer)
         self.currentTextChanged.connect(self.update_completer)
+        self.completer.setFilterMode(Qt.MatchContains)
 
     def update_completer(self):
         if self.getOptions is not None:
