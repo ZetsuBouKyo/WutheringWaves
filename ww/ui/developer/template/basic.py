@@ -11,6 +11,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.echo import get_echo_names, get_echo_sonatas
+from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import (
     get_resonator_chains,
     get_resonator_ids,
@@ -226,6 +227,18 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_3_layout.addWidget(self.q_test_resonator_3_combobox)
         self.q_test_resonator_3_layout.addStretch()
 
+        # Monster ID
+        self.q_test_monster_id_layout = QHBoxLayout()
+        self.q_test_monster_id_label = QLabel("測試怪物ID")
+        self.q_test_monster_id_label.setFixedWidth(150)
+        self.q_test_monster_id_combobox = QCustomComboBox(getOptions=get_monster_ids)
+        self.q_test_monster_id_combobox.setFixedWidth(700)
+        self.q_test_monster_id_combobox.setFixedHeight(40)
+
+        self.q_test_monster_id_layout.addWidget(self.q_test_monster_id_label)
+        self.q_test_monster_id_layout.addWidget(self.q_test_monster_id_combobox)
+        self.q_test_monster_id_layout.addStretch()
+
         # Description
         self.q_description_label = QLabel("描述")
         self.q_description_label.setFixedHeight(40)
@@ -241,6 +254,7 @@ class QTemplateBasicTab(QWidget):
         self.layout.addLayout(self.q_test_resonator_1_layout)
         self.layout.addLayout(self.q_test_resonator_2_layout)
         self.layout.addLayout(self.q_test_resonator_3_layout)
+        self.layout.addLayout(self.q_test_monster_id_layout)
         self.layout.addWidget(self.q_description_label)
         self.layout.addWidget(self.q_description)
         self.layout.addWidget(self.q_resonator_label)
@@ -250,7 +264,20 @@ class QTemplateBasicTab(QWidget):
         self.setLayout(self.layout)
 
     def get_test_resonator_ids(self) -> List[str]:
-        return []
+        return [
+            self.q_test_resonator_1_combobox.currentText(),
+            self.q_test_resonator_2_combobox.currentText(),
+            self.q_test_resonator_3_combobox.currentText(),
+        ]
+
+    def get_monster_id(self) -> str:
+        return self.q_test_monster_id_combobox.currentText()
+
+    def get_description(self) -> str:
+        return self.q_description.toPlainText()
+
+    def get_resonators(self) -> List[TemplateResonatorModel]:
+        return self.q_resonator_table.get_resonators()
 
     def get_template_id(self) -> str:
         return self.q_template_ids.currentText()

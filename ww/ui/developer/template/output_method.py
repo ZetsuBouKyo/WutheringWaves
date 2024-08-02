@@ -280,6 +280,81 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         dialog.setLayout(layout)
         dialog.exec_()
 
+    def get_output_methods(self) -> List[TemplateRowModel]:
+        for row in range(self.rowCount()):
+            # Resonator name
+            col_resonator_name = self.get_column_id(
+                TemplateRowEnum.RESONATOR_NAME.value
+            )
+            self.ouput_methods[row].resonator_name = self.get_cell(
+                row, col_resonator_name
+            )
+
+            # DMG no CRIT
+            col_real_dmg_no_crit = self.get_column_id(
+                TemplateRowEnum.REAL_DMG_NO_CRIT.value
+            )
+            self.ouput_methods[row].real_dmg_no_crit = self.get_cell(
+                row, col_real_dmg_no_crit
+            )
+
+            # DMG CRIT
+            col_real_dmg_crit = self.get_column_id(TemplateRowEnum.REAL_DMG_CRIT.value)
+            self.ouput_methods[row].real_dmg_crit = self.get_cell(
+                row, col_real_dmg_crit
+            )
+
+            # Action
+            col_action = self.get_column_id(TemplateRowEnum.ACTION.value)
+            self.ouput_methods[row].action = self.get_cell(row, col_action)
+
+            # Skill ID
+            col_skill_id = self.get_column_id(TemplateRowEnum.SKILL_ID.value)
+            self.ouput_methods[row].skill_id = self.get_cell(row, col_skill_id)
+
+            # Skill bonus type
+            col_skill_bonus_type = self.get_column_id(
+                TemplateRowEnum.SKILL_BONUS_TYPE.value
+            )
+            self.ouput_methods[row].skill_bonus_type = self.get_cell(
+                row, col_skill_bonus_type
+            )
+
+            # Concerto regen
+            col_resonating_spin_concerto_regen = self.get_column_id(
+                TemplateRowEnum.RESONATING_SPIN_CONCERTO_REGEN.value
+            )
+            self.ouput_methods[row].resonating_spin_concerto_regen = self.get_cell(
+                row, col_resonating_spin_concerto_regen
+            )
+
+            col_accumulated_resonating_spin_concerto_regen = self.get_column_id(
+                TemplateRowEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value
+            )
+            self.ouput_methods[row].accumulated_resonating_spin_concerto_regen = (
+                self.get_cell(row, col_accumulated_resonating_spin_concerto_regen)
+            )
+
+            # Time
+            col_time_start = self.get_column_id(TemplateRowEnum.TIME_START.value)
+            self.ouput_methods[row].time_start = self.get_cell(row, col_time_start)
+
+            col_time_end = self.get_column_id(TemplateRowEnum.TIME_END.value)
+            self.ouput_methods[row].time_end = self.get_cell(row, col_time_end)
+
+            col_cumulative_time = self.get_column_id(
+                TemplateRowEnum.CUMULATIVE_TIME.value
+            )
+            self.ouput_methods[row].cumulative_time = self.get_cell(
+                row, col_cumulative_time
+            )
+
+            # Frame
+            col_frame = self.get_column_id(TemplateRowEnum.FRAME.value)
+            self.ouput_methods[row].frame = self.get_cell(row, col_frame)
+
+        return self.ouput_methods
+
 
 class QTemplateOutputMethodTab(QWidget):
     def __init__(self, basic: QTemplateBasicTab):
@@ -294,3 +369,6 @@ class QTemplateOutputMethodTab(QWidget):
 
     def load(self):
         self.q_output_method_table.load()
+
+    def get_rows(self) -> List[TemplateRowModel]:
+        return self.q_output_method_table.get_output_methods()
