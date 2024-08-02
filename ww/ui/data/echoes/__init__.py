@@ -75,6 +75,8 @@ class QEchoesTable(QDraggableTableWidget):
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == EchoesEnum.ID.value:
             self.set_id_cell(value, row, col)
+        elif self.column_names[col] == EchoesEnum.COST.value:
+            self.set_uneditable_cell(value, row, col)
         elif self.column_names[col] == EchoesEnum.NAME.value:
             self.set_combobox(
                 row,
