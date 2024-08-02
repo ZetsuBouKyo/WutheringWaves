@@ -1,3 +1,4 @@
+from decimal import Decimal
 from functools import partial
 from typing import Dict, List, Optional
 
@@ -16,6 +17,7 @@ from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
 from ww.crud.template import get_template
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
+    TEMPLATE_BONUS,
     TemplateRowActionEnum,
     TemplateRowBuffEnum,
     TemplateRowBuffModel,
@@ -26,6 +28,7 @@ from ww.model.template import (
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.table import QDraggableTableWidget
+from ww.utils.number import get_number
 
 
 class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
@@ -125,6 +128,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         return cell
 
     def update_cell(self, row: int, col: int, options: List[str], option_index: int):
+        # TODO:
         print(self.get_cell(row, col))
 
     def set_cell(self, _: str, row: int, col: int):
@@ -197,10 +201,23 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         output_method = self.ouput_methods[row]
 
         for buff in output_method.buffs:
-            data.append([buff.name, buff.type, buff.value, buff.stack])
+            data.append([buff.name, buff.type, buff.value, buff.stack, buff.duration])
         if len(data) == 0:
-            return [["", "", "", ""]]
+            return [["", "", "", "", ""]]
         return data
+
+    def update_row_buffs(self, row: int, buffs: List[TemplateRowBuffModel]):
+        buff_dict = {e.value: Decimal("0.0") for e in TemplateRowBuffTypeEnum}
+        for buff in buffs:
+            value = get_number(buff.value) * get_number(buff.stack)
+            t = buff_dict.get(buff.type, None)
+            if t is None:
+                continue
+            buff_dict[buff.type] += value
+        for buff_type, buff in buff_dict.items():
+            buff_column_name = f"{TEMPLATE_BONUS}{buff_type}"
+            col = self.get_column_id(buff_column_name)
+            self.set_uneditable_cell(str(buff), row, col)
 
     def set_row_buff(
         self,
@@ -212,12 +229,15 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         data = table.get_data()
         buffs = []
         for d in data:
-            buff = TemplateRowBuffModel(name=d[0], type=d[1], value=d[2], stack=d[3])
+            buff = TemplateRowBuffModel(
+                name=d[0], type=d[1], value=d[2], stack=d[3], duration=d[4]
+            )
             buffs.append(buff)
         btn.set_data(buffs)
         self.ouput_methods[row].buffs = buffs
 
         # Update following cells
+        self.update_row_buffs(row, buffs)
 
         dialog.done(1)
 

@@ -3,6 +3,8 @@ from typing import List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
+TEMPLATE_BONUS = "[額外]"
+
 
 class TemplateEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
@@ -93,6 +95,23 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_5: str = ""
 
 
+class TemplateRowBuffTypeEnum(str, Enum):
+    MAGNIFIER: str = "倍率"
+    AMPLIFIER: str = "加深"
+    HP_P: str = "生命百分比"
+    HP: str = "生命"
+    ATK_P: str = "攻擊百分比"
+    ATK: str = "攻擊"
+    DEF_P: str = "防禦百分比"
+    DEF: str = "防禦"
+    CRIT_RATE: str = "暴擊"
+    CRIT_DMG: str = "暴擊傷害"
+    ADDITION: str = "加成"
+    SKILL_DMG_ADDITION: str = "招式倍率"
+    IGNORE_DEF: str = "忽視防禦"
+    REDUCE_RES: str = "抗性降低"
+
+
 class TemplateRowEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
@@ -104,20 +123,26 @@ class TemplateRowEnum(str, Enum):
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
     BONUS_BUFF: str = "[額外]增益"
-    BONUS_MAGNIFIER: str = "[額外]倍率"
-    BONUS_AMPLIFIER: str = "[額外]加深"
-    BONUS_HP_P: str = "[額外]生命百分比"
-    BONUS_HP: str = "[額外]生命"
-    BONUS_ATK_P: str = "[額外]攻擊百分比"
-    BONUS_ATK: str = "[額外]攻擊"
-    BONUS_DEF_P: str = "[額外]防禦百分比"
-    BONUS_DEF: str = "[額外]防禦"
-    BONUS_CRIT_RATE: str = "[額外]暴擊"
-    BONUS_CRIT_DMG: str = "[額外]暴擊傷害"
-    BONUS_ADDITION: str = "[額外]加成"
-    BONUS_SKILL_DMG_ADDITION: str = "[額外]招式倍率"
-    BONUS_IGNORE_DEF: str = "[額外]忽視防禦"
-    BONUS_REDUCE_RES: str = "[額外]抗性降低"
+    BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
+    BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"
+    BONUS_HP_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP_P.value}"
+    BONUS_HP: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP.value}"
+    BONUS_ATK_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ATK_P.value}"
+    BONUS_ATK: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ATK.value}"
+    BONUS_DEF_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.DEF_P.value}"
+    BONUS_DEF: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.DEF.value}"
+    BONUS_CRIT_RATE: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.CRIT_RATE.value}"
+    BONUS_CRIT_DMG: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.CRIT_DMG.value}"
+    BONUS_ADDITION: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ADDITION.value}"
+    BONUS_SKILL_DMG_ADDITION: str = (
+        f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.SKILL_DMG_ADDITION.value}"
+    )
+    BONUS_IGNORE_DEF: str = (
+        f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.IGNORE_DEF.value}"
+    )
+    BONUS_REDUCE_RES: str = (
+        f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.REDUCE_RES.value}"
+    )
     RESONATING_SPIN_CONCERTO_REGEN: str = "協奏能量"
     ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN: str = "累積協奏"
     TIME_START: str = "[實戰]起手秒數"
@@ -142,28 +167,12 @@ class TemplateRowActionEnum(str, Enum):
     NONE: str = "無"
 
 
-class TemplateRowBuffTypeEnum(str, Enum):
-    MAGNIFIER: str = "倍率"
-    AMPLIFIER: str = "加深"
-    HP_P: str = "生命百分比"
-    HP: str = "生命"
-    ATK_P: str = "攻擊百分比"
-    ATK: str = "攻擊"
-    DEF_P: str = "防禦百分比"
-    DEF: str = "防禦"
-    CRIT_RATE: str = "暴擊"
-    CRIT_DMG: str = "暴擊傷害"
-    ADDITION: str = "加成"
-    SKILL_DMG_ADDITION: str = "招式倍率"
-    IGNORE_DEF: str = "忽視防禦"
-    REDUCE_RES: str = "抗性降低"
-
-
 class TemplateRowBuffEnum(str, Enum):
     NAME: str = "名稱"
     TYPE: str = "種類"
     VALUE: str = "數值"
     STACK: str = "層數"
+    DURATION: str = "持續時間"
 
 
 class TemplateRowBuffModel(BaseModel):
@@ -173,6 +182,7 @@ class TemplateRowBuffModel(BaseModel):
     type: Union[TemplateRowBuffTypeEnum, str] = ""
     value: str = ""
     stack: str = ""
+    duration: str = ""
 
     @field_validator("type")
     @classmethod
