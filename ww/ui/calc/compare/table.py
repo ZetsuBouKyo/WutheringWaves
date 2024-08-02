@@ -11,7 +11,7 @@ from ww.tables.echoes import EchoListTable
 from ww.tables.monsters import MonstersEnum, MonstersTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.templates import get_template_ids
-from ww.ui.table import QDraggableTableWidget, QUneditableTable
+from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.utils.pd import get_empty_df, safe_get_df
 
 DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/自訂/傷害比較"
@@ -102,7 +102,7 @@ class QDamageCompareUneditableTableEnum(str, Enum):
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
 
 
-class QDamageCompareUneditableTable(QUneditableTable):
+class QDamageCompareUneditableTable(QUneditableDataFrameTable):
     def __init__(self):
         column_names = [e.value for e in QDamageCompareUneditableTableEnum]
         self.df = get_empty_df(column_names)

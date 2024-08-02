@@ -44,14 +44,14 @@ from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
 from ww.ui.calc.compare.table import QDamageCompareTable, QDamageCompareUneditableTable
 from ww.ui.combobox import QCustomComboBox
-from ww.ui.table import QUneditableTable
+from ww.ui.table import QUneditableDataFrameTable
 from ww.utils.number import get_number, get_string
 
 echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
 
 
-class QCalculatedResonatorsTable(QUneditableTable):
+class QCalculatedResonatorsTable(QUneditableDataFrameTable):
     def __init__(self):
         calculated_resonators_table = CalculatedResonatorsTable()
         calculated_resonators_table_df = calculated_resonators_table.df

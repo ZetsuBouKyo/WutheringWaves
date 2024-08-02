@@ -1,6 +1,7 @@
 import sys
+from decimal import Decimal
 from functools import partial
-from typing import List
+from typing import Dict, List, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
@@ -42,6 +43,7 @@ from ww.tables.resonator_skill import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
 from ww.ui.combobox import QCustomComboBox
+from ww.ui.table import QUneditableDataFrameTable, set_uneditable_cell
 from ww.utils.number import get_number, get_string
 
 
@@ -76,7 +78,7 @@ class QDamageSimple(QWidget):
         self.layout_right = QVBoxLayout()
         self.layout_right.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         self._init_label_result_title()
-        self._init_label_results()
+        self._init_table_results()
 
         self.layout.addLayout(self.layout_left)
         self.layout.addLayout(self.layout_right)
@@ -115,6 +117,7 @@ class QDamageSimple(QWidget):
             return
 
         self._combobox_resonator_skills.clear()
+        self._resonator_skill_id = ""
 
         self._resonator_id = resonator_id
         self._resonators_table = ResonatorsTable()
@@ -336,10 +339,7 @@ class QDamageSimple(QWidget):
             calculated_template_columns,
         )
 
-        for label_title in CalculatedTemplateEnum:
-            result = get_string(results[label_title.value])
-            label = self._results[label_title.value]
-            label.setText(result)
+        self._set_table_results(results)
 
     def _init_label_result_title(self):
         layout = QHBoxLayout()
@@ -347,30 +347,33 @@ class QDamageSimple(QWidget):
 
         label = QLabel("計算結果")
         label.setFixedWidth(self._label_width)
+        label.setFixedHeight(40)
         layout.addWidget(label)
 
         self.layout_right.addLayout(layout)
 
-    def _init_label_result(self, title: str, result: str):
+    def _set_table_results(
+        self, results: Dict[CalculatedTemplateEnum, Union[str, Decimal]]
+    ):
+        for i, row_name in enumerate(results.keys()):
+            value = results.get(row_name, None)
+            if value is None:
+                value = ""
+            else:
+                value = str(value)
+            set_uneditable_cell(self.table, row_name, i, 0)
+            set_uneditable_cell(self.table, value, i, 1)
+
+    def _init_table_results(self):
         layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignLeft)
+        self.table_row = len(CalculatedTemplateEnum)
+        self.table_col = 2
+        self.table = QTableWidget(self.table_row, self.table_col)
 
-        label_title = QLabel(title)
-        label_title.setFixedWidth(self._label_width)
-        label_title.setFixedHeight(40)
-        label_result = QLabel(result)
-        label_result.setFixedWidth(self._input_width)
-        label_result.setFixedHeight(40)
+        self.table.setColumnWidth(0, 200)
 
-        layout.addWidget(label_title)
-        layout.addWidget(label_result)
+        results = {e.value: "" for e in CalculatedTemplateEnum}
+        self._set_table_results(results)
 
+        layout.addWidget(self.table)
         self.layout_right.addLayout(layout)
-
-        return label_result
-
-    def _init_label_results(self):
-        self._results = {}
-        for title in CalculatedTemplateEnum:
-            label_title = title.value
-            self._results[label_title] = self._init_label_result(label_title, "")

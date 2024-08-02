@@ -40,15 +40,18 @@ echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
 UNEDITABLE_CELL_COLOR = (248, 248, 248)
 
 
-def set_uneditable_cell(table: QTableWidget, value: str, row: int, col: int):
+def set_uneditable_cell(
+    table: QTableWidget, value: str, row: int, col: int
+) -> QTableWidgetItem:
     item_color = QColor(*UNEDITABLE_CELL_COLOR)
     item = QTableWidgetItem(value)
     item.setBackgroundColor(item_color)
     item.setFlags(~Qt.ItemIsEditable)
     table.setItem(row, col, item)
+    return item
 
 
-class QUneditableTable(QTableWidget):
+class QUneditableDataFrameTable(QTableWidget):
     def __init__(self, df: pd.DataFrame):
         self.data = df.values.tolist()
         self.column_names = df.columns
