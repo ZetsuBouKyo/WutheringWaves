@@ -241,6 +241,8 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.done(1)
 
+    def get_default_buffs(self): ...
+
     def add_buff(self, row: int, btn: QDataPushButton):
         width = 800
         height = 600

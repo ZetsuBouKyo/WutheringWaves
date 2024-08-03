@@ -42,8 +42,20 @@ def get_row(df: pd.DataFrame, id: str, id_col_name: str) -> Optional[pd.DataFram
     return rows
 
 
+def get_rows(df: pd.DataFrame, id: str, id_col_name: str) -> Optional[pd.DataFrame]:
+    if not id or df is None:
+        return None
+
+    rows = df.loc[df[id_col_name] == id]
+    if len(rows.values) == 0:
+        # print(f"ID: {id} not found")
+        return None
+
+    return rows
+
+
 def get_cell_by_row(df: pd.DataFrame, col_name: str) -> Optional[Any]:
-    cells = df[col_name].values
+    cells = df[df.columns.get_loc(col_name)].values
     assert len(cells) <= 1, f"Column name: {col_name} must be unique"
     if len(cells) == 0:
         # print(f"ID: {id} with column: {col} not found")
