@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
@@ -62,3 +62,9 @@ def get_cell_by_row(df: pd.DataFrame, col_name: str) -> Optional[Any]:
         return None
 
     return cells[0]
+
+
+def df_to_list(df: Optional[pd.DataFrame]) -> List[Dict[str, str]]:
+    if df is None:
+        return []
+    return [r for r in df.to_dict(orient="records")]

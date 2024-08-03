@@ -45,8 +45,12 @@ def init_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFrame:
 
 
 def safe_get_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFrame:
-    df = get_df(fpath)
-    if df is not None:
-        return df
+    try:
+        df = get_df(fpath)
+        if df is not None:
+            return df
+    except pd.errors.EmptyDataError:
+        ...
+
     df = init_df(fpath, column_names)
     return df

@@ -13,8 +13,15 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.crud.buff import (
+    get_echo_buffs,
+    get_echo_sonata_buffs,
+    get_resonator_buffs,
+    get_weapon_buffs,
+)
 from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
 from ww.crud.template import get_template
+from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
@@ -39,7 +46,12 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         data: List[List[str]] = [],
         column_id_name: str = None,
         column_names: List[str] = [],
+        buffs: Dict[str, Dict[str, str]] = {},
     ):
+        self.buffs = buffs
+        self.buffs_list = [key for key in self.buffs.keys()]
+        self.buffs_list.sort()
+
         super().__init__(
             rows,
             columns,
@@ -48,8 +60,28 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
             column_names=column_names,
         )
 
+        self.setColumnWidth(self.get_column_id(TemplateRowBuffEnum.NAME.value), 500)
+
+    def update_row(self, row: int, i: int):
+        buff_id = self.buffs_list[i]
+        buff = self.buffs.get(buff_id, {})
+        buff_type = buff.get(BUFF_TYPE, None)
+        buff_value = buff.get(BUFF_VALUE, None)
+        buff_duration = buff.get(BUFF_DURATION, None)
+        if not buff or buff_type is None or buff_value is None or buff_duration is None:
+            return
+        buff_type_col = self.get_column_id(TemplateRowBuffEnum.TYPE.value)
+        buff_value_col = self.get_column_id(TemplateRowBuffEnum.VALUE.value)
+        buff_duration_col = self.get_column_id(TemplateRowBuffEnum.DURATION.value)
+        self.set_cell(buff_type, row, buff_type_col)
+        self.set_cell(buff_value, row, buff_value_col)
+        self.set_cell(buff_duration, row, buff_duration_col)
+
     def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == TemplateRowBuffEnum.TYPE.value:
+        if self.column_names[col] == TemplateRowBuffEnum.NAME.value:
+            combobox = self.set_combobox(row, col, value, self.buffs_list)
+            combobox.currentIndexChanged.connect(partial(self.update_row, row))
+        elif self.column_names[col] == TemplateRowBuffEnum.TYPE.value:
             self.set_combobox(
                 row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
             )
@@ -241,10 +273,61 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.done(1)
 
-    def get_default_buffs(self): ...
+    def add_default_buffs(
+        self, to_buffs: Dict[str, Dict[str, str]], from_buffs: List[Dict[str, str]]
+    ):
+        for buff in from_buffs:
+            buff_id = buff.get(BUFF_ID, None)
+            if buff_id is None:
+                continue
+            to_buffs[buff_id] = buff
+
+    def get_default_buffs(self) -> Dict[str, Dict[str, str]]:
+        buffs = {}
+        sonatas = set()
+        for resonator in self.basic.get_resonators():
+            # Resonator
+            resonator_name = resonator.resonator_name
+            resonator_buffs = get_resonator_buffs(resonator_name)
+            self.add_default_buffs(buffs, resonator_buffs)
+
+            # Weapon
+            weapon_name = resonator.resonator_weapon_name
+            weapon_buffs = get_weapon_buffs(weapon_name)
+            self.add_default_buffs(buffs, weapon_buffs)
+
+            # Echo
+            echo_name = resonator.resonator_echo_1
+            echo_buffs = get_echo_buffs(echo_name)
+            self.add_default_buffs(buffs, echo_buffs)
+
+            # Echo sonata
+            resonator_sonatas = [
+                resonator.resonator_echo_sonata_1,
+                resonator.resonator_echo_sonata_2,
+                resonator.resonator_echo_sonata_3,
+                resonator.resonator_echo_sonata_4,
+                resonator.resonator_echo_sonata_5,
+            ]
+            sonata_count = {}
+            for sonata in resonator_sonatas:
+                if sonata_count.get(sonata, None) is None:
+                    sonata_count[sonata] = 1
+                else:
+                    sonata_count[sonata] += 1
+            for sonata, count in sonata_count.items():
+                if count >= 5:
+                    sonatas.add(sonata)
+        for sonata in sonatas:
+            echo_sonata_buffs = get_echo_sonata_buffs(sonata)
+            self.add_default_buffs(buffs, echo_sonata_buffs)
+
+        return buffs
 
     def add_buff(self, row: int, btn: QDataPushButton):
-        width = 800
+        buffs = self.get_default_buffs()
+
+        width = 1200
         height = 600
 
         center = QDesktopWidget().availableGeometry().center()
@@ -267,6 +350,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             len(column_names),
             data=data,
             column_names=column_names,
+            buffs=buffs,
         )
 
         btns_layout = QHBoxLayout()

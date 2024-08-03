@@ -172,7 +172,7 @@ class TemplateRowBuffEnum(str, Enum):
     TYPE: str = "種類"
     VALUE: str = "數值"
     STACK: str = "層數"
-    DURATION: str = "持續時間"
+    DURATION: str = "持續時間(s)"
 
 
 class TemplateRowBuffModel(BaseModel):

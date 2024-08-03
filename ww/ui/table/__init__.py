@@ -124,7 +124,7 @@ class QCustomTableWidget(QTableWidget):
         names: List[str],
         currentIndexChanged=None,
         getOptions=None,
-    ):
+    ) -> QCustomComboBox:
         if getOptions is None:
             combobox = QCustomComboBox()
             combobox.addItems(names)
@@ -141,6 +141,7 @@ class QCustomTableWidget(QTableWidget):
             )
 
         self.setCellWidget(row, column, combobox)
+        return combobox
 
     def get_cell(self, row: int, col: int) -> Optional[str]:
         item = self.item(row, col)
@@ -358,9 +359,10 @@ class QDraggableTableWidget(QCustomTableWidget):
         dialog = QInputDialog()
         num_rows, ok = dialog.getInt(self, "插入列", "插入多少列:", 1, 1)
         if ok:
-            for _ in range(num_rows):
-                self.insertRow(row)
-                self._row_index_ctx_fill_row(row)
+            for n in range(num_rows):
+                new_row = row + n
+                self.insertRow(new_row)
+                self._row_index_ctx_fill_row(new_row)
 
     def _row_index_ctx_add_rows_above(self, row):
         self._row_index_ctx_add_rows(row)

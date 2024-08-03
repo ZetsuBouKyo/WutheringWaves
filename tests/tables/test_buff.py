@@ -7,5 +7,4 @@ def test_resonator_buff_table():
     table = ResonatorBuffTable()
     name = "維里奈"
     rows = table.get_rows(name)
-    for i in range(rows.shape[0]):
-        print(rows.loc[i, ResonatorBuffEnum.VALUE.value])
+    print(rows)
