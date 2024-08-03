@@ -25,7 +25,7 @@ from ww.tables.template import TemplateTable
 from ww.utils.number import get_number, get_string
 
 
-def get_row_damage(
+def get_tsv_row_damage(
     row: pd.DataFrame,
     resonator_id,
     resonator_name,
@@ -355,7 +355,7 @@ def get_damage(
         resonator_id = resonators_name2id.get(resonator_name, None)
         if resonator_id is None:
             continue
-        calculated_template_row_dict = get_row_damage(
+        calculated_template_row_dict = get_tsv_row_damage(
             row,
             resonator_id,
             resonator_name,

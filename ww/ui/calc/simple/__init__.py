@@ -21,7 +21,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import get_row_damage
+from ww.calc.damage import get_tsv_row_damage
 from ww.crud.resonator import get_resonator_ids
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
@@ -325,7 +325,7 @@ class QDamageSimple(QWidget):
         df = pd.DataFrame(row)
         df_row = df.iloc[0]
         calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
-        results = get_row_damage(
+        results = get_tsv_row_damage(
             df_row,
             self._resonator_id,
             self._resonator_name,

@@ -21,7 +21,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import get_damage, get_row_damage
+from ww.calc.damage import get_damage, get_tsv_row_damage
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
