@@ -113,6 +113,7 @@ class TemplateRowBuffTypeEnum(str, Enum):
 
 
 class TemplateRowEnum(str, Enum):
+    BONUS_BUFF: str = "增益"
     RESONATOR_NAME: str = "[角色]名稱"
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
@@ -122,7 +123,6 @@ class TemplateRowEnum(str, Enum):
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
-    BONUS_BUFF: str = "[額外]增益"
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"
     BONUS_HP_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP_P.value}"
