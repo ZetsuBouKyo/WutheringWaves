@@ -528,7 +528,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_GLACIO_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_GLACIO_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_GLACIO_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_GLACIO_DMG_BONUS.value]
             + stat_bonus_glacio_dmg_bonus
         )
 
@@ -537,7 +540,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_FUSION_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_FUSION_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_FUSION_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_FUSION_DMG_BONUS.value]
             + stat_bonus_fusion_dmg_bonus
         )
 
@@ -546,7 +552,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_ELECTRO_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_ELECTRO_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_ELECTRO_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_ELECTRO_DMG_BONUS.value]
             + stat_bonus_electro_dmg_bonus
         )
 
@@ -555,7 +564,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_AERO_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_AERO_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_AERO_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_AERO_DMG_BONUS.value]
             + stat_bonus_aero_dmg_bonus
         )
 
@@ -564,7 +576,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_SPECTRO_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_SPECTRO_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_SPECTRO_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_SPECTRO_DMG_BONUS.value]
             + stat_bonus_spectro_dmg_bonus
         )
 
@@ -573,7 +588,10 @@ class CalculatedResonator:
             self._old_row[ResonatorsEnum.STAT_BONUS_HAVOC_DMG_BONUS]
         )
         self._new_row[CalculatedResonatorsEnum.CALCULATED_HAVOC_DMG_BONUS.value] = (
-            self._new_row[CalculatedResonatorsEnum.ECHO_HAVOC_DMG_BONUS.value]
+            self._new_row[
+                CalculatedResonatorsEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            ]
+            + self._new_row[CalculatedResonatorsEnum.ECHO_HAVOC_DMG_BONUS.value]
             + stat_bonus_havoc_dmg_bonus
         )
 
