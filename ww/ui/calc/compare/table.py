@@ -7,7 +7,7 @@ from ww.crud.template import get_template_ids
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.utils.pd import get_empty_df, safe_get_df
 
-DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/自訂/傷害比較"
+DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/custom/compare"
 DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
 
 
