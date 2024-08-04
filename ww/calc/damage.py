@@ -326,7 +326,7 @@ def get_tsv_row_damage(
     return calculated_template_row_dict
 
 
-def get_damage(
+def get_tsv_damage(
     template_id: str, monster_name: str, r_id_1: str, r_id_2: str, r_id_3: str
 ):
     calculated_resonators_table = CalculatedResonatorsTable()
