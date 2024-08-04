@@ -120,24 +120,30 @@ class QCustomTableWidget(QTableWidget):
         self,
         row: int,
         column: int,
-        name: str,
-        names: List[str],
+        value: str,
+        options: List[str],
         currentIndexChanged=None,
         getOptions=None,
+        toolTip: Optional[str] = None,
     ) -> QCustomComboBox:
         if getOptions is None:
             combobox = QCustomComboBox()
-            combobox.addItems(names)
+            combobox.addItems(options)
         else:
             combobox = QCustomComboBox(getOptions=getOptions)
 
-        combobox.setCurrentText(name)
+        if toolTip is None:
+            combobox.setToolTip(value)
+        else:
+            combobox.setToolTip(toolTip)
+
+        combobox.setCurrentText(value)
 
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
 
         if currentIndexChanged is not None:
             combobox.currentIndexChanged.connect(
-                partial(currentIndexChanged, row, column, names)
+                partial(currentIndexChanged, row, column, options)
             )
 
         self.setCellWidget(row, column, combobox)
@@ -309,7 +315,7 @@ class QDraggableTableWidget(QCustomTableWidget):
                 for i in range(len(lines)):
                     line = lines[i].split("\t")
                     lines[i] = line
-                print(lines)
+                # print(lines)
                 current_row = self.currentRow()
                 current_col = self.currentColumn()
                 for row in range(len(lines)):

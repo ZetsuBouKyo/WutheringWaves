@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.model.resonators import ResonatorsEnum
+from ww.tables.echo_skill import EchoSkillEnum, EchoSkillTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.resonator_skill import ResonatorSkillTable
 from ww.tables.resonators import ResonatorsTable
@@ -28,6 +29,17 @@ def get_resonator_skill_ids(resonator_name: Optional[str]) -> List[str]:
         name for name in table.df[ResonatorSkillEnum.SKILL_ID.value].to_list() if name
     ]
     return names
+
+
+def get_resonator_and_echo_skill_ids(resonator_name: Optional[str]) -> List[str]:
+    resonator_skill_ids = get_resonator_skill_ids(resonator_name)
+    echo_skill_table = EchoSkillTable()
+    echo_skill_ids = [
+        name
+        for name in echo_skill_table.df[EchoSkillEnum.SKILL_ID.value].to_list()
+        if name
+    ]
+    return resonator_skill_ids + echo_skill_ids
 
 
 def get_resonator_chains() -> List[str]:

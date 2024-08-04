@@ -72,7 +72,7 @@ def get_json_row_damage(
     row: TemplateRowModel,
     resonator_id,
     resonator_name,
-    monster_name,
+    monster_id,
     monster_level,
     monster_def,
     resonators_table: ResonatorsTable,
@@ -226,7 +226,7 @@ def get_json_row_damage(
     )
 
     # Monster
-    monster_res = get_number(monsters_table.search(monster_name, f"{element}抗性"))
+    monster_res = get_number(monsters_table.search(monster_id, f"{element}抗性"))
     calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_LEVEL.value] = (
         monster_level
     )
@@ -239,7 +239,7 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.CALCULATED_ATK_P
         )
     )
-    bonus_atk_p = get_number(buffs.bonus_atk_p)
+    bonus_atk_p = buffs.bonus_atk_p
     final_atk_p = calculated_atk_p + bonus_atk_p
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_P.value] = final_atk_p
 
@@ -261,7 +261,7 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.ECHO_ATK
         )
     )
-    template_bonus_atk = get_number(buffs.bonus_atk)
+    template_bonus_atk = buffs.bonus_atk
     final_atk_addition = echo_atk + template_bonus_atk
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_ADDITION.value] = (
         final_atk_addition
@@ -273,7 +273,7 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.CALCULATED_CRIT_RATE
         )
     )
-    bonus_crit_rate = get_number(buffs.bonus_crit_rate)
+    bonus_crit_rate = buffs.bonus_crit_rate
     final_crit_rate = resonator_crit_rate + bonus_crit_rate
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_RATE.value] = (
         final_crit_rate
@@ -285,7 +285,7 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.CALCULATED_CRIT_DMG
         )
     )
-    bonus_crit_dmg = get_number(buffs.bonus_crit_dmg)
+    bonus_crit_dmg = buffs.bonus_crit_dmg
     final_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_DMG.value] = (
         final_crit_dmg
@@ -306,17 +306,17 @@ def get_json_row_damage(
         )
     )
 
-    template_bonus = get_number(buffs.bonus_addition)
+    template_bonus = buffs.bonus_addition
     final_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
     calculated_template_row_dict[CalculatedTemplateEnum.FINAL_BONUS.value] = final_bonus
 
     # Other Bonus
-    bonus_magnifier = get_number(buffs.bonus_magnifier)
-    bonus_amplifier = get_number(buffs.bonus_amplifier)
-    bonus_skill_dmg_addition = get_number(buffs.bonus_skill_dmg_addition)
-    bonus_ignore_def = get_number(buffs.bonus_ignore_def)
-    bonus_reduce_res = get_number(buffs.bonus_reduce_res)
+    bonus_magnifier = buffs.bonus_magnifier
+    bonus_amplifier = buffs.bonus_amplifier
+    bonus_skill_dmg_addition = buffs.bonus_skill_dmg_addition
+    bonus_ignore_def = buffs.bonus_ignore_def
+    bonus_reduce_res = buffs.bonus_reduce_res
 
     # DMG
     if resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.ATK.value:
@@ -373,7 +373,7 @@ def get_json_row_damage(
 
 
 def get_json_damage(
-    template_id: str, monster_name: str, r_id_1: str, r_id_2: str, r_id_3: str
+    template_id: str, monster_id: str, r_id_1: str, r_id_2: str, r_id_3: str
 ) -> List[Dict[CalculatedTemplateEnum, Union[str, Decimal]]]:
     results = []
 
@@ -381,8 +381,8 @@ def get_json_damage(
     resonators_table = ResonatorsTable()
 
     monsters_table = MonstersTable()
-    monster_level = get_number(monsters_table.search(monster_name, MonstersEnum.LEVEL))
-    monster_def = get_number(monsters_table.search(monster_name, MonstersEnum.DEF))
+    monster_level = get_number(monsters_table.search(monster_id, MonstersEnum.LEVEL))
+    monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
 
     template = get_template(template_id)
     if template is None:
@@ -408,7 +408,7 @@ def get_json_damage(
             row,
             resonator_id,
             resonator_name,
-            monster_name,
+            monster_id,
             monster_level,
             monster_def,
             resonators_table,

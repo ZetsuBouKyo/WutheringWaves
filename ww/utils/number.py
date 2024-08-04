@@ -1,12 +1,15 @@
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 
 
-def get_number(n: Optional[str]) -> float:
+def get_number(n: Optional[Union[str, Decimal]]) -> Decimal:
     if n is None or n == "" or n == np.nan:
         return Decimal("0.0")
+
+    if type(n) == Decimal:
+        return n
 
     if "," in n:
         n = n.replace(",", "")

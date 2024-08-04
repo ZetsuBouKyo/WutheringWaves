@@ -23,6 +23,7 @@ class TemplateRowBuffTypeEnum(str, Enum):
 class TemplateRowActionEnum(str, Enum):
     ATTACK: str = "普攻"
     ATTACK_N: str = "普攻xN"
+    AIR_ATTACK: str = "空中攻擊"
     HEAVY_ATTACK: str = "重擊"
     RESONANCE_SKILL: str = "共鳴技能"
     RESONANCE_LIBERATION: str = "共鳴解放"
@@ -37,11 +38,11 @@ class TemplateRowActionEnum(str, Enum):
 
 
 class TemplateRowEnum(str, Enum):
+    CALCULATE: str = "計算"
     BONUS_BUFF: str = "增益"
     RESONATOR_NAME: str = "[角色]名稱"
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
-    DAMAGE: str = "[計算]傷害"
     DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
     ACTION: str = "[實戰]操作"

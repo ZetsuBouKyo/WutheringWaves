@@ -21,7 +21,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import get_tsv_damage, get_tsv_row_damage
+from ww.calc.damage import get_json_damage
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
@@ -83,7 +83,7 @@ class QDamageCompare(QWidget):
             damage_crit = Decimal("0.0")
 
             resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
-            rows = get_tsv_damage(template_id, monster_id, resonator_id, "", "")
+            rows = get_json_damage(template_id, monster_id, resonator_id, "", "")
             for row in rows:
                 row_resonator_name = row.get(
                     CalculatedTemplateEnum.RESONATOR_NAME.value, None

@@ -13,18 +13,20 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.calc.damage import get_json_row_damage
 from ww.crud.buff import (
     get_echo_buffs,
     get_echo_sonata_buffs,
     get_resonator_buffs,
     get_weapon_buffs,
 )
-from ww.crud.resonator import get_resonator_names, get_resonator_skill_ids
+from ww.crud.resonator import get_resonator_and_echo_skill_ids, get_resonator_names
 from ww.crud.template import get_template
 from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
+    CalculatedTemplateEnum,
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
     TemplateModel,
@@ -33,6 +35,9 @@ from ww.model.template import (
     TemplateRowEnum,
     TemplateRowModel,
 )
+from ww.tables.echo_skill import EchoSkillTable
+from ww.tables.monsters import MonstersEnum, MonstersTable
+from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.table import QDraggableTableWidget
@@ -130,22 +135,103 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             width = len(e.value) * 20 + 50
             col = self.get_column_id(e.value)
             self.setColumnWidth(col, width)
+        skill_ids_col = self.get_column_id(TemplateRowEnum.SKILL_ID.value)
+        self.setColumnWidth(skill_ids_col, 400)
 
     def _init_cells(self):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 self.set_cell(None, row, col)
+        for row in range(self.rowCount()):
+            self.update_row_buffs(row, self.ouput_methods[row].buffs)
+            self.calculate_row(row)
 
     def _get_resonator_skill_ids(self, row: int) -> str:
         resonator_name = self._get_resonator_name(row)
-        return get_resonator_skill_ids(resonator_name)
+        return get_resonator_and_echo_skill_ids(resonator_name)
 
     def _get_resonator_name(self, row: int) -> str:
         col = self.get_column_id(TemplateRowEnum.RESONATOR_NAME.value)
         return self.get_cell(row, col)
 
-    def get_row(self, row: int) -> TemplateRowModel:
+    def update_row(self, row: int):
+        # Resonator name
+        col_resonator_name = self.get_column_id(TemplateRowEnum.RESONATOR_NAME.value)
+        self.ouput_methods[row].resonator_name = self.get_cell(row, col_resonator_name)
+
+        # DMG no CRIT
+        col_real_dmg_no_crit = self.get_column_id(
+            TemplateRowEnum.REAL_DMG_NO_CRIT.value
+        )
+        self.ouput_methods[row].real_dmg_no_crit = self.get_cell(
+            row, col_real_dmg_no_crit
+        )
+
+        # DMG CRIT
+        col_real_dmg_crit = self.get_column_id(TemplateRowEnum.REAL_DMG_CRIT.value)
+        self.ouput_methods[row].real_dmg_crit = self.get_cell(row, col_real_dmg_crit)
+
+        # Action
+        col_action = self.get_column_id(TemplateRowEnum.ACTION.value)
+        self.ouput_methods[row].action = self.get_cell(row, col_action)
+
+        # Skill ID
+        col_skill_id = self.get_column_id(TemplateRowEnum.SKILL_ID.value)
+        self.ouput_methods[row].skill_id = self.get_cell(row, col_skill_id)
+
+        # Skill bonus type
+        col_skill_bonus_type = self.get_column_id(
+            TemplateRowEnum.SKILL_BONUS_TYPE.value
+        )
+        self.ouput_methods[row].skill_bonus_type = self.get_cell(
+            row, col_skill_bonus_type
+        )
+
+        # Concerto regen
+        col_resonating_spin_concerto_regen = self.get_column_id(
+            TemplateRowEnum.RESONATING_SPIN_CONCERTO_REGEN.value
+        )
+        self.ouput_methods[row].resonating_spin_concerto_regen = self.get_cell(
+            row, col_resonating_spin_concerto_regen
+        )
+
+        col_accumulated_resonating_spin_concerto_regen = self.get_column_id(
+            TemplateRowEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value
+        )
+        self.ouput_methods[row].accumulated_resonating_spin_concerto_regen = (
+            self.get_cell(row, col_accumulated_resonating_spin_concerto_regen)
+        )
+
+        # Time
+        col_time_start = self.get_column_id(TemplateRowEnum.TIME_START.value)
+        self.ouput_methods[row].time_start = self.get_cell(row, col_time_start)
+
+        col_time_end = self.get_column_id(TemplateRowEnum.TIME_END.value)
+        self.ouput_methods[row].time_end = self.get_cell(row, col_time_end)
+
+        col_cumulative_time = self.get_column_id(TemplateRowEnum.CUMULATIVE_TIME.value)
+        self.ouput_methods[row].cumulative_time = self.get_cell(
+            row, col_cumulative_time
+        )
+
+        # Frame
+        col_frame = self.get_column_id(TemplateRowEnum.FRAME.value)
+        self.ouput_methods[row].frame = self.get_cell(row, col_frame)
+
+        # Buffs
+        self.update_row_buffs(row, self.ouput_methods[row].buffs)
+
         return self.ouput_methods[row]
+
+    def get_row(self, row: int) -> TemplateRowModel:
+        self.update_row(row)
+        return self.ouput_methods[row]
+
+    def get_output_methods(self) -> List[TemplateRowModel]:
+        for row in range(self.rowCount()):
+            self.update_row(row)
+
+        return self.ouput_methods
 
     def set_row(self, row: int, data: TemplateRowModel):
         if isinstance(data, TemplateRowModel):
@@ -163,8 +249,16 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         # TODO:
         ...
 
-    def set_cell(self, _: str, row: int, col: int):
-        if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
+    def set_cell(self, value: str, row: int, col: int):
+        if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
+            btn = QDataPushButton("計算")
+            btn.clicked.connect(partial(self.calculate_row, row))
+            self.setCellWidget(row, col, btn)
+        elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
+            btn = QDataPushButton("+")
+            btn.clicked.connect(partial(self.add_buff, row, btn))
+            self.setCellWidget(row, col, btn)
+        elif self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
             self.set_combobox(
                 row,
                 col,
@@ -199,13 +293,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 self.ouput_methods[row].skill_bonus_type,
                 [e.value for e in ResonatorSkillBonusTypeEnum],
             )
-        elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
-            btn = QDataPushButton("+")
-            btn.clicked.connect(partial(self.add_buff, row, btn))
-            self.setCellWidget(row, col, btn)
+
         elif (
-            self.column_names[col] == TemplateRowEnum.DAMAGE.value
-            or self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
+            self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
             or self.column_names[col] == TemplateRowEnum.DAMAGE_CRIT.value
             or self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_AMPLIFIER.value
@@ -222,8 +312,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             or self.column_names[col] == TemplateRowEnum.BONUS_IGNORE_DEF.value
             or self.column_names[col] == TemplateRowEnum.BONUS_REDUCE_RES.value
         ):
-            # self.get_buff(row, col)
-            self.set_uneditable_cell("", row, col)
+            self.set_uneditable_cell(value, row, col)
         else:
             item = QTableWidgetItem("")
             self.setItem(row, col, item)
@@ -325,6 +414,53 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         return buffs
 
+    def calculate_row(self, row: int):
+        data = self.get_row(row)
+
+        name_to_id = self.basic.get_test_resonators()
+        monster_id = self.basic.get_monster_id()
+
+        resonator_name = data.resonator_name
+        resonator_id = name_to_id.get(resonator_name, None)
+        if resonator_id is None:
+            return
+
+        resonators_table = ResonatorsTable()
+        calculated_resonators_table = CalculatedResonatorsTable()
+        echo_skill_table = EchoSkillTable()
+        monsters_table = MonstersTable()
+
+        monster_level = get_number(
+            monsters_table.search(monster_id, MonstersEnum.LEVEL)
+        )
+        monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
+
+        calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
+
+        calculated_row = get_json_row_damage(
+            data,
+            resonator_id,
+            resonator_name,
+            monster_id,
+            monster_level,
+            monster_def,
+            resonators_table,
+            calculated_resonators_table,
+            echo_skill_table,
+            monsters_table,
+            calculated_template_columns,
+        )
+        if calculated_row is None:
+            return
+
+        dmg_col = self.get_column_id(TemplateRowEnum.DAMAGE_NO_CRIT.value)
+        dmg = str(calculated_row.get(CalculatedTemplateEnum.DAMAGE_NO_CRIT.value, ""))
+        self.set_cell(dmg, row, dmg_col)
+
+        dmg_crit_col = self.get_column_id(TemplateRowEnum.DAMAGE_CRIT.value)
+        dmg_crit = str(calculated_row.get(CalculatedTemplateEnum.DAMAGE_CRIT.value, ""))
+        self.set_cell(dmg_crit, row, dmg_crit_col)
+
     def add_buff(self, row: int, btn: QDataPushButton):
         buffs = self.get_default_buffs()
 
@@ -366,81 +502,6 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.setLayout(layout)
         dialog.exec_()
-
-    def get_output_methods(self) -> List[TemplateRowModel]:
-        for row in range(self.rowCount()):
-            # Resonator name
-            col_resonator_name = self.get_column_id(
-                TemplateRowEnum.RESONATOR_NAME.value
-            )
-            self.ouput_methods[row].resonator_name = self.get_cell(
-                row, col_resonator_name
-            )
-
-            # DMG no CRIT
-            col_real_dmg_no_crit = self.get_column_id(
-                TemplateRowEnum.REAL_DMG_NO_CRIT.value
-            )
-            self.ouput_methods[row].real_dmg_no_crit = self.get_cell(
-                row, col_real_dmg_no_crit
-            )
-
-            # DMG CRIT
-            col_real_dmg_crit = self.get_column_id(TemplateRowEnum.REAL_DMG_CRIT.value)
-            self.ouput_methods[row].real_dmg_crit = self.get_cell(
-                row, col_real_dmg_crit
-            )
-
-            # Action
-            col_action = self.get_column_id(TemplateRowEnum.ACTION.value)
-            self.ouput_methods[row].action = self.get_cell(row, col_action)
-
-            # Skill ID
-            col_skill_id = self.get_column_id(TemplateRowEnum.SKILL_ID.value)
-            self.ouput_methods[row].skill_id = self.get_cell(row, col_skill_id)
-
-            # Skill bonus type
-            col_skill_bonus_type = self.get_column_id(
-                TemplateRowEnum.SKILL_BONUS_TYPE.value
-            )
-            self.ouput_methods[row].skill_bonus_type = self.get_cell(
-                row, col_skill_bonus_type
-            )
-
-            # Concerto regen
-            col_resonating_spin_concerto_regen = self.get_column_id(
-                TemplateRowEnum.RESONATING_SPIN_CONCERTO_REGEN.value
-            )
-            self.ouput_methods[row].resonating_spin_concerto_regen = self.get_cell(
-                row, col_resonating_spin_concerto_regen
-            )
-
-            col_accumulated_resonating_spin_concerto_regen = self.get_column_id(
-                TemplateRowEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value
-            )
-            self.ouput_methods[row].accumulated_resonating_spin_concerto_regen = (
-                self.get_cell(row, col_accumulated_resonating_spin_concerto_regen)
-            )
-
-            # Time
-            col_time_start = self.get_column_id(TemplateRowEnum.TIME_START.value)
-            self.ouput_methods[row].time_start = self.get_cell(row, col_time_start)
-
-            col_time_end = self.get_column_id(TemplateRowEnum.TIME_END.value)
-            self.ouput_methods[row].time_end = self.get_cell(row, col_time_end)
-
-            col_cumulative_time = self.get_column_id(
-                TemplateRowEnum.CUMULATIVE_TIME.value
-            )
-            self.ouput_methods[row].cumulative_time = self.get_cell(
-                row, col_cumulative_time
-            )
-
-            # Frame
-            col_frame = self.get_column_id(TemplateRowEnum.FRAME.value)
-            self.ouput_methods[row].frame = self.get_cell(row, col_frame)
-
-        return self.ouput_methods
 
 
 class QTemplateOutputMethodTab(QWidget):

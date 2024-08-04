@@ -3,6 +3,7 @@ from typing import Dict, List
 from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
+    QMessageBox,
     QPlainTextEdit,
     QPushButton,
     QTableWidgetItem,
@@ -20,11 +21,13 @@ from ww.crud.resonator import (
 )
 from ww.crud.template import get_template_ids
 from ww.crud.weapon import get_weapon_names, get_weapon_ranks
+from ww.model.resonators import ResonatorsEnum
 from ww.model.template import (
     TemplateModel,
     TemplateResonatorModel,
     TemplateResonatorTableRowEnum,
 )
+from ww.tables.resonators import ResonatorsTable
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QCustomTableWidget
 
@@ -298,6 +301,21 @@ class QTemplateBasicTab(QWidget):
             self.q_test_resonator_2_combobox.currentText(),
             self.q_test_resonator_3_combobox.currentText(),
         ]
+
+    def get_test_resonators(self) -> List[Dict[str, str]]:
+        table = {}
+        resonators_table = ResonatorsTable()
+        for resonator_id in self.get_test_resonator_ids():
+            if not resonator_id:
+                continue
+            resonator_name = resonators_table.search(
+                resonator_id, ResonatorsEnum.NAME.value
+            )
+            if table.get(resonator_name, None) is not None:
+                QMessageBox.warning(self, "警告", "角色重複。")
+                return table
+            table[resonator_name] = resonator_id
+        return table
 
     def get_monster_id(self) -> str:
         return self.q_test_monster_id_combobox.currentText()
