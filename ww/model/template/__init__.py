@@ -1,4 +1,5 @@
-from typing import List
+from decimal import Decimal
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -33,8 +34,8 @@ class TemplateResonatorModel(BaseModel):
     resonator_chain: str = ""
     resonator_weapon_name: str = ""
     resonator_weapon_rank: str = ""
-    resonator_inherent_skill_1: bool = None
-    resonator_inherent_skill_2: bool = None
+    resonator_inherent_skill_1: Optional[bool] = None
+    resonator_inherent_skill_2: Optional[bool] = None
     resonator_echo_1: str = ""
     resonator_echo_sonata_1: str = ""
     resonator_echo_sonata_2: str = ""
@@ -42,8 +43,49 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_4: str = ""
     resonator_echo_sonata_5: str = ""
 
+    def get_row(cls):
+        resonator_inherent_skill_1 = cls.resonator_inherent_skill_1
+        if resonator_inherent_skill_1 is None:
+            resonator_inherent_skill_1 = ""
+        else:
+            resonator_inherent_skill_1 = str(int(resonator_inherent_skill_1))
 
-class TemplateRowBuffModel(BaseModel): ...
+        resonator_inherent_skill_2 = cls.resonator_inherent_skill_2
+        if resonator_inherent_skill_2 is None:
+            resonator_inherent_skill_2 = ""
+        else:
+            resonator_inherent_skill_2 = str(int(resonator_inherent_skill_2))
+        return [
+            cls.resonator_name,
+            cls.resonator_chain,
+            cls.resonator_weapon_name,
+            cls.resonator_weapon_rank,
+            resonator_inherent_skill_1,
+            resonator_inherent_skill_2,
+            cls.resonator_echo_1,
+            cls.resonator_echo_sonata_1,
+            cls.resonator_echo_sonata_2,
+            cls.resonator_echo_sonata_3,
+            cls.resonator_echo_sonata_4,
+            cls.resonator_echo_sonata_5,
+        ]
+
+
+class TemplateRowBuffModel(BaseModel):
+    bonus_magnifier: Decimal = Decimal("0.0")
+    bonus_amplifier: Decimal = Decimal("0.0")
+    bonus_hp_p: Decimal = Decimal("0.0")
+    bonus_hp: Decimal = Decimal("0.0")
+    bonus_atk_p: Decimal = Decimal("0.0")
+    bonus_atk: Decimal = Decimal("0.0")
+    bonus_def_p: Decimal = Decimal("0.0")
+    bonus_def: Decimal = Decimal("0.0")
+    bonus_crit_rate: Decimal = Decimal("0.0")
+    bonus_crit_dmg: Decimal = Decimal("0.0")
+    bonus_addition: Decimal = Decimal("0.0")
+    bonus_skill_dmg_addition: Decimal = Decimal("0.0")
+    bonus_ignore_def: Decimal = Decimal("0.0")
+    bonus_reduce_res: Decimal = Decimal("0.0")
 
 
 class TemplateRowModel(BaseModel):

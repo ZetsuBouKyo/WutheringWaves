@@ -27,6 +27,7 @@ from ww.model.template import (
     TEMPLATE_BONUS,
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
+    TemplateModel,
     TemplateRowActionEnum,
     TemplateRowBuffTypeEnum,
     TemplateRowEnum,
@@ -118,13 +119,10 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         del self.ouput_methods[row]
         super().removeRow(row)
 
-    def load(self) -> List[TemplateRowModel]:
-        template_id = self.basic.get_template_id()
-        template = get_template(template_id)
-        if len(template.rows) == 0:
-            template.rows.append(TemplateRowModel())
-
-        self.ouput_methods = template.rows
+    def load(self, rows: List[TemplateRowModel]):
+        self.ouput_methods = rows
+        row = len(self.ouput_methods)
+        self.setRowCount(row)
         self._init_cells()
 
     def _init_column_width(self):
@@ -163,7 +161,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def update_cell(self, row: int, col: int, options: List[str], option_index: int):
         # TODO:
-        print(self.get_cell(row, col))
+        ...
 
     def set_cell(self, _: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
@@ -241,6 +239,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         return data
 
     def update_row_buffs(self, row: int, buffs: List[TemplateBuffTableRowModel]):
+        # TODO: refactor?
         buff_dict = {e.value: Decimal("0.0") for e in TemplateRowBuffTypeEnum}
         for buff in buffs:
             value = get_number(buff.value) * get_number(buff.stack)
@@ -455,8 +454,8 @@ class QTemplateOutputMethodTab(QWidget):
 
         self.setLayout(self.layout)
 
-    def load(self):
-        self.q_output_method_table.load()
+    def load(self, rows: List[TemplateRowModel]):
+        self.q_output_method_table.load(rows)
 
     def get_rows(self) -> List[TemplateRowModel]:
         return self.q_output_method_table.get_output_methods()

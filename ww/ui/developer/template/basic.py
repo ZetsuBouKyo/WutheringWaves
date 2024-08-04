@@ -18,8 +18,13 @@ from ww.crud.resonator import (
     get_resonator_inherent_skills,
     get_resonator_names,
 )
+from ww.crud.template import get_template_ids
 from ww.crud.weapon import get_weapon_names, get_weapon_ranks
-from ww.model.template import TemplateResonatorModel, TemplateResonatorTableRowEnum
+from ww.model.template import (
+    TemplateModel,
+    TemplateResonatorModel,
+    TemplateResonatorTableRowEnum,
+)
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QCustomTableWidget
 
@@ -30,22 +35,30 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
         self.column_names_table: Dict[str, int] = {
             self.column_names[i]: i for i in range(len(self.column_names))
         }
-        self.resonators = resonators
-        if len(self.resonators) == 0:
-            self.data = [["" for _ in range(len(self.column_names))] for _ in range(3)]
 
         rows = 3
         columns = len(self.column_names)
 
         super().__init__(rows, columns)
         self.setHorizontalHeaderLabels(self.column_names)
-        self._init_cells()
+        self.load(resonators)
 
     def _init_cells(self):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
+
+    def load(self, resonators: List[TemplateResonatorModel]):
+        self.resonators = resonators
+        if len(self.resonators) == 0:
+            self.data = [["" for _ in range(len(self.column_names))] for _ in range(3)]
+        else:
+            self.data = []
+            for resonator in resonators:
+                self.data.append(resonator.get_row())
+
+        self._init_cells()
 
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
@@ -75,13 +88,17 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
                 elif col == self.get_column_id(
                     TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_1.value
                 ):
-                    if cell != "":
-                        resonator.resonator_inherent_skill_1 = bool(int(cell))
+                    if cell == "1":
+                        resonator.resonator_inherent_skill_1 = True
+                    elif cell == "0":
+                        resonator.resonator_inherent_skill_1 = False
                 elif col == self.get_column_id(
                     TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_2.value
                 ):
-                    if cell != "":
-                        resonator.resonator_inherent_skill_2 = bool(int(cell))
+                    if cell == "1":
+                        resonator.resonator_inherent_skill_2 = True
+                    elif cell == "0":
+                        resonator.resonator_inherent_skill_2 = False
                 elif col == self.get_column_id(
                     TemplateResonatorTableRowEnum.RESONATOR_ECHO_1.value
                 ):
@@ -182,17 +199,20 @@ class QTemplateBasicTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
+        combobox_width = 900
+        height = 40
+
         # Template ID
         self.q_template_id_layout = QHBoxLayout()
         self.q_template_id_label = QLabel("模板ID")
         self.q_template_id_label.setFixedWidth(150)
-        self.q_template_ids = QCustomComboBox()
-        self.q_template_ids.setFixedWidth(700)
-        self.q_template_ids.setFixedHeight(40)
+        self.q_template_ids = QCustomComboBox(getOptions=get_template_ids)
+        self.q_template_ids.setFixedWidth(combobox_width)
+        self.q_template_ids.setFixedHeight(height)
         self.q_btns_layout = QHBoxLayout()
         self.q_get_template_id_btn = QPushButton("預設模板ID")
         self.q_get_template_id_btn.clicked.connect(self.create_template_id)
-        self.q_get_template_id_btn.setFixedHeight(40)
+        self.q_get_template_id_btn.setFixedHeight(height)
 
         self.q_template_id_layout.addWidget(self.q_template_id_label)
         self.q_template_id_layout.addWidget(self.q_template_ids)
@@ -204,8 +224,8 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_1_label = QLabel("測試共鳴者1")
         self.q_test_resonator_1_label.setFixedWidth(150)
         self.q_test_resonator_1_combobox = QCustomComboBox(getOptions=get_resonator_ids)
-        self.q_test_resonator_1_combobox.setFixedWidth(700)
-        self.q_test_resonator_1_combobox.setFixedHeight(40)
+        self.q_test_resonator_1_combobox.setFixedWidth(combobox_width)
+        self.q_test_resonator_1_combobox.setFixedHeight(height)
 
         self.q_test_resonator_1_layout.addWidget(self.q_test_resonator_1_label)
         self.q_test_resonator_1_layout.addWidget(self.q_test_resonator_1_combobox)
@@ -216,8 +236,8 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_2_label = QLabel("測試共鳴者2")
         self.q_test_resonator_2_label.setFixedWidth(150)
         self.q_test_resonator_2_combobox = QCustomComboBox(getOptions=get_resonator_ids)
-        self.q_test_resonator_2_combobox.setFixedWidth(700)
-        self.q_test_resonator_2_combobox.setFixedHeight(40)
+        self.q_test_resonator_2_combobox.setFixedWidth(combobox_width)
+        self.q_test_resonator_2_combobox.setFixedHeight(height)
 
         self.q_test_resonator_2_layout.addWidget(self.q_test_resonator_2_label)
         self.q_test_resonator_2_layout.addWidget(self.q_test_resonator_2_combobox)
@@ -228,8 +248,8 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_3_label = QLabel("測試共鳴者3")
         self.q_test_resonator_3_label.setFixedWidth(150)
         self.q_test_resonator_3_combobox = QCustomComboBox(getOptions=get_resonator_ids)
-        self.q_test_resonator_3_combobox.setFixedWidth(700)
-        self.q_test_resonator_3_combobox.setFixedHeight(40)
+        self.q_test_resonator_3_combobox.setFixedWidth(combobox_width)
+        self.q_test_resonator_3_combobox.setFixedHeight(height)
 
         self.q_test_resonator_3_layout.addWidget(self.q_test_resonator_3_label)
         self.q_test_resonator_3_layout.addWidget(self.q_test_resonator_3_combobox)
@@ -240,8 +260,8 @@ class QTemplateBasicTab(QWidget):
         self.q_test_monster_id_label = QLabel("測試怪物ID")
         self.q_test_monster_id_label.setFixedWidth(150)
         self.q_test_monster_id_combobox = QCustomComboBox(getOptions=get_monster_ids)
-        self.q_test_monster_id_combobox.setFixedWidth(700)
-        self.q_test_monster_id_combobox.setFixedHeight(40)
+        self.q_test_monster_id_combobox.setFixedWidth(combobox_width)
+        self.q_test_monster_id_combobox.setFixedHeight(height)
 
         self.q_test_monster_id_layout.addWidget(self.q_test_monster_id_label)
         self.q_test_monster_id_layout.addWidget(self.q_test_monster_id_combobox)
@@ -249,12 +269,13 @@ class QTemplateBasicTab(QWidget):
 
         # Description
         self.q_description_label = QLabel("描述")
-        self.q_description_label.setFixedHeight(40)
+        self.q_description_label.setFixedHeight(height)
         self.q_description = QPlainTextEdit()
         self.q_description.setFixedHeight(120)
 
+        # Table
         self.q_resonator_label = QLabel("共鳴者")
-        self.q_resonator_label.setFixedHeight(40)
+        self.q_resonator_label.setFixedHeight(height)
         self.q_resonator_table = QTemplateTabResonatorTable()
         self.q_resonator_table.setFixedHeight(180)
 
@@ -315,4 +336,26 @@ class QTemplateBasicTab(QWidget):
         if not id:
             return
 
+        monster_id = self.get_monster_id()
+        if monster_id:
+            id += f"-{monster_id}"
+
         self.q_template_ids.setCurrentText(id)
+
+    def reset_template_id(self) -> str:
+        return self.q_template_ids.setCurrentText("")
+
+    def load(self, template: TemplateModel):
+        # Resonators
+        self.q_test_resonator_1_combobox.setCurrentText(template.test_resonator_id_1)
+        self.q_test_resonator_2_combobox.setCurrentText(template.test_resonator_id_2)
+        self.q_test_resonator_3_combobox.setCurrentText(template.test_resonator_id_3)
+
+        # Monster ID
+        self.q_test_monster_id_combobox.setCurrentText(template.monster_id)
+
+        # Description
+        self.q_description.setPlainText(template.description)
+
+        # Table
+        self.q_resonator_table.load(template.resonators)
