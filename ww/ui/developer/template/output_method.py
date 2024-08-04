@@ -25,9 +25,9 @@ from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
+    TemplateBuffTableRowEnum,
+    TemplateBuffTableRowModel,
     TemplateRowActionEnum,
-    TemplateRowBuffEnum,
-    TemplateRowBuffModel,
     TemplateRowBuffTypeEnum,
     TemplateRowEnum,
     TemplateRowModel,
@@ -60,7 +60,9 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
             column_names=column_names,
         )
 
-        self.setColumnWidth(self.get_column_id(TemplateRowBuffEnum.NAME.value), 500)
+        self.setColumnWidth(
+            self.get_column_id(TemplateBuffTableRowEnum.NAME.value), 500
+        )
 
     def update_row(self, row: int, i: int):
         buff_id = self.buffs_list[i]
@@ -70,18 +72,18 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         buff_duration = buff.get(BUFF_DURATION, None)
         if not buff or buff_type is None or buff_value is None or buff_duration is None:
             return
-        buff_type_col = self.get_column_id(TemplateRowBuffEnum.TYPE.value)
-        buff_value_col = self.get_column_id(TemplateRowBuffEnum.VALUE.value)
-        buff_duration_col = self.get_column_id(TemplateRowBuffEnum.DURATION.value)
+        buff_type_col = self.get_column_id(TemplateBuffTableRowEnum.TYPE.value)
+        buff_value_col = self.get_column_id(TemplateBuffTableRowEnum.VALUE.value)
+        buff_duration_col = self.get_column_id(TemplateBuffTableRowEnum.DURATION.value)
         self.set_cell(buff_type, row, buff_type_col)
         self.set_cell(buff_value, row, buff_value_col)
         self.set_cell(buff_duration, row, buff_duration_col)
 
     def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == TemplateRowBuffEnum.NAME.value:
+        if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
             combobox = self.set_combobox(row, col, value, self.buffs_list)
             combobox.currentIndexChanged.connect(partial(self.update_row, row))
-        elif self.column_names[col] == TemplateRowBuffEnum.TYPE.value:
+        elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
             self.set_combobox(
                 row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
             )
@@ -238,7 +240,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             return [["", "", "", "", ""]]
         return data
 
-    def update_row_buffs(self, row: int, buffs: List[TemplateRowBuffModel]):
+    def update_row_buffs(self, row: int, buffs: List[TemplateBuffTableRowModel]):
         buff_dict = {e.value: Decimal("0.0") for e in TemplateRowBuffTypeEnum}
         for buff in buffs:
             value = get_number(buff.value) * get_number(buff.stack)
@@ -261,7 +263,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         data = table.get_data()
         buffs = []
         for d in data:
-            buff = TemplateRowBuffModel(
+            buff = TemplateBuffTableRowModel(
                 name=d[0], type=d[1], value=d[2], stack=d[3], duration=d[4]
             )
             buffs.append(buff)
@@ -344,7 +346,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         data = self.get_row_buff(row)
 
-        column_names = [e.value for e in TemplateRowBuffEnum]
+        column_names = [e.value for e in TemplateBuffTableRowEnum]
         table = QTemplateTabOutputMethodBuffTable(
             len(data),
             len(column_names),
