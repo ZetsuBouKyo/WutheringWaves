@@ -1,16 +1,9 @@
 from enum import Enum
-from functools import partial
 from pathlib import Path
 
-from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar
-
-from ww.model.echoes import EchoListEnum
-from ww.model.resonators import CalculatedResonatorsEnum
-from ww.tables.crud import get_col
-from ww.tables.echoes import EchoListTable
-from ww.tables.monsters import MonstersEnum, MonstersTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
-from ww.tables.templates import get_template_ids
+from ww.crud.monster import get_monster_ids
+from ww.crud.resonator import get_resonator_ids
+from ww.crud.template import get_template_ids
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.utils.pd import get_empty_df, safe_get_df
 
@@ -62,9 +55,7 @@ class QDamageCompareTable(QDraggableTableWidget):
                 col,
                 value,
                 [],
-                getOptions=partial(
-                    get_col, ResonatorsTable().df, QDamageCompareTableEnum.ID.value
-                ),
+                getOptions=get_resonator_ids,
             )
         elif self.column_names[col] == QDamageCompareTableEnum.MONSTER_ID.value:
             self.set_combobox(
@@ -72,11 +63,7 @@ class QDamageCompareTable(QDraggableTableWidget):
                 col,
                 value,
                 [],
-                getOptions=partial(
-                    get_col,
-                    MonstersTable().df,
-                    MonstersEnum.NAME.value,
-                ),
+                getOptions=get_monster_ids,
             )
         elif self.column_names[col] == QDamageCompareTableEnum.TEMPLATE_ID.value:
             self.set_combobox(

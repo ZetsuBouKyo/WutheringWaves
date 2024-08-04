@@ -400,7 +400,7 @@ def get_json_damage(
             resonators_name2id[n] = r_id
 
     for row in template.rows:
-        resonator_name = row[TemplateEnum.RESONATOR_NAME]
+        resonator_name = row.resonator_name
         resonator_id = resonators_name2id.get(resonator_name, None)
         if resonator_id is None:
             continue
