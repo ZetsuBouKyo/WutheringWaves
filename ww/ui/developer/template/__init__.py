@@ -39,6 +39,8 @@ class QTemplateTabs(QWidget):
         self.q_progress_bar.setMaximum(100)
         self.q_progress_label = QLabel("")
         self.q_progress_label.setFixedWidth(150)
+        self.q_calculate_btn = QPushButton("計算")
+        self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_save_btn = QPushButton("存檔")
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton("讀取")
@@ -51,6 +53,7 @@ class QTemplateTabs(QWidget):
         self.q_btns_layout.addWidget(self.q_progress_bar)
         self.q_btns_layout.addWidget(self.q_progress_label)
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_calculate_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
@@ -73,6 +76,9 @@ class QTemplateTabs(QWidget):
     def reset_progress_bar(self):
         self.q_progress_bar.setValue(0.0)
         self.q_progress_label.setText("")
+
+    def calculate(self):
+        self.q_template_output_method_tab.calculate()
 
     def save(self):
         self.q_progress_bar.setValue(0.0)
