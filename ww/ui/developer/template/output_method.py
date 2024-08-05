@@ -125,7 +125,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         super().removeRow(row)
 
     def calculate(self):
-        self._init_cells()
+        for row in range(self.rowCount()):
+            self.update_row_buffs(row, self.ouput_methods[row].buffs)
+            self.calculate_row(row)
 
     def load(self, rows: List[TemplateRowModel]):
         self.ouput_methods = rows

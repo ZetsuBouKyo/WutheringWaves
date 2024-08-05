@@ -15,17 +15,18 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.ui.developer.private_data import QPrivateDataTabs
-from ww.ui.developer.template import QTemplateTabs
 
-
-class QDevTabs(QTabWidget):
+class QPrivateDataTabs(QTabWidget):
     def __init__(self):
         super().__init__()
 
         # Tabs
-        q_template_tab = QTemplateTabs()
-        q_private_data_tab = QPrivateDataTabs()
+        q_resonator = QWidget()
+        q_weapon = QWidget()
+        q_echo = QWidget()
+        q_buff = QWidget()
 
-        self.addTab(q_template_tab, "模板")
-        self.addTab(q_private_data_tab, "內部數據")
+        self.addTab(q_resonator, "共鳴者")
+        self.addTab(q_weapon, "武器")
+        self.addTab(q_echo, "聲骸")
+        self.addTab(q_buff, "增益")

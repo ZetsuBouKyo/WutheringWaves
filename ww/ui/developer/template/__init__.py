@@ -21,6 +21,7 @@ from ww.model.echoes import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echoes import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 
 echo_list_table = EchoListTable()
@@ -65,9 +66,15 @@ class QTemplateTabs(QWidget):
         self.q_template_output_method_tab = QTemplateOutputMethodTab(
             self.q_template_basic_tab
         )
+        # Damage analysis
+        self.q_template_damage_analysis = QWidget()
+        # Help
+        self.q_template_help_tab = QTemplateHelpTab()
 
         self.q_tabs.addTab(self.q_template_basic_tab, "基本資料")
         self.q_tabs.addTab(self.q_template_output_method_tab, "輸出手法")
+        self.q_tabs.addTab(self.q_template_damage_analysis, "傷害占比")
+        self.q_tabs.addTab(self.q_template_help_tab, "說明")
 
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_tabs)
