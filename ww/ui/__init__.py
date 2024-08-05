@@ -19,7 +19,7 @@ from PySide2.QtWidgets import (
 from ww.ui.calc import QCalcTabs
 from ww.ui.data import QDataTabs
 from ww.ui.developer import QDevTabs
-from ww.ui.gacha import QGachaTab
+from ww.ui.gacha import QGachaTabs
 from ww.ui.home import QHomeTab
 from ww.ui.resource import QResourceTab
 
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow):
         public_data_tabs = QDataTabs()
         dev_tabs = QDevTabs()
         calc_tabs = QCalcTabs()
-        gacha_tab = QGachaTab()
+        gacha_tab = QGachaTabs()
         resource = QResourceTab()
 
         tabs_widget.addTab(home, "關於")
