@@ -21,6 +21,7 @@ from ww.ui.data import QDataTabs
 from ww.ui.developer import QDevTabs
 from ww.ui.gacha import QGachaTab
 from ww.ui.home import QHomeTab
+from ww.ui.resource import QResourceTab
 
 ICON_PATH = "./cache/v1/icon.webp"
 
@@ -44,12 +45,14 @@ class MainWindow(QMainWindow):
         dev_tabs = QDevTabs()
         calc_tabs = QCalcTabs()
         gacha_tab = QGachaTab()
+        resource = QResourceTab()
 
         tabs_widget.addTab(home, "關於")
         tabs_widget.addTab(public_data_tabs, "數據")
         tabs_widget.addTab(dev_tabs, "開發者")
         tabs_widget.addTab(calc_tabs, "計算")
         tabs_widget.addTab(gacha_tab, "抽卡分析")
+        tabs_widget.addTab(resource, "資源規劃")
 
         self.setCentralWidget(tabs_widget)
         self.center()
