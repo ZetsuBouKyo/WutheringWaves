@@ -1,19 +1,21 @@
 from enum import Enum
 
+from ww.locale import ZhHantEnum, _
+
 
 class ResonatorSkillBaseAttrEnum(str, Enum):
-    HP: str = "生命"
-    ATK: str = "攻擊"
-    DEF: str = "防禦"
+    HP: str = _(ZhHantEnum.HP)
+    ATK: str = _(ZhHantEnum.ATK)
+    DEF: str = _(ZhHantEnum.DEF)
 
 
 class ResonatorSkillTypeEnum(str, Enum):
-    NORMAL_ATTACK: str = "常態攻擊"
-    RESONANCE_SKILL: str = "共鳴技能"
-    RESONANCE_LIBERATION: str = "共鳴解放"
-    INTRO_SKILL: str = "變奏技能"
-    OUTRO_SKILL: str = "延奏技能"
-    FORTE_CIRCUIT: str = "共鳴回路"
+    NORMAL_ATTACK: str = _(ZhHantEnum.NORMAL_ATTACK)
+    RESONANCE_SKILL: str = _(ZhHantEnum.RESONANCE_SKILL)
+    RESONANCE_LIBERATION: str = _(ZhHantEnum.RESONANCE_LIBERATION)
+    INTRO_SKILL: str = _(ZhHantEnum.INTRO_SKILL)
+    OUTRO_SKILL: str = _(ZhHantEnum.OUTRO_SKILL)
+    FORTE_CIRCUIT: str = _(ZhHantEnum.FORTE_CIRCUIT)
 
 
 class ResonatorSkillBonusTypeEnum(str, Enum):

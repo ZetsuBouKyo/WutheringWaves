@@ -23,6 +23,7 @@ from PySide2.QtWidgets import (
 
 from ww.calc.damage import get_tsv_row_damage
 from ww.crud.resonator import get_resonator_ids
+from ww.locale import ZhHantEnum, _
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
@@ -268,7 +269,7 @@ class QDamageSimple(QWidget):
         layout = QHBoxLayout()
         layout.setAlignment(Qt.AlignLeft)
 
-        btn = QPushButton("計算")
+        btn = QPushButton(_(ZhHantEnum.CALCULATE))
         btn.clicked.connect(self._calculate)
 
         layout.addWidget(btn)

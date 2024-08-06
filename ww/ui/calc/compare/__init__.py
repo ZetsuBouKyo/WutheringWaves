@@ -22,6 +22,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.calc.damage import get_json_damage
+from ww.locale import ZhHantEnum, _
 from ww.model.echo_skill import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
@@ -62,7 +63,7 @@ class QDamageCompare(QWidget):
         self.q_calculated_label = QLabel("計算結果")
 
         self.q_calculate_btn_layout = QHBoxLayout()
-        self.q_calculate_btn = QPushButton("計算")
+        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_calculate_btn_layout.addStretch()
         self.q_calculate_btn_layout.addWidget(self.q_calculate_btn)

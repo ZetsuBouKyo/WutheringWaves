@@ -6,20 +6,20 @@ TEMPLATE_BONUS = "[額外]"
 
 
 class TemplateRowBuffTypeEnum(str, Enum):
-    MAGNIFIER: str = "倍率"
-    AMPLIFIER: str = "加深"
-    HP_P: str = "生命百分比"
-    HP: str = "生命"
-    ATK_P: str = "攻擊百分比"
-    ATK: str = "攻擊"
-    DEF_P: str = "防禦百分比"
-    DEF: str = "防禦"
-    CRIT_RATE: str = "暴擊"
-    CRIT_DMG: str = "暴擊傷害"
-    ADDITION: str = "加成"
-    SKILL_DMG_ADDITION: str = "招式倍率"
-    IGNORE_DEF: str = "忽視防禦"
-    REDUCE_RES: str = "抗性降低"
+    MAGNIFIER: str = _(ZhHantEnum.MAGNIFIER)
+    AMPLIFIER: str = _(ZhHantEnum.AMPLIFIER)
+    HP_P: str = _(ZhHantEnum.HP_P)
+    HP: str = _(ZhHantEnum.HP)
+    ATK_P: str = _(ZhHantEnum.ATK_P)
+    ATK: str = _(ZhHantEnum.ATK)
+    DEF_P: str = _(ZhHantEnum.DEF_P)
+    DEF: str = _(ZhHantEnum.DEF)
+    CRIT_RATE: str = _(ZhHantEnum.CRIT_RATE)
+    CRIT_DMG: str = _(ZhHantEnum.CRIT_DMG)
+    ADDITION: str = _(ZhHantEnum.ADDITION)
+    SKILL_DMG_ADDITION: str = _(ZhHantEnum.SKILL_DMG_ADDITION)
+    IGNORE_DEF: str = _(ZhHantEnum.IGNORE_DEF)
+    REDUCE_RES: str = _(ZhHantEnum.REDUCE_RES)
 
 
 class TemplateRowActionEnum(str, Enum):
@@ -40,7 +40,7 @@ class TemplateRowActionEnum(str, Enum):
 
 
 class TemplateRowEnum(str, Enum):
-    CALCULATE: str = "計算"
+    CALCULATE: str = _(ZhHantEnum.CALCULATE)
     BONUS_BUFF: str = "增益"
     RESONATOR_NAME: str = "[角色]名稱"
 

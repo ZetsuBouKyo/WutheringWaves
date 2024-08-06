@@ -17,6 +17,7 @@ from ww.crud.template import (
     get_template_path,
     save_template,
 )
+from ww.locale import ZhHantEnum, _
 from ww.model.echoes import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echoes import EchoListTable
@@ -40,7 +41,7 @@ class QTemplateTabs(QWidget):
         self.q_progress_bar.setMaximum(100)
         self.q_progress_label = QLabel("")
         self.q_progress_label.setFixedWidth(150)
-        self.q_calculate_btn = QPushButton("計算")
+        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_save_btn = QPushButton("存檔")
         self.q_save_btn.clicked.connect(self.save)

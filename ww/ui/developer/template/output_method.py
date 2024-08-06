@@ -22,6 +22,7 @@ from ww.crud.buff import (
 )
 from ww.crud.resonator import get_resonator_and_echo_skill_ids, get_resonator_names
 from ww.crud.template import get_template
+from ww.locale import ZhHantEnum, _
 from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
@@ -259,7 +260,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
-            btn = QDataPushButton("計算")
+            btn = QDataPushButton(_(ZhHantEnum.CALCULATE))
             btn.clicked.connect(partial(self.calculate_row, row))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
