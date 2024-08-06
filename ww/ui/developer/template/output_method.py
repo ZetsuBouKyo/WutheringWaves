@@ -303,8 +303,18 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             )
 
         elif (
-            self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
+            self.column_names[col] == TemplateRowEnum.DAMAGE.value
+            or self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
             or self.column_names[col] == TemplateRowEnum.DAMAGE_CRIT.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_ELEMENT.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_BONUS_TYPE.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_SKILL_DMG.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_ATK.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_ATK_ADDITION.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_ATK_P.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_CRIT_RATE.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_CRIT_DMG.value
+            or self.column_names[col] == TemplateRowEnum.FINAL_BONUS.value
             or self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_AMPLIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_HP_P.value
@@ -347,7 +357,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         for buff_type, buff in buff_dict.items():
             buff_column_name = f"{TEMPLATE_BONUS}{buff_type}"
             col = self.get_column_id(buff_column_name)
-            self.set_uneditable_cell(str(buff), row, col)
+
+            value = str(buff)
+            if buff == get_number("0.0"):
+                value = ""
+
+            self.set_uneditable_cell(value, row, col)
 
     def set_row_buff(
         self,
@@ -461,13 +476,29 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         if calculated_row is None:
             return
 
-        dmg_col = self.get_column_id(TemplateRowEnum.DAMAGE_NO_CRIT.value)
-        dmg = str(calculated_row.get(CalculatedTemplateEnum.DAMAGE_NO_CRIT.value, ""))
-        self.set_cell(dmg, row, dmg_col)
+        col_names = [
+            TemplateRowEnum.DAMAGE.value,
+            TemplateRowEnum.DAMAGE_NO_CRIT.value,
+            TemplateRowEnum.DAMAGE_CRIT.value,
+            TemplateRowEnum.FINAL_ELEMENT.value,
+            TemplateRowEnum.FINAL_BONUS_TYPE.value,
+            TemplateRowEnum.FINAL_SKILL_DMG.value,
+            TemplateRowEnum.FINAL_ATK.value,
+            TemplateRowEnum.FINAL_ATK_ADDITION.value,
+            TemplateRowEnum.FINAL_ATK_P.value,
+            TemplateRowEnum.FINAL_CRIT_RATE.value,
+            TemplateRowEnum.FINAL_CRIT_DMG.value,
+            TemplateRowEnum.FINAL_BONUS.value,
+        ]
+        for col_name in col_names:
+            col_index = self.get_column_id(col_name)
+            value = calculated_row.get(col_name, "")
+            if value == get_number("0.0"):
+                value = ""
+            else:
+                value = str(value)
 
-        dmg_crit_col = self.get_column_id(TemplateRowEnum.DAMAGE_CRIT.value)
-        dmg_crit = str(calculated_row.get(CalculatedTemplateEnum.DAMAGE_CRIT.value, ""))
-        self.set_cell(dmg_crit, row, dmg_crit_col)
+            self.set_cell(value, row, col_index)
 
     def add_buff(self, row: int, btn: QDataPushButton):
         buffs = self.get_default_buffs()

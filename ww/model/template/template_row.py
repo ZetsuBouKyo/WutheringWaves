@@ -41,13 +41,30 @@ class TemplateRowEnum(str, Enum):
     CALCULATE: str = "計算"
     BONUS_BUFF: str = "增益"
     RESONATOR_NAME: str = "[角色]名稱"
+
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
+
+    FINAL_BONUS_TYPE: str = "[總]加成種類"
+
+    DAMAGE: str = "[計算]傷害"
     DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
     DAMAGE_CRIT: str = "[計算]暴擊傷害"
+
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
+
+    FINAL_ELEMENT: str = "[總]屬性"
+    FINAL_SKILL_DMG: str = "[總]技能倍率"
+
+    FINAL_ATK: str = "[總]攻擊"
+    FINAL_ATK_ADDITION: str = "[總]額外攻擊"
+    FINAL_ATK_P: str = "[總]攻擊百分比"
+    FINAL_CRIT_RATE: str = "[總]暴擊"
+    FINAL_CRIT_DMG: str = "[總]暴擊傷害"
+    FINAL_BONUS: str = "[總]加成區百分比"
+
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"
     BONUS_HP_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP_P.value}"

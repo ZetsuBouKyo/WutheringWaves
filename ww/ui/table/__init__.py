@@ -351,11 +351,11 @@ class QDraggableTableWidget(QCustomTableWidget):
 
         menu.exec_(header.viewport().mapToGlobal(position))
 
-    def set_id_cell(self, value: str, row: int, col: int):
-        set_uneditable_cell(self, value, row, col)
+    def set_id_cell(self, value: str, row: int, col: int) -> QTableWidgetItem:
+        return set_uneditable_cell(self, value, row, col)
 
-    def set_uneditable_cell(self, value: str, row: int, col: int):
-        set_uneditable_cell(self, value, row, col)
+    def set_uneditable_cell(self, value: str, row: int, col: int) -> QTableWidgetItem:
+        return set_uneditable_cell(self, value, row, col)
 
     def _row_index_ctx_fill_row(self, row):
         for col in range(len(self.column_names)):
