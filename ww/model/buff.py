@@ -11,6 +11,8 @@ BUFF_OBJECT: str = "對象"
 BUFF_VALUE: str = "數值"
 BUFF_DURATION: str = "持續時間(s)"
 
+BUFF_WEAPON_RANK: str = "諧振"
+
 
 class ResonatorBuffEnum(str, Enum):
     ID: str = BUFF_ID
@@ -29,6 +31,7 @@ class WeaponBuffEnum(str, Enum):
     ID: str = BUFF_ID
     NAME: str = BUFF_NAME
     SUFFIX: str = BUFF_SUFFIX
+    RANK: str = BUFF_WEAPON_RANK
     TYPE: str = BUFF_TYPE
     ELEMENT: str = BUFF_ELEMENT
     SKILL_TYPE: str = BUFF_SKILL_TYPE
