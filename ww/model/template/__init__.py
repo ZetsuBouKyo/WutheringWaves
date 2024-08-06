@@ -7,6 +7,7 @@ from ww.model.template.buff_table import (
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
 )
+from ww.model.template.calculated_row import CalculatedTemplateEnum
 from ww.model.template.resonator_table import TemplateResonatorTableRowEnum
 from ww.model.template.template_row import (
     TEMPLATE_BONUS,
@@ -14,7 +15,7 @@ from ww.model.template.template_row import (
     TemplateRowBuffTypeEnum,
     TemplateRowEnum,
 )
-from ww.model.template.tsv import CalculatedTemplateEnum, TemplateEnum
+from ww.model.template.tsv import TemplateEnum
 
 __all__ = [
     "TEMPLATE_BONUS",

@@ -1,5 +1,7 @@
 from enum import Enum
 
+from ww.locale import ZhHantEnum, _
+
 TEMPLATE_BONUS = "[額外]"
 
 
@@ -45,25 +47,24 @@ class TemplateRowEnum(str, Enum):
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
 
-    FINAL_BONUS_TYPE: str = "[總]加成種類"
-
-    DAMAGE: str = "[計算]傷害"
-    DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
-    DAMAGE_CRIT: str = "[計算]暴擊傷害"
+    DAMAGE: str = _(ZhHantEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
 
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
 
-    FINAL_ELEMENT: str = "[總]屬性"
-    FINAL_SKILL_DMG: str = "[總]技能倍率"
+    FINAL_ELEMENT: str = _(ZhHantEnum.FINAL_ELEMENT)
+    FINAL_BONUS_TYPE: str = _(ZhHantEnum.FINAL_BONUS_TYPE)
+    FINAL_SKILL_DMG: str = _(ZhHantEnum.FINAL_SKILL_DMG)
 
-    FINAL_ATK: str = "[總]攻擊"
-    FINAL_ATK_ADDITION: str = "[總]額外攻擊"
-    FINAL_ATK_P: str = "[總]攻擊百分比"
-    FINAL_CRIT_RATE: str = "[總]暴擊"
-    FINAL_CRIT_DMG: str = "[總]暴擊傷害"
-    FINAL_BONUS: str = "[總]加成區百分比"
+    FINAL_ATK: str = _(ZhHantEnum.FINAL_ATK)
+    FINAL_ATK_ADDITION: str = _(ZhHantEnum.FINAL_ATK_ADDITION)
+    FINAL_ATK_P: str = _(ZhHantEnum.FINAL_ATK_P)
+    FINAL_CRIT_RATE: str = _(ZhHantEnum.FINAL_CRIT_RATE)
+    FINAL_CRIT_DMG: str = _(ZhHantEnum.FINAL_CRIT_DMG)
+    FINAL_BONUS: str = _(ZhHantEnum.FINAL_BONUS)
 
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"
