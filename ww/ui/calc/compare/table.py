@@ -4,6 +4,7 @@ from pathlib import Path
 from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import get_resonator_ids
 from ww.crud.template import get_template_ids
+from ww.locale import ZhHantEnum, _
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.utils.pd import get_empty_df, safe_get_df
 
@@ -84,9 +85,18 @@ class QDamageCompareUneditableTableEnum(str, Enum):
     # WEAPON_RANK: str = "[武器]諧振"
     # WEAPON_NAME: str = "[武器]名稱"
     MONSTER_ID: str = "[怪物]名稱"
-    DAMAGE: str = "[計算]傷害"
-    DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
-    DAMAGE_CRIT: str = "[計算]暴擊傷害"
+    DAMAGE: str = _(ZhHantEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
+
+    DAMAGE_DISTRIBUTION_BASIC: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_BASIC)
+    DAMAGE_DISTRIBUTION_HEAVY: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_HEAVY)
+    DAMAGE_DISTRIBUTION_SKILL: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_SKILL)
+    DAMAGE_DISTRIBUTION_LIBERATION: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_LIBERATION)
+    DAMAGE_DISTRIBUTION_INTRO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_INTRO)
+    DAMAGE_DISTRIBUTION_OUTRO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_OUTRO)
+    DAMAGE_DISTRIBUTION_ECHO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_ECHO)
+    DAMAGE_DISTRIBUTION_NONE: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_NONE)
 
 
 class QDamageCompareUneditableTable(QUneditableDataFrameTable):
@@ -94,5 +104,3 @@ class QDamageCompareUneditableTable(QUneditableDataFrameTable):
         column_names = [e.value for e in QDamageCompareUneditableTableEnum]
         self.df = get_empty_df(column_names)
         super().__init__(self.df)
-
-    def _init_column_width(self): ...

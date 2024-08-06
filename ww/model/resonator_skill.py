@@ -19,14 +19,14 @@ class ResonatorSkillTypeEnum(str, Enum):
 
 
 class ResonatorSkillBonusTypeEnum(str, Enum):
-    BASIC: str = "普攻"
-    HEAVY: str = "重擊"
-    SKILL: str = "共鳴技能"
-    LIBERATION: str = "共鳴解放"
-    INTRO: str = "變奏"
-    OUTRO: str = "延奏"
-    ECHO: str = "聲骸"
-    NONE: str = "無"
+    BASIC: str = _(ZhHantEnum.BASIC)
+    HEAVY: str = _(ZhHantEnum.HEAVY)
+    SKILL: str = _(ZhHantEnum.SKILL)
+    LIBERATION: str = _(ZhHantEnum.LIBERATION)
+    INTRO: str = _(ZhHantEnum.INTRO)
+    OUTRO: str = _(ZhHantEnum.OUTRO)
+    ECHO: str = _(ZhHantEnum.ECHO)
+    NONE: str = _(ZhHantEnum.NONE)
 
 
 class ResonatorSkillEnum(str, Enum):

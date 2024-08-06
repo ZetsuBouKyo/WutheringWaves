@@ -74,7 +74,10 @@ class QUneditableDataFrameTable(QTableWidget):
                 cell = self.data[row][col]
                 self.set_cell(cell, row, col)
 
-    def _init_column_width(self): ...
+    def _init_column_width(self):
+        for col_name, col_index in self.column_names_table.items():
+            width = len(col_name) * 20
+            self.setColumnWidth(col_index, width)
 
     def set_cell(self, value: str, row: int, col: int):
         set_uneditable_cell(self, value, row, col)

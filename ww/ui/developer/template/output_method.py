@@ -2,6 +2,7 @@ from decimal import Decimal
 from functools import partial
 from typing import Dict, List, Optional
 
+import pandas as pd
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QDesktopWidget,
@@ -12,6 +13,8 @@ from PySide2.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
+from rich.console import Console
+from rich.table import Table
 
 from ww.calc.damage import get_json_row_damage
 from ww.crud.buff import (
@@ -349,7 +352,17 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def update_row_buffs(self, row: int, buffs: List[TemplateBuffTableRowModel]):
         # TODO: refactor?
         buff_dict = {e.value: Decimal("0.0") for e in TemplateRowBuffTypeEnum}
+        buff_data = {e.value: [] for e in TemplateBuffTableRowEnum}
+
         for buff in buffs:
+            # Tool tips
+            buff_data[TemplateBuffTableRowEnum.NAME.value].append(buff.name)
+            buff_data[TemplateBuffTableRowEnum.TYPE.value].append(buff.type)
+            buff_data[TemplateBuffTableRowEnum.VALUE.value].append(buff.value)
+            buff_data[TemplateBuffTableRowEnum.STACK.value].append(buff.stack)
+            buff_data[TemplateBuffTableRowEnum.DURATION.value].append(buff.duration)
+
+            # Calculate
             value = get_number(buff.value) * get_number(buff.stack)
             t = buff_dict.get(buff.type, None)
             if t is None:
@@ -364,6 +377,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 value = ""
 
             self.set_uneditable_cell(value, row, col)
+
+        df = pd.DataFrame(buff_data)
+        col = self.get_column_id(TemplateRowEnum.BONUS_BUFF.value)
+        buff_btn_cell = self.cellWidget(row, col)
+        buff_btn_cell.setToolTip(df.to_html())
 
     def set_row_buff(
         self,

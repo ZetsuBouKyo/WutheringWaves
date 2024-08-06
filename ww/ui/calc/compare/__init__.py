@@ -83,6 +83,17 @@ class QDamageCompare(QWidget):
             damage_no_crit = Decimal("0.0")
             damage_crit = Decimal("0.0")
 
+            damage_distribution = {
+                ResonatorSkillBonusTypeEnum.BASIC.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.HEAVY.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.SKILL.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.LIBERATION.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.INTRO.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.OUTRO.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.ECHO.value: Decimal("0.0"),
+                ResonatorSkillBonusTypeEnum.NONE.value: Decimal("0.0"),
+            }
+
             resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
             rows = get_json_damage(template_id, monster_id, resonator_id, "", "")
             for row in rows:
@@ -98,11 +109,25 @@ class QDamageCompare(QWidget):
                 row_damage_crit = row.get(
                     CalculatedTemplateEnum.DAMAGE_CRIT.value, None
                 )
+                row_bonus_type = row.get(
+                    CalculatedTemplateEnum.FINAL_BONUS_TYPE.value,
+                    ResonatorSkillBonusTypeEnum.NONE.value,
+                )
+
+                damage_distribution[row_bonus_type] += row_damage
 
                 damage += row_damage
                 damage_no_crit += row_damage_no_crit
                 damage_crit += row_damage_crit
                 # print(row_damage, row_damage_no_crit, row_damage_crit)
+
+            for key in damage_distribution.keys():
+                percentage = damage_distribution[key] / damage
+                percentage_str = f"{percentage:.2%}"
+                damage_distribution[key] = (
+                    f"{damage_distribution[key]} ({percentage_str})"
+                )
+
             calculated_row = {
                 QDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonator_id,
                 QDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
@@ -111,6 +136,30 @@ class QDamageCompare(QWidget):
                     damage_no_crit
                 ),
                 QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: str(damage_crit),
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.BASIC.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.HEAVY.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.SKILL.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.LIBERATION.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.INTRO.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.OUTRO.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.ECHO.value
+                ],
+                QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: damage_distribution[
+                    ResonatorSkillBonusTypeEnum.NONE.value
+                ],
             }
             # print(calculated_row)
             data.append(calculated_row)
