@@ -86,16 +86,19 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         self.set_cell(buff_duration, row, buff_duration_col)
 
     def set_cell(self, value: str, row: int, col: int):
-        if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
-            combobox = self.set_combobox(row, col, value, self.buffs_list)
-            combobox.currentIndexChanged.connect(partial(self.update_row, row))
-        elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
-            self.set_combobox(
-                row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
-            )
-        else:
-            item = QTableWidgetItem(value)
-            self.setItem(row, col, item)
+        try:
+            if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
+                combobox = self.set_combobox(row, col, value, self.buffs_list)
+                combobox.currentIndexChanged.connect(partial(self.update_row, row))
+            elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
+                self.set_combobox(
+                    row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
+                )
+            else:
+                item = QTableWidgetItem(value)
+                self.setItem(row, col, item)
+        except IndexError:
+            ...
 
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):

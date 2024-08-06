@@ -517,12 +517,11 @@ class QDraggableDataTableWidget(QWidget):
 
         self._table._init_cells()
 
-        self._progress_bar.setValue(100)
-
         if self._event_save is not None:
             self._event_save()
 
         self._lock = False
+        self._progress_bar.setValue(100)
         self._progress_label.setText("存檔完成。")
 
     def initialize(self):

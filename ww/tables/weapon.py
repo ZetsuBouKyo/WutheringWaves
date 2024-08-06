@@ -27,7 +27,10 @@ class WeaponRankTable:
     def __init__(self, name):
         _stat_path = Path(WEAPON_HOME_PATH) / name / WEAPON_RANK_FNAME
         column_names = [e.value for e in WeaponRankEnum]
-        self.df = safe_get_df(_stat_path, column_names)
+        if name:
+            self.df = safe_get_df(_stat_path, column_names)
+        else:
+            self.df = get_empty_df(column_names)
 
     def search(self, id: str, col: WeaponRankEnum) -> Optional[Any]:
         return search(self.df, id, col, WeaponRankEnum.LEVEL.value)
