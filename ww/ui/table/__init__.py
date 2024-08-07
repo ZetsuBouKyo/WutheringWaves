@@ -420,7 +420,7 @@ class QDraggableDataTableWidget(QWidget):
     def __init__(
         self,
         table: QDraggableTableWidget,
-        tsv_fpath: Union[str, Path] = None,
+        tsv_fpath: Optional[Union[str, Path]] = None,
         event_save_after: Callable[[], None] = None,
         event_save_row_before: Callable[[int], None] = None,
     ):
@@ -471,6 +471,9 @@ class QDraggableDataTableWidget(QWidget):
     def _progress_bar_update_row(self):
         self._progress_bar_value += self._progress_bar_row_tick
         self._progress_bar.setValue(self._progress_bar_value)
+
+    def set_tsv_fpath(self, fpath: Union[str, Path]):
+        self._tsv_fpath = fpath
 
     def save(self):
         if self._lock:

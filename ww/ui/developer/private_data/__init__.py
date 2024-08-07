@@ -15,18 +15,21 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.locale import ZhHantEnum, _
+from ww.ui.developer.private_data.resonator import QPrivateDataResonatorTabs
+
 
 class QPrivateDataTabs(QTabWidget):
     def __init__(self):
         super().__init__()
 
         # Tabs
-        q_resonator = QWidget()
-        q_weapon = QWidget()
-        q_echo = QWidget()
-        q_buff = QWidget()
+        self.q_resonator = QPrivateDataResonatorTabs()
+        self.q_weapon = QWidget()
+        self.q_echo = QWidget()
+        self.q_buff = QWidget()
 
-        self.addTab(q_resonator, "共鳴者")
-        self.addTab(q_weapon, "武器")
-        self.addTab(q_echo, "聲骸")
-        self.addTab(q_buff, "增益")
+        self.addTab(self.q_resonator, _(ZhHantEnum.RESONATOR))
+        self.addTab(self.q_weapon, _(ZhHantEnum.WEAPON))
+        self.addTab(self.q_echo, _(ZhHantEnum.ECHO))
+        self.addTab(self.q_buff, _(ZhHantEnum.BUFF))

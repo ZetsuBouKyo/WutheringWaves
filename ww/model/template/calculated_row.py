@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pydantic import BaseModel, ConfigDict
+
 from ww.locale import ZhHantEnum, _
 
 
@@ -35,3 +37,39 @@ class CalculatedTemplateEnum(str, Enum):
     MONSTER_LEVEL: str = "[怪物]等級"
     MONSTER_DEF: str = "[怪物]防禦"
     MONSTER_RES: str = "[怪物]抗性"
+
+
+class CalculatedTemplateRowModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    resonator_name: str = ""
+    skill_id: str = ""
+
+    resonator_skill_level: str = ""
+    resonator_skill_element: str = ""
+    resonator_skill_base_attr: str = ""
+    resonator_skill_type: str = ""
+    resonator_skill_type_bonus: str = ""
+    resonator_skill_dmg: str = ""
+
+    echo_element: str = ""
+    echo_skill_dmg: str = ""
+
+    damage: str = ""
+    damage_no_crit: str = ""
+    damage_crit: str = ""
+
+    final_element: str = ""
+    final_bonus_type: str = ""
+    final_skill_dmg: str = ""
+
+    final_atk: str = ""
+    final_atk_addition: str = ""
+    final_atk_p: str = ""
+    final_crit_rate: str = ""
+    final_crit_dmg: str = ""
+    final_bonus: str = ""
+
+    monster_level: str = ""
+    monster_def: str = ""
+    monster_res: str = ""

@@ -2,6 +2,11 @@ from enum import Enum
 
 
 class ZhHantEnum(str, Enum):
+    RESONATOR: str = "共鳴者"
+    WEAPON: str = "武器"
+    BUFF: str = "增益"
+    NAME: str = "名稱"
+
     LOAD: str = "讀檔"
     LOADING: str = "讀檔中..."
     LOADED: str = "讀檔完成。"
@@ -31,6 +36,9 @@ class ZhHantEnum(str, Enum):
     TAB_OUTPUT_METHOD: str = "輸出手法"
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
     TAB_HELP: str = "說明"
+
+    TAB_ATTR: str = "屬性"
+    TAB_SKILL: str = "技能"
 
     LEVEL: str = "等級"
     ENERGY_REGEN: str = "共鳴效率"
