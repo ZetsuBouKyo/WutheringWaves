@@ -2,7 +2,35 @@ from enum import Enum
 
 
 class ZhHantEnum(str, Enum):
+    LOAD: str = "讀檔"
+    LOADING: str = "讀檔中..."
+    LOADED: str = "讀檔完成。"
+    SAVE: str = "存檔"
+    SAVING: str = "存檔中..."
+    SAVED: str = "存檔完成。"
+    FILE_EXISTS: str = "檔案已存在"
+    FILE_OVERWRITE_OR_NOT: str = "確定要覆蓋檔案"
+
     CALCULATE: str = "計算"
+    DELETE: str = "刪除"
+
+    WARNING: str = "警告"
+
+    LOAD_SELECTED_TEMPLATE_ID: str = "讀取選取的模板ID"
+    DELETE_SELECTED_TEMPLATE_ID: str = "刪除選取的模板ID"
+    TO_SELECT_TEMPLATE_ID: str = "請選擇要讀取的模板ID。"
+    TO_SELECT_TEMPLATE_ID_TO_DELETE: str = "請選擇要刪除的模板ID。"
+
+    CONFIRM_DELETE_TEMPLATE: str = "確定要刪除模板"
+
+    TEMPLATE_ID_MUST_NOT_EMPTY: str = "模板ID不該是空值。"
+
+    PROGRESS_BAR: str = "進度條"
+
+    TAB_BASIC: str = "基本資料"
+    TAB_OUTPUT_METHOD: str = "輸出手法"
+    TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
+    TAB_HELP: str = "說明"
 
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"

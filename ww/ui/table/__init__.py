@@ -28,6 +28,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.locale import ZhHantEnum, _
 from ww.model.echoes import EchoListEnum
 from ww.tables.echoes import EchoListTable
 from ww.ui.combobox import QCustomComboBox
@@ -384,7 +385,7 @@ class QDraggableTableWidget(QCustomTableWidget):
         selected_rows_str = ", ".join([str(i + 1) for i in selected_rows])
 
         if not selected_rows:
-            QMessageBox.warning(self, "警告", "沒有可刪除的列。")
+            QMessageBox.warning(self, _(ZhHantEnum.WARNING), "沒有可刪除的列。")
             return
 
         confirmation = QMessageBox.question(
@@ -428,7 +429,7 @@ class QDraggableDataTableWidget(QWidget):
         self._layout_btns = QHBoxLayout()
         self._btn_initialize = QPushButton("初始化")
         self._btn_initialize.clicked.connect(self.initialize)
-        self._btn_save = QPushButton("存檔")
+        self._btn_save = QPushButton(_(ZhHantEnum.SAVE))
         self._btn_save.clicked.connect(self.save)
 
         self._layout_btns.addStretch()
@@ -475,7 +476,7 @@ class QDraggableDataTableWidget(QWidget):
         if self._lock:
             return
         self._lock = True
-        self._progress_label.setText("存檔中...")
+        self._progress_label.setText(_(ZhHantEnum.SAVING))
 
         self._progress_bar_init()
         _ids = {}
@@ -510,7 +511,7 @@ class QDraggableDataTableWidget(QWidget):
 
             QMessageBox.question(
                 self,
-                "警告",
+                _(ZhHantEnum.WARNING),
                 f"'{self._table.column_id_name}'中，第{ids_str}列字串重複，請加入字首或字尾，使'{self._table.column_id_name}'中的字串不重複。",
                 QMessageBox.Yes,
             )
@@ -523,8 +524,6 @@ class QDraggableDataTableWidget(QWidget):
         if self._tsv_fpath is not None:
             save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
 
-        self._progress_bar_update_row()
-
         self._table._init_cells()
 
         if self._event_save_after is not None:
@@ -532,7 +531,7 @@ class QDraggableDataTableWidget(QWidget):
 
         self._lock = False
         self._progress_bar.setValue(100)
-        self._progress_label.setText("存檔完成。")
+        self._progress_label.setText(_(ZhHantEnum.SAVED))
 
     def initialize(self):
         if self._lock:

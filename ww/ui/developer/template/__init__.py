@@ -38,13 +38,13 @@ class QTemplateTabs(QWidget):
 
         self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
-        self.q_save_btn = QPushButton("存檔")
+        self.q_save_btn = QPushButton(_(ZhHantEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
-        self.q_load_btn = QPushButton("讀取")
-        self.q_load_btn.setToolTip("讀取選取的模板ID")
+        self.q_load_btn = QPushButton(_(ZhHantEnum.LOAD))
+        self.q_load_btn.setToolTip(_(ZhHantEnum.LOAD_SELECTED_TEMPLATE_ID))
         self.q_load_btn.clicked.connect(self.load)
-        self.q_delete_btn = QPushButton("刪除")
-        self.q_delete_btn.setToolTip("刪除選取的模板ID")
+        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
+        self.q_delete_btn.setToolTip(_(ZhHantEnum.DELETE_SELECTED_TEMPLATE_ID))
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
@@ -65,14 +65,18 @@ class QTemplateTabs(QWidget):
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
-        self.q_tabs.addTab(self.q_template_basic_tab, "基本資料")
-        self.q_tabs.addTab(self.q_template_output_method_tab, "輸出手法")
-        self.q_tabs.addTab(self.q_template_damage_analysis, "傷害占比")
-        self.q_tabs.addTab(self.q_template_help_tab, "說明")
+        self.q_tabs.addTab(self.q_template_basic_tab, _(ZhHantEnum.TAB_BASIC))
+        self.q_tabs.addTab(
+            self.q_template_output_method_tab, _(ZhHantEnum.TAB_OUTPUT_METHOD)
+        )
+        self.q_tabs.addTab(
+            self.q_template_damage_analysis, _(ZhHantEnum.TAB_DAMAGE_DISTRIBUTION)
+        )
+        self.q_tabs.addTab(self.q_template_help_tab, _(ZhHantEnum.TAB_HELP))
 
         self.q_progress_layout = QHBoxLayout()
         self.q_progress_bar = QProgressBar()
-        self.q_progress_bar.setToolTip("進度條")
+        self.q_progress_bar.setToolTip(_(ZhHantEnum.PROGRESS_BAR))
         self.q_progress_bar.setMinimum(0)
         self.q_progress_bar.setMaximum(100)
         self.q_progress_label = QLabel("")
@@ -95,12 +99,14 @@ class QTemplateTabs(QWidget):
 
     def save(self):
         self.q_progress_bar.setValue(0.0)
-        self.q_progress_label.setText("存檔中...")
+        self.q_progress_label.setText(_(ZhHantEnum.SAVING))
 
         template_id = self.q_template_basic_tab.get_template_id()
         template_id = template_id.strip()
         if template_id == "":
-            QMessageBox.warning(self, "警告", "模板ID不該是空值。")
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TEMPLATE_ID_MUST_NOT_EMPTY)
+            )
             return
         template_fname = f"{template_id}.json"
         template_path = Path(TEMPLATE_HOME_PATH) / template_fname
@@ -110,8 +116,8 @@ class QTemplateTabs(QWidget):
         if template_path.exists():
             confirmation = QMessageBox.question(
                 self,
-                "檔案已存在",
-                f"你確定要覆蓋檔案'{template_fname}'?",
+                _(ZhHantEnum.FILE_EXISTS),
+                f"{_(ZhHantEnum.FILE_OVERWRITE_OR_NOT)}'{template_fname}'?",
                 QMessageBox.Yes | QMessageBox.No,
             )
             if confirmation == QMessageBox.No:
@@ -139,36 +145,49 @@ class QTemplateTabs(QWidget):
         save_template(template_id, template_data)
 
         self.q_progress_bar.setValue(100.0)
-        self.q_progress_label.setText("存檔完成。")
+        self.q_progress_label.setText(_(ZhHantEnum.SAVED))
 
     def load(self):
         template_id = self.q_template_basic_tab.get_template_id()
         template = get_template(template_id)
 
         if template is None:
-            QMessageBox.warning(self, "警告", "請選擇要讀取的模板ID。")
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.SELECT_TEMPLATE_ID)
+            )
             return
 
         self.reset_progress_bar()
+        self.q_progress_label.setText(_(ZhHantEnum.LOADING))
 
         if len(template.rows) == 0:
             template.rows.append(TemplateRowModel())
 
+        self.q_progress_bar.setValue(20.0)
         self.q_template_basic_tab.load(template)
+
+        self.q_progress_bar.setValue(60.0)
         self.q_template_output_method_tab.load(template.rows)
+
+        self.q_progress_bar.setValue(100.0)
+        self.q_progress_label.setText(_(ZhHantEnum.LOADED))
 
     def delete(self):
         template_id = self.q_template_basic_tab.get_template_id()
         if not template_id:
-            QMessageBox.warning(self, "警告", "請選擇要刪除的模板ID。")
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                _(ZhHantEnum.TO_SELECT_TEMPLATE_ID_TO_DELETE),
+            )
             return
 
         self.reset_progress_bar()
 
         confirmation = QMessageBox.question(
             self,
-            "刪除",
-            f"你確定要刪除模板 '{template_id}'?",
+            _(ZhHantEnum.DELETE),
+            f"{_(ZhHantEnum.CONFIRM_DELETE_TEMPLATE)} '{template_id}'?",
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.No:

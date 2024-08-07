@@ -21,6 +21,7 @@ from ww.crud.resonator import (
 )
 from ww.crud.template import get_template_ids
 from ww.crud.weapon import get_weapon_names, get_weapon_ranks
+from ww.locale import ZhHantEnum, _
 from ww.model.resonators import ResonatorsEnum
 from ww.model.template import (
     TemplateModel,
@@ -312,7 +313,7 @@ class QTemplateBasicTab(QWidget):
                 resonator_id, ResonatorsEnum.NAME.value
             )
             if table.get(resonator_name, None) is not None:
-                QMessageBox.warning(self, "警告", "角色重複。")
+                QMessageBox.warning(self, _(ZhHantEnum.WARNING), "角色重複。")
                 return table
             table[resonator_name] = resonator_id
         return table
