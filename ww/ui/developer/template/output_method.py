@@ -477,8 +477,6 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         )
         monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
 
-        calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
-
         calculated_row = get_json_row_damage(
             data,
             resonator_id,
@@ -490,28 +488,40 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             calculated_resonators_table,
             echo_skill_table,
             monsters_table,
-            calculated_template_columns,
+            _,
         )
         if calculated_row is None:
             return
 
+        col_dmg_names = [
+            TemplateRowEnum.DAMAGE,
+            TemplateRowEnum.DAMAGE_NO_CRIT,
+            TemplateRowEnum.DAMAGE_CRIT,
+        ]
+        for col_name in col_dmg_names:
+            col_index = self.get_column_id(col_name.value)
+            value = getattr(calculated_row, col_name.name.lower(), "")
+            if value == get_number("0.0"):
+                value = ""
+            elif type(value) == Decimal:
+                value = f"{value:.2f}"
+
+            self.set_cell(value, row, col_index)
+
         col_names = [
-            TemplateRowEnum.DAMAGE.value,
-            TemplateRowEnum.DAMAGE_NO_CRIT.value,
-            TemplateRowEnum.DAMAGE_CRIT.value,
-            TemplateRowEnum.FINAL_ELEMENT.value,
-            TemplateRowEnum.FINAL_BONUS_TYPE.value,
-            TemplateRowEnum.FINAL_SKILL_DMG.value,
-            TemplateRowEnum.FINAL_ATK.value,
-            TemplateRowEnum.FINAL_ATK_ADDITION.value,
-            TemplateRowEnum.FINAL_ATK_P.value,
-            TemplateRowEnum.FINAL_CRIT_RATE.value,
-            TemplateRowEnum.FINAL_CRIT_DMG.value,
-            TemplateRowEnum.FINAL_BONUS.value,
+            TemplateRowEnum.FINAL_ELEMENT,
+            TemplateRowEnum.FINAL_BONUS_TYPE,
+            TemplateRowEnum.FINAL_SKILL_DMG,
+            TemplateRowEnum.FINAL_ATK,
+            TemplateRowEnum.FINAL_ATK_ADDITION,
+            TemplateRowEnum.FINAL_ATK_P,
+            TemplateRowEnum.FINAL_CRIT_RATE,
+            TemplateRowEnum.FINAL_CRIT_DMG,
+            TemplateRowEnum.FINAL_BONUS,
         ]
         for col_name in col_names:
-            col_index = self.get_column_id(col_name)
-            value = calculated_row.get(col_name, "")
+            col_index = self.get_column_id(col_name.value)
+            value = getattr(calculated_row, col_name.name.lower(), "")
             if value == get_number("0.0"):
                 value = ""
             else:

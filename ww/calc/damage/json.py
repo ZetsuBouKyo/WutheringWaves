@@ -19,6 +19,7 @@ from ww.model.resonators import (
 )
 from ww.model.template import (
     CalculatedTemplateEnum,
+    CalculatedTemplateRowModel,
     TemplateEnum,
     TemplateRowBuffModel,
     TemplateRowBuffTypeEnum,
@@ -79,18 +80,14 @@ def get_json_row_damage(
     calculated_resonators_table: CalculatedResonatorsTable,
     echo_skill_table,
     monsters_table: MonstersTable,
-    calculated_template_columns,
-) -> Optional[Dict[CalculatedTemplateEnum, Union[str, Decimal]]]:
+    _,
+) -> Optional[CalculatedTemplateRowModel]:
     if resonator_id is None:
         return
 
-    calculated_template_row_dict = {
-        column: None for column in calculated_template_columns
-    }
+    calculated_row = CalculatedTemplateRowModel()
 
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_NAME.value] = (
-        resonator_name
-    )
+    calculated_row.resonator_name = resonator_name
 
     manual_bonus_type = get_string(row.skill_bonus_type)
 
@@ -140,27 +137,13 @@ def get_json_row_damage(
     if resonator_skill_dmg is not None:
         resonator_skill_dmg = get_number(resonator_skill_dmg)
 
-    calculated_template_row_dict[CalculatedTemplateEnum.SKILL_ID.value] = (
-        template_row_skill_id
-    )
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_LEVEL.value] = (
-        resonator_skill_lv
-    )
-    calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_ELEMENT.value
-    ] = resonator_skill_element
-    calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_BASE_ATTR.value
-    ] = resonator_skill_base_attr
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_TYPE.value] = (
-        resonator_skill_type
-    )
-    calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_TYPE_BONUS.value
-    ] = resonator_skill_bonus_type
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_DMG.value] = (
-        resonator_skill_dmg
-    )
+    calculated_row.skill_id = template_row_skill_id
+    calculated_row.resonator_skill_level = resonator_skill_lv
+    calculated_row.resonator_skill_element = resonator_skill_element
+    calculated_row.resonator_skill_base_attr = resonator_skill_base_attr
+    calculated_row.resonator_skill_type = resonator_skill_type
+    calculated_row.resonator_skill_type_bonus = resonator_skill_bonus_type
+    calculated_row.resonator_skill_dmg = resonator_skill_dmg
 
     # Echo Skill
     echo_skill_element = echo_skill_table.search(
@@ -172,12 +155,8 @@ def get_json_row_damage(
     if echo_skill_dmg is not None:
         echo_skill_dmg = get_number(echo_skill_dmg)
 
-    calculated_template_row_dict[CalculatedTemplateEnum.ECHO_ELEMENT.value] = (
-        echo_skill_element
-    )
-    calculated_template_row_dict[CalculatedTemplateEnum.ECHO_SKILL_DMG.value] = (
-        echo_skill_dmg
-    )
+    calculated_row.echo_element = echo_skill_element
+    calculated_row.echo_skill_dmg = echo_skill_dmg
 
     # Element
     if not ((resonator_skill_element is None) ^ (echo_skill_element is None)):
@@ -189,7 +168,7 @@ def get_json_row_damage(
         element = echo_skill_element
     else:
         element = resonator_skill_element
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ELEMENT.value] = element
+    calculated_row.final_element = element
 
     # Skill DMG
     if not ((resonator_skill_dmg is None) ^ (echo_skill_dmg is None)):
@@ -202,9 +181,7 @@ def get_json_row_damage(
         resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_SKILL_DMG.value] = (
-        skill_dmg
-    )
+    calculated_row.final_skill_dmg = skill_dmg
 
     # Bonus Type
     if not (
@@ -221,17 +198,13 @@ def get_json_row_damage(
         bonus_type = ResonatorSkillBonusTypeEnum.ECHO.value
     else:
         bonus_type = resonator_skill_bonus_type
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_BONUS_TYPE.value] = (
-        bonus_type
-    )
+    calculated_row.final_bonus_type = bonus_type
 
     # Monster
     monster_res = get_number(monsters_table.search(monster_id, f"{element}抗性"))
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_LEVEL.value] = (
-        monster_level
-    )
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_DEF.value] = monster_def
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_RES.value] = monster_res
+    calculated_row.monster_level = monster_level
+    calculated_row.monster_def = monster_def
+    calculated_row.monster_res = monster_res
 
     # ATK Percentage
     calculated_atk_p = get_number(
@@ -241,7 +214,7 @@ def get_json_row_damage(
     )
     bonus_atk_p = buffs.bonus_atk_p
     final_atk_p = calculated_atk_p + bonus_atk_p
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_P.value] = final_atk_p
+    calculated_row.final_atk_p = final_atk_p
 
     # ATK
     resonator_atk = get_number(
@@ -253,7 +226,7 @@ def get_json_row_damage(
         )
     )
     final_atk = resonator_atk + weapon_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK.value] = final_atk
+    calculated_row.final_atk = final_atk
 
     # Additional ATK
     echo_atk = get_number(
@@ -263,9 +236,7 @@ def get_json_row_damage(
     )
     template_bonus_atk = buffs.bonus_atk
     final_atk_addition = echo_atk + template_bonus_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_ADDITION.value] = (
-        final_atk_addition
-    )
+    calculated_row.final_atk_addition = final_atk_addition
 
     # CRIT Rate
     resonator_crit_rate = get_number(
@@ -275,9 +246,7 @@ def get_json_row_damage(
     )
     bonus_crit_rate = buffs.bonus_crit_rate
     final_crit_rate = resonator_crit_rate + bonus_crit_rate
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_RATE.value] = (
-        final_crit_rate
-    )
+    calculated_row.final_crit_rate = final_crit_rate
 
     # CRIT DMG
     resonator_crit_dmg = get_number(
@@ -287,9 +256,7 @@ def get_json_row_damage(
     )
     bonus_crit_dmg = buffs.bonus_crit_dmg
     final_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_DMG.value] = (
-        final_crit_dmg
-    )
+    calculated_row.final_crit_dmg = final_crit_dmg
 
     # BONUS
     calculated_element_bonus_key_name = f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{element}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}"
@@ -309,7 +276,7 @@ def get_json_row_damage(
     template_bonus = buffs.bonus_addition
     final_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_BONUS.value] = final_bonus
+    calculated_row.final_bonus = final_bonus
 
     # Other Bonus
     bonus_magnifier = buffs.bonus_magnifier
@@ -361,21 +328,17 @@ def get_json_row_damage(
     dmg_crit = dmg_no_crit * region_crit_dmg
     dmg_avg = dmg_no_crit * region_crit
 
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE.value] = int(dmg_avg)
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_NO_CRIT.value] = int(
-        dmg_no_crit
-    )
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_CRIT.value] = int(
-        dmg_crit
-    )
+    calculated_row.damage = dmg_avg
+    calculated_row.damage_no_crit = dmg_no_crit
+    calculated_row.damage_crit = dmg_crit
 
-    return calculated_template_row_dict
+    return calculated_row
 
 
 def get_json_damage(
     template_id: str, monster_id: str, r_id_1: str, r_id_2: str, r_id_3: str
-) -> List[Dict[CalculatedTemplateEnum, Union[str, Decimal]]]:
-    results = []
+) -> List[CalculatedTemplateRowModel]:
+    calculated_rows = []
 
     calculated_resonators_table = CalculatedResonatorsTable()
     resonators_table = ResonatorsTable()
@@ -386,7 +349,7 @@ def get_json_damage(
 
     template = get_template(template_id)
     if template is None:
-        return results
+        return calculated_rows
 
     calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
 
@@ -404,7 +367,7 @@ def get_json_damage(
         resonator_id = resonators_name2id.get(resonator_name, None)
         if resonator_id is None:
             continue
-        calculated_template_row_dict = get_json_row_damage(
+        calculated_row = get_json_row_damage(
             row,
             resonator_id,
             resonator_name,
@@ -417,6 +380,6 @@ def get_json_damage(
             monsters_table,
             calculated_template_columns,
         )
-        if calculated_template_row_dict is not None:
-            results.append(calculated_template_row_dict)
-    return results
+        if calculated_row is not None:
+            calculated_rows.append(calculated_row)
+    return calculated_rows

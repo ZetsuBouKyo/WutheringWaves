@@ -97,22 +97,13 @@ class QDamageCompare(QWidget):
             resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
             rows = get_json_damage(template_id, monster_id, resonator_id, "", "")
             for row in rows:
-                row_resonator_name = row.get(
-                    CalculatedTemplateEnum.RESONATOR_NAME.value, None
-                )
+                row_resonator_name = row.resonator_name
                 if row_resonator_name != resonator_name:
                     continue
-                row_damage = row.get(CalculatedTemplateEnum.DAMAGE.value, None)
-                row_damage_no_crit = row.get(
-                    CalculatedTemplateEnum.DAMAGE_NO_CRIT.value, None
-                )
-                row_damage_crit = row.get(
-                    CalculatedTemplateEnum.DAMAGE_CRIT.value, None
-                )
-                row_bonus_type = row.get(
-                    CalculatedTemplateEnum.FINAL_BONUS_TYPE.value,
-                    ResonatorSkillBonusTypeEnum.NONE.value,
-                )
+                row_damage = row.damage
+                row_damage_no_crit = row.damage_no_crit
+                row_damage_crit = row.damage_crit
+                row_bonus_type = row.final_bonus_type
 
                 damage_distribution[row_bonus_type] += row_damage
 
@@ -124,18 +115,23 @@ class QDamageCompare(QWidget):
             for key in damage_distribution.keys():
                 percentage = damage_distribution[key] / damage
                 percentage_str = f"{percentage:.2%}"
+
+                damage_distribution_str = f"{damage_distribution[key]:.2f}"
+
                 damage_distribution[key] = (
-                    f"{damage_distribution[key]} ({percentage_str})"
+                    f"{damage_distribution_str} ({percentage_str})"
                 )
+
+            damage = f"{damage:.2f}"
+            damage_no_crit = f"{damage_no_crit:.2f}"
+            damage_crit = f"{damage_crit:.2f}"
 
             calculated_row = {
                 QDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonator_id,
                 QDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
-                QDamageCompareUneditableTableEnum.DAMAGE.value: str(damage),
-                QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: str(
-                    damage_no_crit
-                ),
-                QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: str(damage_crit),
+                QDamageCompareUneditableTableEnum.DAMAGE.value: damage,
+                QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
+                QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: damage_crit,
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: damage_distribution[
                     ResonatorSkillBonusTypeEnum.BASIC.value
                 ],
