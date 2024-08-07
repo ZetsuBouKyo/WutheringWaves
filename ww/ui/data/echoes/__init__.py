@@ -22,9 +22,10 @@ def get_elements() -> List[str]:
 
 class QEchoesTable(QDraggableTableWidget):
     def __init__(self):
-        echoes_table = EchoesTable()
+        self.echoes_table = EchoesTable()
+        self.echo_list_table = EchoListTable()
 
-        data = echoes_table.df.values.tolist()
+        data = self.echoes_table.df.values.tolist()
         rows = len(data)
         columns = len(data[0])
 
@@ -34,7 +35,7 @@ class QEchoesTable(QDraggableTableWidget):
             columns,
             data=data,
             column_id_name=EchoesEnum.ID.value,
-            column_names=echoes_table.df.columns,
+            column_names=self.echoes_table.df.columns,
         )
 
     def _init_column_width(self):
@@ -71,6 +72,18 @@ class QEchoesTable(QDraggableTableWidget):
 
         id = " ".join(_id)
         return id
+
+    def set_row_cost(self, row: int):
+        col_name = self.get_column_id(EchoesEnum.NAME.value)
+        echo_name = self.get_cell(row, col_name)
+        if not echo_name:
+            return
+        echo_cost = self.echo_list_table.search(echo_name, EchoListEnum.COST)
+        if not echo_cost:
+            return
+
+        col_cost = self.get_column_id(EchoesEnum.COST.value)
+        self.set_uneditable_cell(echo_cost, row, col_cost)
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == EchoesEnum.ID.value:

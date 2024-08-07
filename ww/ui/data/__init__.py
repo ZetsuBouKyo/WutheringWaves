@@ -28,17 +28,20 @@ class QDataTabs(QTabWidget):
         super().__init__()
 
         # Resonators
-        q_resonators_table = QResonatorsTable()
+        self.q_resonators_table = QResonatorsTable()
 
         # Echoes
-        q_echoes_table = QEchoesTable()
+        self.q_echoes_table = QEchoesTable()
 
         # Tabs
         resonators_tab = QDraggableDataTableWidget(
-            q_resonators_table, tsv_fpath=RESONATORS_PATH, event_save=calc
+            self.q_resonators_table, tsv_fpath=RESONATORS_PATH, event_save_after=calc
         )
         echoes_tab = QDraggableDataTableWidget(
-            q_echoes_table, tsv_fpath=ECHOES_PATH, event_save=calc
+            self.q_echoes_table,
+            tsv_fpath=ECHOES_PATH,
+            event_save_after=calc,
+            event_save_row_before=self.q_echoes_table.set_row_cost,
         )
 
         self.addTab(resonators_tab, "共鳴者")

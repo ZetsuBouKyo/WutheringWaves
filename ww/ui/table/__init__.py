@@ -3,7 +3,7 @@ from copy import deepcopy
 from functools import partial
 from pathlib import Path
 from tkinter import Tk
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Union
 
 import pandas as pd
 from PySide2.QtCore import QModelIndex, Qt
@@ -415,11 +415,13 @@ class QDraggableTableWidget(QCustomTableWidget):
 
 
 class QDraggableDataTableWidget(QWidget):
+
     def __init__(
         self,
         table: QDraggableTableWidget,
         tsv_fpath: Union[str, Path] = None,
-        event_save=None,
+        event_save_after: Callable[[], None] = None,
+        event_save_row_before: Callable[[int], None] = None,
     ):
         super().__init__()
         # Buttons
@@ -456,7 +458,8 @@ class QDraggableDataTableWidget(QWidget):
 
         self._lock = False
         self._tsv_fpath = tsv_fpath
-        self._event_save = event_save
+        self._event_save_after = event_save_after
+        self._event_save_row_before = event_save_row_before
 
     def _progress_bar_init(self):
         self._progress_bar_value = 0.0
@@ -479,6 +482,9 @@ class QDraggableDataTableWidget(QWidget):
         _dup_ids = set()
         _new_data = []
         for row in range(self._table.rowCount()):
+            if self._event_save_row_before is not None:
+                self._event_save_row_before(row)
+
             _new_data_row = ["" for _ in range(self._table.columnCount())]
             for col in range(self._table.columnCount()):
                 _new_data_row[col] = self._table.get_cell(row, col)
@@ -493,6 +499,7 @@ class QDraggableDataTableWidget(QWidget):
 
             if id is not None:
                 _new_data_row[id_col] = id
+
             _new_data.append(_new_data_row)
 
             self._progress_bar_update_row()
@@ -520,8 +527,8 @@ class QDraggableDataTableWidget(QWidget):
 
         self._table._init_cells()
 
-        if self._event_save is not None:
-            self._event_save()
+        if self._event_save_after is not None:
+            self._event_save_after()
 
         self._lock = False
         self._progress_bar.setValue(100)

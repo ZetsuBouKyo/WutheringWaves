@@ -36,11 +36,6 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
-        self.q_progress_bar = QProgressBar()
-        self.q_progress_bar.setMinimum(0)
-        self.q_progress_bar.setMaximum(100)
-        self.q_progress_label = QLabel("")
-        self.q_progress_label.setFixedWidth(150)
         self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_save_btn = QPushButton("存檔")
@@ -52,8 +47,6 @@ class QTemplateTabs(QWidget):
         self.q_delete_btn.setToolTip("刪除選取的模板ID")
         self.q_delete_btn.clicked.connect(self.delete)
 
-        self.q_btns_layout.addWidget(self.q_progress_bar)
-        self.q_btns_layout.addWidget(self.q_progress_label)
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_calculate_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
@@ -77,8 +70,20 @@ class QTemplateTabs(QWidget):
         self.q_tabs.addTab(self.q_template_damage_analysis, "傷害占比")
         self.q_tabs.addTab(self.q_template_help_tab, "說明")
 
+        self.q_progress_layout = QHBoxLayout()
+        self.q_progress_bar = QProgressBar()
+        self.q_progress_bar.setToolTip("進度條")
+        self.q_progress_bar.setMinimum(0)
+        self.q_progress_bar.setMaximum(100)
+        self.q_progress_label = QLabel("")
+        self.q_progress_label.setFixedWidth(150)
+        self.q_progress_layout.addStretch()
+        self.q_progress_layout.addWidget(self.q_progress_label)
+        self.q_progress_layout.addWidget(self.q_progress_bar)
+
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_tabs)
+        self.layout.addLayout(self.q_progress_layout)
         self.setLayout(self.layout)
 
     def reset_progress_bar(self):
