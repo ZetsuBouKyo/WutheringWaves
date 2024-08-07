@@ -1,19 +1,21 @@
 from enum import Enum
 
+from ww.locale import ZhHantEnum, _
+
 
 class WeaponStatEnum(str, Enum):
-    LEVEL: str = "等級"
-    ATK: str = "攻擊"
-    ATK_P: str = "攻擊百分比"
-    DEF_P: str = "防禦百分比"
-    HP_P: str = "生命百分比"
-    CRIT_DMG: str = "暴擊傷害"
-    CRIT_RATE: str = "暴擊"
-    ENERGY_REGEN: str = "共鳴效率"
+    LEVEL: str = _(ZhHantEnum.LEVEL)
+    ATK: str = _(ZhHantEnum.ATK)
+    ATK_P: str = _(ZhHantEnum.ATK_P)
+    DEF_P: str = _(ZhHantEnum.DEF_P)
+    HP_P: str = _(ZhHantEnum.HP_P)
+    CRIT_DMG: str = _(ZhHantEnum.CRIT_DMG)
+    CRIT_RATE: str = _(ZhHantEnum.CRIT_RATE)
+    ENERGY_REGEN: str = _(ZhHantEnum.ENERGY_REGEN)
 
 
 class WeaponRankEnum(str, Enum):
-    LEVEL: str = "等級"
-    ATK_P: str = "攻擊提升"
-    ATTRIBUTE_DMG_BONUS: str = "全屬性傷害加成提升"
-    ENERGY_REGEN: str = "共鳴效率提升"
+    LEVEL: str = _(ZhHantEnum.LEVEL)
+    ATK_P: str = _(ZhHantEnum.WEAPON_ATK_P_INCREASE)
+    ATTRIBUTE_DMG_BONUS: str = _(ZhHantEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
+    ENERGY_REGEN: str = _(ZhHantEnum.WEAPON_ENERGY_REGEN_INCREASE)

@@ -1,11 +1,12 @@
 from enum import Enum
+from typing import Union
 
 from ww.locale.zh_hant import ZhHantEnum
 
 __all__ = ["ZhHantEnum"]
 
 
-def get_text(text: str) -> str:
+def get_text(text: Union[str, Enum]) -> str:
     if type(text) == str:
         return text
     elif isinstance(text, Enum):

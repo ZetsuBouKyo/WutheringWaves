@@ -32,6 +32,9 @@ class ZhHantEnum(str, Enum):
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
     TAB_HELP: str = "說明"
 
+    LEVEL: str = "等級"
+    ENERGY_REGEN: str = "共鳴效率"
+
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"
     HP_P: str = "生命百分比"
@@ -46,6 +49,10 @@ class ZhHantEnum(str, Enum):
     SKILL_DMG_ADDITION: str = "招式倍率"
     IGNORE_DEF: str = "忽視防禦"
     REDUCE_RES: str = "抗性降低"
+
+    WEAPON_ATK_P_INCREASE: str = "攻擊提升"
+    WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE: str = "全屬性傷害加成提升"
+    WEAPON_ENERGY_REGEN_INCREASE: str = "共鳴效率提升"
 
     NORMAL_ATTACK: str = "常態攻擊"
     RESONANCE_SKILL: str = "共鳴技能"

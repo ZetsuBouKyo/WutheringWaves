@@ -1,11 +1,13 @@
 from enum import Enum
 
+from ww.locale import ZhHantEnum, _
+
 
 class ResonatorEnum(str, Enum):
-    LEVEL: str = "等級"
-    HP: str = "生命"
-    ATK: str = "攻擊"
-    DEF: str = "防禦"
+    LEVEL: str = _(ZhHantEnum.LEVEL)
+    HP: str = _(ZhHantEnum.HP)
+    ATK: str = _(ZhHantEnum.ATK)
+    DEF: str = _(ZhHantEnum.DEF)
 
 
 class ResonatorBuffEnum(str, Enum):
