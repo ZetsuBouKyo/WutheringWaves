@@ -47,9 +47,9 @@ class TemplateRowEnum(str, Enum):
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
 
-    DAMAGE: str = _(ZhHantEnum.DAMAGE)
     DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
     DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhHantEnum.DAMAGE)
 
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"

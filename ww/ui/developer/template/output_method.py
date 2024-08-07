@@ -494,9 +494,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             return
 
         col_dmg_names = [
-            TemplateRowEnum.DAMAGE,
             TemplateRowEnum.DAMAGE_NO_CRIT,
             TemplateRowEnum.DAMAGE_CRIT,
+            TemplateRowEnum.DAMAGE,
         ]
         for col_name in col_dmg_names:
             col_index = self.get_column_id(col_name.value)
