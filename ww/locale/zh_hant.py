@@ -7,6 +7,13 @@ class ZhHantEnum(str, Enum):
     BUFF: str = "增益"
     NAME: str = "名稱"
 
+    GLACIO: str = "冷凝"
+    FUSION: str = "熱熔"
+    ELECTRO: str = "導電"
+    AERO: str = "氣動"
+    SPECTRO: str = "衍射"
+    HAVOC: str = "湮滅"
+
     LOAD: str = "讀檔"
     LOADING: str = "讀檔中..."
     LOADED: str = "讀檔完成。"

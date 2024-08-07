@@ -1,8 +1,16 @@
+from decimal import Decimal
 from enum import Enum
+from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 
 from ww.locale import ZhHantEnum, _
+from ww.model.element import ElementEnum
+from ww.model.resonator_skill import (
+    ResonatorSkillBaseAttrEnum,
+    ResonatorSkillBonusTypeEnum,
+    ResonatorSkillTypeEnum,
+)
 
 
 class CalculatedTemplateEnum(str, Enum):
@@ -46,30 +54,44 @@ class CalculatedTemplateRowModel(BaseModel):
     skill_id: str = ""
 
     resonator_skill_level: str = ""
-    resonator_skill_element: str = ""
-    resonator_skill_base_attr: str = ""
-    resonator_skill_type: str = ""
-    resonator_skill_type_bonus: str = ""
-    resonator_skill_dmg: str = ""
+    resonator_skill_element: Optional[ElementEnum] = None
+    resonator_skill_base_attr: Optional[ResonatorSkillBaseAttrEnum] = None
+    resonator_skill_type: Optional[ResonatorSkillTypeEnum] = None
+    resonator_skill_type_bonus: Optional[ResonatorSkillBonusTypeEnum] = None
+    resonator_skill_dmg: Optional[Decimal] = None
 
-    echo_element: str = ""
-    echo_skill_dmg: str = ""
+    echo_element: Optional[ElementEnum] = None
+    echo_skill_dmg: Optional[Decimal] = None
 
-    damage: str = ""
-    damage_no_crit: str = ""
-    damage_crit: str = ""
+    damage: Optional[Decimal] = None
+    damage_no_crit: Optional[Decimal] = None
+    damage_crit: Optional[Decimal] = None
 
-    final_element: str = ""
-    final_bonus_type: str = ""
-    final_skill_dmg: str = ""
+    final_element: Optional[ElementEnum] = None
+    final_bonus_type: Optional[ResonatorSkillBonusTypeEnum] = None
+    final_skill_dmg: Optional[Decimal] = None
 
-    final_atk: str = ""
-    final_atk_addition: str = ""
-    final_atk_p: str = ""
-    final_crit_rate: str = ""
-    final_crit_dmg: str = ""
-    final_bonus: str = ""
+    final_atk: Optional[Decimal] = None
+    final_atk_addition: Optional[Decimal] = None
+    final_atk_p: Optional[Decimal] = None
+    final_crit_rate: Optional[Decimal] = None
+    final_crit_dmg: Optional[Decimal] = None
+    final_bonus: Optional[Decimal] = None
 
-    monster_level: str = ""
-    monster_def: str = ""
-    monster_res: str = ""
+    monster_level: Optional[Decimal] = None
+    monster_def: Optional[Decimal] = None
+    monster_res: Optional[Decimal] = None
+
+    # @field_validator(
+    #     "resonator_skill_element", "echo_element", "final_element", mode="before"
+    # )
+    # def empty_str_to_none(cls, v):
+    #     if v == "":
+    #         return None
+    #     return v
+
+    # @field_validator("*", mode="after")
+    # def none_to_empty_str(cls, v):
+    #     if v is None:
+    #         return ""
+    #     return v
