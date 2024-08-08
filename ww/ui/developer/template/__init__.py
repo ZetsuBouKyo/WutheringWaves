@@ -149,11 +149,17 @@ class QTemplateTabs(QWidget):
 
     def load(self):
         template_id = self.q_template_basic_tab.get_template_id()
+        if not template_id:
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TO_SELECT_TEMPLATE_ID)
+            )
+            return
+
         template = get_template(template_id)
 
         if template is None:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.SELECT_TEMPLATE_ID)
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TO_SELECT_TEMPLATE_ID)
             )
             return
 
