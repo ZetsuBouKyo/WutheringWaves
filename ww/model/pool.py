@@ -25,5 +25,4 @@ class PoolModel(BaseModel):
     remainder_4_or_5: int = 0
 
     pool_type: Optional[GachaPoolTypeEnum] = None
-    resonators: List[Union[str, GachaResonatorModel]] = []
-    weapons: List[Union[str, GachaWeaponModel]] = []
+    results: List[Union[str, GachaResonatorModel, GachaWeaponModel]] = []

@@ -35,7 +35,9 @@ def parse(data: dict):
         weapon = deepcopy(weapons.get(id, None))
 
         if resonator is not None and type(resonator) != str:
-            if resonator.rank == 5:
+            if resonator.star < 4:
+                continue
+            if resonator.star == 5:
                 if resonator.permanent:
                     pool.standard_resonator_5 += 1
                 else:
@@ -43,13 +45,15 @@ def parse(data: dict):
                 resonator.number = count_5
                 count_5 = 0
                 count_4_or_5 = 0
-            elif resonator.rank == 4:
+            elif resonator.star == 4:
                 resonator.number = count_4_or_5
                 count_4_or_5 = 0
-            pool.resonators.append(resonator)
+            pool.results.append(resonator)
 
         if weapon is not None and type(weapon) != str:
-            if weapon.rank == 5:
+            if weapon.star < 4:
+                continue
+            elif weapon.star == 5:
                 if weapon.permanent:
                     pool.standard_weapon_5 += 1
                 else:
@@ -57,10 +61,10 @@ def parse(data: dict):
                 weapon.number = count_5
                 count_5 = 0
                 count_4_or_5 = 0
-            elif weapon.rank == 4:
+            elif weapon.star == 4:
                 weapon.number = count_4_or_5
                 count_4_or_5 = 0
-            pool.weapons.append(weapon)
+            pool.results.append(weapon)
 
     pool.remainder_5 = count_5
     pool.remainder_4_or_5 = count_4_or_5

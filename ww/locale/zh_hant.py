@@ -108,3 +108,5 @@ class ZhHantEnum(str, Enum):
     FINAL_CRIT_RATE: str = "[總]暴擊"
     FINAL_CRIT_DMG: str = "[總]暴擊傷害"
     FINAL_BONUS: str = "[總]加成區百分比"
+
+    SHOW_4_STAR: str = "顯示四星"
