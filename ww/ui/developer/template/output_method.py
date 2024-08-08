@@ -74,7 +74,8 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
             self.get_column_id(TemplateBuffTableRowEnum.NAME.value), 500
         )
 
-    def update_row(self, row: int, i: int):
+    def update_row(self, i: int):
+        row = self.get_selected_rows()[0]
         buff_id = self.buffs_list[i]
         buff = self.buffs.get(buff_id, {})
         buff_type = buff.get(BUFF_TYPE, None)
@@ -93,7 +94,7 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         try:
             if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
                 combobox = self.set_combobox(row, col, value, self.buffs_list)
-                combobox.currentIndexChanged.connect(partial(self.update_row, row))
+                combobox.currentIndexChanged.connect(self.update_row)
             elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
                 self.set_combobox(
                     row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
@@ -264,7 +265,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
             btn = QDataPushButton(_(ZhHantEnum.CALCULATE))
-            btn.clicked.connect(partial(self.calculate_row, row))
+            btn.clicked.connect(partial(self.calculate_row, None))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
             btn = QDataPushButton("+")
@@ -456,7 +457,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         return buffs
 
-    def calculate_row(self, row: int):
+    def calculate_row(self, row: Optional[int]):
+        if row is None:
+            selected_rows = self.get_selected_rows()
+            if len(selected_rows) != 1:
+                return
+            row = selected_rows[0]
         data = self.get_row(row)
 
         name_to_id = self.basic.get_test_resonators()
@@ -577,8 +583,15 @@ class QTemplateOutputMethodTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
+        self.q_btns_layout = QHBoxLayout()
+        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
+        self.q_calculate_btn.clicked.connect(self.calculate)
+        self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_calculate_btn)
+
         self.q_output_method_table = QTemplateTabOutputMethodTable(basic)
 
+        self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_output_method_table)
 
         self.setLayout(self.layout)

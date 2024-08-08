@@ -22,6 +22,7 @@ from ww.model.echoes import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echoes import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTabs
 from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 
@@ -36,8 +37,6 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
-        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
-        self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_save_btn = QPushButton(_(ZhHantEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhHantEnum.LOAD))
@@ -48,7 +47,6 @@ class QTemplateTabs(QWidget):
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
-        self.q_btns_layout.addWidget(self.q_calculate_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
@@ -61,7 +59,7 @@ class QTemplateTabs(QWidget):
             self.q_template_basic_tab
         )
         # Damage analysis
-        self.q_template_damage_analysis = QWidget()
+        self.q_template_damage_distribution = QTemplateDamageDistributionTabs()
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
@@ -70,7 +68,7 @@ class QTemplateTabs(QWidget):
             self.q_template_output_method_tab, _(ZhHantEnum.TAB_OUTPUT_METHOD)
         )
         self.q_tabs.addTab(
-            self.q_template_damage_analysis, _(ZhHantEnum.TAB_DAMAGE_DISTRIBUTION)
+            self.q_template_damage_distribution, _(ZhHantEnum.TAB_DAMAGE_DISTRIBUTION)
         )
         self.q_tabs.addTab(self.q_template_help_tab, _(ZhHantEnum.TAB_HELP))
 
@@ -94,21 +92,40 @@ class QTemplateTabs(QWidget):
         self.q_progress_bar.setValue(0.0)
         self.q_progress_label.setText("")
 
-    def calculate(self):
-        self.q_template_output_method_tab.calculate()
+    def get_template(self) -> TemplateModel:
+        template_id = self.q_template_basic_tab.get_template_id()
+        template_id = template_id.strip()
+
+        test_resonator_ids = self.q_template_basic_tab.get_test_resonator_ids()
+        monster_id = self.q_template_basic_tab.get_monster_id()
+        description = self.q_template_basic_tab.get_description()
+        resonators = self.q_template_basic_tab.get_resonators()
+        rows = self.q_template_output_method_tab.get_rows()
+
+        template = TemplateModel(
+            id=template_id,
+            test_resonator_id_1=test_resonator_ids[0],
+            test_resonator_id_2=test_resonator_ids[1],
+            test_resonator_id_3=test_resonator_ids[2],
+            monster_id=monster_id,
+            description=description,
+            resonators=resonators,
+            rows=rows,
+        )
+
+        return template
 
     def save(self):
         self.q_progress_bar.setValue(0.0)
         self.q_progress_label.setText(_(ZhHantEnum.SAVING))
 
-        template_id = self.q_template_basic_tab.get_template_id()
-        template_id = template_id.strip()
-        if template_id == "":
+        template = self.get_template()
+        if template.id == "":
             QMessageBox.warning(
                 self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TEMPLATE_ID_MUST_NOT_EMPTY)
             )
             return
-        template_fname = f"{template_id}.json"
+        template_fname = f"{template.id}.json"
         template_path = Path(TEMPLATE_HOME_PATH) / template_fname
 
         self.q_progress_bar.setValue(10.0)
@@ -124,25 +141,9 @@ class QTemplateTabs(QWidget):
                 self.reset_progress_bar()
                 return
 
-        test_resonator_ids = self.q_template_basic_tab.get_test_resonator_ids()
-        monster_id = self.q_template_basic_tab.get_monster_id()
-        description = self.q_template_basic_tab.get_description()
-        resonators = self.q_template_basic_tab.get_resonators()
-        rows = self.q_template_output_method_tab.get_rows()
-        template_data = TemplateModel(
-            id=template_id,
-            test_resonator_id_1=test_resonator_ids[0],
-            test_resonator_id_2=test_resonator_ids[1],
-            test_resonator_id_3=test_resonator_ids[2],
-            monster_id=monster_id,
-            description=description,
-            resonators=resonators,
-            rows=rows,
-        )
-
         self.q_progress_bar.setValue(20.0)
 
-        save_template(template_id, template_data)
+        save_template(template.id, template)
 
         self.q_progress_bar.setValue(100.0)
         self.q_progress_label.setText(_(ZhHantEnum.SAVED))
