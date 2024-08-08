@@ -8,6 +8,7 @@ class GachaResonatorModel(BaseModel):
     rank: Optional[int] = None
     name: str = ""
     permanent: Optional[bool] = None
+    number: int = 0
 
 
 GachaWeaponModel = GachaResonatorModel

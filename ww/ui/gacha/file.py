@@ -1,5 +1,6 @@
 import json
 import sys
+from copy import deepcopy
 from enum import Enum
 from functools import partial
 from pathlib import Path
@@ -28,71 +29,8 @@ from ww.ui.gacha.id_to_name import (
     resonators,
     weapons,
 )
-
-
-class PoolModel(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-    total: int = 0
-    standard_resonator_5: int = 0
-    featured_resonator_5: int = 0
-    standard_weapon_5: int = 0
-    featured_weapon_5: int = 0
-
-    pool_type: Optional[GachaPoolTypeEnum] = None
-    resonators: List[Union[str, GachaResonatorModel]] = []
-    weapons: List[Union[str, GachaWeaponModel]] = []
-
-
-def parse(data: dict):
-    pool = PoolModel()
-
-    d = data.get("data", [])
-    if len(d) == 0:
-        return pool
-    d = d[0]
-
-    properties = d.get("properties", None)
-    if properties is None:
-        return pool
-
-    gacha_item_id = properties.get("gacha_item_id", None)
-    if gacha_item_id is None:
-        return pool
-
-    gacha_item_ids = gacha_item_id.split(",")
-    pool.total = len(gacha_item_ids)
-    if pool.total < 160:
-        return pool
-
-    for id in gacha_item_ids:
-        resonator = resonators.get(id, None)
-        weapon = weapons.get(id, None)
-
-        if resonator is not None and type(resonator) != str:
-            if resonator.rank == 5:
-                if resonator.permanent:
-                    pool.standard_resonator_5 += 1
-                else:
-                    pool.featured_resonator_5 += 1
-            pool.resonators.append(resonator)
-        if weapon is not None and type(weapon) != str:
-            if weapon.rank == 5:
-                if weapon.permanent:
-                    pool.standard_weapon_5 += 1
-                else:
-                    pool.featured_weapon_5 += 1
-            pool.weapons.append(weapon)
-
-    if pool.featured_resonator_5 > 0:
-        pool.pool_type = GachaPoolTypeEnum.FEATURED_RESONATOR_CONVENE.value
-    elif pool.featured_weapon_5 > 0:
-        pool.pool_type = GachaPoolTypeEnum.FEATURED_WEAPON_CONVENE.value
-    elif pool.standard_weapon_5 > 0:
-        pool.pool_type = GachaPoolTypeEnum.STANDARD_WEAPON_CONVENE.value
-    elif pool.standard_resonator_5 > 0:
-        pool.pool_type = GachaPoolTypeEnum.STANDARD_RESONATOR_CONVENE.value
-
-    return pool
+from ww.ui.gacha.pool import parse
+from ww.ui.gacha.result import QGachaAnalysis
 
 
 class QGachaFileTab(QWidget):
@@ -113,7 +51,10 @@ class QGachaFileTab(QWidget):
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_analyze_btn)
 
+        self.q_gacha_analysis = QGachaAnalysis()
+
         self.layout.addLayout(self.q_btns_layout)
+        self.layout.addWidget(self.q_gacha_analysis, 1)
         self.layout.addStretch()
 
         self.setLayout(self.layout)
@@ -142,8 +83,8 @@ class QGachaFileTab(QWidget):
 
         start = -1
         end = -1
-        pool_types = set()
-        pools = []
+
+        pools = {}
         for i in range(-1, -1 - len(lines), -1):
             if lines[i].startswith('}",'):
                 end = i
@@ -156,8 +97,11 @@ class QGachaFileTab(QWidget):
 
                 pool = parse(data)
                 if pool.pool_type is not None:
-                    if pool.pool_type in pool_types:
+                    if pool.pool_type in pools:
                         continue
-                    pool_types.add(pool.pool_type)
-                    pools.append(pool)
-        print(pools)
+                    pools[pool.pool_type] = pool
+
+        for _, pool in pools.items():
+            print(pool.model_dump_json(indent=4))
+
+        self.q_gacha_analysis.set_results(pools)

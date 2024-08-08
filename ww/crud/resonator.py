@@ -48,3 +48,13 @@ def get_resonator_chains() -> List[str]:
 
 def get_resonator_inherent_skills() -> List[str]:
     return ["0", "1"]
+
+
+RESONATOR_ICON_HOME_PATH = "./cache/v1/assets/resonator/icon"
+
+
+def get_resonator_icon_path(resonator_name: str) -> Optional[str]:
+    path = Path(RESONATOR_ICON_HOME_PATH) / f"{resonator_name}.png"
+    if path.is_dir() or not path.exists():
+        return
+    return str(path)
