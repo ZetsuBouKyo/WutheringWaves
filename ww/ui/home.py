@@ -1,27 +1,11 @@
-import sys
 from functools import partial
 
-import mistune
 from PySide2.QtCore import QSize, QUrl
 from PySide2.QtGui import QDesktopServices, QIcon
-from PySide2.QtWidgets import (
-    QApplication,
-    QHBoxLayout,
-    QLabel,
-    QMainWindow,
-    QProgressBar,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
-    QTextEdit,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
 from ww.crud.docs import get_home_html
-from ww.ui.data.echoes import QEchoesTable
-from ww.ui.data.resonators import QResonatorsTable
+from ww.ui.docs import get_docs
 
 ICON_GITHUB_PATH = "./assets/mdi--github.svg"
 ICON_TWITCH_PATH = "./assets/mdi--twitch.svg"
@@ -45,9 +29,7 @@ class QHomeTab(QWidget):
         self.q_icons_layout.addWidget(self.q_twitch_btn)
 
         self.q_text_layout = QVBoxLayout()
-        self.q_text = QTextEdit()
-        self.q_text.setAcceptRichText(True)
-        self.q_text.setHtml(get_home_html())
+        self.q_text = get_docs(get_home_html)
         self.q_text_layout.addWidget(self.q_text)
 
         self.layout.addLayout(self.q_icons_layout)

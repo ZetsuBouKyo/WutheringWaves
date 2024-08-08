@@ -1,43 +1,26 @@
-import json
-import sys
-from copy import deepcopy
 from decimal import Decimal
-from enum import Enum
-from functools import partial
-from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, Optional
 
-from pydantic import BaseModel, ConfigDict
-from PySide2.QtCore import QRect, QSize, Qt
-from PySide2.QtGui import QColor, QFont, QIcon, QPainter, QPixmap
+from PySide2.QtCore import QSize
+from PySide2.QtGui import QFont, QIcon
 from PySide2.QtWidgets import (
-    QApplication,
     QCheckBox,
-    QFileDialog,
     QHBoxLayout,
     QLabel,
-    QMainWindow,
     QMessageBox,
-    QProgressBar,
     QPushButton,
-    QScrollArea,
-    QTableWidget,
-    QTableWidgetItem,
     QTabWidget,
     QVBoxLayout,
     QWidget,
 )
 
+from ww.crud.docs import get_gacha_file_html
 from ww.crud.resonator import get_resonator_icon_path
 from ww.locale import ZhHantEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.ui.combobox import QCustomComboBox
-from ww.ui.gacha.id_to_name import (
-    GachaResonatorModel,
-    GachaWeaponModel,
-    resonators,
-    weapons,
-)
+from ww.ui.docs import get_docs
+from ww.ui.gacha.id_to_name import GachaResonatorModel
 from ww.ui.gacha.pool import PoolModel
 from ww.ui.layout import FlowLayout
 from ww.ui.widget import ScrollableWidget
@@ -226,7 +209,7 @@ class QGachaResultsTabs(QTabWidget):
 
         # Tabs
         self.q_gacha_result_tab = QGachaResultTab()
-        self.q_gacha_help_tab = QWidget()
+        self.q_gacha_help_tab = get_docs(get_gacha_file_html)
 
         self.addTab(self.q_gacha_result_tab, _(ZhHantEnum.TAB_ANALYSIS))
         self.addTab(self.q_gacha_help_tab, _(ZhHantEnum.TAB_HELP))
