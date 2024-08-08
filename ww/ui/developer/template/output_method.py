@@ -31,6 +31,7 @@ from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
     CalculatedTemplateEnum,
+    CalculatedTemplateRowModel,
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
     TemplateModel,
@@ -120,6 +121,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         columns = len(column_names)
 
         self.ouput_methods = ouput_methods
+        self.calculated_rows = []
 
         super().__init__(rows, columns, [], column_names=column_names)
         self.setHorizontalHeaderLabels(self.column_names)
@@ -135,18 +137,24 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         del self.ouput_methods[row]
         super().removeRow(row)
 
-    def calculate(self):
-        percentage = 0.0
-        diff = 100.0 / self.rowCount() + 1
-        self.progress_bar.set(percentage, _(ZhHantEnum.CALCULATING))
+    def calculate(self, is_progress: bool = True):
+        if is_progress:
+            percentage = 0.0
+            diff = 100.0 / self.rowCount() + 1
+            self.progress_bar.set(percentage, _(ZhHantEnum.CALCULATING))
 
+        self.calculated_rows = []
         for row in range(self.rowCount()):
             self.update_row_buffs(row, self.ouput_methods[row].buffs)
-            self.calculate_row(row)
+            calculated_row = self.calculate_row(row)
+            if calculated_row is not None:
+                self.calculated_rows.append(calculated_row)
 
-            percentage += diff
-            self.progress_bar.set_percentage(percentage)
-        self.progress_bar.set(100.0, _(ZhHantEnum.CALCULATED))
+            if is_progress:
+                percentage += diff
+                self.progress_bar.set_percentage(percentage)
+        if is_progress:
+            self.progress_bar.set(100.0, _(ZhHantEnum.CALCULATED))
 
     def load(self, rows: List[TemplateRowModel]):
         self.ouput_methods = rows
@@ -166,9 +174,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 self.set_cell(None, row, col)
-        for row in range(self.rowCount()):
-            self.update_row_buffs(row, self.ouput_methods[row].buffs)
-            self.calculate_row(row)
+        self.calculate(is_progress=False)
 
     def _get_resonator_skill_ids(self, row: int) -> str:
         resonator_name = self._get_resonator_name(row)
@@ -468,7 +474,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         return buffs
 
-    def calculate_row(self, row: Optional[int]):
+    def calculate_row(self, row: Optional[int]) -> Optional[CalculatedTemplateRowModel]:
         if row is None:
             selected_rows = self.get_selected_rows()
             if len(selected_rows) != 1:
@@ -545,6 +551,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 value = str(value)
 
             self.set_cell(value, row, col_index)
+        return calculated_row
 
     def add_buff(self, row: int, btn: QDataPushButton):
         buffs = self.get_default_buffs()

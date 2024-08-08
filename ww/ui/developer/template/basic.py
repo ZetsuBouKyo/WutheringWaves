@@ -303,7 +303,7 @@ class QTemplateBasicTab(QWidget):
             self.q_test_resonator_3_combobox.currentText(),
         ]
 
-    def get_test_resonators(self) -> List[Dict[str, str]]:
+    def get_test_resonators(self) -> Dict[str, str]:
         table = {}
         resonators_table = ResonatorsTable()
         for resonator_id in self.get_test_resonator_ids():

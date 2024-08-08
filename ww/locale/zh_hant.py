@@ -17,6 +17,7 @@ class ZhHantEnum(str, Enum):
     SPECTRO: str = "衍射"
     HAVOC: str = "湮滅"
 
+    ANALYZE: str = "分析"
     CALCULATING: str = "計算中..."
     CALCULATED: str = "計算完成。"
     LOAD: str = "讀檔"

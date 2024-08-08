@@ -22,7 +22,7 @@ from ww.model.echoes import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echoes import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
-from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTabs
+from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
@@ -65,7 +65,7 @@ class QTemplateTabs(QWidget):
             self.q_template_basic_tab, self.q_progress_bar
         )
         # Damage analysis
-        self.q_template_damage_distribution = QTemplateDamageDistributionTabs()
+        self.q_template_damage_distribution = QTemplateDamageDistributionTab(self)
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
