@@ -220,3 +220,7 @@ class QResonatorsTable(QDraggableTableWidget):
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)
+
+    def initialize(self):
+        resonators_table = ResonatorsTable()
+        self.data = resonators_table.df.values.tolist()

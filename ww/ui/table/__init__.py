@@ -421,6 +421,7 @@ class QDraggableDataTableWidget(QWidget):
         self,
         table: QDraggableTableWidget,
         tsv_fpath: Optional[Union[str, Path]] = None,
+        event_intialize_before: Callable[[], None] = None,
         event_save_after: Callable[[], None] = None,
         event_save_row_before: Callable[[int], None] = None,
     ):
@@ -451,6 +452,7 @@ class QDraggableDataTableWidget(QWidget):
 
         self._lock = False
         self._tsv_fpath = tsv_fpath
+        self._event_intialize_before = event_intialize_before
         self._event_save_after = event_save_after
         self._event_save_row_before = event_save_row_before
 
@@ -534,7 +536,11 @@ class QDraggableDataTableWidget(QWidget):
         self._progress_bar.set(0.0, _(ZhHantEnum.INITIALIZING))
         self._progress_bar_init()
 
-        self._table.data = self._table.data_0[0]
+        if self._event_intialize_before is not None:
+            self._event_intialize_before()
+        else:
+            self._table.data = deepcopy(self._table.data_0[0])
+
         self._table.column_names_table = {
             self._table.column_names[i]: i for i in range(len(self._table.column_names))
         }
