@@ -286,7 +286,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
             btn = QDataPushButton("+")
-            btn.clicked.connect(partial(self.add_buff, row, btn))
+            btn.clicked.connect(partial(self.add_buff, btn))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
             self.set_combobox(
@@ -553,7 +553,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.set_cell(value, row, col_index)
         return calculated_row
 
-    def add_buff(self, row: int, btn: QDataPushButton):
+    def add_buff(self, btn: QDataPushButton):
+        selected_rows = self.get_selected_rows()
+        if len(selected_rows) != 1:
+            return
+        row = selected_rows[0]
+
         buffs = self.get_default_buffs()
 
         width = 1200
