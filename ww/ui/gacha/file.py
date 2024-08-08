@@ -13,6 +13,7 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QTableWidget,
@@ -22,6 +23,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.locale import ZhHantEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.ui.gacha.id_to_name import (
     GachaResonatorModel,
@@ -30,7 +32,7 @@ from ww.ui.gacha.id_to_name import (
     weapons,
 )
 from ww.ui.gacha.pool import parse
-from ww.ui.gacha.result import QGachaAnalysis
+from ww.ui.gacha.result import QGachaResultsTabs
 
 
 class QGachaFileTab(QWidget):
@@ -51,13 +53,20 @@ class QGachaFileTab(QWidget):
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_analyze_btn)
 
-        self.q_gacha_analysis = QGachaAnalysis()
+        self.q_gacha_analysis = QGachaResultsTabs()
 
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_gacha_analysis, 1)
         self.layout.addStretch()
 
         self.setLayout(self.layout)
+
+    def set_fpath(self, fpath: Optional[Path]):
+        self.fpath = fpath
+        fpath_str = ""
+        if self.fpath is not None:
+            fpath_str = str(self.fpath)
+        self.q_fpath_label.setText(fpath_str)
 
     def open_file_dialog(self):
         q_file_dialog = QFileDialog(self)
@@ -70,11 +79,24 @@ class QGachaFileTab(QWidget):
         fpath = Path(fpath)
         if not fpath.exists():
             return
-        self.fpath = fpath
-        self.q_fpath_label.setText(str(self.fpath))
+        self.set_fpath(fpath)
 
     def analyze(self):
         if self.fpath is None:
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                _(ZhHantEnum.WUTHERING_WAVES_DEBUG_FILE_NOT_FOUND),
+            )
+            return
+
+        if self.fpath.parts[-2] == "KRSDKWebView":
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                _(ZhHantEnum.WUTHERING_WAVES_DEBUG_FILE_SHOULD_BE_COPIED),
+            )
+            self.set_fpath(None)
             return
 
         with self.fpath.open(mode="r", encoding="utf-8") as fp:
@@ -100,8 +122,5 @@ class QGachaFileTab(QWidget):
                     if pool.pool_type in pools:
                         continue
                     pools[pool.pool_type] = pool
-
-        for _, pool in pools.items():
-            print(pool.model_dump_json(indent=4))
 
         self.q_gacha_analysis.set_results(pools)

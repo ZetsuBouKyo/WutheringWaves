@@ -43,6 +43,7 @@ class ZhHantEnum(str, Enum):
     TAB_OUTPUT_METHOD: str = "輸出手法"
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
     TAB_HELP: str = "說明"
+    TAB_ANALYSIS: str = "分析"
 
     TAB_ATTR: str = "屬性"
     TAB_SKILL: str = "技能"
@@ -117,3 +118,11 @@ class ZhHantEnum(str, Enum):
     FROM_OLD_TO_NEW: str = "從舊到新"
     AVERAGE_PITY_5_STAR: str = "平均五星保底"
     AVERAGE_PITY_4_STAR: str = "平均四星保底"
+
+    POOL_NAME_MUST_NOT_EMPTY: str = "喚取池子名稱不該是空值。"
+    POOL_NAME_NOT_LEGAL: str = "喚取池子名稱錯誤。"
+
+    WUTHERING_WAVES_DEBUG_FILE_NOT_FOUND: str = "請選擇 'debug.log' 檔案。"
+    WUTHERING_WAVES_DEBUG_FILE_SHOULD_BE_COPIED: str = (
+        "建議將 'debug.log' 複製到其他資料夾再進行分析。"
+    )

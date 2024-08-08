@@ -17,6 +17,7 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QScrollArea,
@@ -119,7 +120,7 @@ class QGachaResults(QWidget):
             self.flow_layout.addWidget(icon)
 
 
-class QGachaAnalysis(QWidget):
+class QGachaResultTab(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
@@ -197,13 +198,38 @@ class QGachaAnalysis(QWidget):
 
     def set_results(self, pools: Dict[str, PoolModel]):
         pool_name = self.q_pool_combobox.currentText()
+        pool_name = pool_name.strip()
 
         self.clear_analysis()
         self.q_results.clear_results()
 
+        if pool_name == "":
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.POOL_NAME_MUST_NOT_EMPTY)
+            )
+            return
+
         pool = pools.get(pool_name, None)
         if pool is None:
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.POOL_NAME_NOT_LEGAL)
+            )
             return
 
         self.set_analysis(pool)
         self.q_results.set_results(pool, self.q_4_start_checkbox.isChecked())
+
+
+class QGachaResultsTabs(QTabWidget):
+    def __init__(self):
+        super().__init__()
+
+        # Tabs
+        self.q_gacha_result_tab = QGachaResultTab()
+        self.q_gacha_help_tab = QWidget()
+
+        self.addTab(self.q_gacha_result_tab, _(ZhHantEnum.TAB_ANALYSIS))
+        self.addTab(self.q_gacha_help_tab, _(ZhHantEnum.TAB_HELP))
+
+    def set_results(self, pools: Dict[str, PoolModel]):
+        self.q_gacha_result_tab.set_results(pools)
