@@ -19,7 +19,6 @@ from PySide2.QtWidgets import (
     QMainWindow,
     QMenu,
     QMessageBox,
-    QProgressBar,
     QPushButton,
     QTableWidget,
     QTableWidgetItem,
@@ -32,6 +31,7 @@ from ww.locale import ZhHantEnum, _
 from ww.model.echoes import EchoListEnum
 from ww.tables.echoes import EchoListTable
 from ww.ui.combobox import QCustomComboBox
+from ww.ui.progress_bar import QHProgressBar
 from ww.utils.pd import save_tsv
 from ww.utils.sorting import alphanum_sorting
 
@@ -427,7 +427,7 @@ class QDraggableDataTableWidget(QWidget):
         super().__init__()
         # Buttons
         self._layout_btns = QHBoxLayout()
-        self._btn_initialize = QPushButton("初始化")
+        self._btn_initialize = QPushButton(_(ZhHantEnum.INITIALIZE))
         self._btn_initialize.clicked.connect(self.initialize)
         self._btn_save = QPushButton(_(ZhHantEnum.SAVE))
         self._btn_save.clicked.connect(self.save)
@@ -437,15 +437,7 @@ class QDraggableDataTableWidget(QWidget):
         self._layout_btns.addWidget(self._btn_save)
 
         # Progress
-        self._layout_progress = QHBoxLayout()
-        self._progress_label = QLabel("")
-        self._progress_label.setFixedWidth(150)
-        self._progress_bar = QProgressBar()
-        self._progress_bar.setMinimum(0)
-        self._progress_bar.setMaximum(100)
-        self._layout_progress.addStretch()
-        self._layout_progress.addWidget(self._progress_label)
-        self._layout_progress.addWidget(self._progress_bar)
+        self._progress_bar = QHProgressBar()
 
         # Table
         self._table = table
@@ -454,7 +446,7 @@ class QDraggableDataTableWidget(QWidget):
         self._layout = QVBoxLayout()
         self._layout.addLayout(self._layout_btns)
         self._layout.addWidget(self._table)
-        self._layout.addLayout(self._layout_progress)
+        self._layout.addWidget(self._progress_bar)
         self.setLayout(self._layout)
 
         self._lock = False
@@ -464,13 +456,11 @@ class QDraggableDataTableWidget(QWidget):
 
     def _progress_bar_init(self):
         self._progress_bar_value = 0.0
-        self._progress_bar.setValue(self._progress_bar_value)
-
         self._progress_bar_row_tick = 100.0 / (self._table.rowCount() + 1)
 
     def _progress_bar_update_row(self):
         self._progress_bar_value += self._progress_bar_row_tick
-        self._progress_bar.setValue(self._progress_bar_value)
+        self._progress_bar.set_percentage(self._progress_bar_value)
 
     def set_tsv_fpath(self, fpath: Union[str, Path]):
         self._tsv_fpath = fpath
@@ -479,9 +469,10 @@ class QDraggableDataTableWidget(QWidget):
         if self._lock:
             return
         self._lock = True
-        self._progress_label.setText(_(ZhHantEnum.SAVING))
 
+        self._progress_bar.set(0.0, _(ZhHantEnum.SAVING))
         self._progress_bar_init()
+
         _ids = {}
         _dup_ids = set()
         _new_data = []
@@ -518,8 +509,8 @@ class QDraggableDataTableWidget(QWidget):
                 f"'{self._table.column_id_name}'中，第{ids_str}列字串重複，請加入字首或字尾，使'{self._table.column_id_name}'中的字串不重複。",
                 QMessageBox.Yes,
             )
-            self._progress_label.setText("")
-            self._progress_bar.setValue(0.0)
+
+            self._progress_bar.reset()
             self._lock = False
             return
 
@@ -533,15 +524,14 @@ class QDraggableDataTableWidget(QWidget):
             self._event_save_after()
 
         self._lock = False
-        self._progress_bar.setValue(100)
-        self._progress_label.setText(_(ZhHantEnum.SAVED))
+        self._progress_bar.set(100.0, _(ZhHantEnum.SAVED))
 
     def initialize(self):
         if self._lock:
             return
         self._lock = True
-        self._progress_label.setText("初始化...")
 
+        self._progress_bar.set(0.0, _(ZhHantEnum.INITIALIZING))
         self._progress_bar_init()
 
         self._table.data = self._table.data_0[0]
@@ -555,11 +545,10 @@ class QDraggableDataTableWidget(QWidget):
         self._table.setColumnCount(columns)
 
         self._table.setHorizontalHeaderLabels(self._table.column_names)
-        self._progress_bar.setValue(10)
+        self._progress_bar.set_percentage(10.0)
 
         self._table._init_cells()
         self._table._init_column_width()
 
-        self._progress_bar.setValue(100)
         self._lock = False
-        self._progress_label.setText("初始化完成。")
+        self._progress_bar.set(100.0, _(ZhHantEnum.INITIALIZED))

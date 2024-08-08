@@ -25,6 +25,10 @@ class ZhHantEnum(str, Enum):
     SAVE: str = "存檔"
     SAVING: str = "存檔中..."
     SAVED: str = "存檔完成。"
+    INITIALIZE: str = "初始化"
+    INITIALIZING: str = "初始化..."
+    INITIALIZED: str = "初始化完成。"
+
     FILE_EXISTS: str = "檔案已存在"
     FILE_OVERWRITE_OR_NOT: str = "確定要覆蓋檔案"
 
