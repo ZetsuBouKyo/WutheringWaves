@@ -25,6 +25,7 @@ from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTabs
 from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
+from ww.ui.progress_bar import QHProgressBar
 
 echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
@@ -51,12 +52,17 @@ class QTemplateTabs(QWidget):
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
 
+        # Progress bar
+        self.q_progress_bar = QHProgressBar()
+
+        # Tabs
         self.q_tabs = QTabWidget()
+
         # Basic
         self.q_template_basic_tab = QTemplateBasicTab()
         # Output method
         self.q_template_output_method_tab = QTemplateOutputMethodTab(
-            self.q_template_basic_tab
+            self.q_template_basic_tab, self.q_progress_bar
         )
         # Damage analysis
         self.q_template_damage_distribution = QTemplateDamageDistributionTabs()
@@ -72,25 +78,10 @@ class QTemplateTabs(QWidget):
         )
         self.q_tabs.addTab(self.q_template_help_tab, _(ZhHantEnum.TAB_HELP))
 
-        self.q_progress_layout = QHBoxLayout()
-        self.q_progress_bar = QProgressBar()
-        self.q_progress_bar.setToolTip(_(ZhHantEnum.PROGRESS_BAR))
-        self.q_progress_bar.setMinimum(0)
-        self.q_progress_bar.setMaximum(100)
-        self.q_progress_label = QLabel("")
-        self.q_progress_label.setFixedWidth(150)
-        self.q_progress_layout.addStretch()
-        self.q_progress_layout.addWidget(self.q_progress_label)
-        self.q_progress_layout.addWidget(self.q_progress_bar)
-
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_tabs)
-        self.layout.addLayout(self.q_progress_layout)
+        self.layout.addWidget(self.q_progress_bar)
         self.setLayout(self.layout)
-
-    def reset_progress_bar(self):
-        self.q_progress_bar.setValue(0.0)
-        self.q_progress_label.setText("")
 
     def get_template(self) -> TemplateModel:
         template_id = self.q_template_basic_tab.get_template_id()
@@ -116,8 +107,7 @@ class QTemplateTabs(QWidget):
         return template
 
     def save(self):
-        self.q_progress_bar.setValue(0.0)
-        self.q_progress_label.setText(_(ZhHantEnum.SAVING))
+        self.q_progress_bar.set(0.0, _(ZhHantEnum.SAVING))
 
         template = self.get_template()
         if template.id == "":
@@ -128,7 +118,7 @@ class QTemplateTabs(QWidget):
         template_fname = f"{template.id}.json"
         template_path = Path(TEMPLATE_HOME_PATH) / template_fname
 
-        self.q_progress_bar.setValue(10.0)
+        self.q_progress_bar.set_percentage(10.0)
 
         if template_path.exists():
             confirmation = QMessageBox.question(
@@ -138,15 +128,14 @@ class QTemplateTabs(QWidget):
                 QMessageBox.Yes | QMessageBox.No,
             )
             if confirmation == QMessageBox.No:
-                self.reset_progress_bar()
+                self.q_progress_bar.reset()
                 return
 
-        self.q_progress_bar.setValue(20.0)
+        self.q_progress_bar.set_percentage(20.0)
 
         save_template(template.id, template)
 
-        self.q_progress_bar.setValue(100.0)
-        self.q_progress_label.setText(_(ZhHantEnum.SAVED))
+        self.q_progress_bar.set(100.0, _(ZhHantEnum.SAVED))
 
     def load(self):
         template_id = self.q_template_basic_tab.get_template_id()
@@ -164,20 +153,18 @@ class QTemplateTabs(QWidget):
             )
             return
 
-        self.reset_progress_bar()
-        self.q_progress_label.setText(_(ZhHantEnum.LOADING))
+        self.q_progress_bar.set(0.0, _(ZhHantEnum.LOADING))
 
         if len(template.rows) == 0:
             template.rows.append(TemplateRowModel())
 
-        self.q_progress_bar.setValue(20.0)
+        self.q_progress_bar.set_percentage(20.0)
         self.q_template_basic_tab.load(template)
 
-        self.q_progress_bar.setValue(60.0)
+        self.q_progress_bar.set_percentage(60.0)
         self.q_template_output_method_tab.load(template.rows)
 
-        self.q_progress_bar.setValue(100.0)
-        self.q_progress_label.setText(_(ZhHantEnum.LOADED))
+        self.q_progress_bar.set(100.0, _(ZhHantEnum.LOADED))
 
     def delete(self):
         template_id = self.q_template_basic_tab.get_template_id()
@@ -189,7 +176,7 @@ class QTemplateTabs(QWidget):
             )
             return
 
-        self.reset_progress_bar()
+        self.q_progress_bar.reset()
 
         confirmation = QMessageBox.question(
             self,

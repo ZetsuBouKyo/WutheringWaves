@@ -44,6 +44,7 @@ from ww.tables.monsters import MonstersEnum, MonstersTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.progress_bar import QHProgressBar
 from ww.ui.table import QDraggableTableWidget
 from ww.utils.number import get_number
 
@@ -107,8 +108,10 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
 
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):
-    def __init__(self, basic: QTemplateBasicTab):
+    def __init__(self, basic: QTemplateBasicTab, progress_bar: QHProgressBar):
         self.basic = basic
+        self.progress_bar = progress_bar
+
         ouput_methods = [TemplateRowModel()]
 
         column_names = [e.value for e in TemplateRowEnum]
@@ -133,9 +136,17 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         super().removeRow(row)
 
     def calculate(self):
+        percentage = 0.0
+        diff = 100.0 / self.rowCount() + 1
+        self.progress_bar.set(percentage, _(ZhHantEnum.CALCULATING))
+
         for row in range(self.rowCount()):
             self.update_row_buffs(row, self.ouput_methods[row].buffs)
             self.calculate_row(row)
+
+            percentage += diff
+            self.progress_bar.set_percentage(percentage)
+        self.progress_bar.set(100.0, _(ZhHantEnum.CALCULATED))
 
     def load(self, rows: List[TemplateRowModel]):
         self.ouput_methods = rows
@@ -579,7 +590,8 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
 
 class QTemplateOutputMethodTab(QWidget):
-    def __init__(self, basic: QTemplateBasicTab):
+
+    def __init__(self, basic: QTemplateBasicTab, progress_bar: QHProgressBar):
         super().__init__()
         self.layout = QVBoxLayout()
 
@@ -589,7 +601,7 @@ class QTemplateOutputMethodTab(QWidget):
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_calculate_btn)
 
-        self.q_output_method_table = QTemplateTabOutputMethodTable(basic)
+        self.q_output_method_table = QTemplateTabOutputMethodTable(basic, progress_bar)
 
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_output_method_table)
