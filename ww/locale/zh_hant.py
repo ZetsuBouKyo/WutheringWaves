@@ -110,3 +110,10 @@ class ZhHantEnum(str, Enum):
     FINAL_BONUS: str = "[總]加成區百分比"
 
     SHOW_4_STAR: str = "顯示四星"
+    TOTAL_PULLS: str = "全部喚取數量"
+    TOTAL_5_STAR_PULLS: str = "全部五星喚取數量"
+    REMAINED_4_STAR_ABOVE_PULLS: str = "四星以上墊抽"
+    REMAINED_5_STAR_PULLS: str = "五星墊抽"
+    FROM_OLD_TO_NEW: str = "從舊到新"
+    AVERAGE_PITY_5_STAR: str = "平均五星保底"
+    AVERAGE_PITY_4_STAR: str = "平均四星保底"

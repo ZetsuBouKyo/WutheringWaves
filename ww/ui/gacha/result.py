@@ -1,6 +1,7 @@
 import json
 import sys
 from copy import deepcopy
+from decimal import Decimal
 from enum import Enum
 from functools import partial
 from pathlib import Path
@@ -79,31 +80,31 @@ class QGachaIcon(QWidget):
         self.setLayout(layout)
 
 
-def clearLayout(layout):
+def clear_layout(layout):
     while layout.count():
         item = layout.takeAt(0)
         widget = item.widget()
         if widget is not None:
             widget.deleteLater()
         else:
-            clearLayout(item.layout())
+            clear_layout(item.layout())
 
 
 class QGachaResults(QWidget):
     def __init__(self):
         super().__init__()
-        self.layout = FlowLayout()
+        self.layout = QVBoxLayout()
+
+        self.flow_layout = FlowLayout()
+        self.layout.addLayout(self.flow_layout)
+        self.layout.addStretch()
+
         self.setLayout(self.layout)
 
-    def set_results(
-        self,
-        pool_name: GachaPoolTypeEnum,
-        pools: Dict[str, PoolModel],
-        show_4_star: bool = False,
-    ):
-        clearLayout(self.layout)
+    def clear_results(self):
+        clear_layout(self.flow_layout)
 
-        pool = pools.get(pool_name, None)
+    def set_results(self, pool: Optional[PoolModel], show_4_star: bool = False):
         if pool is None:
             return
 
@@ -115,7 +116,7 @@ class QGachaResults(QWidget):
                 continue
             icon_path = get_resonator_icon_path(result.name)
             icon = QGachaIcon(result.number, result.name, icon_path)
-            self.layout.addWidget(icon)
+            self.flow_layout.addWidget(icon)
 
 
 class QGachaAnalysis(QWidget):
@@ -134,6 +135,8 @@ class QGachaAnalysis(QWidget):
         self.q_tool_bar_layout.addWidget(self.q_4_start_checkbox)
         self.q_tool_bar_layout.addStretch()
 
+        self.init_analysis()
+
         # Result
         self.q_results = QGachaResults()
         self.q_results_main = ScrollableWidget(self.q_results)
@@ -143,8 +146,64 @@ class QGachaAnalysis(QWidget):
 
         self.setLayout(self.layout)
 
+    def set_label(self, title: str) -> QLabel:
+        layout = QHBoxLayout()
+        title_label = QLabel(title)
+        title_label.setFixedWidth(150)
+        title_label.setFixedHeight(40)
+        value_label = QLabel("")
+        value_label.setFixedHeight(40)
+        layout.addWidget(title_label)
+        layout.addWidget(value_label)
+        self.layout.addLayout(layout)
+        return value_label
+
+    def init_analysis(self):
+        self.q_total_pulls_label = self.set_label(f"{_(ZhHantEnum.TOTAL_PULLS)}:")
+        self.q_total_5_star_pulls_label = self.set_label(
+            f"{_(ZhHantEnum.TOTAL_5_STAR_PULLS)}:"
+        )
+        self.q_remained_5_star_pulls_label = self.set_label(
+            f"{_(ZhHantEnum.REMAINED_5_STAR_PULLS)}:"
+        )
+        self.q_remained_4_star_pulls_label = self.set_label(
+            f"{_(ZhHantEnum.REMAINED_4_STAR_ABOVE_PULLS)}:"
+        )
+        self.q_from_old_to_new_label = self.set_label(
+            f"{_(ZhHantEnum.FROM_OLD_TO_NEW)}:"
+        )
+
+    def clear_analysis(self):
+        self.q_total_pulls_label.setText("")
+        self.q_total_5_star_pulls_label.setText("")
+        self.q_remained_5_star_pulls_label.setText("")
+        self.q_remained_4_star_pulls_label.setText("")
+
+    def set_analysis(self, pool: PoolModel):
+        self.q_total_pulls_label.setText(str(pool.total))
+
+        pulls_5_star = (
+            pool.featured_resonator_5
+            + pool.featured_weapon_5
+            + pool.standard_resonator_5
+            + pool.standard_weapon_5
+        )
+        pulls_5_star_rate = Decimal(pulls_5_star) / Decimal(pool.total)
+        pulls_5_star_str = f"{pulls_5_star} ({pulls_5_star_rate:.2%})"
+        self.q_total_5_star_pulls_label.setText(pulls_5_star_str)
+
+        self.q_remained_5_star_pulls_label.setText(str(pool.remainder_5))
+        self.q_remained_4_star_pulls_label.setText(str(pool.remainder_4_or_5))
+
     def set_results(self, pools: Dict[str, PoolModel]):
         pool_name = self.q_pool_combobox.currentText()
-        self.q_results.set_results(
-            pool_name, pools, self.q_4_start_checkbox.isChecked()
-        )
+
+        self.clear_analysis()
+        self.q_results.clear_results()
+
+        pool = pools.get(pool_name, None)
+        if pool is None:
+            return
+
+        self.set_analysis(pool)
+        self.q_results.set_results(pool, self.q_4_start_checkbox.isChecked())
