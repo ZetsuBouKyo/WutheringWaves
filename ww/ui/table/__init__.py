@@ -421,20 +421,20 @@ class QDraggableDataTableWidget(QWidget):
         self,
         table: QDraggableTableWidget,
         tsv_fpath: Optional[Union[str, Path]] = None,
-        event_intialize_before: Callable[[], None] = None,
+        event_load_before: Callable[[], None] = None,
         event_save_after: Callable[[], None] = None,
         event_save_row_before: Callable[[int], None] = None,
     ):
         super().__init__()
         # Buttons
         self._layout_btns = QHBoxLayout()
-        self._btn_initialize = QPushButton(_(ZhHantEnum.INITIALIZE))
-        self._btn_initialize.clicked.connect(self.initialize)
+        self._btn_load = QPushButton(_(ZhHantEnum.LOAD))
+        self._btn_load.clicked.connect(self.load)
         self._btn_save = QPushButton(_(ZhHantEnum.SAVE))
         self._btn_save.clicked.connect(self.save)
 
         self._layout_btns.addStretch()
-        self._layout_btns.addWidget(self._btn_initialize)
+        self._layout_btns.addWidget(self._btn_load)
         self._layout_btns.addWidget(self._btn_save)
 
         # Progress
@@ -452,7 +452,7 @@ class QDraggableDataTableWidget(QWidget):
 
         self._lock = False
         self._tsv_fpath = tsv_fpath
-        self._event_intialize_before = event_intialize_before
+        self._event_load_before = event_load_before
         self._event_save_after = event_save_after
         self._event_save_row_before = event_save_row_before
 
@@ -528,16 +528,16 @@ class QDraggableDataTableWidget(QWidget):
         self._lock = False
         self._progress_bar.set(100.0, _(ZhHantEnum.SAVED))
 
-    def initialize(self):
+    def load(self):
         if self._lock:
             return
         self._lock = True
 
-        self._progress_bar.set(0.0, _(ZhHantEnum.INITIALIZING))
+        self._progress_bar.set(0.0, _(ZhHantEnum.LOADING))
         self._progress_bar_init()
 
-        if self._event_intialize_before is not None:
-            self._event_intialize_before()
+        if self._event_load_before is not None:
+            self._event_load_before()
         else:
             self._table.data = deepcopy(self._table.data_0[0])
 
@@ -557,4 +557,4 @@ class QDraggableDataTableWidget(QWidget):
         self._table._init_column_width()
 
         self._lock = False
-        self._progress_bar.set(100.0, _(ZhHantEnum.INITIALIZED))
+        self._progress_bar.set(100.0, _(ZhHantEnum.LOADED))

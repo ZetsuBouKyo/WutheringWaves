@@ -115,7 +115,7 @@ class QEchoesTable(QDraggableTableWidget):
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)
 
-    def initialize(self):
+    def load(self):
         self.echoes_table = EchoesTable()
         self.echo_list_table = EchoListTable()
 

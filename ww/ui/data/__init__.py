@@ -37,13 +37,13 @@ class QDataTabs(QTabWidget):
         resonators_tab = QDraggableDataTableWidget(
             self.q_resonators_table,
             tsv_fpath=RESONATORS_PATH,
-            event_intialize_before=self.q_resonators_table.initialize,
+            event_load_before=self.q_resonators_table.load,
             event_save_after=calc,
         )
         echoes_tab = QDraggableDataTableWidget(
             self.q_echoes_table,
             tsv_fpath=ECHOES_PATH,
-            event_intialize_before=self.q_echoes_table.initialize,
+            event_load_before=self.q_echoes_table.load,
             event_save_after=calc,
             event_save_row_before=self.q_echoes_table.set_row_cost,
         )
