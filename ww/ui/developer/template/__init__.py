@@ -153,6 +153,15 @@ class QTemplateTabs(QWidget):
             )
             return
 
+        confirmation = QMessageBox.question(
+            self,
+            _(ZhHantEnum.FILE),
+            _(ZhHantEnum.CONFIRM_LOAD),
+            QMessageBox.Yes | QMessageBox.No,
+        )
+        if confirmation == QMessageBox.No:
+            return
+
         self.q_progress_bar.set(0.0, _(ZhHantEnum.LOADING))
 
         if len(template.rows) == 0:

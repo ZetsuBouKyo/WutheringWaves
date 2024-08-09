@@ -32,6 +32,7 @@ class ZhHantEnum(str, Enum):
     INITIALIZING: str = "初始化..."
     INITIALIZED: str = "初始化完成。"
 
+    FILE: str = "檔案"
     FILE_EXISTS: str = "檔案已存在"
     FILE_OVERWRITE_OR_NOT: str = "確定要覆蓋檔案"
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
@@ -47,6 +48,8 @@ class ZhHantEnum(str, Enum):
     TO_SELECT_TEMPLATE_ID_TO_DELETE: str = "請選擇要刪除的模板ID。"
 
     CONFIRM_DELETE_TEMPLATE: str = "確定要刪除模板"
+    CONFIRM_SAVE: str = "確定要存檔?"
+    CONFIRM_LOAD: str = "確定要讀檔?"
 
     TEMPLATE_ID_MUST_NOT_EMPTY: str = "模板ID不該是空值。"
     RESONATOR_NAME_MUST_NOT_EMPTY: str = "角色名稱不該是空值。"
@@ -60,6 +63,8 @@ class ZhHantEnum(str, Enum):
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
     TAB_HELP: str = "說明"
     TAB_ANALYSIS: str = "分析"
+    TAB_ECHO_LIST: str = "列表"
+    TAB_ECHO_SKILL: str = "技能"
 
     TAB_STAT: str = "屬性"
     TAB_SKILL: str = "技能"

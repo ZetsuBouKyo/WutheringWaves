@@ -497,6 +497,16 @@ class QDraggableTsvTableWidget(QWidget):
             self._lock = False
             return
 
+        confirmation = QMessageBox.question(
+            self,
+            _(ZhHantEnum.FILE),
+            _(ZhHantEnum.CONFIRM_SAVE),
+            QMessageBox.Yes | QMessageBox.No,
+        )
+        if confirmation == QMessageBox.No:
+            self._lock = False
+            return
+
         self._progress_bar.set(0.0, _(ZhHantEnum.SAVING))
         self._progress_bar_init()
 
@@ -567,6 +577,16 @@ class QDraggableTsvTableWidget(QWidget):
                 _(ZhHantEnum.FILE_PATH_IS_EMPTY),
             )
 
+            self._lock = False
+            return
+
+        confirmation = QMessageBox.question(
+            self,
+            _(ZhHantEnum.FILE),
+            _(ZhHantEnum.CONFIRM_LOAD),
+            QMessageBox.Yes | QMessageBox.No,
+        )
+        if confirmation == QMessageBox.No:
             self._lock = False
             return
 
