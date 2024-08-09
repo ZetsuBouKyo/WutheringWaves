@@ -119,16 +119,16 @@ def get_json_row_damage(
     resonator_skill_table = ResonatorSkillTable(resonator_name)
 
     resonator_skill_element = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.SKILL_ELEMENT
+        template_row_skill_id, ResonatorSkillEnum.ELEMENT
     )
     resonator_skill_base_attr = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.SKILL_BASE_ATTR
+        template_row_skill_id, ResonatorSkillEnum.BASE_ATTR
     )
     resonator_skill_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.SKILL_TYPE
+        template_row_skill_id, ResonatorSkillEnum.TYPE_ZH_HANT
     )
     resonator_skill_bonus_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.SKILL_TYPE_BONUS
+        template_row_skill_id, ResonatorSkillEnum.TYPE_BONUS
     )
     resonator_skill_lv = resonator_skill_levels.get(f"{resonator_skill_type}LV", None)
     resonator_skill_dmg = resonator_skill_table.search(

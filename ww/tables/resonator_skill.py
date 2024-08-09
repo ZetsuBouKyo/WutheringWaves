@@ -16,7 +16,7 @@ class ResonatorSkillTable:
         self.df = safe_get_df(_stat_path, column_names)
 
     def search(self, id: str, col: ResonatorSkillEnum) -> Optional[Any]:
-        return search(self.df, id, col, ResonatorSkillEnum.SKILL_ID.value)
+        return search(self.df, id, col, ResonatorSkillEnum.PRIMARY_KEY.value)
 
     def get_row(self, id: str) -> Optional[List[Any]]:
-        return get_row(self.df, id, ResonatorSkillEnum.SKILL_ID.value)
+        return get_row(self.df, id, ResonatorSkillEnum.PRIMARY_KEY.value)

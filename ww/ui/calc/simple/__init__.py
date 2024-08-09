@@ -146,7 +146,7 @@ class QDamageSimple(QWidget):
         names = [
             name
             for name in self._resonator_skills_table.df[
-                ResonatorSkillEnum.SKILL_ID.value
+                ResonatorSkillEnum.PRIMARY_KEY.value
             ].to_list()
             if name
         ]

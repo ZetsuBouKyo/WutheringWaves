@@ -1,10 +1,12 @@
 from pathlib import Path
 from typing import List, Optional
 
+import pandas as pd
+
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.echo_skill import EchoSkillEnum, EchoSkillTable
-from ww.tables.resonator import RESONATOR_HOME_PATH
+from ww.tables.resonator import RESONATOR_HOME_PATH, ResonatorStatTable
 from ww.tables.resonator_skill import ResonatorSkillTable
 from ww.tables.resonators import ResonatorsTable
 
@@ -26,7 +28,9 @@ def get_resonator_skill_ids(resonator_name: Optional[str]) -> List[str]:
         return []
     table = ResonatorSkillTable(resonator_name)
     names = [
-        name for name in table.df[ResonatorSkillEnum.SKILL_ID.value].to_list() if name
+        name
+        for name in table.df[ResonatorSkillEnum.PRIMARY_KEY.value].to_list()
+        if name
     ]
     return names
 
@@ -58,3 +62,7 @@ def get_resonator_icon_path(resonator_name: str) -> Optional[str]:
     if path.is_dir() or not path.exists():
         return
     return str(path)
+
+
+def get_resonator_stat_df(resonator_name: str) -> pd.DataFrame:
+    return ResonatorStatTable(resonator_name).df
