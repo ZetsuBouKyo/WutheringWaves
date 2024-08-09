@@ -6,6 +6,7 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QTableWidget,
@@ -19,8 +20,11 @@ from ww.crud.resonator import get_resonator_names
 from ww.locale import ZhHantEnum, _
 from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
-from ww.tables.resonator import get_resonator_stat_fpath
-from ww.tables.resonator_skill import get_resonator_skill_fpath
+from ww.tables.resonator import (
+    get_resonator_dir_path,
+    get_resonator_skill_fpath,
+    get_resonator_stat_fpath,
+)
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.utils.pd import get_empty_df
@@ -115,10 +119,13 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_resonator_combobox.setFixedHeight(40)
         self.q_resonator_combobox.setFixedWidth(150)
         self.q_resonator_combobox.currentTextChanged.connect(self.load_tabs)
+        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
+        self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_resonator_layout.addWidget(self.q_resonator_label)
         self.q_resonator_layout.addWidget(self.q_resonator_combobox)
         self.q_resonator_layout.addStretch()
+        self.q_resonator_layout.addWidget(self.q_delete_btn)
 
         # Tabs
         self.q_tabs = QTabWidget()
@@ -132,6 +139,31 @@ class QPrivateDataResonatorTabs(QWidget):
         self.layout.addWidget(self.q_tabs)
 
         self.setLayout(self.layout)
+
+    def delete(self):
+        resonator_name = self.q_resonator_combobox.currentText()
+        if not resonator_name:
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.RESONATOR_NAME_MUST_NOT_EMPTY)
+            )
+            return
+
+        resonator_dir_path = get_resonator_dir_path(resonator_name)
+        resonator_stat_fpath = get_resonator_stat_fpath(resonator_name)
+        resonator_skill_fpath = get_resonator_skill_fpath(resonator_name)
+        if not resonator_dir_path.is_dir():
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                f"'{resonator_dir_path}' {_(ZhHantEnum.PATH_MUST_BE_DIR)}",
+            )
+            return
+        resonator_stat_fpath.unlink()
+        resonator_skill_fpath.unlink()
+        resonator_dir_path.rmdir()
+
+        self.load_tabs()
+        self.q_resonator_combobox.setCurrentText("")
 
     def load_tabs(self):
         resonator_name = self.q_resonator_combobox.currentText()

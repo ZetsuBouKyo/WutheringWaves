@@ -19,7 +19,7 @@ from ww.model.resonators import (
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
 from ww.tables.echo_skill import EchoSkillTable
 from ww.tables.monsters import MonstersTable
-from ww.tables.resonator_skill import ResonatorSkillTable
+from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable
 from ww.utils.number import get_number, get_string

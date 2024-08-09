@@ -6,8 +6,11 @@ import pandas as pd
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.echo_skill import EchoSkillEnum, EchoSkillTable
-from ww.tables.resonator import RESONATOR_HOME_PATH, ResonatorStatTable
-from ww.tables.resonator_skill import ResonatorSkillTable
+from ww.tables.resonator import (
+    RESONATOR_HOME_PATH,
+    ResonatorSkillTable,
+    ResonatorStatTable,
+)
 from ww.tables.resonators import ResonatorsTable
 
 

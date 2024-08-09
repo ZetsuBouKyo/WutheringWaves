@@ -49,6 +49,8 @@ class ZhHantEnum(str, Enum):
     CONFIRM_DELETE_TEMPLATE: str = "確定要刪除模板"
 
     TEMPLATE_ID_MUST_NOT_EMPTY: str = "模板ID不該是空值。"
+    RESONATOR_NAME_MUST_NOT_EMPTY: str = "角色名稱不該是空值。"
+    PATH_MUST_BE_DIR: str = "路徑該為資料夾。"
 
     PROGRESS_BAR: str = "進度條"
 
