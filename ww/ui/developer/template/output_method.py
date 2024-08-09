@@ -40,7 +40,7 @@ from ww.model.template import (
     TemplateRowEnum,
     TemplateRowModel,
 )
-from ww.tables.echo_skill import EchoSkillTable
+from ww.tables.echo import EchoSkillTable
 from ww.tables.monsters import MonstersEnum, MonstersTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton

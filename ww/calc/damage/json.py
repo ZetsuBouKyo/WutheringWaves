@@ -4,7 +4,7 @@ from typing import Dict, List, Optional, Union
 import pandas as pd
 
 from ww.crud.template import get_template
-from ww.model.echo_skill import EchoSkillEnum
+from ww.model.echo import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
     ResonatorSkillBaseAttrEnum,
@@ -25,7 +25,7 @@ from ww.model.template import (
     TemplateRowBuffTypeEnum,
     TemplateRowModel,
 )
-from ww.tables.echo_skill import EchoSkillTable
+from ww.tables.echo import EchoSkillTable
 from ww.tables.monsters import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
@@ -147,11 +147,9 @@ def get_json_row_damage(
 
     # Echo Skill
     echo_skill_element = echo_skill_table.search(
-        template_row_skill_id, EchoSkillEnum.SKILL_ELEMENT
+        template_row_skill_id, EchoSkillEnum.ELEMENT
     )
-    echo_skill_dmg = echo_skill_table.search(
-        template_row_skill_id, EchoSkillEnum.SKILL_DMG
-    )
+    echo_skill_dmg = echo_skill_table.search(template_row_skill_id, EchoSkillEnum.DMG)
     if echo_skill_dmg is not None:
         echo_skill_dmg = get_number(echo_skill_dmg)
 

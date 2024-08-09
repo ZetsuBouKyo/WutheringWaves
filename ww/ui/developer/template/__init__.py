@@ -18,9 +18,9 @@ from ww.crud.template import (
     save_template,
 )
 from ww.locale import ZhHantEnum, _
-from ww.model.echoes import EchoListEnum
+from ww.model.echo import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
-from ww.tables.echoes import EchoListTable
+from ww.tables.echo import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.help import QTemplateHelpTab

@@ -22,8 +22,8 @@ from PySide2.QtWidgets import (
 )
 
 from ww.locale import ZhHantEnum, _
-from ww.model.echoes import EchoListEnum
-from ww.tables.echoes import EchoListTable
+from ww.model.echo import EchoListEnum
+from ww.tables.echo import EchoListTable
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.progress_bar import QHProgressBar
 from ww.utils.pd import safe_get_df, save_tsv

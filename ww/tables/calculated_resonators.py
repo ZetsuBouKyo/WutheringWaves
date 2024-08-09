@@ -3,11 +3,11 @@ from typing import Optional
 
 import pandas as pd
 
-from ww.model.echoes import EchoesEnum, EchoSonataEnum
+from ww.model.echo import EchoesEnum, EchoSonataEnum
 from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
-from ww.tables.echoes import EchoesTable
+from ww.tables.echo import EchoesTable
 from ww.tables.resonator import ResonatorStatTable
 from ww.tables.resonators import CALCULATED_RESONATOR_PATH, ResonatorsTable
 from ww.tables.weapon import WeaponRankTable, WeaponStatTable

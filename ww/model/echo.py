@@ -1,6 +1,17 @@
 from enum import Enum
 
 
+class EchoListEnum(str, Enum):
+    PRIMARY_KEY: str = "名稱"
+    COST: str = "COST"
+
+
+class EchoSkillEnum(str, Enum):
+    PRIMARY_KEY: str = "代稱"
+    ELEMENT: str = "屬性"
+    DMG: str = "倍率"
+
+
 class EchoSonataEnum(str, Enum):
     LINGERING_TUNES: str = "不絕餘音"
     MOONLIT_CLOUDS: str = "輕雲出月"
@@ -11,11 +22,6 @@ class EchoSonataEnum(str, Enum):
     CELESTIAL_LIGHT: str = "浮星祛暗"
     SUN_SINKING_ECLIPSE: str = "沉日劫明"
     REJUVENATING_GLOW: str = "隱世回光"
-
-
-class EchoListEnum(str, Enum):
-    PRIMARY_KEY: str = "名稱"
-    COST: str = "COST"
 
 
 class EchoesEnum(str, Enum):

@@ -6,10 +6,10 @@ from PySide2.QtCore import Qt
 from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
 
 from ww.crud.echo import get_echo_names, get_echo_sonatas
-from ww.model.echoes import EchoesEnum, EchoListEnum, EchoSonataEnum
+from ww.model.echo import EchoesEnum, EchoListEnum, EchoSonataEnum
 from ww.model.element import ElementEnum
 from ww.tables.calculated_resonators import calc
-from ww.tables.echoes import ECHOES_PATH, EchoesTable, EchoListTable
+from ww.tables.echo import ECHOES_PATH, EchoesTable, EchoListTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QCustomComboBox

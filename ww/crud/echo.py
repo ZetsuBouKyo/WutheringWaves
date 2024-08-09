@@ -1,7 +1,7 @@
 from typing import List
 
-from ww.model.echoes import EchoListEnum, EchoSonataEnum
-from ww.tables.echoes import EchoListEnum, EchoListTable
+from ww.model.echo import EchoListEnum, EchoSonataEnum
+from ww.tables.echo import EchoListEnum, EchoListTable
 
 
 def get_echo_names() -> List[str]:

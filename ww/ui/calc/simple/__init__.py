@@ -24,7 +24,7 @@ from PySide2.QtWidgets import (
 from ww.calc.damage import get_tsv_row_damage
 from ww.crud.resonator import get_resonator_ids
 from ww.locale import ZhHantEnum, _
-from ww.model.echo_skill import EchoSkillEnum
+from ww.model.echo import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import (
     ResonatorSkillBaseAttrEnum,
@@ -38,7 +38,7 @@ from ww.model.resonators import (
     ResonatorsEnum,
 )
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
-from ww.tables.echo_skill import EchoSkillTable
+from ww.tables.echo import EchoSkillTable
 from ww.tables.monsters import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable

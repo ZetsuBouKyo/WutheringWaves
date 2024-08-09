@@ -11,10 +11,10 @@ from ww.crud.resonator import (
     get_resonator_names,
 )
 from ww.crud.weapon import get_weapon_names, get_weapon_ranks
-from ww.model.echoes import EchoesEnum
+from ww.model.echo import EchoesEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.calculated_resonators import calc
-from ww.tables.echoes import EchoesTable
+from ww.tables.echo import EchoesTable
 from ww.tables.resonators import RESONATORS_PATH, ResonatorsTable
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget

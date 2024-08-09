@@ -31,10 +31,10 @@ def get_resonator_skill_fpath(resonator_name: str) -> Optional[Path]:
 
 class ResonatorStatTable:
     def __init__(self, name):
-        _stat_path = get_resonator_stat_fpath(name)
+        _path = get_resonator_stat_fpath(name)
         column_names = [e.value for e in ResonatorStatEnum]
-        if _stat_path is not None:
-            self.df = safe_get_df(_stat_path, column_names)
+        if _path is not None:
+            self.df = safe_get_df(_path, column_names)
         else:
             self.df = get_empty_df(column_names)
 
