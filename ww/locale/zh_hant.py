@@ -10,6 +10,8 @@ class ZhHantEnum(str, Enum):
     BUFF: str = "增益"
     NAME: str = "名稱"
 
+    TOTAL_DAMAGE: str = "總傷害"
+
     GLACIO: str = "冷凝"
     FUSION: str = "熱熔"
     ELECTRO: str = "導電"
