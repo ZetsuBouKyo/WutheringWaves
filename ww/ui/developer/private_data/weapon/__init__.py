@@ -14,7 +14,12 @@ from PySide2.QtWidgets import (
 
 from ww.crud.weapon import get_weapon_names
 from ww.locale import ZhHantEnum, _
-from ww.model.weapon import WeaponPassiveStatEnum, WeaponRankEnum, WeaponStatEnum
+from ww.model.weapon import (
+    WeaponPassiveStatEnum,
+    WeaponRankEnum,
+    WeaponStatEnum,
+    WeaponSubStatEnum,
+)
 from ww.tables.weapon import get_weapon_rank_fpath, get_weapon_stat_fpath
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
@@ -42,11 +47,38 @@ class QPrivateDataWeaponStatTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
+        q_sub_stat_combobox_columns = [e.value for e in WeaponSubStatEnum]
+        self.q_sub_stat_layout = QHBoxLayout()
+        self.q_sub_stat_label = QLabel(_(ZhHantEnum.WEAPON_SUB_STAT))
+        self.q_sub_stat_label.setFixedHeight(40)
+        self.q_sub_stat_label.setFixedWidth(150)
+        self.q_sub_stat_combobox = QCustomComboBox()
+        self.q_sub_stat_combobox.addItems(q_sub_stat_combobox_columns)
+        self.q_sub_stat_combobox.setFixedHeight(40)
+        self.q_sub_stat_combobox.setFixedWidth(300)
+        self.q_sub_stat_combobox.currentIndexChanged.connect(self.set_sub_stat)
+        self.q_sub_stat_layout.addWidget(self.q_sub_stat_label)
+        self.q_sub_stat_layout.addWidget(self.q_sub_stat_combobox)
+        self.q_sub_stat_layout.addStretch()
+        self.layout.addLayout(self.q_sub_stat_layout)
+
         self.q_table = QPrivateDataWeaponStatTable()
-        self.q_tsv = QDraggableTsvTableWidget(self.q_table)
+        self.q_tsv = QDraggableTsvTableWidget(
+            self.q_table, event_load_after=self.load_sub_stat
+        )
         self.layout.addWidget(self.q_tsv)
 
         self.setLayout(self.layout)
+
+    def set_sub_stat(self):
+        column_names = self.q_tsv.get_column_names()
+        column_names[-1] = self.q_sub_stat_combobox.currentText()
+        self.q_tsv.set_column_names(column_names)
+
+    def load_sub_stat(self):
+        column_names = self.q_tsv.get_column_names()
+        sub_stat = column_names[-1]
+        self.q_sub_stat_combobox.setCurrentText(sub_stat)
 
     def load(self, weapon_name: str):
         tsv_fpath = get_weapon_stat_fpath(weapon_name)
@@ -55,6 +87,7 @@ class QPrivateDataWeaponStatTab(QWidget):
 
         self.q_tsv.set_tsv_fpath(tsv_fpath)
         self.q_tsv.load()
+        self.load_sub_stat()
 
 
 class QPrivateDataWeaponTuneTable(QDraggableTableWidget):
@@ -87,6 +120,7 @@ class QPrivateDataWeaponTuneTab(QWidget):
         self.q_passive_stat_layout = QHBoxLayout()
         self.q_passive_stat_label = QLabel(_(ZhHantEnum.WEAPON_PASSIVE_STAT))
         self.q_passive_stat_label.setFixedHeight(40)
+        self.q_passive_stat_label.setFixedWidth(150)
         self.q_passive_stat_combobox = QCustomComboBox()
         self.q_passive_stat_combobox.addItems(q_passive_stat_combobox_columns)
         self.q_passive_stat_combobox.setFixedHeight(40)
@@ -137,7 +171,7 @@ class QPrivateDataWeaponTabs(QWidget):
         self.q_weapon_combobox = QCustomComboBox(getOptions=get_weapon_names)
         self.q_weapon_combobox.setFixedHeight(40)
         self.q_weapon_combobox.setFixedWidth(150)
-        self.q_weapon_combobox.currentIndexChanged.connect(self.load_tabs)
+        self.q_weapon_combobox.currentTextChanged.connect(self.load_tabs)
 
         self.q_weapon_layout.addWidget(self.q_weapon_label)
         self.q_weapon_layout.addWidget(self.q_weapon_combobox)

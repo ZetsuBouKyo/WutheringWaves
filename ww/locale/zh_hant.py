@@ -80,6 +80,7 @@ class ZhHantEnum(str, Enum):
     IGNORE_DEF: str = "忽視防禦"
     REDUCE_RES: str = "抗性降低"
 
+    WEAPON_SUB_STAT: str = "副屬性"
     WEAPON_PASSIVE_STAT: str = "固有屬性"
     WEAPON_ATK_P_INCREASE: str = "攻擊提升"
     WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE: str = "全屬性傷害加成提升"

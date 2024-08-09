@@ -435,14 +435,14 @@ class QDraggableTsvTableWidget(QWidget):
         super().__init__()
         # Buttons
         self._layout_btns = QHBoxLayout()
-        self._btn_load = QPushButton(_(ZhHantEnum.LOAD))
-        self._btn_load.clicked.connect(self.load)
         self._btn_save = QPushButton(_(ZhHantEnum.SAVE))
         self._btn_save.clicked.connect(self.save)
+        self._btn_load = QPushButton(_(ZhHantEnum.LOAD))
+        self._btn_load.clicked.connect(self.load)
 
         self._layout_btns.addStretch()
-        self._layout_btns.addWidget(self._btn_load)
         self._layout_btns.addWidget(self._btn_save)
+        self._layout_btns.addWidget(self._btn_load)
 
         # Progress
         self._progress_bar = QHProgressBar()

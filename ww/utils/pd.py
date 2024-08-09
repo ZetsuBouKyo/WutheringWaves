@@ -27,6 +27,7 @@ def save_tsv(
 ):
     if type(fpath) is str:
         fpath = Path(fpath)
+    os.makedirs(fpath.parent, exist_ok=True)
     with fpath.open(mode="w", encoding="utf-8", newline="") as fp:
         tsv = csv.writer(fp, delimiter="\t")
         tsv.writerow(columns)

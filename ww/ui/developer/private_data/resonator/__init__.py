@@ -114,7 +114,7 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_resonator_combobox = QCustomComboBox(getOptions=get_resonator_names)
         self.q_resonator_combobox.setFixedHeight(40)
         self.q_resonator_combobox.setFixedWidth(150)
-        self.q_resonator_combobox.currentIndexChanged.connect(self.load_tabs)
+        self.q_resonator_combobox.currentTextChanged.connect(self.load_tabs)
 
         self.q_resonator_layout.addWidget(self.q_resonator_label)
         self.q_resonator_layout.addWidget(self.q_resonator_combobox)
