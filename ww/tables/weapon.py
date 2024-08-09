@@ -10,12 +10,24 @@ WEAPON_STAT_FNAME = "屬性.tsv"
 WEAPON_RANK_FNAME = "諧振.tsv"
 
 
+def get_weapon_stat_fpath(weapon_name: str) -> Optional[Path]:
+    if not weapon_name:
+        return None
+    return Path(WEAPON_HOME_PATH) / weapon_name / WEAPON_STAT_FNAME
+
+
+def get_weapon_rank_fpath(weapon_name: str) -> Optional[Path]:
+    if not weapon_name:
+        return None
+    return Path(WEAPON_HOME_PATH) / weapon_name / WEAPON_RANK_FNAME
+
+
 class WeaponStatTable:
     def __init__(self, name):
-        _stat_path = Path(WEAPON_HOME_PATH) / name / WEAPON_STAT_FNAME
+        _path = get_weapon_stat_fpath(name)
         column_names = [e.value for e in WeaponStatEnum]
         if name:
-            self.df = safe_get_df(_stat_path, column_names)
+            self.df = safe_get_df(_path, column_names)
         else:
             self.df = get_empty_df(column_names)
 
@@ -25,10 +37,10 @@ class WeaponStatTable:
 
 class WeaponRankTable:
     def __init__(self, name):
-        _stat_path = Path(WEAPON_HOME_PATH) / name / WEAPON_RANK_FNAME
+        _path = get_weapon_rank_fpath(name)
         column_names = [e.value for e in WeaponRankEnum]
         if name:
-            self.df = safe_get_df(_stat_path, column_names)
+            self.df = safe_get_df(_path, column_names)
         else:
             self.df = get_empty_df(column_names)
 

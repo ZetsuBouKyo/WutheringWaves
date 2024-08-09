@@ -52,5 +52,5 @@ def safe_get_df(fpath: Union[str, Path], column_names: List[str]) -> pd.DataFram
     except pd.errors.EmptyDataError:
         ...
 
-    df = init_df(fpath, column_names)
+    df = get_empty_df(column_names)
     return df

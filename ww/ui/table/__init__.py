@@ -428,6 +428,7 @@ class QDraggableTsvTableWidget(QWidget):
         table: QDraggableTableWidget,
         tsv_fpath: Optional[Union[str, Path]] = None,
         event_load_before: Callable[[], None] = None,
+        event_load_after: Callable[[], None] = None,
         event_save_after: Callable[[], None] = None,
         event_save_row_before: Callable[[int], None] = None,
     ):
@@ -459,6 +460,7 @@ class QDraggableTsvTableWidget(QWidget):
         self._lock = False
         self._tsv_fpath = tsv_fpath
         self._event_load_before = event_load_before
+        self._event_load_after = event_load_after
         self._event_save_after = event_save_after
         self._event_save_row_before = event_save_row_before
 
@@ -469,6 +471,13 @@ class QDraggableTsvTableWidget(QWidget):
     def _progress_bar_update_row(self):
         self._progress_bar_value += self._progress_bar_row_tick
         self._progress_bar.set_percentage(self._progress_bar_value)
+
+    def get_column_names(self) -> List[str]:
+        return self._table.column_names
+
+    def set_column_names(self, column_names: List[str]):
+        self._table.column_names = column_names
+        self._table.setHorizontalHeaderLabels(self._table.column_names)
 
     def set_tsv_fpath(self, fpath: Union[str, Path]):
         self._tsv_fpath = fpath
@@ -568,6 +577,7 @@ class QDraggableTsvTableWidget(QWidget):
         self._progress_bar_init()
 
         df = safe_get_df(self._tsv_fpath, self._table.column_names)
+        self._table.column_names = df.columns.values.tolist()
         self._table.data = df.values.tolist()
 
         self._table.column_names_table = {
@@ -584,6 +594,9 @@ class QDraggableTsvTableWidget(QWidget):
 
         self._table._init_cells()
         self._table._init_column_width()
+
+        if self._event_load_after is not None:
+            self._event_load_after()
 
         self._lock = False
         self._progress_bar.set(100.0, _(ZhHantEnum.LOADED))

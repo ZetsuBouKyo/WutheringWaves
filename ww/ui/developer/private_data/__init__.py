@@ -17,6 +17,7 @@ from PySide2.QtWidgets import (
 
 from ww.locale import ZhHantEnum, _
 from ww.ui.developer.private_data.resonator import QPrivateDataResonatorTabs
+from ww.ui.developer.private_data.weapon import QPrivateDataWeaponTabs
 
 
 class QPrivateDataTabs(QTabWidget):
@@ -25,7 +26,7 @@ class QPrivateDataTabs(QTabWidget):
 
         # Tabs
         self.q_resonator = QPrivateDataResonatorTabs()
-        self.q_weapon = QWidget()
+        self.q_weapon = QPrivateDataWeaponTabs()
         self.q_echo = QWidget()
         self.q_buff = QWidget()
 

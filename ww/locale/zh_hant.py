@@ -60,6 +60,7 @@ class ZhHantEnum(str, Enum):
 
     TAB_STAT: str = "屬性"
     TAB_SKILL: str = "技能"
+    TAB_TUNE: str = "諧振"
 
     LEVEL: str = "等級"
     ENERGY_REGEN: str = "共鳴效率"
@@ -79,6 +80,7 @@ class ZhHantEnum(str, Enum):
     IGNORE_DEF: str = "忽視防禦"
     REDUCE_RES: str = "抗性降低"
 
+    WEAPON_PASSIVE_STAT: str = "固有屬性"
     WEAPON_ATK_P_INCREASE: str = "攻擊提升"
     WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE: str = "全屬性傷害加成提升"
     WEAPON_ENERGY_REGEN_INCREASE: str = "共鳴效率提升"

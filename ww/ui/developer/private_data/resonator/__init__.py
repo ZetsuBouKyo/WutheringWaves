@@ -120,8 +120,6 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_resonator_layout.addWidget(self.q_resonator_combobox)
         self.q_resonator_layout.addStretch()
 
-        self.resonator_name = self.q_resonator_combobox.currentText()
-
         # Tabs
         self.q_tabs = QTabWidget()
         self.q_stat_tab = QPrivateDataResonatorStatTab()
