@@ -1,4 +1,3 @@
-import sys
 from copy import deepcopy
 from functools import partial
 from pathlib import Path
@@ -6,23 +5,18 @@ from tkinter import Tk
 from typing import Any, Callable, Dict, List, Optional, Union
 
 import pandas as pd
-from PySide2.QtCore import QModelIndex, Qt
+from PySide2.QtCore import Qt
 from PySide2.QtGui import QColor, QDropEvent
 from PySide2.QtWidgets import (
     QAbstractItemView,
     QAction,
-    QApplication,
-    QCompleter,
     QHBoxLayout,
     QInputDialog,
-    QLabel,
-    QMainWindow,
     QMenu,
     QMessageBox,
     QPushButton,
     QTableWidget,
     QTableWidgetItem,
-    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -52,10 +46,10 @@ def set_uneditable_cell(
     return item
 
 
-class QUneditableDataFrameTable(QTableWidget):
-    def __init__(self, df: pd.DataFrame):
-        self.data = df.values.tolist()
-        self.column_names = df.columns
+class QUneditableTable(QTableWidget):
+    def __init__(self, data: List[List[str]], column_names: List[str]):
+        self.data = data
+        self.column_names = column_names
         self.column_names_table = {
             self.column_names[i]: i for i in range(len(self.column_names))
         }
@@ -100,6 +94,14 @@ class QUneditableDataFrameTable(QTableWidget):
 
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
+
+
+class QUneditableDataFrameTable(QUneditableTable):
+    def __init__(self, df: pd.DataFrame):
+        data = df.values.tolist()
+        column_names = df.columns
+
+        super().__init__(data, column_names)
 
 
 class QCustomTableWidget(QTableWidget):
