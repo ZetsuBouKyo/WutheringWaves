@@ -4,7 +4,7 @@ from typing import Optional
 import pandas as pd
 
 from ww.model.echoes import EchoesEnum, EchoSonataEnum
-from ww.model.resonator import ResonatorEnum
+from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.echoes import EchoesTable
@@ -133,9 +133,9 @@ class CalculatedResonator:
         resonator_level = self._old_row[ResonatorsEnum.LEVEL]
 
         resonator_table = ResonatorStatTable(resonator_name)
-        resonator_hp = resonator_table.search(resonator_level, ResonatorEnum.HP)
-        resonator_atk = resonator_table.search(resonator_level, ResonatorEnum.ATK)
-        resonator_def = resonator_table.search(resonator_level, ResonatorEnum.DEF)
+        resonator_hp = resonator_table.search(resonator_level, ResonatorStatEnum.HP)
+        resonator_atk = resonator_table.search(resonator_level, ResonatorStatEnum.ATK)
+        resonator_def = resonator_table.search(resonator_level, ResonatorStatEnum.DEF)
 
         self._new_row[CalculatedResonatorsEnum.HP.value] = get_number(resonator_hp)
         self._new_row[CalculatedResonatorsEnum.ATK.value] = get_number(resonator_atk)

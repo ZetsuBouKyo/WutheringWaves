@@ -3,7 +3,7 @@ from enum import Enum
 from ww.locale import ZhHantEnum, _
 
 
-class ResonatorEnum(str, Enum):
+class ResonatorStatEnum(str, Enum):
     LEVEL: str = _(ZhHantEnum.LEVEL)
     HP: str = _(ZhHantEnum.HP)
     ATK: str = _(ZhHantEnum.ATK)

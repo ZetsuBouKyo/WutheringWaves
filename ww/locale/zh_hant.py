@@ -57,7 +57,7 @@ class ZhHantEnum(str, Enum):
     TAB_HELP: str = "說明"
     TAB_ANALYSIS: str = "分析"
 
-    TAB_ATTR: str = "屬性"
+    TAB_STAT: str = "屬性"
     TAB_SKILL: str = "技能"
 
     LEVEL: str = "等級"
