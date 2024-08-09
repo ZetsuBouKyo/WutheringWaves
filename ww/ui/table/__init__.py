@@ -406,8 +406,9 @@ class QDraggableTableWidget(QCustomTableWidget):
     # def _update_data(self, item):
     #     print("update")
 
-    def get_row_id(self, row) -> str:
-        return None
+    def get_row_id(self, row: List[str]) -> str:
+        col = self.get_column_id(self.column_id_name)
+        return row[col]
 
     def get_current_data(self) -> List[List[str]]:
         data = []
@@ -477,6 +478,16 @@ class QDraggableTsvTableWidget(QWidget):
             return
         self._lock = True
 
+        if self._tsv_fpath is None or not self._tsv_fpath:
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                _(ZhHantEnum.FILE_PATH_IS_EMPTY),
+            )
+
+            self._lock = False
+            return
+
         self._progress_bar.set(0.0, _(ZhHantEnum.SAVING))
         self._progress_bar_init()
 
@@ -505,7 +516,7 @@ class QDraggableTsvTableWidget(QWidget):
             _new_data.append(_new_data_row)
 
             self._progress_bar_update_row()
-        if len(_dup_ids) > 0:
+        if self._table.column_id_name and len(_dup_ids) > 0:
             _dup_ids = list(_dup_ids)
             _dup_ids = alphanum_sorting(_dup_ids)
             ids_str = ", ".join(_dup_ids)
@@ -522,8 +533,8 @@ class QDraggableTsvTableWidget(QWidget):
             return
 
         self._table.data = _new_data
-        if self._tsv_fpath is not None:
-            save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
+
+        save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
 
         self._table._init_cells()
 
@@ -534,9 +545,21 @@ class QDraggableTsvTableWidget(QWidget):
         self._progress_bar.set(100.0, _(ZhHantEnum.SAVED))
 
     def load(self):
+        """Load the data from the specified TSV path."""
+
         if self._lock:
             return
         self._lock = True
+
+        if self._tsv_fpath is None or not self._tsv_fpath:
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                _(ZhHantEnum.FILE_PATH_IS_EMPTY),
+            )
+
+            self._lock = False
+            return
 
         if self._event_load_before is not None:
             self._event_load_before()
