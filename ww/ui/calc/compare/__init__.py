@@ -1,55 +1,17 @@
-import sys
 from decimal import Decimal
-from functools import partial
-from typing import List
 
-import pandas as pd
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import (
-    QApplication,
-    QCompleter,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QProgressBar,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ww.calc.damage import get_json_damage
 from ww.locale import ZhHantEnum, _
-from ww.model.echo import EchoSkillEnum
-from ww.model.monsters import MonstersEnum
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillBonusTypeEnum,
-    ResonatorSkillEnum,
-)
-from ww.model.resonators import (
-    CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
-    CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorsEnum,
-    ResonatorsEnum,
-)
-from ww.model.template import CalculatedTemplateEnum, TemplateEnum
-from ww.tables.crud import get_row
-from ww.tables.echo import EchoSkillTable
-from ww.tables.monsters import MonstersTable
-from ww.tables.resonator import ResonatorSkillTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
-from ww.tables.template import TemplateTable
+from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
+from ww.model.resonators import ResonatorsEnum
+from ww.tables.resonators import ResonatorsTable
 from ww.ui.calc.compare.table import (
     QDamageCompareTable,
     QDamageCompareUneditableTable,
     QDamageCompareUneditableTableEnum,
 )
-from ww.ui.combobox import QCustomComboBox
-from ww.utils.number import get_number, get_string
 
 
 class QDamageCompare(QWidget):

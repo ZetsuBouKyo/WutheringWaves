@@ -1,22 +1,14 @@
-import sys
 from decimal import Decimal
-from functools import partial
-from typing import Dict, List, Union
+from typing import Dict, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
-    QApplication,
-    QCompleter,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
-    QProgressBar,
     QPushButton,
     QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -24,28 +16,17 @@ from PySide2.QtWidgets import (
 from ww.calc.damage import get_tsv_row_damage
 from ww.crud.resonator import get_resonator_ids
 from ww.locale import ZhHantEnum, _
-from ww.model.echo import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillBonusTypeEnum,
-    ResonatorSkillEnum,
-)
-from ww.model.resonators import (
-    CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
-    CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorsEnum,
-    ResonatorsEnum,
-)
+from ww.model.resonator_skill import ResonatorSkillEnum
+from ww.model.resonators import ResonatorsEnum
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
 from ww.tables.echo import EchoSkillTable
-from ww.tables.monsters import MonstersTable
+from ww.tables.monster import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
-from ww.tables.template import TemplateTable
 from ww.ui.combobox import QCustomComboBox
-from ww.ui.table import QUneditableDataFrameTable, set_uneditable_cell
-from ww.utils.number import get_number, get_string
+from ww.ui.table import set_uneditable_cell
+from ww.utils.number import get_number
 
 
 class QDamageSimple(QWidget):

@@ -1,7 +1,7 @@
 from typing import List
 
 from ww.model.monsters import MonstersEnum
-from ww.tables.monsters import MonstersTable
+from ww.tables.monster import MonstersTable
 
 
 def get_monster_ids() -> List[str]:

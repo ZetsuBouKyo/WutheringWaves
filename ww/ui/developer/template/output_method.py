@@ -13,8 +13,6 @@ from PySide2.QtWidgets import (
     QVBoxLayout,
     QWidget,
 )
-from rich.console import Console
-from rich.table import Table
 
 from ww.calc.damage import get_json_row_damage
 from ww.crud.buff import (
@@ -24,24 +22,21 @@ from ww.crud.buff import (
     get_weapon_buffs,
 )
 from ww.crud.resonator import get_resonator_and_echo_skill_ids, get_resonator_names
-from ww.crud.template import get_template
 from ww.locale import ZhHantEnum, _
 from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
-    CalculatedTemplateEnum,
     CalculatedTemplateRowModel,
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
-    TemplateModel,
     TemplateRowActionEnum,
     TemplateRowBuffTypeEnum,
     TemplateRowEnum,
     TemplateRowModel,
 )
 from ww.tables.echo import EchoSkillTable
-from ww.tables.monsters import MonstersEnum, MonstersTable
+from ww.tables.monster import MonstersEnum, MonstersTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab

@@ -18,7 +18,7 @@ from ww.model.resonators import (
 )
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
 from ww.tables.echo import EchoSkillTable
-from ww.tables.monsters import MonstersTable
+from ww.tables.monster import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.tables.template import TemplateTable

@@ -2,12 +2,10 @@ from enum import Enum
 
 
 class ZhHantEnum(str, Enum):
-    RESONATOR: str = "共鳴者"
     RESONATOR_1: str = "共鳴者1"
     RESONATOR_2: str = "共鳴者2"
     RESONATOR_3: str = "共鳴者3"
-    WEAPON: str = "武器"
-    BUFF: str = "增益"
+
     NAME: str = "名稱"
 
     TOTAL_DAMAGE: str = "總傷害"
@@ -65,6 +63,12 @@ class ZhHantEnum(str, Enum):
     TAB_ANALYSIS: str = "分析"
     TAB_ECHO_LIST: str = "列表"
     TAB_ECHO_SKILL: str = "技能"
+
+    TAB_RESONATOR: str = "共鳴者"
+    TAB_WEAPON: str = "武器"
+    TAB_ECHO: str = "聲骸"
+    TAB_MONSTER: str = "怪物"
+    TAB_BUFF: str = "增益"
 
     TAB_STAT: str = "屬性"
     TAB_SKILL: str = "技能"

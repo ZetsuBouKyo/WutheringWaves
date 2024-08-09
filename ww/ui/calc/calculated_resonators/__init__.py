@@ -1,49 +1,10 @@
-import sys
-from functools import partial
-from typing import List
+from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
-import pandas as pd
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import (
-    QApplication,
-    QCompleter,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMainWindow,
-    QProgressBar,
-    QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
-
-from ww.calc.damage import get_tsv_row_damage
-from ww.model.echo import EchoListEnum, EchoSkillEnum
-from ww.model.monsters import MonstersEnum
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillBonusTypeEnum,
-    ResonatorSkillEnum,
-)
-from ww.model.resonators import (
-    CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
-    CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorsEnum,
-    ResonatorsEnum,
-)
-from ww.model.template import CalculatedTemplateEnum, TemplateEnum
-from ww.tables.echo import EchoListTable, EchoSkillTable
-from ww.tables.monsters import MonstersTable
-from ww.tables.resonator import ResonatorSkillTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
-from ww.tables.template import TemplateTable
-from ww.ui.calc.compare.table import QDamageCompareTable, QDamageCompareUneditableTable
-from ww.ui.combobox import QCustomComboBox
+from ww.model.echo import EchoListEnum
+from ww.model.resonators import CalculatedResonatorsEnum
+from ww.tables.echo import EchoListTable
+from ww.tables.resonators import CalculatedResonatorsTable
 from ww.ui.table import QUneditableDataFrameTable
-from ww.utils.number import get_number, get_string
 
 echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
