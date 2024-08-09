@@ -20,7 +20,7 @@ from ww.tables.echoes import ECHOES_PATH
 from ww.tables.resonators import RESONATORS_PATH
 from ww.ui.data.echoes import QEchoesTable
 from ww.ui.data.resonators import QResonatorsTable
-from ww.ui.table import QDraggableDataTableWidget
+from ww.ui.table import QDraggableTsvTableWidget
 
 
 class QDataTabs(QTabWidget):
@@ -34,16 +34,14 @@ class QDataTabs(QTabWidget):
         self.q_echoes_table = QEchoesTable()
 
         # Tabs
-        resonators_tab = QDraggableDataTableWidget(
+        resonators_tab = QDraggableTsvTableWidget(
             self.q_resonators_table,
             tsv_fpath=RESONATORS_PATH,
-            event_load_before=self.q_resonators_table.load,
             event_save_after=calc,
         )
-        echoes_tab = QDraggableDataTableWidget(
+        echoes_tab = QDraggableTsvTableWidget(
             self.q_echoes_table,
             tsv_fpath=ECHOES_PATH,
-            event_load_before=self.q_echoes_table.load,
             event_save_after=calc,
             event_save_row_before=self.q_echoes_table.set_row_cost,
         )

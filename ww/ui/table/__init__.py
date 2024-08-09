@@ -26,7 +26,7 @@ from ww.model.echoes import EchoListEnum
 from ww.tables.echoes import EchoListTable
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.progress_bar import QHProgressBar
-from ww.utils.pd import save_tsv
+from ww.utils.pd import safe_get_df, save_tsv
 from ww.utils.sorting import alphanum_sorting
 
 echo_list_table = EchoListTable()
@@ -420,7 +420,7 @@ class QDraggableTableWidget(QCustomTableWidget):
         return self.column_names_table[col_name]
 
 
-class QDraggableDataTableWidget(QWidget):
+class QDraggableTsvTableWidget(QWidget):
 
     def __init__(
         self,
@@ -538,13 +538,14 @@ class QDraggableDataTableWidget(QWidget):
             return
         self._lock = True
 
+        if self._event_load_before is not None:
+            self._event_load_before()
+
         self._progress_bar.set(0.0, _(ZhHantEnum.LOADING))
         self._progress_bar_init()
 
-        if self._event_load_before is not None:
-            self._event_load_before()
-        else:
-            self._table.data = deepcopy(self._table.data_0[0])
+        df = safe_get_df(self._tsv_fpath, self._table.column_names)
+        self._table.data = df.values.tolist()
 
         self._table.column_names_table = {
             self._table.column_names[i]: i for i in range(len(self._table.column_names))
