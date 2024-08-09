@@ -28,7 +28,7 @@ from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
 
 echo_list_table = EchoListTable()
-echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
+echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
 
 
 class QTemplateTabs(QWidget):

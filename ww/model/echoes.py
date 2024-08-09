@@ -14,7 +14,7 @@ class EchoSonataEnum(str, Enum):
 
 
 class EchoListEnum(str, Enum):
-    ID: str = "名稱"
+    PRIMARY_KEY: str = "名稱"
     COST: str = "COST"
 
 

@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QTabWidget, QWidget
 
 from ww.locale import ZhHantEnum, _
+from ww.ui.developer.private_data.echo.echo_list import QPrivateDataEchoListTab
 
 
 class QPrivateDataEchoTabs(QTabWidget):
@@ -8,7 +9,7 @@ class QPrivateDataEchoTabs(QTabWidget):
         super().__init__()
 
         # Tabs
-        self.q_echo_list = QWidget()
+        self.q_echo_list = QPrivateDataEchoListTab()
         self.q_echo_skill = QWidget()
 
         self.addTab(self.q_echo_list, _(ZhHantEnum.TAB_ECHO_LIST))

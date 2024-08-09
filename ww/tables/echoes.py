@@ -26,4 +26,4 @@ class EchoListTable:
         self.df = safe_get_df(ECHOES_LIST_PATH, column_names)
 
     def search(self, id: str, col: EchoListEnum) -> Optional[Any]:
-        return search(self.df, id, col, EchoListEnum.ID.value)
+        return search(self.df, id, col, EchoListEnum.PRIMARY_KEY.value)

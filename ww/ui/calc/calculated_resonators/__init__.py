@@ -48,7 +48,7 @@ from ww.ui.table import QUneditableDataFrameTable
 from ww.utils.number import get_number, get_string
 
 echo_list_table = EchoListTable()
-echo_list = [row[EchoListEnum.ID] for _, row in echo_list_table.df.iterrows()]
+echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
 
 
 class QCalculatedResonatorsTable(QUneditableDataFrameTable):
