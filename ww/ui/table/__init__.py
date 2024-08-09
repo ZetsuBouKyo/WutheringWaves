@@ -71,7 +71,7 @@ class QUneditableTable(QTableWidget):
 
     def _init_column_width(self):
         for col_name, col_index in self.column_names_table.items():
-            width = len(col_name) * 20
+            width = len(col_name) * 20 + 50
             self.setColumnWidth(col_index, width)
 
     def set_cell(self, value: str, row: int, col: int):

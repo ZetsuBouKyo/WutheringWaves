@@ -20,6 +20,18 @@ from ww.ui.developer.template.output_method import QTemplateTabOutputMethodTable
 from ww.ui.table import QUneditableTable
 
 
+class QTemplateDamageDistributionUneditableTable(QUneditableTable):
+    def __init__(self, data: List[List[str]], column_names: List[str]):
+        super().__init__(data, column_names)
+
+    def _init_column_width(self):
+        for _, col_index in self.column_names_table.items():
+            if col_index == 0:
+                self.setColumnWidth(col_index, 100)
+            else:
+                self.setColumnWidth(col_index, 190)
+
+
 class QTemplateDamageDistributionTab(QWidget):
     def __init__(self, template_tabs):
         super().__init__()
@@ -39,7 +51,7 @@ class QTemplateDamageDistributionTab(QWidget):
             + [e.value for e in ResonatorSkillBonusTypeEnum]
             + [_(ZhHantEnum.TOTAL_DAMAGE)]
         )
-        self.q_table = QUneditableTable(
+        self.q_table = QTemplateDamageDistributionUneditableTable(
             [["" for _ in range(len(self.column_names))] for _ in range(3)],
             self.column_names,
         )
