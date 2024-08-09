@@ -158,8 +158,10 @@ class QPrivateDataResonatorTabs(QWidget):
                 f"'{resonator_dir_path}' {_(ZhHantEnum.PATH_MUST_BE_DIR)}",
             )
             return
-        resonator_stat_fpath.unlink()
-        resonator_skill_fpath.unlink()
+        if resonator_stat_fpath.exists():
+            resonator_stat_fpath.unlink()
+        if resonator_skill_fpath.exists():
+            resonator_skill_fpath.unlink()
         resonator_dir_path.rmdir()
 
         self.load_tabs()

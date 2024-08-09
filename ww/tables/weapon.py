@@ -10,6 +10,12 @@ WEAPON_STAT_FNAME = "屬性.tsv"
 WEAPON_RANK_FNAME = "諧振.tsv"
 
 
+def get_weapon_dir_path(resonator_name: str) -> Optional[Path]:
+    if not resonator_name:
+        return None
+    return Path(WEAPON_HOME_PATH) / resonator_name
+
+
 def get_weapon_stat_fpath(weapon_name: str) -> Optional[Path]:
     if not weapon_name:
         return None

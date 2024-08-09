@@ -3,6 +3,7 @@ from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QTableWidget,
@@ -20,7 +21,11 @@ from ww.model.weapon import (
     WeaponStatEnum,
     WeaponSubStatEnum,
 )
-from ww.tables.weapon import get_weapon_rank_fpath, get_weapon_stat_fpath
+from ww.tables.weapon import (
+    get_weapon_dir_path,
+    get_weapon_rank_fpath,
+    get_weapon_stat_fpath,
+)
 from ww.ui.combobox import QCustomComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.utils.pd import get_empty_df
@@ -172,10 +177,13 @@ class QPrivateDataWeaponTabs(QWidget):
         self.q_weapon_combobox.setFixedHeight(40)
         self.q_weapon_combobox.setFixedWidth(150)
         self.q_weapon_combobox.currentTextChanged.connect(self.load_tabs)
+        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
+        self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_weapon_layout.addWidget(self.q_weapon_label)
         self.q_weapon_layout.addWidget(self.q_weapon_combobox)
         self.q_weapon_layout.addStretch()
+        self.q_weapon_layout.addWidget(self.q_delete_btn)
 
         # Tabs
         self.q_tabs = QTabWidget()
@@ -189,6 +197,34 @@ class QPrivateDataWeaponTabs(QWidget):
         self.layout.addWidget(self.q_tabs)
 
         self.setLayout(self.layout)
+
+    def delete(self):
+        weapon_name = self.q_weapon_combobox.currentText()
+        if not weapon_name:
+            QMessageBox.warning(
+                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.WEAPON_NAME_MUST_NOT_EMPTY)
+            )
+            return
+
+        weapon_dir_path = get_weapon_dir_path(weapon_name)
+        weapon_stat_fpath = get_weapon_stat_fpath(weapon_name)
+        weapon_tune_fpath = get_weapon_rank_fpath(weapon_name)
+        if not weapon_dir_path.is_dir():
+            QMessageBox.warning(
+                self,
+                _(ZhHantEnum.WARNING),
+                f"'{weapon_dir_path}' {_(ZhHantEnum.PATH_MUST_BE_DIR)}",
+            )
+            return
+        if weapon_stat_fpath.exists():
+            weapon_stat_fpath.unlink()
+        if weapon_tune_fpath.exists():
+            weapon_tune_fpath.unlink()
+
+        weapon_dir_path.rmdir()
+
+        self.load_tabs()
+        self.q_weapon_combobox.setCurrentText("")
 
     def load_tabs(self):
         weapon_name = self.q_weapon_combobox.currentText()
