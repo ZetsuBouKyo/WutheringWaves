@@ -159,4 +159,4 @@ class QDamageCompare(QWidget):
             }
             # print(calculated_row)
             data.append(calculated_row)
-        self.q_damage_compare_uneditable_table.load_data(data)
+        self.q_damage_compare_uneditable_table.load_dict(data)

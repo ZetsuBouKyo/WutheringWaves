@@ -77,13 +77,8 @@ class QUneditableTable(QTableWidget):
     def set_cell(self, value: str, row: int, col: int):
         set_uneditable_cell(self, value, row, col)
 
-    def load_data(self, data: List[Dict[str, str]]):
-        new_data = []
-        for row in data:
-            r = [row.get(column_name, "") for column_name in self.column_names]
-            new_data.append(r)
-
-        self.data = new_data
+    def load_list(self, data: List[List[str]]):
+        self.data = data
 
         rows = len(self.data)
         columns = len(self.data[0])
@@ -91,6 +86,14 @@ class QUneditableTable(QTableWidget):
         self.setColumnCount(columns)
 
         self._init_cells()
+
+    def load_dict(self, data: List[Dict[str, str]]):
+        new_data = []
+        for row in data:
+            r = [row.get(column_name, "") for column_name in self.column_names]
+            new_data.append(r)
+
+        self.load_list(new_data)
 
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
