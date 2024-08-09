@@ -11,8 +11,8 @@ CALCULATED_RESONATOR_PATH = "./cache/v1/output/[calculated]resonators.tsv"
 
 class ResonatorsTable:
     def __init__(self):
-        column_names = [e.value for e in ResonatorsEnum]
-        self.df = safe_get_df(RESONATORS_PATH, column_names)
+        self.column_names = [e.value for e in ResonatorsEnum]
+        self.df = safe_get_df(RESONATORS_PATH, self.column_names)
 
     def search(self, id: str, col: ResonatorsEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorsEnum.ID.value)
@@ -23,8 +23,8 @@ class ResonatorsTable:
 
 class CalculatedResonatorsTable:
     def __init__(self):
-        column_names = [e.value for e in CalculatedResonatorsEnum]
-        self.df = safe_get_df(CALCULATED_RESONATOR_PATH, column_names)
+        self.column_names = [e.value for e in CalculatedResonatorsEnum]
+        self.df = safe_get_df(CALCULATED_RESONATOR_PATH, self.column_names)
 
     def search(self, id: str, col: CalculatedResonatorsEnum) -> Optional[Any]:
         return search(self.df, id, col, CalculatedResonatorsEnum.ID.value)

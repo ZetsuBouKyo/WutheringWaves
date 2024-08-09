@@ -31,11 +31,11 @@ def get_weapon_rank_fpath(weapon_name: str) -> Optional[Path]:
 class WeaponStatTable:
     def __init__(self, name):
         _path = get_weapon_stat_fpath(name)
-        column_names = [e.value for e in WeaponStatEnum]
+        self.column_names = [e.value for e in WeaponStatEnum]
         if name:
-            self.df = safe_get_df(_path, column_names)
+            self.df = safe_get_df(_path, self.column_names)
         else:
-            self.df = get_empty_df(column_names)
+            self.df = get_empty_df(self.column_names)
 
     def search(self, id: str, col: WeaponStatEnum) -> Optional[Any]:
         return search(self.df, id, col, WeaponStatEnum.LEVEL.value)
@@ -44,11 +44,11 @@ class WeaponStatTable:
 class WeaponRankTable:
     def __init__(self, name):
         _path = get_weapon_rank_fpath(name)
-        column_names = [e.value for e in WeaponRankEnum]
+        self.column_names = [e.value for e in WeaponRankEnum]
         if name:
-            self.df = safe_get_df(_path, column_names)
+            self.df = safe_get_df(_path, self.column_names)
         else:
-            self.df = get_empty_df(column_names)
+            self.df = get_empty_df(self.column_names)
 
     def search(self, id: str, col: WeaponRankEnum) -> Optional[Any]:
         return search(self.df, id, col, WeaponRankEnum.LEVEL.value)

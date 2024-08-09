@@ -2,6 +2,7 @@ from PySide2.QtWidgets import QTabWidget, QWidget
 
 from ww.locale import ZhHantEnum, _
 from ww.ui.developer.private_data.echo import QPrivateDataEchoTabs
+from ww.ui.developer.private_data.monster import QPrivateDataMonsterTab
 from ww.ui.developer.private_data.resonator import QPrivateDataResonatorTabs
 from ww.ui.developer.private_data.weapon import QPrivateDataWeaponTabs
 
@@ -14,7 +15,7 @@ class QPrivateDataTabs(QTabWidget):
         self.q_resonator = QPrivateDataResonatorTabs()
         self.q_weapon = QPrivateDataWeaponTabs()
         self.q_echo = QPrivateDataEchoTabs()
-        self.q_monster = QWidget()
+        self.q_monster = QPrivateDataMonsterTab()
         self.q_buff = QWidget()
 
         self.addTab(self.q_resonator, _(ZhHantEnum.TAB_RESONATOR))

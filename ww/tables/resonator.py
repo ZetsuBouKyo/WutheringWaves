@@ -32,11 +32,11 @@ def get_resonator_skill_fpath(resonator_name: str) -> Optional[Path]:
 class ResonatorStatTable:
     def __init__(self, name):
         _path = get_resonator_stat_fpath(name)
-        column_names = [e.value for e in ResonatorStatEnum]
+        self.column_names = [e.value for e in ResonatorStatEnum]
         if _path is not None:
-            self.df = safe_get_df(_path, column_names)
+            self.df = safe_get_df(_path, self.column_names)
         else:
-            self.df = get_empty_df(column_names)
+            self.df = get_empty_df(self.column_names)
 
     def search(self, id: str, col: ResonatorStatEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorStatEnum.LEVEL.value)
@@ -45,12 +45,12 @@ class ResonatorStatTable:
 class ResonatorSkillTable:
     def __init__(self, name):
         _path = get_resonator_skill_fpath(name)
-        column_names = [e.value for e in ResonatorSkillEnum]
+        self.column_names = [e.value for e in ResonatorSkillEnum]
 
         if _path is not None:
-            self.df = safe_get_df(_path, column_names)
+            self.df = safe_get_df(_path, self.column_names)
         else:
-            self.df = get_empty_df(column_names)
+            self.df = get_empty_df(self.column_names)
 
     def search(self, id: str, col: ResonatorSkillEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorSkillEnum.PRIMARY_KEY.value)
