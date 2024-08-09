@@ -70,6 +70,8 @@ class ZhHantEnum(str, Enum):
     TAB_MONSTER: str = "怪物"
     TAB_BUFF: str = "增益"
 
+    TAB_ECHO_SONATA: str = "合鳴"
+
     TAB_STAT: str = "屬性"
     TAB_SKILL: str = "技能"
     TAB_TUNE: str = "諧振"

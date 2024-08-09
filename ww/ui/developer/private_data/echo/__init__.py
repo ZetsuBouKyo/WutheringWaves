@@ -1,4 +1,4 @@
-from PySide2.QtWidgets import QTabWidget, QWidget
+from PySide2.QtWidgets import QTabWidget
 
 from ww.locale import ZhHantEnum, _
 from ww.ui.developer.private_data.echo.echo_list import QPrivateDataEchoListTab
