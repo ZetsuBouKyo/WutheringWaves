@@ -23,7 +23,6 @@ from ww.crud.buff import (
 )
 from ww.crud.resonator import get_resonator_and_echo_skill_ids
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.template import (
     TEMPLATE_BONUS,
     CalculatedTemplateRowModel,
@@ -85,9 +84,9 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         row = self.get_selected_rows()[0]
         buff_id = self.buffs_list[i]
         buff = self.buffs.get(buff_id, {})
-        buff_type = buff.get(BUFF_TYPE, None)
-        buff_value = buff.get(BUFF_VALUE, None)
-        buff_duration = buff.get(BUFF_DURATION, None)
+        buff_type = buff.get(_(ZhTwEnum.BUFF_TYPE), None)
+        buff_value = buff.get(_(ZhTwEnum.BUFF_VALUE), None)
+        buff_duration = buff.get(_(ZhTwEnum.BUFF_DURATION), None)
         if not buff or buff_type is None or buff_value is None or buff_duration is None:
             return
         buff_type_col = self.get_column_id(TemplateBuffTableRowEnum.TYPE.value)
@@ -415,7 +414,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         self, to_buffs: Dict[str, Dict[str, str]], from_buffs: List[Dict[str, str]]
     ):
         for buff in from_buffs:
-            buff_id = buff.get(BUFF_ID, None)
+            buff_id = buff.get(_(ZhTwEnum.BUFF_ID), None)
             if buff_id is None:
                 continue
             to_buffs[buff_id] = buff

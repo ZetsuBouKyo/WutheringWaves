@@ -1,11 +1,20 @@
 from typing import Dict, List
 
+from ww.model.buff import BuffSourceEnum, BuffTargetEnum
 from ww.tables.buff import (
     EchoBuffTable,
     EchoSonataBuffTable,
     ResonatorBuffTable,
     WeaponBuffTable,
 )
+
+
+def get_buff_targets() -> List[str]:
+    return [e.value for e in BuffTargetEnum]
+
+
+def get_buff_sources() -> List[str]:
+    return [e.value for e in BuffSourceEnum]
 
 
 def get_resonator_buffs(name: str) -> List[Dict[str, str]]:
