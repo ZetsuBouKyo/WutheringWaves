@@ -107,34 +107,6 @@ class QCustomTableWidget(QTableWidget):
         for col, column_data in enumerate(data):
             self.set_cell(row, col, column_data)
 
-    def set_combobox(
-        self,
-        row: int,
-        column: int,
-        value: str,
-        options: List[str],
-        getOptions=None,
-        currentIndexChanged=None,
-        toolTip: Optional[str] = None,
-    ) -> QAutoCompleteComboBox:
-        if getOptions is None:
-            combobox = QAutoCompleteComboBox()
-            combobox.addItems(options)
-        else:
-            combobox = QAutoCompleteComboBox(getOptions=getOptions)
-
-        if toolTip is None:
-            combobox.setToolTip(value)
-        else:
-            combobox.setToolTip(toolTip)
-
-        combobox.setCurrentText(value)
-
-        # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-
-        self.setCellWidget(row, column, combobox)
-        return combobox
-
     def get_cell(self, row: int, col: int) -> Optional[str]:
         item = self.item(row, col)
         cell = self.cellWidget(row, col)
