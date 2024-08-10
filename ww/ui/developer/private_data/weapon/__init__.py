@@ -91,7 +91,7 @@ class QPrivateDataWeaponStatTab(QWidget):
             return
 
         self.q_tsv.set_tsv_fpath(tsv_fpath)
-        self.q_tsv.load()
+        self.q_tsv.load(is_confirmation=False)
         self.load_sub_stat()
 
 
@@ -160,7 +160,7 @@ class QPrivateDataWeaponTuneTab(QWidget):
             return
 
         self.q_tsv.set_tsv_fpath(tsv_fpath)
-        self.q_tsv.load()
+        self.q_tsv.load(is_confirmation=False)
         self.load_passive_stat()
 
 

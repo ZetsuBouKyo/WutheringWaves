@@ -35,6 +35,8 @@ class QCustomComboBox(QComboBox):
         self.currentTextChanged.connect(self.update_completer)
         self.completer.setFilterMode(Qt.MatchContains)
 
+        self._option = []
+
     def update_completer(self):
         if self.getOptions is not None:
             new_options = self.getOptions()
@@ -51,16 +53,17 @@ class QCustomComboBox(QComboBox):
     def showPopup(self):
         if self.getOptions is not None:
             text = self.currentText()
-            self.clear()
 
             new_options = self.getOptions()
-            try:
-                new_options.remove(text)
-            except ValueError:
-                ...
-            options = [text] + new_options
-
-            self.addItems(options)
+            if "" not in new_options:
+                new_options = [""] + new_options
+            new_options_to_add = []
+            for option in new_options:
+                if option not in self._option:
+                    new_options_to_add.append(option)
+            for option in new_options_to_add:
+                self._option.append(option)
+                self.addItem(option)
 
         super().showPopup()
 

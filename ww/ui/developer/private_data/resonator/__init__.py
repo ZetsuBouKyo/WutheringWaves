@@ -63,7 +63,7 @@ class QPrivateDataResonatorStatTab(QWidget):
             return
 
         self.q_tsv.set_tsv_fpath(tsv_fpath)
-        self.q_tsv.load()
+        self.q_tsv.load(is_confirmation=False)
 
 
 class QPrivateDataResonatorSkillTable(QDraggableTableWidget):
@@ -103,12 +103,14 @@ class QPrivateDataResonatorSkillTab(QWidget):
             return
 
         self.q_tsv.set_tsv_fpath(tsv_fpath)
-        self.q_tsv.load()
+        self.q_tsv.load(is_confirmation=False)
 
 
 class QPrivateDataResonatorTabs(QWidget):
     def __init__(self):
         super().__init__()
+        self._last_resonator = None
+        self._changed = True
 
         self.layout = QVBoxLayout()
 

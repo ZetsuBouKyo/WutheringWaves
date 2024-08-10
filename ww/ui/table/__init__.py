@@ -563,7 +563,7 @@ class QDraggableTsvTableWidget(QWidget):
         self._lock = False
         self._progress_bar.set(100.0, _(ZhHantEnum.SAVED))
 
-    def load(self):
+    def load(self, *args, is_confirmation: bool = True):
         """Load the data from the specified TSV path."""
 
         if self._lock:
@@ -580,15 +580,16 @@ class QDraggableTsvTableWidget(QWidget):
             self._lock = False
             return
 
-        confirmation = QMessageBox.question(
-            self,
-            _(ZhHantEnum.FILE),
-            _(ZhHantEnum.CONFIRM_LOAD),
-            QMessageBox.Yes | QMessageBox.No,
-        )
-        if confirmation == QMessageBox.No:
-            self._lock = False
-            return
+        if is_confirmation:
+            confirmation = QMessageBox.question(
+                self,
+                _(ZhHantEnum.FILE),
+                _(ZhHantEnum.CONFIRM_LOAD),
+                QMessageBox.Yes | QMessageBox.No,
+            )
+            if confirmation == QMessageBox.No:
+                self._lock = False
+                return
 
         if self._event_load_before is not None:
             self._event_load_before()
