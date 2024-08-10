@@ -25,7 +25,7 @@ from ww.tables.monster import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
-from ww.ui.table import set_uneditable_cell
+from ww.ui.table.cell import set_uneditable_cell
 from ww.utils.number import get_number
 
 

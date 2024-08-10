@@ -178,10 +178,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         self.calculate(is_progress=False)
 
     def _get_resonator_skill_ids(self) -> List[str]:
-        selected_rows = self.get_selected_rows()
-        if len(selected_rows) != 1:
+        row = self.get_selected_row()
+        if row is None:
             return
-        row = selected_rows[0]
         resonator_name = self._get_resonator_name(row)
         return get_resonator_and_echo_skill_ids(resonator_name)
 
@@ -282,7 +281,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
-            btn = QDataPushButton(_(ZhTwEnum.CALCULATE))
+            btn = QPushButton(_(ZhTwEnum.CALCULATE))
             btn.clicked.connect(partial(self.calculate_row, None))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
@@ -463,10 +462,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def calculate_row(self, row: Optional[int]) -> Optional[CalculatedTemplateRowModel]:
         if row is None:
-            selected_rows = self.get_selected_rows()
-            if len(selected_rows) != 1:
+            row = self.get_selected_row()
+            if row is None:
                 return
-            row = selected_rows[0]
         data = self.get_row(row)
 
         name_to_id = self.basic.get_test_resonators()

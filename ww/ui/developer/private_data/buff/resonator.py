@@ -1,11 +1,14 @@
 from typing import List
 
-from PySide2.QtWidgets import QVBoxLayout, QWidget
+from PySide2.QtWidgets import QPushButton, QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import ResonatorBuffEnum
 from ww.tables.buff import ResonatorBuffTable, get_resonator_buff_fpath
-from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
+from ww.ui.developer.private_data.buff.table import (
+    QDraggableButtonDataFrameTableWidget,
+    QDraggableTsvButtonTableWidget,
+)
 from ww.ui.table.cell import set_uneditable_cell
 from ww.ui.table.cell.combobox import (
     set_buff_source_combobox,
@@ -17,25 +20,20 @@ from ww.ui.table.cell.combobox import (
 )
 
 
-class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
-    def __init__(self):
+class QPrivateDataResonatorBuffTable(QDraggableButtonDataFrameTableWidget):
+
+    def __init__(
+        self,
+        button_names: List[str] = [],
+    ):
         table = ResonatorBuffTable()
-        column_names = table.column_names
         df = table.df
-        data = df.values.tolist()
-        rows = len(data)
-        columns = len(column_names)
         super().__init__(
-            rows,
-            columns,
-            data=data,
-            column_id_name=ResonatorBuffEnum.ID.value,
-            column_names=column_names,
+            df, column_id_name=ResonatorBuffEnum.ID.value, button_names=button_names
         )
 
     def _init_column_width(self):
-        self.setColumnWidth(0, 400)
-        self.setColumnWidth(len(self.column_names) - 1, 600)
+        self.setColumnWidth(1, 500)
 
     def get_row_id(self, row: List[str]) -> str:
         col_resonator_name = self.get_column_id(ResonatorBuffEnum.NAME.value)
@@ -80,7 +78,16 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
         primary_key = f"[{final_type}-{target}]{resonator_name}-{source}-{suffix}"
         return primary_key
 
+    def add_description(self):
+        row = self.get_selected_row()
+        if row is None:
+            return
+
     def set_cell(self, row: int, col: int, value: str):
+        if col < len(self.button_names):
+            btn = QPushButton(self.button_names[col])
+            btn.clicked.connect(self.add_description)
+            self.setCellWidget(row, col, btn)
         if self.column_names[col] == ResonatorBuffEnum.ID.value:
             set_uneditable_cell(self, row, col, value)
         elif self.column_names[col] == ResonatorBuffEnum.NAME.value:
@@ -104,9 +111,12 @@ class QPrivateDataResonatorBuffTab(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        self.q_table = QPrivateDataResonatorBuffTable()
-        self.q_tsv = QDraggableTsvTableWidget(
-            self.q_table, tsv_fpath=get_resonator_buff_fpath()
+        button_names = [_(ZhTwEnum.BUFF_DESCRIPTION_BTN)]
+        self.q_table = QPrivateDataResonatorBuffTable(button_names=button_names)
+        self.q_tsv = QDraggableTsvButtonTableWidget(
+            self.q_table,
+            tsv_fpath=get_resonator_buff_fpath(),
+            button_names=button_names,
         )
         self.layout.addWidget(self.q_tsv)
 

@@ -23,7 +23,7 @@ from ww.model.template import (
 )
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
-from ww.ui.table import QCustomTableWidget
+from ww.ui.table import QBaseTableWidget
 from ww.ui.table.cell import set_item
 from ww.ui.table.cell.combobox import (
     set_echo_name_combobox,
@@ -36,7 +36,7 @@ from ww.ui.table.cell.combobox import (
 )
 
 
-class QTemplateTabResonatorTable(QCustomTableWidget):
+class QTemplateTabResonatorTable(QBaseTableWidget):
     def __init__(self, resonators: List[TemplateResonatorModel] = []):
         self.column_names = [e.value for e in TemplateResonatorTableRowEnum]
         self.column_names_table: Dict[str, int] = {
