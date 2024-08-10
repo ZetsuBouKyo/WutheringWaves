@@ -13,6 +13,7 @@ def set_item(
     if row >= table.rowCount() or col >= table.columnCount():
         return
     item = QTableWidgetItem(value)
+    item.setToolTip(value)
     table.setItem(row, col, item)
     return item
 
