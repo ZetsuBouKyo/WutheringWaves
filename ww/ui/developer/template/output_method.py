@@ -539,10 +539,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         return calculated_row
 
     def add_buff(self, btn: QDataPushButton):
-        selected_rows = self.get_selected_rows()
-        if len(selected_rows) != 1:
+        row = self.get_selected_row()
+        if row is None:
             return
-        row = selected_rows[0]
 
         buffs = self.get_default_buffs()
 
