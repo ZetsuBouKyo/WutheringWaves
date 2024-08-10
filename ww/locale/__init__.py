@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Union
 
-from ww.locale.zh_hant import ZhTwEnum
+from ww.locale.zh_tw import ZhTwEnum
 
 __all__ = ["ZhTwEnum"]
 

@@ -32,7 +32,7 @@ class ResonatorSkillBonusTypeEnum(str, Enum):
 class ResonatorSkillEnum(str, Enum):
     TYPE_BONUS: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_BONUS)
     PRIMARY_KEY: str = _(ZhTwEnum.RESONATOR_SKILL_PRIMARY_KEY)
-    TYPE_ZH_HANT: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_ZH_HANT)
+    TYPE_ZH_TW: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_ZH_TW)
 
     ENTRY: str = _(ZhTwEnum.RESONATOR_SKILL_ENTRY)
     ELEMENT: str = _(ZhTwEnum.RESONATOR_SKILL_ELEMENT)

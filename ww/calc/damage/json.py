@@ -120,7 +120,7 @@ def get_json_row_damage(
         template_row_skill_id, ResonatorSkillEnum.BASE_ATTR
     )
     resonator_skill_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.TYPE_ZH_HANT
+        template_row_skill_id, ResonatorSkillEnum.TYPE_ZH_TW
     )
     resonator_skill_bonus_type = resonator_skill_table.search(
         template_row_skill_id, ResonatorSkillEnum.TYPE_BONUS
