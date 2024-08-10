@@ -25,7 +25,7 @@ from ww.model.echo import EchoListEnum
 from ww.tables.echo import EchoListTable
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.progress_bar import QHProgressBar
-from ww.ui.table.cell import set_uneditable_cell
+from ww.ui.table.cell import set_item, set_uneditable_cell
 from ww.utils.pd import safe_get_df, save_tsv
 from ww.utils.sorting import alphanum_sorting
 
@@ -101,10 +101,7 @@ class QCustomTableWidget(QTableWidget):
         super().__init__(rows, columns, parent=parent)
 
     def set_cell(self, row: int, col: int, value: str):
-        if row >= self.rowCount() or col >= self.columnCount():
-            return
-        item = QTableWidgetItem(value)
-        self.setItem(row, col, item)
+        set_item(self, row, col, value)
 
     def set_row(self, row: int, data: List[Any]):
         for col, column_data in enumerate(data):

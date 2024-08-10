@@ -105,8 +105,7 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
             elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
                 set_buff_type_combobox(self, row, col, value)
             else:
-                item = QTableWidgetItem(value)
-                self.setItem(row, col, item)
+                set_item(self, row, col, value)
         except IndexError:
             ...
 

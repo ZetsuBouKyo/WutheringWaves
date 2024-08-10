@@ -24,6 +24,7 @@ from ww.model.template import (
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QCustomTableWidget
+from ww.ui.table.cell import set_item
 from ww.ui.table.cell.combobox import (
     set_echo_name_combobox,
     set_echo_sonata_combobox,
@@ -192,8 +193,7 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
         ):
             set_echo_sonata_combobox(self, row, col, value)
         else:
-            item = QTableWidgetItem(value)
-            self.setItem(row, col, item)
+            set_item(self, row, col, value)
 
 
 class QTemplateBasicTab(QWidget):
