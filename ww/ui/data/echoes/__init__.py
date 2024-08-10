@@ -5,7 +5,7 @@ from PySide2.QtWidgets import QTableWidgetItem
 from ww.model.echo import EchoesEnum, EchoListEnum
 from ww.tables.echo import EchoesTable, EchoListTable
 from ww.ui.table import QDraggableTableWidget
-from ww.ui.table.cell import set_uneditable_cell
+from ww.ui.table.cell import set_item, set_uneditable_cell
 from ww.ui.table.cell.combobox import (
     set_echo_name_combobox,
     set_echo_sonata_combobox,
@@ -70,13 +70,13 @@ class QEchoesTable(QDraggableTableWidget):
             return
 
         col_cost = self.get_column_id(EchoesEnum.COST.value)
-        set_uneditable_cell(self, echo_cost, row, col_cost)
+        set_uneditable_cell(self, row, col_cost, echo_cost)
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == EchoesEnum.ID.value:
-            set_uneditable_cell(self, value, row, col)
+            set_uneditable_cell(self, row, col, value)
         elif self.column_names[col] == EchoesEnum.COST.value:
-            set_uneditable_cell(self, value, row, col)
+            set_uneditable_cell(self, row, col, value)
         elif self.column_names[col] == EchoesEnum.NAME.value:
             set_echo_name_combobox(self, row, col, value)
         elif self.column_names[col] == EchoesEnum.ELEMENT.value:
@@ -84,5 +84,4 @@ class QEchoesTable(QDraggableTableWidget):
         elif self.column_names[col] == EchoesEnum.ECHO_SONATA.value:
             set_echo_sonata_combobox(self, row, col, value)
         else:
-            item = QTableWidgetItem(value)
-            self.setItem(row, col, item)
+            set_item(self, row, col, value)

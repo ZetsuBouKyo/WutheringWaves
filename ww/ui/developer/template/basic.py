@@ -53,7 +53,7 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 cell = self.data[row][col]
-                self.set_cell(cell, row, col)
+                self.set_cell(row, col, cell)
 
     def load(self, resonators: List[TemplateResonatorModel]):
         self.resonators = resonators
@@ -133,7 +133,7 @@ class QTemplateTabResonatorTable(QCustomTableWidget):
             data.append(resonator)
         return data
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateResonatorTableRowEnum.RESONATOR_NAME.value:
             set_resonator_name_combobox(self, row, col, value)
         elif (

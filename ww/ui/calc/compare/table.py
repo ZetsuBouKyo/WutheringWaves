@@ -49,7 +49,7 @@ class QDamageCompareTable(QDraggableTableWidget):
         self._monster_ids = None
         self._template_ids = None
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == QDamageCompareTableEnum.ID.value:
             self.set_combobox(
                 row,

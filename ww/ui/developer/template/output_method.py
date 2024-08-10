@@ -21,16 +21,14 @@ from ww.crud.buff import (
     get_resonator_buffs,
     get_weapon_buffs,
 )
-from ww.crud.resonator import get_resonator_and_echo_skill_ids, get_resonator_names
+from ww.crud.resonator import get_resonator_and_echo_skill_ids
 from ww.locale import ZhHantEnum, _
 from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
-from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import (
     TEMPLATE_BONUS,
     CalculatedTemplateRowModel,
     TemplateBuffTableRowEnum,
     TemplateBuffTableRowModel,
-    TemplateRowActionEnum,
     TemplateRowBuffTypeEnum,
     TemplateRowEnum,
     TemplateRowModel,
@@ -42,7 +40,14 @@ from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.progress_bar import QHProgressBar
 from ww.ui.table import QDraggableTableWidget
-from ww.ui.table.cell import set_uneditable_cell
+from ww.ui.table.cell import set_item, set_uneditable_cell
+from ww.ui.table.cell.combobox import (
+    set_action_combobox,
+    set_buff_type_combobox,
+    set_combobox,
+    set_resonator_name_combobox,
+    set_resonator_skill_bonus_type_combobox,
+)
 from ww.utils.number import get_number
 
 
@@ -72,7 +77,11 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
             self.get_column_id(TemplateBuffTableRowEnum.NAME.value), 500
         )
 
-    def update_row(self, i: int):
+    def update_row(self, buff_primary_key: str):
+        try:
+            i = self.buffs_list.index(buff_primary_key)
+        except ValueError:
+            return
         row = self.get_selected_rows()[0]
         buff_id = self.buffs_list[i]
         buff = self.buffs.get(buff_id, {})
@@ -84,19 +93,17 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         buff_type_col = self.get_column_id(TemplateBuffTableRowEnum.TYPE.value)
         buff_value_col = self.get_column_id(TemplateBuffTableRowEnum.VALUE.value)
         buff_duration_col = self.get_column_id(TemplateBuffTableRowEnum.DURATION.value)
-        self.set_cell(buff_type, row, buff_type_col)
-        self.set_cell(buff_value, row, buff_value_col)
-        self.set_cell(buff_duration, row, buff_duration_col)
+        self.set_cell(row, buff_type_col, buff_type)
+        self.set_cell(row, buff_value_col, buff_value)
+        self.set_cell(row, buff_duration_col, buff_duration)
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         try:
             if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
-                combobox = self.set_combobox(row, col, value, self.buffs_list)
-                combobox.currentIndexChanged.connect(self.update_row)
+                combobox = set_combobox(self, row, col, value, self.buffs_list)
+                combobox.currentTextChanged.connect(self.update_row)
             elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
-                self.set_combobox(
-                    row, col, value, [e.value for e in TemplateRowBuffTypeEnum]
-                )
+                set_buff_type_combobox(self, row, col, value)
             else:
                 item = QTableWidgetItem(value)
                 self.setItem(row, col, item)
@@ -169,10 +176,14 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def _init_cells(self):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
-                self.set_cell(None, row, col)
+                self.set_cell(row, col, None)
         self.calculate(is_progress=False)
 
-    def _get_resonator_skill_ids(self, row: int) -> str:
+    def _get_resonator_skill_ids(self) -> List[str]:
+        selected_rows = self.get_selected_rows()
+        if len(selected_rows) != 1:
+            return
+        row = selected_rows[0]
         resonator_name = self._get_resonator_name(row)
         return get_resonator_and_echo_skill_ids(resonator_name)
 
@@ -263,7 +274,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         if isinstance(data, TemplateRowModel):
             self.ouput_methods[row] = data
             for col in range(self.columnCount()):
-                self.set_cell(None, row, col)
+                self.set_cell(row, col, None)
 
     def get_cell(self, row: int, col: int) -> str:
         cell = super().get_cell(row, col)
@@ -271,11 +282,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             cell = ""
         return cell
 
-    def update_cell(self, row: int, col: int, options: List[str], option_index: int):
-        # TODO:
-        ...
-
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
             btn = QDataPushButton(_(ZhHantEnum.CALCULATE))
             btn.clicked.connect(partial(self.calculate_row, None))
@@ -285,41 +292,28 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             btn.clicked.connect(partial(self.add_buff, btn))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.RESONATOR_NAME.value:
-            self.set_combobox(
-                row,
-                col,
-                self.ouput_methods[row].resonator_name,
-                [],
-                currentIndexChanged=self.update_cell,
-                getOptions=get_resonator_names,
+            set_resonator_name_combobox(
+                self, row, col, self.ouput_methods[row].resonator_name
             )
         elif self.column_names[col] == TemplateRowEnum.REAL_DMG_NO_CRIT.value:
-            self.set_item(self.ouput_methods[row].real_dmg_no_crit, row, col)
+            set_item(self, row, col, self.ouput_methods[row].real_dmg_no_crit)
         elif self.column_names[col] == TemplateRowEnum.REAL_DMG_CRIT.value:
-            self.set_item(self.ouput_methods[row].real_dmg_crit, row, col)
+            set_item(self, row, col, self.ouput_methods[row].real_dmg_crit)
         elif self.column_names[col] == TemplateRowEnum.ACTION.value:
-            self.set_combobox(
-                row,
-                col,
-                self.ouput_methods[row].action,
-                [e.value for e in TemplateRowActionEnum],
-            )
+            set_action_combobox(self, row, col, self.ouput_methods[row].action)
         elif self.column_names[col] == TemplateRowEnum.SKILL_ID.value:
-            self.set_combobox(
+            set_combobox(
+                self,
                 row,
                 col,
                 self.ouput_methods[row].skill_id,
                 [],
-                getOptions=partial(self._get_resonator_skill_ids, row),
+                getOptions=self._get_resonator_skill_ids,
             )
         elif self.column_names[col] == TemplateRowEnum.SKILL_BONUS_TYPE.value:
-            self.set_combobox(
-                row,
-                col,
-                self.ouput_methods[row].skill_bonus_type,
-                [e.value for e in ResonatorSkillBonusTypeEnum],
+            set_resonator_skill_bonus_type_combobox(
+                self, row, col, self.ouput_methods[row].skill_bonus_type
             )
-
         elif (
             self.column_names[col] == TemplateRowEnum.DAMAGE.value
             or self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
@@ -348,10 +342,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             or self.column_names[col] == TemplateRowEnum.BONUS_IGNORE_DEF.value
             or self.column_names[col] == TemplateRowEnum.BONUS_REDUCE_RES.value
         ):
-            set_uneditable_cell(self, value, row, col)
+            set_uneditable_cell(self, row, col, value)
         else:
-            item = QTableWidgetItem("")
-            self.setItem(row, col, item)
+            set_item(self, row, col, "")
 
     def get_row_buff(self, row: int) -> List[List[str]]:
         data = []
@@ -390,7 +383,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             if buff == get_number("0.0"):
                 value = ""
 
-            set_uneditable_cell(self, value, row, col)
+            set_uneditable_cell(self, row, col, value)
 
         df = pd.DataFrame(buff_data)
         col = self.get_column_id(TemplateRowEnum.BONUS_BUFF.value)
@@ -525,7 +518,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             elif type(value) == Decimal:
                 value = f"{value:.2f}"
 
-            self.set_cell(value, row, col_index)
+            self.set_cell(row, col_index, value)
 
         col_names = [
             TemplateRowEnum.FINAL_ELEMENT,
@@ -546,7 +539,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             else:
                 value = str(value)
 
-            self.set_cell(value, row, col_index)
+            self.set_cell(row, col_index, value)
         return calculated_row
 
     def add_buff(self, btn: QDataPushButton):

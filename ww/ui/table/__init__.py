@@ -56,15 +56,15 @@ class QUneditableTable(QTableWidget):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 cell = self.data[row][col]
-                self.set_cell(cell, row, col)
+                self.set_cell(row, col, cell)
 
     def _init_column_width(self):
         for col_name, col_index in self.column_names_table.items():
             width = len(col_name) * 20 + 50
             self.setColumnWidth(col_index, width)
 
-    def set_cell(self, value: str, row: int, col: int):
-        set_uneditable_cell(self, value, row, col)
+    def set_cell(self, row: int, col: int, value: str):
+        set_uneditable_cell(self, row, col, value)
 
     def load_list(self, data: List[List[str]]):
         self.data = data
@@ -100,7 +100,7 @@ class QCustomTableWidget(QTableWidget):
     def __init__(self, rows: int, columns: int, parent: Any = None):
         super().__init__(rows, columns, parent=parent)
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if row >= self.rowCount() or col >= self.columnCount():
             return
         item = QTableWidgetItem(value)
@@ -108,11 +108,7 @@ class QCustomTableWidget(QTableWidget):
 
     def set_row(self, row: int, data: List[Any]):
         for col, column_data in enumerate(data):
-            self.set_cell(column_data, row, col)
-
-    def set_item(self, value: str, row: int, col: int):
-        item = QTableWidgetItem(value)
-        self.setItem(row, col, item)
+            self.set_cell(row, col, column_data)
 
     def set_combobox(
         self,
@@ -209,7 +205,7 @@ class QDraggableTableWidget(QCustomTableWidget):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 cell = self.data[row][col]
-                self.set_cell(cell, row, col)
+                self.set_cell(row, col, cell)
 
     def dropEvent(self, event: QDropEvent):
         if not event.isAccepted() and event.source() == self:
@@ -300,7 +296,7 @@ class QDraggableTableWidget(QCustomTableWidget):
                         continue
 
                     self.set_cell(
-                        self.get_cell(cell.row(), cell.column()), new_row, new_col
+                        new_row, new_col, self.get_cell(cell.row(), cell.column())
                     )
             else:
                 text = Tk().clipboard_get()
@@ -314,7 +310,7 @@ class QDraggableTableWidget(QCustomTableWidget):
                 for row in range(len(lines)):
                     for col in range(len(lines[row])):
                         self.set_cell(
-                            lines[row][col], row + current_row, col + current_col
+                            row + current_row, col + current_col, lines[row][col]
                         )
 
     def show_header_context_menu(self, position):
@@ -346,7 +342,7 @@ class QDraggableTableWidget(QCustomTableWidget):
 
     def _row_index_ctx_fill_row(self, row):
         for col in range(len(self.column_names)):
-            self.set_cell("", row, col)
+            self.set_cell(row, col, "")
 
     def _row_index_ctx_add_rows(self, row):
         dialog = QInputDialog()

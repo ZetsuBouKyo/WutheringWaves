@@ -343,8 +343,8 @@ class QDamageSimple(QWidget):
                 value = ""
             else:
                 value = str(value)
-            set_uneditable_cell(self.table, row_name, i, 0)
-            set_uneditable_cell(self.table, value, i, 1)
+            set_uneditable_cell(self.table, i, 0, row_name)
+            set_uneditable_cell(self.table, i, 1, value)
 
     def _init_table_results(self):
         layout = QHBoxLayout()

@@ -5,8 +5,14 @@ from PySide2.QtWidgets import QTableWidget, QTableWidgetItem
 UNEDITABLE_CELL_COLOR = (248, 248, 248)
 
 
+def set_item(table: QTableWidget, row: int, col: int, value: str) -> QTableWidgetItem:
+    item = QTableWidgetItem(value)
+    table.setItem(row, col, item)
+    return item
+
+
 def set_uneditable_cell(
-    table: QTableWidget, value: str, row: int, col: int
+    table: QTableWidget, row: int, col: int, value: str
 ) -> QTableWidgetItem:
     item_color = QColor(*UNEDITABLE_CELL_COLOR)
     item = QTableWidgetItem(value)

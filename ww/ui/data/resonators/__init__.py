@@ -5,7 +5,7 @@ from PySide2.QtWidgets import QTableWidgetItem
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.table import QDraggableTableWidget
-from ww.ui.table.cell import set_uneditable_cell
+from ww.ui.table.cell import set_item, set_uneditable_cell
 from ww.ui.table.cell.combobox import (
     set_combobox,
     set_resonator_chain_combobox,
@@ -88,9 +88,9 @@ class QResonatorsTable(QDraggableTableWidget):
         id = " ".join(_id)
         return id
 
-    def set_cell(self, value: str, row: int, col: int):
+    def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == ResonatorsEnum.ID.value:
-            set_uneditable_cell(self, value, row, col)
+            set_uneditable_cell(self, row, col, value)
         elif self.column_names[col] == ResonatorsEnum.NAME.value:
             set_resonator_name_combobox(self, row, col, value)
         elif self.column_names[col] == ResonatorsEnum.LEVEL.value:
@@ -130,5 +130,4 @@ class QResonatorsTable(QDraggableTableWidget):
         elif self.column_names[col] == ResonatorsEnum.ECHO_5.value:
             set_resonator_echo_combobox(self, row, col, value)
         else:
-            item = QTableWidgetItem(value)
-            self.setItem(row, col, item)
+            set_item(self, row, col, value)
