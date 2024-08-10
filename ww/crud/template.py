@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from ww.model.template import TemplateModel
 
-TEMPLATE_HOME_PATH = "./cache/v1/custom/template"
+TEMPLATE_HOME_PATH = "./cache/v1/zh_tw/custom/template"
 
 
 def get_template_path(

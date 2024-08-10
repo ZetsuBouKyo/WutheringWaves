@@ -15,7 +15,7 @@ from ww.utils.number import get_number
 from ww.utils.pd import get_df
 from ww.utils.table import print_transpose_table
 
-RESONATOR_HOME_PATH = "./data/v1/角色"
+RESONATOR_HOME_PATH = "./data/v1/zh_tw/角色"
 RESONATOR_STAT = "屬性"
 
 

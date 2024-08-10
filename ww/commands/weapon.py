@@ -5,7 +5,7 @@ from typer import Typer
 
 from ww.utils.table import print_table
 
-BASE_PATH = "./data/v1/武器"
+BASE_PATH = "./data/v1/zh_tw/武器"
 STAT = "屬性"
 RANK = "諧振"
 

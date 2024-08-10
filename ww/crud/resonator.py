@@ -78,7 +78,7 @@ def get_resonator_inherent_skills() -> List[str]:
     return ["0", "1"]
 
 
-RESONATOR_ICON_HOME_PATH = "./cache/v1/assets/resonator/icon"
+RESONATOR_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/resonator/icon"
 
 
 def get_resonator_icon_path(resonator_name: str) -> Optional[str]:

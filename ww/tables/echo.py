@@ -5,12 +5,12 @@ from ww.model.echo import EchoesEnum, EchoListEnum, EchoSkillEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_empty_df, safe_get_df
 
-ECHOES_PATH = "./cache/v1/custom/echo/echoes.tsv"
-ECHOES_HTML_PATH = "./cache/v1/output/echoes.html"
+ECHOES_PATH = "./cache/v1/zh_tw/custom/echo/echoes.tsv"
+ECHOES_HTML_PATH = "./cache/v1/zh_tw/output/echoes.html"
 ECHOES_PNG_FNAME = "echoes.png"
 
-ECHOES_LIST_PATH = "./data/v1/echo_list.tsv"
-ECHO_SKILL_PATH = "./data/v1/echo_skills.tsv"
+ECHOES_LIST_PATH = "./data/v1/zh_tw/echo_list.tsv"
+ECHO_SKILL_PATH = "./data/v1/zh_tw/echo_skills.tsv"
 
 
 def get_echo_list_fpath() -> Path:

@@ -13,10 +13,10 @@ from ww.tables.base import BaseTable
 from ww.tables.crud import df_to_list, get_rows
 from ww.utils.pd import safe_get_df
 
-RESONATOR_BUFF_PATH = "./data/v1/buff/resonator.tsv"
-WEAPON_BUFF_PATH = "./data/v1/buff/weapon.tsv"
-ECHO_BUFF_PATH = "./data/v1/buff/echo.tsv"
-ECHO_SONATA_BUFF_PATH = "./data/v1/buff/echo_sonata.tsv"
+RESONATOR_BUFF_PATH = "./data/v1/zh_tw/buff/resonator.tsv"
+WEAPON_BUFF_PATH = "./data/v1/zh_tw/buff/weapon.tsv"
+ECHO_BUFF_PATH = "./data/v1/zh_tw/buff/echo.tsv"
+ECHO_SONATA_BUFF_PATH = "./data/v1/zh_tw/buff/echo_sonata.tsv"
 
 
 def get_resonator_buff_fpath() -> Path:

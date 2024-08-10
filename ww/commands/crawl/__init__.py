@@ -8,9 +8,9 @@ from ww.commands.crawl.html_parser import WutheringWikiHTMLParser
 
 app = Typer(name="crawl")
 
-RESONATOR_IDS_PATH = "./cache/v1/raw/resonator_id.json"
-WEAPON_IDS_PATH = "./cache/v1/raw/weapon_id.json"
-MONSTER_IDS_PATH = "./cache/v1/raw/monster_id.json"
+RESONATOR_IDS_PATH = "./cache/v1/zh_tw/raw/resonator_id.json"
+WEAPON_IDS_PATH = "./cache/v1/zh_tw/raw/weapon_id.json"
+MONSTER_IDS_PATH = "./cache/v1/zh_tw/raw/monster_id.json"
 
 
 def parser(url: str, fpath: str):

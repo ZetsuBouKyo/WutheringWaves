@@ -5,7 +5,7 @@ from ww.model.monsters import MonstersEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_empty_df, safe_get_df
 
-MONSTERS_PATH = "./data/v1/monster.tsv"
+MONSTERS_PATH = "./data/v1/zh_tw/monster.tsv"
 
 
 def get_monsters_fpath() -> Path:

@@ -4,9 +4,9 @@ from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
 from ww.tables.crud import get_row, search
 from ww.utils.pd import safe_get_df
 
-RESONATORS_PATH = "./cache/v1/custom/resonator/resonators.tsv"
+RESONATORS_PATH = "./cache/v1/zh_tw/custom/resonator/resonators.tsv"
 
-CALCULATED_RESONATOR_PATH = "./cache/v1/output/[calculated]resonators.tsv"
+CALCULATED_RESONATOR_PATH = "./cache/v1/zh_tw/output/[calculated]resonators.tsv"
 
 
 class ResonatorsTable:

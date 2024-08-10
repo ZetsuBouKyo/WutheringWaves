@@ -10,7 +10,7 @@ from ww.ui.table.cell.combobox import (
 )
 from ww.utils.pd import get_empty_df, safe_get_df
 
-DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/custom/compare"
+DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/zh_tw/custom/compare"
 DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
 
 

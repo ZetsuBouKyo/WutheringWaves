@@ -17,7 +17,7 @@ from ww.tables.resonators import (
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
-CACHE_HOME_PATH = "./cache/v1/output/png"
+CACHE_HOME_PATH = "./cache/v1/zh_tw/output/png"
 
 app = Typer(name="custom")
 app.add_typer(resonators)
