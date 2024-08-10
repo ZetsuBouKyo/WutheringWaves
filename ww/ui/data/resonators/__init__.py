@@ -2,9 +2,7 @@ from typing import List
 
 from PySide2.QtWidgets import QTableWidgetItem
 
-from ww.model.echo import EchoesEnum
 from ww.model.resonators import ResonatorsEnum
-from ww.tables.echo import EchoesTable
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.table import QDraggableTableWidget
 from ww.ui.table.cell import set_uneditable_cell
@@ -22,12 +20,6 @@ from ww.ui.table.cell.combobox import (
 )
 
 
-def get_echoes() -> List[str]:
-    echoes_table = EchoesTable()
-    echoes = echoes_table.df[EchoesEnum.ID]
-    return echoes.to_list()
-
-
 class QResonatorsTable(QDraggableTableWidget):
     def __init__(self):
         resonators_table = ResonatorsTable()
@@ -36,7 +28,6 @@ class QResonatorsTable(QDraggableTableWidget):
         rows = len(data)
         columns = len(data[0])
 
-        self._init_combobox()
         super().__init__(
             rows,
             columns,
@@ -56,9 +47,6 @@ class QResonatorsTable(QDraggableTableWidget):
         ]
         for col in cols:
             self.setColumnWidth(col, 400)
-
-    def _init_combobox(self):
-        self._echoes = get_echoes()
 
     def get_row_id(self, row: List[str]) -> str:
         _id = []
