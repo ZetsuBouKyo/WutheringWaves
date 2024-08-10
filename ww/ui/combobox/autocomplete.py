@@ -31,6 +31,9 @@ class QAutoCompleteComboBox(QComboBox):
             new_options = self.getOptions()
         else:
             new_options = [self.itemText(i) for i in range(self.count())]
+
+        if new_options is None:
+            return
         self.model.setStringList(new_options)
 
     def wheelEvent(self, *args, **kwargs):
