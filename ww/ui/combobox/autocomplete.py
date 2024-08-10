@@ -54,4 +54,6 @@ class QAutoCompleteComboBox(QComboBox):
                 self._option.append(option)
                 self.addItem(option)
 
+            self.setCurrentText(text)
+
         super().showPopup()
