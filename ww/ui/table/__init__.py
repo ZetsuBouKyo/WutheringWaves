@@ -374,6 +374,7 @@ class QDraggableTsvTableWidget(QWidget):
         event_load_after: Callable[[], None] = None,
         event_save_after: Callable[[], None] = None,
         event_save_row_before: Callable[[int], None] = None,
+        ignore_column_names: List[str] = [],
     ):
         super().__init__()
         # Buttons
