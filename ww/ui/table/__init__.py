@@ -1,5 +1,4 @@
 from copy import deepcopy
-from functools import partial
 from pathlib import Path
 from tkinter import Tk
 from typing import Any, Callable, Dict, List, Optional, Union
@@ -26,6 +25,7 @@ from ww.model.echo import EchoListEnum
 from ww.tables.echo import EchoListTable
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.progress_bar import QHProgressBar
+from ww.ui.table.cell import set_uneditable_cell
 from ww.utils.pd import safe_get_df, save_tsv
 from ww.utils.sorting import alphanum_sorting
 
@@ -33,17 +33,6 @@ echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
 
 UNEDITABLE_CELL_COLOR = (248, 248, 248)
-
-
-def set_uneditable_cell(
-    table: QTableWidget, value: str, row: int, col: int
-) -> QTableWidgetItem:
-    item_color = QColor(*UNEDITABLE_CELL_COLOR)
-    item = QTableWidgetItem(value)
-    item.setBackgroundColor(item_color)
-    item.setFlags(~Qt.ItemIsEditable)
-    table.setItem(row, col, item)
-    return item
 
 
 class QUneditableTable(QTableWidget):
@@ -131,8 +120,8 @@ class QCustomTableWidget(QTableWidget):
         column: int,
         value: str,
         options: List[str],
-        currentIndexChanged=None,
         getOptions=None,
+        currentIndexChanged=None,
         toolTip: Optional[str] = None,
     ) -> QAutoCompleteComboBox:
         if getOptions is None:
@@ -149,11 +138,6 @@ class QCustomTableWidget(QTableWidget):
         combobox.setCurrentText(value)
 
         # combobox.setStyleSheet("QComboBox { border: 1px solid #d8d8d8; }")
-
-        if currentIndexChanged is not None:
-            combobox.currentIndexChanged.connect(
-                partial(currentIndexChanged, row, column, options)
-            )
 
         self.setCellWidget(row, column, combobox)
         return combobox
@@ -359,12 +343,6 @@ class QDraggableTableWidget(QCustomTableWidget):
         )
 
         menu.exec_(header.viewport().mapToGlobal(position))
-
-    def set_id_cell(self, value: str, row: int, col: int) -> QTableWidgetItem:
-        return set_uneditable_cell(self, value, row, col)
-
-    def set_uneditable_cell(self, value: str, row: int, col: int) -> QTableWidgetItem:
-        return set_uneditable_cell(self, value, row, col)
 
     def _row_index_ctx_fill_row(self, row):
         for col in range(len(self.column_names)):

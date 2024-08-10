@@ -1,7 +1,7 @@
 from typing import List
 
-from ww.model.echo import EchoListEnum, EchoSonataEnum
-from ww.tables.echo import EchoListEnum, EchoListTable
+from ww.model.echo import EchoesEnum, EchoListEnum, EchoSonataEnum
+from ww.tables.echo import EchoesTable, EchoListEnum, EchoListTable
 
 
 def get_echo_names() -> List[str]:
@@ -14,3 +14,9 @@ def get_echo_names() -> List[str]:
 
 def get_echo_sonatas() -> List[str]:
     return [e.value for e in EchoSonataEnum]
+
+
+def get_echoes() -> List[str]:
+    echoes_table = EchoesTable()
+    echoes = echoes_table.df[EchoesEnum.ID]
+    return echoes.to_list()

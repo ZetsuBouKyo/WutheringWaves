@@ -42,6 +42,7 @@ from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.progress_bar import QHProgressBar
 from ww.ui.table import QDraggableTableWidget
+from ww.ui.table.cell import set_uneditable_cell
 from ww.utils.number import get_number
 
 
@@ -347,7 +348,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             or self.column_names[col] == TemplateRowEnum.BONUS_IGNORE_DEF.value
             or self.column_names[col] == TemplateRowEnum.BONUS_REDUCE_RES.value
         ):
-            self.set_uneditable_cell(value, row, col)
+            set_uneditable_cell(self, value, row, col)
         else:
             item = QTableWidgetItem("")
             self.setItem(row, col, item)
@@ -389,7 +390,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             if buff == get_number("0.0"):
                 value = ""
 
-            self.set_uneditable_cell(value, row, col)
+            set_uneditable_cell(self, value, row, col)
 
         df = pd.DataFrame(buff_data)
         col = self.get_column_id(TemplateRowEnum.BONUS_BUFF.value)

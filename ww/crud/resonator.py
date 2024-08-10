@@ -20,6 +20,19 @@ def get_resonator_names() -> List[str]:
     return names
 
 
+def get_resonator_levels() -> List[str]:
+    levels = [str(i) for i in range(10, 100, 10)] + [
+        "1",
+        "20+",
+        "40+",
+        "60+",
+        "70+",
+        "80+",
+    ]
+    levels.sort()
+    return levels
+
+
 def get_resonator_ids() -> List[str]:
     resonators_table = ResonatorsTable()
     names = [name for name in resonators_table.df[ResonatorsEnum.ID].to_list() if name]
@@ -36,6 +49,10 @@ def get_resonator_skill_ids(resonator_name: Optional[str]) -> List[str]:
         if name
     ]
     return names
+
+
+def get_resonator_skill_levels() -> List[str]:
+    return [str(i) for i in range(1, 11)]
 
 
 def get_resonator_and_echo_skill_ids(resonator_name: Optional[str]) -> List[str]:

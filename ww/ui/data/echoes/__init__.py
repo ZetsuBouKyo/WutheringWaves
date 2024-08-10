@@ -14,6 +14,7 @@ from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.weapon import WEAPON_HOME_PATH
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget
+from ww.ui.table.cell import set_uneditable_cell
 
 
 def get_elements() -> List[str]:
@@ -83,13 +84,13 @@ class QEchoesTable(QDraggableTableWidget):
             return
 
         col_cost = self.get_column_id(EchoesEnum.COST.value)
-        self.set_uneditable_cell(echo_cost, row, col_cost)
+        set_uneditable_cell(self, echo_cost, row, col_cost)
 
     def set_cell(self, value: str, row: int, col: int):
         if self.column_names[col] == EchoesEnum.ID.value:
-            self.set_id_cell(value, row, col)
+            set_uneditable_cell(self, value, row, col)
         elif self.column_names[col] == EchoesEnum.COST.value:
-            self.set_uneditable_cell(value, row, col)
+            set_uneditable_cell(self, value, row, col)
         elif self.column_names[col] == EchoesEnum.NAME.value:
             self.set_combobox(
                 row,
