@@ -1,24 +1,16 @@
-from functools import partial
-from pathlib import Path
 from typing import List
 
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import QComboBox, QCompleter, QProgressBar, QTableWidgetItem
+from PySide2.QtWidgets import QTableWidgetItem
 
-from ww.crud.echo import get_echo_names, get_echo_sonatas
-from ww.model.echo import EchoesEnum, EchoListEnum, EchoSonataEnum
-from ww.model.element import ElementEnum
-from ww.tables.calculated_resonators import calc
-from ww.tables.echo import ECHOES_PATH, EchoesTable, EchoListTable
-from ww.tables.resonator import RESONATOR_HOME_PATH
-from ww.tables.weapon import WEAPON_HOME_PATH
-from ww.ui.combobox import QAutoCompleteComboBox
+from ww.model.echo import EchoesEnum, EchoListEnum
+from ww.tables.echo import EchoesTable, EchoListTable
 from ww.ui.table import QDraggableTableWidget
 from ww.ui.table.cell import set_uneditable_cell
-
-
-def get_elements() -> List[str]:
-    return [e.value for e in ElementEnum]
+from ww.ui.table.cell.combobox import (
+    set_echo_name_combobox,
+    set_echo_sonata_combobox,
+    set_element_combobox,
+)
 
 
 class QEchoesTable(QDraggableTableWidget):
@@ -30,7 +22,6 @@ class QEchoesTable(QDraggableTableWidget):
         rows = len(data)
         columns = len(data[0])
 
-        self._init_combobox()
         super().__init__(
             rows,
             columns,
@@ -42,11 +33,6 @@ class QEchoesTable(QDraggableTableWidget):
     def _init_column_width(self):
         col = self.get_column_id(EchoesEnum.ID.value)
         self.setColumnWidth(col, 400)
-
-    def _init_combobox(self):
-        self._echo_names = get_echo_names()
-        self._elements = get_elements()
-        self._echo_sonatas = get_echo_sonatas()
 
     def get_row_id(self, row: List[str]) -> str:
         _id = []
@@ -92,26 +78,11 @@ class QEchoesTable(QDraggableTableWidget):
         elif self.column_names[col] == EchoesEnum.COST.value:
             set_uneditable_cell(self, value, row, col)
         elif self.column_names[col] == EchoesEnum.NAME.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                self._echo_names,
-            )
+            set_echo_name_combobox(self, row, col, value)
         elif self.column_names[col] == EchoesEnum.ELEMENT.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                self._elements,
-            )
+            set_element_combobox(self, row, col, value)
         elif self.column_names[col] == EchoesEnum.ECHO_SONATA.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                self._echo_sonatas,
-            )
+            set_echo_sonata_combobox(self, row, col, value)
         else:
             item = QTableWidgetItem(value)
             self.setItem(row, col, item)

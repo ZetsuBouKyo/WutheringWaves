@@ -2,7 +2,8 @@ from typing import List, Optional
 
 from PySide2.QtWidgets import QTableWidget
 
-from ww.crud.echo import get_echoes
+from ww.crud import get_elements
+from ww.crud.echo import get_echo_names, get_echo_sonatas, get_echoes
 from ww.crud.resonator import (
     get_resonator_chains,
     get_resonator_inherent_skills,
@@ -165,4 +166,40 @@ def set_weapon_level_combobox(
 ) -> QAutoCompleteComboBox:
     return set_combobox(
         table, row, column, value, [], getOptions=get_weapon_levels, toolTip=toolTip
+    )
+
+
+def set_echo_name_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_echo_names, toolTip=toolTip
+    )
+
+
+def set_echo_sonata_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_echo_sonatas, toolTip=toolTip
+    )
+
+
+def set_element_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_elements, toolTip=toolTip
     )
