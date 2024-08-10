@@ -1,11 +1,11 @@
 from copy import deepcopy
 from pathlib import Path
 from tkinter import Tk
-from typing import Any, Callable, Dict, List, Optional, Union
+from typing import Any, Callable, Dict, List, Optional, Set, Union
 
 import pandas as pd
 from PySide2.QtCore import Qt
-from PySide2.QtGui import QColor, QDropEvent
+from PySide2.QtGui import QDropEvent
 from PySide2.QtWidgets import (
     QAbstractItemView,
     QAction,
@@ -15,7 +15,6 @@ from PySide2.QtWidgets import (
     QMessageBox,
     QPushButton,
     QTableWidget,
-    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
@@ -441,6 +440,32 @@ class QDraggableTsvTableWidget(QWidget):
     def set_tsv_fpath(self, fpath: Union[str, Path]):
         self._tsv_fpath = fpath
 
+    def set_new_data(
+        self, ids: Dict[str, int], dup_ids: Set[str], data: List[List[str]]
+    ):
+        for row in range(self._table.rowCount()):
+            if self._event_save_row_before is not None:
+                self._event_save_row_before(row)
+
+            _new_data_row = ["" for _ in range(self._table.columnCount())]
+            for col in range(self._table.columnCount()):
+                _new_data_row[col] = self._table.get_cell(row, col)
+
+            id_col = self._table.get_column_id(self._table.column_id_name)
+            id = self._table.get_row_id(_new_data_row)
+            if id in ids:
+                dup_ids.add(str(ids[id] + 1))
+                dup_ids.add(str(row + 1))
+            if id != "":
+                ids[id] = row
+
+            if id is not None:
+                _new_data_row[id_col] = id
+
+            data.append(_new_data_row)
+
+            self._progress_bar_update_row()
+
     def save(self):
         if self._lock:
             return
@@ -472,28 +497,8 @@ class QDraggableTsvTableWidget(QWidget):
         _ids = {}
         _dup_ids = set()
         _new_data = []
-        for row in range(self._table.rowCount()):
-            if self._event_save_row_before is not None:
-                self._event_save_row_before(row)
+        self.set_new_data(_ids, _dup_ids, _new_data)
 
-            _new_data_row = ["" for _ in range(self._table.columnCount())]
-            for col in range(self._table.columnCount()):
-                _new_data_row[col] = self._table.get_cell(row, col)
-
-            id_col = self._table.get_column_id(self._table.column_id_name)
-            id = self._table.get_row_id(_new_data_row)
-            if id in _ids:
-                _dup_ids.add(str(_ids[id] + 1))
-                _dup_ids.add(str(row + 1))
-            if id != "":
-                _ids[id] = row
-
-            if id is not None:
-                _new_data_row[id_col] = id
-
-            _new_data.append(_new_data_row)
-
-            self._progress_bar_update_row()
         if self._table.column_id_name and len(_dup_ids) > 0:
             _dup_ids = list(_dup_ids)
             _dup_ids = alphanum_sorting(_dup_ids)
