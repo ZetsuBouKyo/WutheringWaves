@@ -12,7 +12,7 @@ from ww.tables.calculated_resonators import calc
 from ww.tables.echo import ECHOES_PATH, EchoesTable, EchoListTable
 from ww.tables.resonator import RESONATOR_HOME_PATH
 from ww.tables.weapon import WEAPON_HOME_PATH
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget
 
 

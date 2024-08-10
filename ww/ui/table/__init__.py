@@ -24,7 +24,7 @@ from PySide2.QtWidgets import (
 from ww.locale import ZhHantEnum, _
 from ww.model.echo import EchoListEnum
 from ww.tables.echo import EchoListTable
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.progress_bar import QHProgressBar
 from ww.utils.pd import safe_get_df, save_tsv
 from ww.utils.sorting import alphanum_sorting
@@ -134,12 +134,12 @@ class QCustomTableWidget(QTableWidget):
         currentIndexChanged=None,
         getOptions=None,
         toolTip: Optional[str] = None,
-    ) -> QCustomComboBox:
+    ) -> QAutoCompleteComboBox:
         if getOptions is None:
-            combobox = QCustomComboBox()
+            combobox = QAutoCompleteComboBox()
             combobox.addItems(options)
         else:
-            combobox = QCustomComboBox(getOptions=getOptions)
+            combobox = QAutoCompleteComboBox(getOptions=getOptions)
 
         if toolTip is None:
             combobox.setToolTip(value)
@@ -163,7 +163,7 @@ class QCustomTableWidget(QTableWidget):
         cell = self.cellWidget(row, col)
         if item is not None:
             return item.text()
-        elif type(cell) == QCustomComboBox:
+        elif type(cell) == QAutoCompleteComboBox:
             return cell.currentText()
         return None
 

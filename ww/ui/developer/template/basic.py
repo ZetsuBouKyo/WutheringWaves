@@ -29,7 +29,7 @@ from ww.model.template import (
     TemplateResonatorTableRowEnum,
 )
 from ww.tables.resonators import ResonatorsTable
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QCustomTableWidget
 
 
@@ -210,7 +210,7 @@ class QTemplateBasicTab(QWidget):
         self.q_template_id_layout = QHBoxLayout()
         self.q_template_id_label = QLabel("模板ID")
         self.q_template_id_label.setFixedWidth(150)
-        self.q_template_ids = QCustomComboBox(getOptions=get_template_ids)
+        self.q_template_ids = QAutoCompleteComboBox(getOptions=get_template_ids)
         self.q_template_ids.setFixedWidth(combobox_width)
         self.q_template_ids.setFixedHeight(height)
         self.q_btns_layout = QHBoxLayout()
@@ -227,7 +227,9 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_1_layout = QHBoxLayout()
         self.q_test_resonator_1_label = QLabel("測試共鳴者1")
         self.q_test_resonator_1_label.setFixedWidth(150)
-        self.q_test_resonator_1_combobox = QCustomComboBox(getOptions=get_resonator_ids)
+        self.q_test_resonator_1_combobox = QAutoCompleteComboBox(
+            getOptions=get_resonator_ids
+        )
         self.q_test_resonator_1_combobox.setFixedWidth(combobox_width)
         self.q_test_resonator_1_combobox.setFixedHeight(height)
 
@@ -239,7 +241,9 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_2_layout = QHBoxLayout()
         self.q_test_resonator_2_label = QLabel("測試共鳴者2")
         self.q_test_resonator_2_label.setFixedWidth(150)
-        self.q_test_resonator_2_combobox = QCustomComboBox(getOptions=get_resonator_ids)
+        self.q_test_resonator_2_combobox = QAutoCompleteComboBox(
+            getOptions=get_resonator_ids
+        )
         self.q_test_resonator_2_combobox.setFixedWidth(combobox_width)
         self.q_test_resonator_2_combobox.setFixedHeight(height)
 
@@ -251,7 +255,9 @@ class QTemplateBasicTab(QWidget):
         self.q_test_resonator_3_layout = QHBoxLayout()
         self.q_test_resonator_3_label = QLabel("測試共鳴者3")
         self.q_test_resonator_3_label.setFixedWidth(150)
-        self.q_test_resonator_3_combobox = QCustomComboBox(getOptions=get_resonator_ids)
+        self.q_test_resonator_3_combobox = QAutoCompleteComboBox(
+            getOptions=get_resonator_ids
+        )
         self.q_test_resonator_3_combobox.setFixedWidth(combobox_width)
         self.q_test_resonator_3_combobox.setFixedHeight(height)
 
@@ -263,7 +269,9 @@ class QTemplateBasicTab(QWidget):
         self.q_test_monster_id_layout = QHBoxLayout()
         self.q_test_monster_id_label = QLabel("測試怪物ID")
         self.q_test_monster_id_label.setFixedWidth(150)
-        self.q_test_monster_id_combobox = QCustomComboBox(getOptions=get_monster_ids)
+        self.q_test_monster_id_combobox = QAutoCompleteComboBox(
+            getOptions=get_monster_ids
+        )
         self.q_test_monster_id_combobox.setFixedWidth(combobox_width)
         self.q_test_monster_id_combobox.setFixedHeight(height)
 

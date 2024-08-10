@@ -18,7 +18,7 @@ from ww.crud.docs import get_gacha_file_html
 from ww.crud.resonator import get_resonator_icon_path
 from ww.locale import ZhHantEnum, _
 from ww.model.pool import GachaPoolTypeEnum
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.docs import get_docs
 from ww.ui.gacha.id_to_name import GachaResonatorModel
 from ww.ui.gacha.pool import PoolModel
@@ -110,7 +110,7 @@ class QGachaResultTab(QWidget):
 
         # Tool bar
         self.q_tool_bar_layout = QHBoxLayout()
-        self.q_pool_combobox = QCustomComboBox()
+        self.q_pool_combobox = QAutoCompleteComboBox()
         self.q_pool_combobox.setFixedWidth(200)
         self.q_pool_combobox.setFixedHeight(40)
         self.q_pool_combobox.addItems([e.value for e in GachaPoolTypeEnum])

@@ -26,7 +26,7 @@ from ww.tables.weapon import (
     get_weapon_rank_fpath,
     get_weapon_stat_fpath,
 )
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.utils.pd import get_empty_df
 
@@ -57,7 +57,7 @@ class QPrivateDataWeaponStatTab(QWidget):
         self.q_sub_stat_label = QLabel(_(ZhHantEnum.WEAPON_SUB_STAT))
         self.q_sub_stat_label.setFixedHeight(40)
         self.q_sub_stat_label.setFixedWidth(150)
-        self.q_sub_stat_combobox = QCustomComboBox()
+        self.q_sub_stat_combobox = QAutoCompleteComboBox()
         self.q_sub_stat_combobox.addItems(q_sub_stat_combobox_columns)
         self.q_sub_stat_combobox.setFixedHeight(40)
         self.q_sub_stat_combobox.setFixedWidth(300)
@@ -126,7 +126,7 @@ class QPrivateDataWeaponTuneTab(QWidget):
         self.q_passive_stat_label = QLabel(_(ZhHantEnum.WEAPON_PASSIVE_STAT))
         self.q_passive_stat_label.setFixedHeight(40)
         self.q_passive_stat_label.setFixedWidth(150)
-        self.q_passive_stat_combobox = QCustomComboBox()
+        self.q_passive_stat_combobox = QAutoCompleteComboBox()
         self.q_passive_stat_combobox.addItems(q_passive_stat_combobox_columns)
         self.q_passive_stat_combobox.setFixedHeight(40)
         self.q_passive_stat_combobox.setFixedWidth(300)
@@ -173,7 +173,7 @@ class QPrivateDataWeaponTabs(QWidget):
         self.q_weapon_layout = QHBoxLayout()
         self.q_weapon_label = QLabel(_(ZhHantEnum.NAME))
         self.q_weapon_label.setFixedHeight(40)
-        self.q_weapon_combobox = QCustomComboBox(getOptions=get_weapon_names)
+        self.q_weapon_combobox = QAutoCompleteComboBox(getOptions=get_weapon_names)
         self.q_weapon_combobox.setFixedHeight(40)
         self.q_weapon_combobox.setFixedWidth(150)
         self.q_weapon_combobox.currentTextChanged.connect(self.load_tabs)

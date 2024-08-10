@@ -24,7 +24,7 @@ from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import set_uneditable_cell
 from ww.utils.number import get_number
 
@@ -83,7 +83,7 @@ class QDamageSimple(QWidget):
         label.setFixedWidth(self._label_width)
         layout.addWidget(label)
 
-        combobox = QCustomComboBox(getOptions=getOptions)
+        combobox = QAutoCompleteComboBox(getOptions=getOptions)
         combobox.setFixedWidth(self._input_width)
         combobox.setFixedHeight(40)
         if currentTextChanged is not None:

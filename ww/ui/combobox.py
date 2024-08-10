@@ -13,7 +13,7 @@ from PySide2.QtWidgets import (
 )
 
 
-class QCustomComboBox(QComboBox):
+class QAutoCompleteComboBox(QComboBox):
     def __init__(
         self,
         *args,

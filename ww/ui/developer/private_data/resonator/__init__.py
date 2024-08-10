@@ -25,7 +25,7 @@ from ww.tables.resonator import (
     get_resonator_skill_fpath,
     get_resonator_stat_fpath,
 )
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.utils.pd import get_empty_df
 
@@ -117,7 +117,9 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_resonator_layout = QHBoxLayout()
         self.q_resonator_label = QLabel(_(ZhHantEnum.NAME))
         self.q_resonator_label.setFixedHeight(40)
-        self.q_resonator_combobox = QCustomComboBox(getOptions=get_resonator_names)
+        self.q_resonator_combobox = QAutoCompleteComboBox(
+            getOptions=get_resonator_names
+        )
         self.q_resonator_combobox.setFixedHeight(40)
         self.q_resonator_combobox.setFixedWidth(150)
         self.q_resonator_combobox.currentTextChanged.connect(self.load_tabs)

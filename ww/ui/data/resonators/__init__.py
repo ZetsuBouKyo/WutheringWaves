@@ -16,7 +16,7 @@ from ww.model.resonators import ResonatorsEnum
 from ww.tables.calculated_resonators import calc
 from ww.tables.echo import EchoesTable
 from ww.tables.resonators import RESONATORS_PATH, ResonatorsTable
-from ww.ui.combobox import QCustomComboBox
+from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget
 
 
