@@ -4,14 +4,17 @@ from PySide2.QtWidgets import QTableWidget
 
 from ww.crud import get_actions, get_buff_types, get_elements
 from ww.crud.echo import get_echo_names, get_echo_sonatas, get_echoes
+from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import (
     get_resonator_chains,
+    get_resonator_ids,
     get_resonator_inherent_skills,
     get_resonator_levels,
     get_resonator_names,
     get_resonator_skill_bonus_types,
     get_resonator_skill_levels,
 )
+from ww.crud.template import get_template_ids
 from ww.crud.weapon import get_weapon_levels, get_weapon_names, get_weapon_ranks
 from ww.ui.combobox.autocomplete import QAutoCompleteComboBox
 
@@ -42,6 +45,18 @@ def set_combobox(
 
     table.setCellWidget(row, column, combobox)
     return combobox
+
+
+def set_resonator_primary_key_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_resonator_ids, toolTip=toolTip
+    )
 
 
 def set_resonator_name_combobox(
@@ -209,6 +224,30 @@ def set_echo_sonata_combobox(
 ) -> QAutoCompleteComboBox:
     return set_combobox(
         table, row, column, value, [], getOptions=get_echo_sonatas, toolTip=toolTip
+    )
+
+
+def set_monster_primary_key_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_monster_ids, toolTip=toolTip
+    )
+
+
+def set_template_primary_key_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_template_ids, toolTip=toolTip
     )
 
 

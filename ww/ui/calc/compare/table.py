@@ -1,11 +1,13 @@
 from enum import Enum
 from pathlib import Path
 
-from ww.crud.monster import get_monster_ids
-from ww.crud.resonator import get_resonator_ids
-from ww.crud.template import get_template_ids
 from ww.locale import ZhHantEnum, _
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
+from ww.ui.table.cell.combobox import (
+    set_monster_primary_key_combobox,
+    set_resonator_primary_key_combobox,
+    set_template_primary_key_combobox,
+)
 from ww.utils.pd import get_empty_df, safe_get_df
 
 DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/custom/compare"
@@ -51,29 +53,11 @@ class QDamageCompareTable(QDraggableTableWidget):
 
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == QDamageCompareTableEnum.ID.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                [],
-                getOptions=get_resonator_ids,
-            )
+            set_resonator_primary_key_combobox(self, row, col, value)
         elif self.column_names[col] == QDamageCompareTableEnum.MONSTER_ID.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                [],
-                getOptions=get_monster_ids,
-            )
+            set_monster_primary_key_combobox(self, row, col, value)
         elif self.column_names[col] == QDamageCompareTableEnum.TEMPLATE_ID.value:
-            self.set_combobox(
-                row,
-                col,
-                value,
-                [],
-                getOptions=get_template_ids,
-            )
+            set_template_primary_key_combobox(self, row, col, value)
 
 
 class QDamageCompareUneditableTableEnum(str, Enum):
