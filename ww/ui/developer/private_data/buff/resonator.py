@@ -35,6 +35,7 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
 
     def _init_column_width(self):
         self.setColumnWidth(0, 400)
+        self.setColumnWidth(len(self.column_names) - 1, 600)
 
     def get_row_id(self, row: List[str]) -> str:
         col_resonator_name = self.get_column_id(ResonatorBuffEnum.NAME.value)

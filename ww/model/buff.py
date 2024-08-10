@@ -39,6 +39,7 @@ class ResonatorBuffEnum(str, Enum):
     TARGET: str = _(ZhTwEnum.BUFF_TARGET)
     VALUE: str = _(ZhTwEnum.BUFF_VALUE)
     DURATION: str = _(ZhTwEnum.BUFF_DURATION)
+    DESCRIPTION: str = _(ZhTwEnum.BUFF_DESCRIPTION)
 
 
 class WeaponBuffEnum(str, Enum):
