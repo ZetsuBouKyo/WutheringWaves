@@ -284,10 +284,14 @@ class QDraggableTsvTableWidget(QWidget):
         self,
         table: QDraggableTableWidget,
         tsv_fpath: Optional[Union[str, Path]] = None,
-        event_load_before: Callable[[], None] = None,
-        event_load_after: Callable[[], None] = None,
-        event_save_after: Callable[[], None] = None,
-        event_save_row_before: Callable[[int], None] = None,
+        event_load_before: Optional[Callable[[], None]] = None,
+        event_load: Optional[Callable[[List[List[str]]], List[List[str]]]] = None,
+        event_load_after: Optional[Callable[[], None]] = None,
+        event_load_column_names: Optional[Callable[[List[str]], List[str]]] = None,
+        event_save_after: Optional[Callable[[], None]] = None,
+        event_save_column_names: Optional[Callable[[List[str]], List[str]]] = None,
+        event_save_row_before: Optional[Callable[[int], None]] = None,
+        event_save_row: Optional[Callable[[List[str]], List[str]]] = None,
     ):
         super().__init__()
 
@@ -317,10 +321,15 @@ class QDraggableTsvTableWidget(QWidget):
 
         self._lock = False
         self._tsv_fpath = tsv_fpath
+
         self._event_load_before = event_load_before
+        self._event_load = event_load
         self._event_load_after = event_load_after
+        self._event_load_column_names = event_load_column_names
         self._event_save_after = event_save_after
+        self._event_save_column_names = event_save_column_names
         self._event_save_row_before = event_save_row_before
+        self._event_save_row = event_save_row
 
     def _progress_bar_init(self):
         self._progress_bar_value = 0.0
@@ -417,7 +426,15 @@ class QDraggableTsvTableWidget(QWidget):
 
         self._table.data = _new_data
 
-        save_tsv(self._tsv_fpath, self._table.data, self._table.column_names)
+        column_names = self._table.column_names
+        if self._event_save_column_names is not None:
+            column_names = self._event_save_column_names(self._table.column_names)
+        data = deepcopy(self._table.data)
+        if self._event_save_row is not None:
+            for i in range(len(data)):
+                data[i] = self._event_save_row(data[i])
+
+        save_tsv(self._tsv_fpath, data, column_names)
 
         self._table._init_cells()
 
@@ -463,7 +480,14 @@ class QDraggableTsvTableWidget(QWidget):
 
         df = safe_get_df(self._tsv_fpath, self._table.column_names)
         self._table.column_names = df.columns.values.tolist()
+        if self._event_load_column_names is not None:
+            self._table.column_names = self._event_load_column_names(
+                self._table.column_names
+            )
+
         self._table.data = df.values.tolist()
+        if self._event_load is not None:
+            self._table.data = self._event_load(self._table.data)
 
         self._table.column_names_table = {
             self._table.column_names[i]: i for i in range(len(self._table.column_names))

@@ -18,14 +18,14 @@ class QBaseTableWidget(QTableWidget):
         for col, column_data in enumerate(data):
             self.set_cell(row, col, column_data)
 
-    def get_cell(self, row: int, col: int) -> Optional[str]:
+    def get_cell(self, row: int, col: int) -> str:
         item = self.item(row, col)
         cell = self.cellWidget(row, col)
         if item is not None:
             return item.text()
         elif type(cell) == QAutoCompleteComboBox:
             return cell.currentText()
-        return None
+        return ""
 
     def get_selected_row(self) -> Optional[int]:
         selected_rows = self.get_selected_rows()
