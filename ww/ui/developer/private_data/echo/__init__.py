@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QTabWidget
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.ui.developer.private_data.echo.echo_list import QPrivateDataEchoListTab
 from ww.ui.developer.private_data.echo.skill import QPrivateDataEchoSkillTab
 
@@ -13,5 +13,5 @@ class QPrivateDataEchoTabs(QTabWidget):
         self.q_echo_list = QPrivateDataEchoListTab()
         self.q_echo_skill = QPrivateDataEchoSkillTab()
 
-        self.addTab(self.q_echo_list, _(ZhHantEnum.TAB_ECHO_LIST))
-        self.addTab(self.q_echo_skill, _(ZhHantEnum.TAB_ECHO_SKILL))
+        self.addTab(self.q_echo_list, _(ZhTwEnum.TAB_ECHO_LIST))
+        self.addTab(self.q_echo_skill, _(ZhTwEnum.TAB_ECHO_SKILL))

@@ -1,7 +1,7 @@
 from enum import Enum
 from pathlib import Path
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.ui.table.cell.combobox import (
     set_monster_primary_key_combobox,
@@ -69,18 +69,18 @@ class QDamageCompareUneditableTableEnum(str, Enum):
     # WEAPON_RANK: str = "[武器]諧振"
     # WEAPON_NAME: str = "[武器]名稱"
     MONSTER_ID: str = "[怪物]名稱"
-    DAMAGE: str = _(ZhHantEnum.DAMAGE)
-    DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
 
-    DAMAGE_DISTRIBUTION_BASIC: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_BASIC)
-    DAMAGE_DISTRIBUTION_HEAVY: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_HEAVY)
-    DAMAGE_DISTRIBUTION_SKILL: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_SKILL)
-    DAMAGE_DISTRIBUTION_LIBERATION: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_LIBERATION)
-    DAMAGE_DISTRIBUTION_INTRO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_INTRO)
-    DAMAGE_DISTRIBUTION_OUTRO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_OUTRO)
-    DAMAGE_DISTRIBUTION_ECHO: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_ECHO)
-    DAMAGE_DISTRIBUTION_NONE: str = _(ZhHantEnum.DAMAGE_DISTRIBUTION_NONE)
+    DAMAGE_DISTRIBUTION_BASIC: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_BASIC)
+    DAMAGE_DISTRIBUTION_HEAVY: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_HEAVY)
+    DAMAGE_DISTRIBUTION_SKILL: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_SKILL)
+    DAMAGE_DISTRIBUTION_LIBERATION: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_LIBERATION)
+    DAMAGE_DISTRIBUTION_INTRO: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_INTRO)
+    DAMAGE_DISTRIBUTION_OUTRO: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_OUTRO)
+    DAMAGE_DISTRIBUTION_ECHO: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_ECHO)
+    DAMAGE_DISTRIBUTION_NONE: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_NONE)
 
 
 class QDamageCompareUneditableTable(QUneditableDataFrameTable):

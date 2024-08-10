@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QTabWidget
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.ui.developer.private_data.buff.echo import QPrivateDataEchoBuffTab
 from ww.ui.developer.private_data.buff.echo_sonata import QPrivateDataEchoSonataBuffTab
 from ww.ui.developer.private_data.buff.resonator import QPrivateDataResonatorBuffTab
@@ -17,7 +17,7 @@ class QPrivateDataBuffTabs(QTabWidget):
         self.q_echo = QPrivateDataEchoBuffTab()
         self.q_echo_sonata = QPrivateDataEchoSonataBuffTab()
 
-        self.addTab(self.q_resonator, _(ZhHantEnum.TAB_RESONATOR))
-        self.addTab(self.q_weapon, _(ZhHantEnum.TAB_WEAPON))
-        self.addTab(self.q_echo, _(ZhHantEnum.TAB_ECHO))
-        self.addTab(self.q_echo_sonata, _(ZhHantEnum.TAB_ECHO_SONATA))
+        self.addTab(self.q_resonator, _(ZhTwEnum.TAB_RESONATOR))
+        self.addTab(self.q_weapon, _(ZhTwEnum.TAB_WEAPON))
+        self.addTab(self.q_echo, _(ZhTwEnum.TAB_ECHO))
+        self.addTab(self.q_echo_sonata, _(ZhTwEnum.TAB_ECHO_SONATA))

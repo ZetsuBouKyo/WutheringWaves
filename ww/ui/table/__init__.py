@@ -20,7 +20,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoListEnum
 from ww.tables.echo import EchoListTable
 from ww.ui.combobox import QAutoCompleteComboBox
@@ -333,7 +333,7 @@ class QDraggableTableWidget(QCustomTableWidget):
         selected_rows_str = ", ".join([str(i + 1) for i in selected_rows])
 
         if not selected_rows:
-            QMessageBox.warning(self, _(ZhHantEnum.WARNING), "沒有可刪除的列。")
+            QMessageBox.warning(self, _(ZhTwEnum.WARNING), "沒有可刪除的列。")
             return
 
         confirmation = QMessageBox.question(
@@ -378,9 +378,9 @@ class QDraggableTsvTableWidget(QWidget):
         super().__init__()
         # Buttons
         self._layout_btns = QHBoxLayout()
-        self._btn_save = QPushButton(_(ZhHantEnum.SAVE))
+        self._btn_save = QPushButton(_(ZhTwEnum.SAVE))
         self._btn_save.clicked.connect(self.save)
-        self._btn_load = QPushButton(_(ZhHantEnum.LOAD))
+        self._btn_load = QPushButton(_(ZhTwEnum.LOAD))
         self._btn_load.clicked.connect(self.load)
 
         self._layout_btns.addStretch()
@@ -433,8 +433,8 @@ class QDraggableTsvTableWidget(QWidget):
         if self._tsv_fpath is None or not self._tsv_fpath:
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                _(ZhHantEnum.FILE_PATH_IS_EMPTY),
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.FILE_PATH_IS_EMPTY),
             )
 
             self._lock = False
@@ -442,15 +442,15 @@ class QDraggableTsvTableWidget(QWidget):
 
         confirmation = QMessageBox.question(
             self,
-            _(ZhHantEnum.FILE),
-            _(ZhHantEnum.CONFIRM_SAVE),
+            _(ZhTwEnum.FILE),
+            _(ZhTwEnum.CONFIRM_SAVE),
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.No:
             self._lock = False
             return
 
-        self._progress_bar.set(0.0, _(ZhHantEnum.SAVING))
+        self._progress_bar.set(0.0, _(ZhTwEnum.SAVING))
         self._progress_bar_init()
 
         _ids = {}
@@ -485,7 +485,7 @@ class QDraggableTsvTableWidget(QWidget):
 
             QMessageBox.question(
                 self,
-                _(ZhHantEnum.WARNING),
+                _(ZhTwEnum.WARNING),
                 f"'{self._table.column_id_name}'中，第{ids_str}列字串重複，請加入字首或字尾，使'{self._table.column_id_name}'中的字串不重複。",
                 QMessageBox.Yes,
             )
@@ -504,7 +504,7 @@ class QDraggableTsvTableWidget(QWidget):
             self._event_save_after()
 
         self._lock = False
-        self._progress_bar.set(100.0, _(ZhHantEnum.SAVED))
+        self._progress_bar.set(100.0, _(ZhTwEnum.SAVED))
 
     def load(self, *args, is_confirmation: bool = True):
         """Load the data from the specified TSV path."""
@@ -516,8 +516,8 @@ class QDraggableTsvTableWidget(QWidget):
         if self._tsv_fpath is None or not self._tsv_fpath:
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                _(ZhHantEnum.FILE_PATH_IS_EMPTY),
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.FILE_PATH_IS_EMPTY),
             )
 
             self._lock = False
@@ -526,8 +526,8 @@ class QDraggableTsvTableWidget(QWidget):
         if is_confirmation:
             confirmation = QMessageBox.question(
                 self,
-                _(ZhHantEnum.FILE),
-                _(ZhHantEnum.CONFIRM_LOAD),
+                _(ZhTwEnum.FILE),
+                _(ZhTwEnum.CONFIRM_LOAD),
                 QMessageBox.Yes | QMessageBox.No,
             )
             if confirmation == QMessageBox.No:
@@ -537,7 +537,7 @@ class QDraggableTsvTableWidget(QWidget):
         if self._event_load_before is not None:
             self._event_load_before()
 
-        self._progress_bar.set(0.0, _(ZhHantEnum.LOADING))
+        self._progress_bar.set(0.0, _(ZhTwEnum.LOADING))
         self._progress_bar_init()
 
         df = safe_get_df(self._tsv_fpath, self._table.column_names)
@@ -563,4 +563,4 @@ class QDraggableTsvTableWidget(QWidget):
             self._event_load_after()
 
         self._lock = False
-        self._progress_bar.set(100.0, _(ZhHantEnum.LOADED))
+        self._progress_bar.set(100.0, _(ZhTwEnum.LOADED))

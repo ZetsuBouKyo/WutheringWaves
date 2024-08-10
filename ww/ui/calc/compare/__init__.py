@@ -3,7 +3,7 @@ from decimal import Decimal
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ww.calc.damage import get_json_damage
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonators import ResonatorsTable
@@ -25,7 +25,7 @@ class QDamageCompare(QWidget):
         self.q_calculated_label = QLabel("計算結果")
 
         self.q_calculate_btn_layout = QHBoxLayout()
-        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
+        self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_calculate_btn_layout.addStretch()
         self.q_calculate_btn_layout.addWidget(self.q_calculate_btn)

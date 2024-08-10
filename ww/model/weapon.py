@@ -1,36 +1,36 @@
 from enum import Enum
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 
 
 class WeaponPassiveStatEnum(str, Enum):
-    ATK_P: str = _(ZhHantEnum.WEAPON_ATK_P_INCREASE)
-    ATTRIBUTE_DMG_BONUS: str = _(ZhHantEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
-    ENERGY_REGEN: str = _(ZhHantEnum.WEAPON_ENERGY_REGEN_INCREASE)
+    ATK_P: str = _(ZhTwEnum.WEAPON_ATK_P_INCREASE)
+    ATTRIBUTE_DMG_BONUS: str = _(ZhTwEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
+    ENERGY_REGEN: str = _(ZhTwEnum.WEAPON_ENERGY_REGEN_INCREASE)
 
 
 class WeaponSubStatEnum(str, Enum):
-    ATK_P: str = _(ZhHantEnum.ATK_P)
-    DEF_P: str = _(ZhHantEnum.DEF_P)
-    HP_P: str = _(ZhHantEnum.HP_P)
-    CRIT_DMG: str = _(ZhHantEnum.CRIT_DMG)
-    CRIT_RATE: str = _(ZhHantEnum.CRIT_RATE)
-    ENERGY_REGEN: str = _(ZhHantEnum.ENERGY_REGEN)
+    ATK_P: str = _(ZhTwEnum.ATK_P)
+    DEF_P: str = _(ZhTwEnum.DEF_P)
+    HP_P: str = _(ZhTwEnum.HP_P)
+    CRIT_DMG: str = _(ZhTwEnum.CRIT_DMG)
+    CRIT_RATE: str = _(ZhTwEnum.CRIT_RATE)
+    ENERGY_REGEN: str = _(ZhTwEnum.ENERGY_REGEN)
 
 
 class WeaponStatEnum(str, Enum):
-    LEVEL: str = _(ZhHantEnum.LEVEL)
-    ATK: str = _(ZhHantEnum.ATK)
-    ATK_P: str = _(ZhHantEnum.ATK_P)
-    DEF_P: str = _(ZhHantEnum.DEF_P)
-    HP_P: str = _(ZhHantEnum.HP_P)
-    CRIT_DMG: str = _(ZhHantEnum.CRIT_DMG)
-    CRIT_RATE: str = _(ZhHantEnum.CRIT_RATE)
-    ENERGY_REGEN: str = _(ZhHantEnum.ENERGY_REGEN)
+    LEVEL: str = _(ZhTwEnum.LEVEL)
+    ATK: str = _(ZhTwEnum.ATK)
+    ATK_P: str = _(ZhTwEnum.ATK_P)
+    DEF_P: str = _(ZhTwEnum.DEF_P)
+    HP_P: str = _(ZhTwEnum.HP_P)
+    CRIT_DMG: str = _(ZhTwEnum.CRIT_DMG)
+    CRIT_RATE: str = _(ZhTwEnum.CRIT_RATE)
+    ENERGY_REGEN: str = _(ZhTwEnum.ENERGY_REGEN)
 
 
 class WeaponRankEnum(str, Enum):
-    LEVEL: str = _(ZhHantEnum.LEVEL)
-    ATK_P: str = _(ZhHantEnum.WEAPON_ATK_P_INCREASE)
-    ATTRIBUTE_DMG_BONUS: str = _(ZhHantEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
-    ENERGY_REGEN: str = _(ZhHantEnum.WEAPON_ENERGY_REGEN_INCREASE)
+    LEVEL: str = _(ZhTwEnum.LEVEL)
+    ATK_P: str = _(ZhTwEnum.WEAPON_ATK_P_INCREASE)
+    ATTRIBUTE_DMG_BONUS: str = _(ZhTwEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
+    ENERGY_REGEN: str = _(ZhTwEnum.WEAPON_ENERGY_REGEN_INCREASE)

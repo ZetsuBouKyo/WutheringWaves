@@ -12,7 +12,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
 from ww.ui.developer.template.basic import QTemplateBasicTab
@@ -40,16 +40,16 @@ class QTemplateDamageDistributionTab(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_btns_layout = QHBoxLayout()
-        self.q_analyze_btn = QPushButton(_(ZhHantEnum.ANALYZE))
+        self.q_analyze_btn = QPushButton(_(ZhTwEnum.ANALYZE))
         self.q_analyze_btn.setFixedHeight(40)
         self.q_analyze_btn.clicked.connect(self.analyze)
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_analyze_btn)
 
         self.column_names = (
-            [_(ZhHantEnum.NAME)]
+            [_(ZhTwEnum.NAME)]
             + [e.value for e in ResonatorSkillBonusTypeEnum]
-            + [_(ZhHantEnum.TOTAL_DAMAGE)]
+            + [_(ZhTwEnum.TOTAL_DAMAGE)]
         )
         self.q_table = QTemplateDamageDistributionUneditableTable(
             [["" for _ in range(len(self.column_names))] for _ in range(3)],

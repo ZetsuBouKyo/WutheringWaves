@@ -17,7 +17,7 @@ from ww.crud.template import (
     get_template_path,
     save_template,
 )
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoListEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echo import EchoListTable
@@ -38,13 +38,13 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
-        self.q_save_btn = QPushButton(_(ZhHantEnum.SAVE))
+        self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
-        self.q_load_btn = QPushButton(_(ZhHantEnum.LOAD))
-        self.q_load_btn.setToolTip(_(ZhHantEnum.LOAD_SELECTED_TEMPLATE_ID))
+        self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
+        self.q_load_btn.setToolTip(_(ZhTwEnum.LOAD_SELECTED_TEMPLATE_ID))
         self.q_load_btn.clicked.connect(self.load)
-        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
-        self.q_delete_btn.setToolTip(_(ZhHantEnum.DELETE_SELECTED_TEMPLATE_ID))
+        self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
+        self.q_delete_btn.setToolTip(_(ZhTwEnum.DELETE_SELECTED_TEMPLATE_ID))
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
@@ -69,14 +69,14 @@ class QTemplateTabs(QWidget):
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
-        self.q_tabs.addTab(self.q_template_basic_tab, _(ZhHantEnum.TAB_BASIC))
+        self.q_tabs.addTab(self.q_template_basic_tab, _(ZhTwEnum.TAB_BASIC))
         self.q_tabs.addTab(
-            self.q_template_output_method_tab, _(ZhHantEnum.TAB_OUTPUT_METHOD)
+            self.q_template_output_method_tab, _(ZhTwEnum.TAB_OUTPUT_METHOD)
         )
         self.q_tabs.addTab(
-            self.q_template_damage_distribution, _(ZhHantEnum.TAB_DAMAGE_DISTRIBUTION)
+            self.q_template_damage_distribution, _(ZhTwEnum.TAB_DAMAGE_DISTRIBUTION)
         )
-        self.q_tabs.addTab(self.q_template_help_tab, _(ZhHantEnum.TAB_HELP))
+        self.q_tabs.addTab(self.q_template_help_tab, _(ZhTwEnum.TAB_HELP))
 
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_tabs)
@@ -107,12 +107,12 @@ class QTemplateTabs(QWidget):
         return template
 
     def save(self):
-        self.q_progress_bar.set(0.0, _(ZhHantEnum.SAVING))
+        self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))
 
         template = self.get_template()
         if template.id == "":
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TEMPLATE_ID_MUST_NOT_EMPTY)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.TEMPLATE_ID_MUST_NOT_EMPTY)
             )
             return
         template_fname = f"{template.id}.json"
@@ -123,8 +123,8 @@ class QTemplateTabs(QWidget):
         if template_path.exists():
             confirmation = QMessageBox.question(
                 self,
-                _(ZhHantEnum.FILE_EXISTS),
-                f"{_(ZhHantEnum.FILE_OVERWRITE_OR_NOT)}'{template_fname}'?",
+                _(ZhTwEnum.FILE_EXISTS),
+                f"{_(ZhTwEnum.FILE_OVERWRITE_OR_NOT)}'{template_fname}'?",
                 QMessageBox.Yes | QMessageBox.No,
             )
             if confirmation == QMessageBox.No:
@@ -135,13 +135,13 @@ class QTemplateTabs(QWidget):
 
         save_template(template.id, template)
 
-        self.q_progress_bar.set(100.0, _(ZhHantEnum.SAVED))
+        self.q_progress_bar.set(100.0, _(ZhTwEnum.SAVED))
 
     def load(self):
         template_id = self.q_template_basic_tab.get_template_id()
         if not template_id:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TO_SELECT_TEMPLATE_ID)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.TO_SELECT_TEMPLATE_ID)
             )
             return
 
@@ -149,20 +149,20 @@ class QTemplateTabs(QWidget):
 
         if template is None:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.TO_SELECT_TEMPLATE_ID)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.TO_SELECT_TEMPLATE_ID)
             )
             return
 
         confirmation = QMessageBox.question(
             self,
-            _(ZhHantEnum.FILE),
-            _(ZhHantEnum.CONFIRM_LOAD),
+            _(ZhTwEnum.FILE),
+            _(ZhTwEnum.CONFIRM_LOAD),
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.No:
             return
 
-        self.q_progress_bar.set(0.0, _(ZhHantEnum.LOADING))
+        self.q_progress_bar.set(0.0, _(ZhTwEnum.LOADING))
 
         if len(template.rows) == 0:
             template.rows.append(TemplateRowModel())
@@ -173,15 +173,15 @@ class QTemplateTabs(QWidget):
         self.q_progress_bar.set_percentage(60.0)
         self.q_template_output_method_tab.load(template.rows)
 
-        self.q_progress_bar.set(100.0, _(ZhHantEnum.LOADED))
+        self.q_progress_bar.set(100.0, _(ZhTwEnum.LOADED))
 
     def delete(self):
         template_id = self.q_template_basic_tab.get_template_id()
         if not template_id:
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                _(ZhHantEnum.TO_SELECT_TEMPLATE_ID_TO_DELETE),
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.TO_SELECT_TEMPLATE_ID_TO_DELETE),
             )
             return
 
@@ -189,8 +189,8 @@ class QTemplateTabs(QWidget):
 
         confirmation = QMessageBox.question(
             self,
-            _(ZhHantEnum.DELETE),
-            f"{_(ZhHantEnum.CONFIRM_DELETE_TEMPLATE)} '{template_id}'?",
+            _(ZhTwEnum.DELETE),
+            f"{_(ZhTwEnum.CONFIRM_DELETE_TEMPLATE)} '{template_id}'?",
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.No:

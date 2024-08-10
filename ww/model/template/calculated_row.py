@@ -4,7 +4,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, field_validator
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.element import ElementEnum
 from ww.model.resonator_skill import (
     ResonatorSkillBaseAttrEnum,
@@ -27,20 +27,20 @@ class CalculatedTemplateEnum(str, Enum):
     ECHO_ELEMENT: str = "[聲骸]屬性"
     ECHO_SKILL_DMG: str = "[聲骸]技能倍率"
 
-    DAMAGE: str = _(ZhHantEnum.DAMAGE)
-    DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
 
-    FINAL_ELEMENT: str = _(ZhHantEnum.FINAL_ELEMENT)
-    FINAL_BONUS_TYPE: str = _(ZhHantEnum.FINAL_BONUS_TYPE)
-    FINAL_SKILL_DMG: str = _(ZhHantEnum.FINAL_SKILL_DMG)
+    FINAL_ELEMENT: str = _(ZhTwEnum.FINAL_ELEMENT)
+    FINAL_BONUS_TYPE: str = _(ZhTwEnum.FINAL_BONUS_TYPE)
+    FINAL_SKILL_DMG: str = _(ZhTwEnum.FINAL_SKILL_DMG)
 
-    FINAL_ATK: str = _(ZhHantEnum.FINAL_ATK)
-    FINAL_ATK_ADDITION: str = _(ZhHantEnum.FINAL_ATK_ADDITION)
-    FINAL_ATK_P: str = _(ZhHantEnum.FINAL_ATK_P)
-    FINAL_CRIT_RATE: str = _(ZhHantEnum.FINAL_CRIT_RATE)
-    FINAL_CRIT_DMG: str = _(ZhHantEnum.FINAL_CRIT_DMG)
-    FINAL_BONUS: str = _(ZhHantEnum.FINAL_BONUS)
+    FINAL_ATK: str = _(ZhTwEnum.FINAL_ATK)
+    FINAL_ATK_ADDITION: str = _(ZhTwEnum.FINAL_ATK_ADDITION)
+    FINAL_ATK_P: str = _(ZhTwEnum.FINAL_ATK_P)
+    FINAL_CRIT_RATE: str = _(ZhTwEnum.FINAL_CRIT_RATE)
+    FINAL_CRIT_DMG: str = _(ZhTwEnum.FINAL_CRIT_DMG)
+    FINAL_BONUS: str = _(ZhTwEnum.FINAL_BONUS)
 
     MONSTER_LEVEL: str = "[怪物]等級"
     MONSTER_DEF: str = "[怪物]防禦"

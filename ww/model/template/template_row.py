@@ -1,25 +1,25 @@
 from enum import Enum
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 
 TEMPLATE_BONUS = "[額外]"
 
 
 class TemplateRowBuffTypeEnum(str, Enum):
-    MAGNIFIER: str = _(ZhHantEnum.MAGNIFIER)
-    AMPLIFIER: str = _(ZhHantEnum.AMPLIFIER)
-    HP_P: str = _(ZhHantEnum.HP_P)
-    HP: str = _(ZhHantEnum.HP)
-    ATK_P: str = _(ZhHantEnum.ATK_P)
-    ATK: str = _(ZhHantEnum.ATK)
-    DEF_P: str = _(ZhHantEnum.DEF_P)
-    DEF: str = _(ZhHantEnum.DEF)
-    CRIT_RATE: str = _(ZhHantEnum.CRIT_RATE)
-    CRIT_DMG: str = _(ZhHantEnum.CRIT_DMG)
-    ADDITION: str = _(ZhHantEnum.ADDITION)
-    SKILL_DMG_ADDITION: str = _(ZhHantEnum.SKILL_DMG_ADDITION)
-    IGNORE_DEF: str = _(ZhHantEnum.IGNORE_DEF)
-    REDUCE_RES: str = _(ZhHantEnum.REDUCE_RES)
+    MAGNIFIER: str = _(ZhTwEnum.MAGNIFIER)
+    AMPLIFIER: str = _(ZhTwEnum.AMPLIFIER)
+    HP_P: str = _(ZhTwEnum.HP_P)
+    HP: str = _(ZhTwEnum.HP)
+    ATK_P: str = _(ZhTwEnum.ATK_P)
+    ATK: str = _(ZhTwEnum.ATK)
+    DEF_P: str = _(ZhTwEnum.DEF_P)
+    DEF: str = _(ZhTwEnum.DEF)
+    CRIT_RATE: str = _(ZhTwEnum.CRIT_RATE)
+    CRIT_DMG: str = _(ZhTwEnum.CRIT_DMG)
+    ADDITION: str = _(ZhTwEnum.ADDITION)
+    SKILL_DMG_ADDITION: str = _(ZhTwEnum.SKILL_DMG_ADDITION)
+    IGNORE_DEF: str = _(ZhTwEnum.IGNORE_DEF)
+    REDUCE_RES: str = _(ZhTwEnum.REDUCE_RES)
 
 
 class TemplateRowActionEnum(str, Enum):
@@ -40,31 +40,31 @@ class TemplateRowActionEnum(str, Enum):
 
 
 class TemplateRowEnum(str, Enum):
-    CALCULATE: str = _(ZhHantEnum.CALCULATE)
+    CALCULATE: str = _(ZhTwEnum.CALCULATE)
     BONUS_BUFF: str = "增益"
     RESONATOR_NAME: str = "[角色]名稱"
 
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
 
-    DAMAGE_NO_CRIT: str = _(ZhHantEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhHantEnum.DAMAGE_CRIT)
-    DAMAGE: str = _(ZhHantEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.DAMAGE)
 
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
 
-    FINAL_ELEMENT: str = _(ZhHantEnum.FINAL_ELEMENT)
-    FINAL_BONUS_TYPE: str = _(ZhHantEnum.FINAL_BONUS_TYPE)
-    FINAL_SKILL_DMG: str = _(ZhHantEnum.FINAL_SKILL_DMG)
+    FINAL_ELEMENT: str = _(ZhTwEnum.FINAL_ELEMENT)
+    FINAL_BONUS_TYPE: str = _(ZhTwEnum.FINAL_BONUS_TYPE)
+    FINAL_SKILL_DMG: str = _(ZhTwEnum.FINAL_SKILL_DMG)
 
-    FINAL_ATK: str = _(ZhHantEnum.FINAL_ATK)
-    FINAL_ATK_ADDITION: str = _(ZhHantEnum.FINAL_ATK_ADDITION)
-    FINAL_ATK_P: str = _(ZhHantEnum.FINAL_ATK_P)
-    FINAL_CRIT_RATE: str = _(ZhHantEnum.FINAL_CRIT_RATE)
-    FINAL_CRIT_DMG: str = _(ZhHantEnum.FINAL_CRIT_DMG)
-    FINAL_BONUS: str = _(ZhHantEnum.FINAL_BONUS)
+    FINAL_ATK: str = _(ZhTwEnum.FINAL_ATK)
+    FINAL_ATK_ADDITION: str = _(ZhTwEnum.FINAL_ATK_ADDITION)
+    FINAL_ATK_P: str = _(ZhTwEnum.FINAL_ATK_P)
+    FINAL_CRIT_RATE: str = _(ZhTwEnum.FINAL_CRIT_RATE)
+    FINAL_CRIT_DMG: str = _(ZhTwEnum.FINAL_CRIT_DMG)
+    FINAL_BONUS: str = _(ZhTwEnum.FINAL_BONUS)
 
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"

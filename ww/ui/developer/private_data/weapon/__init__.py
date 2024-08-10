@@ -14,7 +14,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.weapon import get_weapon_names
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.weapon import (
     WeaponPassiveStatEnum,
     WeaponRankEnum,
@@ -54,7 +54,7 @@ class QPrivateDataWeaponStatTab(QWidget):
 
         q_sub_stat_combobox_columns = [e.value for e in WeaponSubStatEnum]
         self.q_sub_stat_layout = QHBoxLayout()
-        self.q_sub_stat_label = QLabel(_(ZhHantEnum.WEAPON_SUB_STAT))
+        self.q_sub_stat_label = QLabel(_(ZhTwEnum.WEAPON_SUB_STAT))
         self.q_sub_stat_label.setFixedHeight(40)
         self.q_sub_stat_label.setFixedWidth(150)
         self.q_sub_stat_combobox = QAutoCompleteComboBox()
@@ -123,7 +123,7 @@ class QPrivateDataWeaponTuneTab(QWidget):
         q_passive_stat_combobox_columns = [e.value for e in WeaponPassiveStatEnum]
 
         self.q_passive_stat_layout = QHBoxLayout()
-        self.q_passive_stat_label = QLabel(_(ZhHantEnum.WEAPON_PASSIVE_STAT))
+        self.q_passive_stat_label = QLabel(_(ZhTwEnum.WEAPON_PASSIVE_STAT))
         self.q_passive_stat_label.setFixedHeight(40)
         self.q_passive_stat_label.setFixedWidth(150)
         self.q_passive_stat_combobox = QAutoCompleteComboBox()
@@ -171,13 +171,13 @@ class QPrivateDataWeaponTabs(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_weapon_layout = QHBoxLayout()
-        self.q_weapon_label = QLabel(_(ZhHantEnum.NAME))
+        self.q_weapon_label = QLabel(_(ZhTwEnum.NAME))
         self.q_weapon_label.setFixedHeight(40)
         self.q_weapon_combobox = QAutoCompleteComboBox(getOptions=get_weapon_names)
         self.q_weapon_combobox.setFixedHeight(40)
         self.q_weapon_combobox.setFixedWidth(150)
         self.q_weapon_combobox.currentTextChanged.connect(self.load_tabs)
-        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
+        self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_weapon_layout.addWidget(self.q_weapon_label)
@@ -190,8 +190,8 @@ class QPrivateDataWeaponTabs(QWidget):
         self.q_stat_tab = QPrivateDataWeaponStatTab()
         self.q_tune_tab = QPrivateDataWeaponTuneTab()
 
-        self.q_tabs.addTab(self.q_stat_tab, _(ZhHantEnum.TAB_STAT))
-        self.q_tabs.addTab(self.q_tune_tab, _(ZhHantEnum.TAB_TUNE))
+        self.q_tabs.addTab(self.q_stat_tab, _(ZhTwEnum.TAB_STAT))
+        self.q_tabs.addTab(self.q_tune_tab, _(ZhTwEnum.TAB_TUNE))
 
         self.layout.addLayout(self.q_weapon_layout)
         self.layout.addWidget(self.q_tabs)
@@ -202,7 +202,7 @@ class QPrivateDataWeaponTabs(QWidget):
         weapon_name = self.q_weapon_combobox.currentText()
         if not weapon_name:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.WEAPON_NAME_MUST_NOT_EMPTY)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.WEAPON_NAME_MUST_NOT_EMPTY)
             )
             return
 
@@ -212,8 +212,8 @@ class QPrivateDataWeaponTabs(QWidget):
         if not weapon_dir_path.is_dir():
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                f"'{weapon_dir_path}' {_(ZhHantEnum.PATH_MUST_BE_DIR)}",
+                _(ZhTwEnum.WARNING),
+                f"'{weapon_dir_path}' {_(ZhTwEnum.PATH_MUST_BE_DIR)}",
             )
             return
         if weapon_stat_fpath.exists():

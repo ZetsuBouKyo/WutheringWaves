@@ -16,7 +16,7 @@ from PySide2.QtWidgets import (
 
 from ww.crud.docs import get_gacha_file_html
 from ww.crud.resonator import get_resonator_icon_path
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.docs import get_docs
@@ -114,7 +114,7 @@ class QGachaResultTab(QWidget):
         self.q_pool_combobox.setFixedWidth(200)
         self.q_pool_combobox.setFixedHeight(40)
         self.q_pool_combobox.addItems([e.value for e in GachaPoolTypeEnum])
-        self.q_4_start_checkbox = QCheckBox(_(ZhHantEnum.SHOW_4_STAR))
+        self.q_4_start_checkbox = QCheckBox(_(ZhTwEnum.SHOW_4_STAR))
         self.q_tool_bar_layout.addWidget(self.q_pool_combobox)
         self.q_tool_bar_layout.addWidget(self.q_4_start_checkbox)
         self.q_tool_bar_layout.addStretch()
@@ -143,19 +143,17 @@ class QGachaResultTab(QWidget):
         return value_label
 
     def init_analysis(self):
-        self.q_total_pulls_label = self.set_label(f"{_(ZhHantEnum.TOTAL_PULLS)}:")
+        self.q_total_pulls_label = self.set_label(f"{_(ZhTwEnum.TOTAL_PULLS)}:")
         self.q_total_5_star_pulls_label = self.set_label(
-            f"{_(ZhHantEnum.TOTAL_5_STAR_PULLS)}:"
+            f"{_(ZhTwEnum.TOTAL_5_STAR_PULLS)}:"
         )
         self.q_remained_5_star_pulls_label = self.set_label(
-            f"{_(ZhHantEnum.REMAINED_5_STAR_PULLS)}:"
+            f"{_(ZhTwEnum.REMAINED_5_STAR_PULLS)}:"
         )
         self.q_remained_4_star_pulls_label = self.set_label(
-            f"{_(ZhHantEnum.REMAINED_4_STAR_ABOVE_PULLS)}:"
+            f"{_(ZhTwEnum.REMAINED_4_STAR_ABOVE_PULLS)}:"
         )
-        self.q_from_old_to_new_label = self.set_label(
-            f"{_(ZhHantEnum.FROM_OLD_TO_NEW)}:"
-        )
+        self.q_from_old_to_new_label = self.set_label(f"{_(ZhTwEnum.FROM_OLD_TO_NEW)}:")
 
     def clear_analysis(self):
         self.q_total_pulls_label.setText("")
@@ -188,14 +186,14 @@ class QGachaResultTab(QWidget):
 
         if pool_name == "":
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.POOL_NAME_MUST_NOT_EMPTY)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.POOL_NAME_MUST_NOT_EMPTY)
             )
             return
 
         pool = pools.get(pool_name, None)
         if pool is None:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.POOL_NAME_NOT_LEGAL)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.POOL_NAME_NOT_LEGAL)
             )
             return
 
@@ -211,8 +209,8 @@ class QGachaResultsTabs(QTabWidget):
         self.q_gacha_result_tab = QGachaResultTab()
         self.q_gacha_help_tab = get_docs(get_gacha_file_html)
 
-        self.addTab(self.q_gacha_result_tab, _(ZhHantEnum.TAB_ANALYSIS))
-        self.addTab(self.q_gacha_help_tab, _(ZhHantEnum.TAB_HELP))
+        self.addTab(self.q_gacha_result_tab, _(ZhTwEnum.TAB_ANALYSIS))
+        self.addTab(self.q_gacha_help_tab, _(ZhTwEnum.TAB_HELP))
 
     def set_results(self, pools: Dict[str, PoolModel]):
         self.q_gacha_result_tab.set_results(pools)

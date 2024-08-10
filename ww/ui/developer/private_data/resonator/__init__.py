@@ -17,7 +17,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.resonator import get_resonator_names
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.resonator import (
@@ -115,7 +115,7 @@ class QPrivateDataResonatorTabs(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_resonator_layout = QHBoxLayout()
-        self.q_resonator_label = QLabel(_(ZhHantEnum.NAME))
+        self.q_resonator_label = QLabel(_(ZhTwEnum.NAME))
         self.q_resonator_label.setFixedHeight(40)
         self.q_resonator_combobox = QAutoCompleteComboBox(
             getOptions=get_resonator_names
@@ -123,7 +123,7 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_resonator_combobox.setFixedHeight(40)
         self.q_resonator_combobox.setFixedWidth(150)
         self.q_resonator_combobox.currentTextChanged.connect(self.load_tabs)
-        self.q_delete_btn = QPushButton(_(ZhHantEnum.DELETE))
+        self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_resonator_layout.addWidget(self.q_resonator_label)
@@ -136,8 +136,8 @@ class QPrivateDataResonatorTabs(QWidget):
         self.q_stat_tab = QPrivateDataResonatorStatTab()
         self.q_skill_tab = QPrivateDataResonatorSkillTab()
 
-        self.q_tabs.addTab(self.q_stat_tab, _(ZhHantEnum.TAB_STAT))
-        self.q_tabs.addTab(self.q_skill_tab, _(ZhHantEnum.TAB_SKILL))
+        self.q_tabs.addTab(self.q_stat_tab, _(ZhTwEnum.TAB_STAT))
+        self.q_tabs.addTab(self.q_skill_tab, _(ZhTwEnum.TAB_SKILL))
 
         self.layout.addLayout(self.q_resonator_layout)
         self.layout.addWidget(self.q_tabs)
@@ -148,7 +148,7 @@ class QPrivateDataResonatorTabs(QWidget):
         resonator_name = self.q_resonator_combobox.currentText()
         if not resonator_name:
             QMessageBox.warning(
-                self, _(ZhHantEnum.WARNING), _(ZhHantEnum.RESONATOR_NAME_MUST_NOT_EMPTY)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.RESONATOR_NAME_MUST_NOT_EMPTY)
             )
             return
 
@@ -158,8 +158,8 @@ class QPrivateDataResonatorTabs(QWidget):
         if not resonator_dir_path.is_dir():
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                f"'{resonator_dir_path}' {_(ZhHantEnum.PATH_MUST_BE_DIR)}",
+                _(ZhTwEnum.WARNING),
+                f"'{resonator_dir_path}' {_(ZhTwEnum.PATH_MUST_BE_DIR)}",
             )
             return
         if resonator_stat_fpath.exists():

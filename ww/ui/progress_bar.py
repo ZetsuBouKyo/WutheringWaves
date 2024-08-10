@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QProgressBar, QWidget
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 
 
 class QHProgressBar(QWidget):
@@ -9,7 +9,7 @@ class QHProgressBar(QWidget):
 
         self.q_progress_layout = QHBoxLayout()
         self.q_progress_bar = QProgressBar()
-        self.q_progress_bar.setToolTip(_(ZhHantEnum.PROGRESS_BAR))
+        self.q_progress_bar.setToolTip(_(ZhTwEnum.PROGRESS_BAR))
         self.q_progress_bar.setMinimum(0)
         self.q_progress_bar.setMaximum(100)
         self.q_progress_label = QLabel("")

@@ -14,7 +14,7 @@ from PySide2.QtWidgets import (
 from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import get_resonator_ids
 from ww.crud.template import get_template_ids
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.resonators import ResonatorsEnum
 from ww.model.template import (
     TemplateModel,
@@ -319,7 +319,7 @@ class QTemplateBasicTab(QWidget):
                 resonator_id, ResonatorsEnum.NAME.value
             )
             if table.get(resonator_name, None) is not None:
-                QMessageBox.warning(self, _(ZhHantEnum.WARNING), "角色重複。")
+                QMessageBox.warning(self, _(ZhTwEnum.WARNING), "角色重複。")
                 return table
             table[resonator_name] = resonator_id
         return table

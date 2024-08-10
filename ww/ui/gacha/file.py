@@ -23,7 +23,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.ui.gacha.id_to_name import (
     GachaResonatorModel,
@@ -85,16 +85,16 @@ class QGachaFileTab(QWidget):
         if self.fpath is None:
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                _(ZhHantEnum.WUTHERING_WAVES_DEBUG_FILE_NOT_FOUND),
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.WUTHERING_WAVES_DEBUG_FILE_NOT_FOUND),
             )
             return
 
         if self.fpath.parts[-2] == "KRSDKWebView":
             QMessageBox.warning(
                 self,
-                _(ZhHantEnum.WARNING),
-                _(ZhHantEnum.WUTHERING_WAVES_DEBUG_FILE_SHOULD_BE_COPIED),
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.WUTHERING_WAVES_DEBUG_FILE_SHOULD_BE_COPIED),
             )
             self.set_fpath(None)
             return

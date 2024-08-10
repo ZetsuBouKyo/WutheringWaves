@@ -22,7 +22,7 @@ from ww.crud.buff import (
     get_weapon_buffs,
 )
 from ww.crud.resonator import get_resonator_and_echo_skill_ids
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.model.buff import BUFF_DURATION, BUFF_ID, BUFF_TYPE, BUFF_VALUE
 from ww.model.template import (
     TEMPLATE_BONUS,
@@ -143,7 +143,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         if is_progress:
             percentage = 0.0
             diff = 100.0 / self.rowCount() + 1
-            self.progress_bar.set(percentage, _(ZhHantEnum.CALCULATING))
+            self.progress_bar.set(percentage, _(ZhTwEnum.CALCULATING))
 
         self.calculated_rows = []
         for row in range(self.rowCount()):
@@ -156,7 +156,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 percentage += diff
                 self.progress_bar.set_percentage(percentage)
         if is_progress:
-            self.progress_bar.set(100.0, _(ZhHantEnum.CALCULATED))
+            self.progress_bar.set(100.0, _(ZhTwEnum.CALCULATED))
 
     def load(self, rows: List[TemplateRowModel]):
         self.ouput_methods = rows
@@ -283,7 +283,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
-            btn = QDataPushButton(_(ZhHantEnum.CALCULATE))
+            btn = QDataPushButton(_(ZhTwEnum.CALCULATE))
             btn.clicked.connect(partial(self.calculate_row, None))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateRowEnum.BONUS_BUFF.value:
@@ -596,7 +596,7 @@ class QTemplateOutputMethodTab(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_btns_layout = QHBoxLayout()
-        self.q_calculate_btn = QPushButton(_(ZhHantEnum.CALCULATE))
+        self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_calculate_btn)

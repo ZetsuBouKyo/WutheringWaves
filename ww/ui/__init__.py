@@ -16,7 +16,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.locale import ZhHantEnum, _
+from ww.locale import ZhTwEnum, _
 from ww.ui.calc import QCalcTabs
 from ww.ui.data import QDataTabs
 from ww.ui.developer import QDevTabs
@@ -51,7 +51,7 @@ class MainWindow(QMainWindow):
         tabs_widget.addTab(home, "關於")
         tabs_widget.addTab(public_data_tabs, "數據")
         tabs_widget.addTab(dev_tabs, "開發者")
-        tabs_widget.addTab(calc_tabs, _(ZhHantEnum.CALCULATE))
+        tabs_widget.addTab(calc_tabs, _(ZhTwEnum.CALCULATE))
         tabs_widget.addTab(gacha_tab, "抽卡分析")
         tabs_widget.addTab(resource, "資源規劃")
 

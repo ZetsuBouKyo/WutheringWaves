@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ZhHantEnum(str, Enum):
+class ZhTwEnum(str, Enum):
     RESONATOR_1: str = "共鳴者1"
     RESONATOR_2: str = "共鳴者2"
     RESONATOR_3: str = "共鳴者3"
