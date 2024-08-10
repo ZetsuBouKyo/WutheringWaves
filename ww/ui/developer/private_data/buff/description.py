@@ -1,8 +1,17 @@
+from functools import partial
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Set, Union
+from typing import List, Optional, Union
 
 import pandas as pd
-from PySide2.QtWidgets import QPushButton
+from PySide2.QtCore import Qt
+from PySide2.QtWidgets import (
+    QDesktopWidget,
+    QDialog,
+    QHBoxLayout,
+    QPushButton,
+    QTextEdit,
+    QVBoxLayout,
+)
 
 from ww.locale import ZhTwEnum, _
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
@@ -49,10 +58,50 @@ class QDraggableDescriptionDataFrameTableWidget(_QDraggableDescriptionTableWidge
             button_names=button_names,
         )
 
+    def set_description(self, row: int, col: int, dialog: QDialog, text: QTextEdit):
+        plain_text = text.toPlainText()
+        self.set_cell(row, col, plain_text)
+        dialog.done(1)
+
     def add_description(self):
         row = self.get_selected_row()
         if row is None:
             return
+
+        width = 1200
+        height = 600
+
+        center = QDesktopWidget().availableGeometry().center()
+
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        layout = QVBoxLayout()
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves Buff Description")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+
+        col = self.get_column_id(_(ZhTwEnum.BUFF_DESCRIPTION.value))
+        description = self.get_cell(row, col)
+        text_edit = QTextEdit()
+        text_edit.setText(description)
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QPushButton("OK")
+        ok_btn.clicked.connect(
+            partial(self.set_description, row, col, dialog, text_edit)
+        )
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addWidget(text_edit)
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
 
     def set_cell(self, row: int, col: int, value: str):
         if col < len(self.button_names):

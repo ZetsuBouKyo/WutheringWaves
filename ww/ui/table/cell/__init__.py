@@ -25,5 +25,6 @@ def set_uneditable_cell(
     item = QTableWidgetItem(value)
     item.setBackgroundColor(item_color)
     item.setFlags(~Qt.ItemIsEditable)
+    item.setToolTip(value)
     table.setItem(row, col, item)
     return item
