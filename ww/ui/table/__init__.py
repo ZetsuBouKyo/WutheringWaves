@@ -364,6 +364,21 @@ class QDraggableTableWidget(QCustomTableWidget):
         return self.column_names_table[col_name]
 
 
+class QDraggableDataFrameTableWidget(QDraggableTableWidget):
+    def __init__(
+        self,
+        df: pd.DataFrame,
+        column_id_name: str = None,
+    ):
+        super().__init__(
+            df.shape[0],
+            df.shape[1],
+            df.values.tolist(),
+            column_id_name=column_id_name,
+            column_names=df.columns.values.tolist(),
+        )
+
+
 class QDraggableTsvTableWidget(QWidget):
 
     def __init__(
