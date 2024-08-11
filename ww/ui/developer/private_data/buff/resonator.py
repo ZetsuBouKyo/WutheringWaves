@@ -5,10 +5,7 @@ from PySide2.QtWidgets import QVBoxLayout, QWidget
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import ResonatorBuffEnum
 from ww.tables.buff import ResonatorBuffTable, get_resonator_buff_fpath
-from ww.ui.developer.private_data.buff.description import (
-    QDraggableDescriptionDataFrameTableWidget,
-    QDraggableTsvDescriptionTableWidget,
-)
+from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
 from ww.ui.table.cell.combobox import (
     set_buff_source_combobox,
@@ -20,18 +17,24 @@ from ww.ui.table.cell.combobox import (
 )
 
 
-class QPrivateDataResonatorBuffTable(QDraggableDescriptionDataFrameTableWidget):
-
-    def __init__(
-        self,
-    ):
+class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
+    def __init__(self):
         table = ResonatorBuffTable()
+        column_names = table.column_names
         df = table.df
-        super().__init__(df, column_id_name=ResonatorBuffEnum.ID.value)
+        data = df.values.tolist()
+        rows = len(data)
+        columns = len(column_names)
+        super().__init__(
+            rows,
+            columns,
+            data=data,
+            column_id_name=ResonatorBuffEnum.ID.value,
+            column_names=column_names,
+        )
 
     def _init_column_width(self):
-        self.setColumnWidth(1, 500)
-        self.setColumnWidth(len(self.column_names) - 1, 600)
+        self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
         col_resonator_name = self.get_column_id(ResonatorBuffEnum.NAME.value)
@@ -91,8 +94,6 @@ class QPrivateDataResonatorBuffTable(QDraggableDescriptionDataFrameTableWidget):
             set_resonator_skill_bonus_type_combobox(self, row, col, value)
         elif self.column_names[col] == ResonatorBuffEnum.TARGET.value:
             set_buff_target_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.DESCRIPTION.value:
-            set_uneditable_cell(self, row, col, value)
         else:
             super().set_cell(row, col, value)
 
@@ -103,9 +104,8 @@ class QPrivateDataResonatorBuffTab(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_table = QPrivateDataResonatorBuffTable()
-        self.q_tsv = QDraggableTsvDescriptionTableWidget(
-            self.q_table,
-            tsv_fpath=get_resonator_buff_fpath(),
+        self.q_tsv = QDraggableTsvTableWidget(
+            self.q_table, tsv_fpath=get_resonator_buff_fpath()
         )
         self.layout.addWidget(self.q_tsv)
 

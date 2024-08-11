@@ -18,6 +18,7 @@ class ZhTwEnum(str, Enum):
     SPECTRO: str = "衍射"
     HAVOC: str = "湮滅"
 
+    DESCRIPTION_BTN: str = "新增描述"
     ANALYZE: str = "分析"
     CALCULATING: str = "計算中..."
     CALCULATED: str = "計算完成。"
@@ -216,8 +217,6 @@ class ZhTwEnum(str, Enum):
     BUFF_TARGET: str = "對象"
     BUFF_VALUE: str = "數值"
     BUFF_DURATION: str = "持續時間(s)"
-    BUFF_DESCRIPTION: str = "描述"
-    BUFF_DESCRIPTION_BTN: str = "新增描述"
     BUFF_WEAPON_TUNE: str = "諧振"
 
     BUFF_TARGET_ALL: str = "全部"

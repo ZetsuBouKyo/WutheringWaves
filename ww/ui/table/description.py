@@ -32,7 +32,7 @@ class _QDraggableDescriptionTableWidget(QDraggableTableWidget):
         data: List[List[str]] = [],
         column_id_name: str = None,
         column_names: List[str] = [],
-        button_names: List[str] = [_(ZhTwEnum.BUFF_DESCRIPTION_BTN)],
+        button_names: List[str] = [_(ZhTwEnum.DESCRIPTION_BTN)],
     ):
         self.button_names = button_names
         set_buttons(data, self.button_names)
@@ -49,7 +49,7 @@ class QDraggableDescriptionDataFrameTableWidget(_QDraggableDescriptionTableWidge
         self,
         df: pd.DataFrame,
         column_id_name: str = None,
-        button_names: List[str] = [_(ZhTwEnum.BUFF_DESCRIPTION_BTN)],
+        button_names: List[str] = [_(ZhTwEnum.DESCRIPTION_BTN)],
     ):
         super().__init__(
             data=df.values.tolist(),
@@ -83,7 +83,7 @@ class QDraggableDescriptionDataFrameTableWidget(_QDraggableDescriptionTableWidge
         dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         dialog.setGeometry(x0, y0, width, height)
 
-        col = self.get_column_id(_(ZhTwEnum.BUFF_DESCRIPTION.value))
+        col = self.get_column_id(_(ZhTwEnum.DESCRIPTION.value))
         description = self.get_cell(row, col)
         text_edit = QTextEdit()
         text_edit.setText(description)
@@ -118,7 +118,7 @@ class QDraggableTsvDescriptionTableWidget(QDraggableTsvTableWidget):
         self,
         table: QDraggableTableWidget,
         tsv_fpath: Optional[Union[str, Path]] = None,
-        button_names: List[str] = [_(ZhTwEnum.BUFF_DESCRIPTION_BTN)],
+        button_names: List[str] = [_(ZhTwEnum.DESCRIPTION_BTN)],
     ):
         self.button_names = button_names
         super().__init__(
