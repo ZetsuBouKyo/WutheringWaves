@@ -7,6 +7,7 @@ class ZhTwEnum(str, Enum):
     RESONATOR_3: str = "共鳴者3"
 
     NAME: str = "名稱"
+    DESCRIPTION: str = "描述"
 
     TOTAL_DAMAGE: str = "總傷害"
 
@@ -106,6 +107,15 @@ class ZhTwEnum(str, Enum):
     RESONANCE_LIBERATION: str = "共鳴解放"
     INTRO_SKILL: str = "變奏技能"
     OUTRO_SKILL: str = "延奏技能"
+
+    INHERENT_SKILL_1: str = "固有1"
+    INHERENT_SKILL_2: str = "固有2"
+    CHAIN_1: str = "共鳴鏈1"
+    CHAIN_2: str = "共鳴鏈2"
+    CHAIN_3: str = "共鳴鏈3"
+    CHAIN_4: str = "共鳴鏈4"
+    CHAIN_5: str = "共鳴鏈5"
+    CHAIN_6: str = "共鳴鏈6"
 
     DAMAGE_DISTRIBUTION_BASIC: str = "[傷害占比]普攻"
     DAMAGE_DISTRIBUTION_HEAVY: str = "[傷害占比]重擊"

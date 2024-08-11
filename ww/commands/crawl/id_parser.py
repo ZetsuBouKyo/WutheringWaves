@@ -1,5 +1,9 @@
+import json
 import re
 from html.parser import HTMLParser
+from pathlib import Path
+
+import requests
 
 
 class WutheringWikiHTMLParser(HTMLParser):
@@ -39,3 +43,21 @@ class WutheringWikiHTMLParser(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "div" and self.inside_target_div:
             self.inside_target_div = False
+
+
+def id_parser(url: str, fpath: str):
+    resp = requests.get(url)
+    html = resp.text
+
+    id_parser = WutheringWikiHTMLParser("itementry")
+    id_parser.feed(html)
+
+    ids = id_parser.current_ids
+    names = id_parser.current_names
+    data = {}
+    for i in range(len(ids)):
+        data[ids[i]] = names[i]
+
+    fpath = Path(fpath)
+    with fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(data, fp, indent=4, ensure_ascii=False)

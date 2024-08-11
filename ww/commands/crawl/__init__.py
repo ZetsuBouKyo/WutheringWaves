@@ -1,10 +1,11 @@
 import json
+import os
 from pathlib import Path
 
-import requests
 from typer import Typer
 
-from ww.commands.crawl.html_parser import WutheringWikiHTMLParser
+from ww.commands.crawl.id_parser import id_parser
+from ww.commands.crawl.resonator import ResonatorParser
 
 app = Typer(name="crawl")
 
@@ -12,35 +13,37 @@ RESONATOR_IDS_PATH = "./cache/v1/zh_tw/raw/resonator_id.json"
 WEAPON_IDS_PATH = "./cache/v1/zh_tw/raw/weapon_id.json"
 MONSTER_IDS_PATH = "./cache/v1/zh_tw/raw/monster_id.json"
 
-
-def parser(url: str, fpath: str):
-    resp = requests.get(url)
-    html = resp.text
-
-    parser = WutheringWikiHTMLParser("itementry")
-    parser.feed(html)
-
-    ids = parser.current_ids
-    names = parser.current_names
-    data = {}
-    for i in range(len(ids)):
-        data[ids[i]] = names[i]
-
-    fpath = Path(fpath)
-    with fpath.open(mode="w", encoding="utf-8") as fp:
-        json.dump(data, fp, indent=4, ensure_ascii=False)
+RESONATORS_HOME_PATH = "./cache/v1/zh_tw/output/resonators"
 
 
 @app.command()
 def get_resonator_ids():
-    parser("https://wuthering.wiki/cn/index.html", RESONATOR_IDS_PATH)
+    id_parser("https://wuthering.wiki/cn/index.html", RESONATOR_IDS_PATH)
 
 
 @app.command()
 def get_weapon_ids():
-    parser("https://wuthering.wiki/cn/weapons.html", WEAPON_IDS_PATH)
+    id_parser("https://wuthering.wiki/cn/weapons.html", WEAPON_IDS_PATH)
 
 
 @app.command()
 def get_monster_ids():
-    parser("https://wuthering.wiki/cn/monsters.html", MONSTER_IDS_PATH)
+    id_parser("https://wuthering.wiki/cn/monsters.html", MONSTER_IDS_PATH)
+
+
+@app.command()
+def get_resonator(home: str):
+    home = Path(home)
+    for fpath in home.glob("*.html"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            text = fp.read()
+
+        parser = ResonatorParser(text)
+        data = parser.get_data()
+        data_str = json.dumps(data, indent=4, ensure_ascii=False)
+        print(data_str)
+
+        fpath_out = Path(RESONATORS_HOME_PATH) / f"{fpath.stem}.json"
+        os.makedirs(fpath_out.parent, exist_ok=True)
+        with fpath_out.open(mode="w", encoding="utf-8") as fp:
+            json.dump(data, fp, indent=4, ensure_ascii=False)
