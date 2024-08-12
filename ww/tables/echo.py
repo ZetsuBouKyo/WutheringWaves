@@ -11,6 +11,8 @@ ECHOES_PNG_FNAME = "echoes.png"
 
 ECHOES_LIST_PATH = "./data/v1/zh_tw/echo_list.tsv"
 ECHO_SKILL_PATH = "./data/v1/zh_tw/echo_skills.tsv"
+ECHO_SKILL_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_skill_descriptions.json"
+ECHO_SONATA_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_sonata_descriptions.json"
 
 
 def get_echo_list_fpath() -> Path:
@@ -19,6 +21,14 @@ def get_echo_list_fpath() -> Path:
 
 def get_echo_skill_fpath() -> Path:
     return Path(ECHO_SKILL_PATH)
+
+
+def get_echo_skill_descriptions_fpath() -> Path:
+    return Path(ECHO_SKILL_DESCRIPTIONS_PATH)
+
+
+def get_echo_sonata_descriptions_fpath() -> Path:
+    return Path(ECHO_SONATA_DESCRIPTIONS_PATH)
 
 
 class EchoesTable:

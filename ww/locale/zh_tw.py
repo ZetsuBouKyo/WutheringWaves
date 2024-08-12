@@ -226,6 +226,7 @@ class ZhTwEnum(str, Enum):
     BUFF_TARGET: str = "對象"
     BUFF_VALUE: str = "數值"
     BUFF_DURATION: str = "持續時間(s)"
+    BUFF_DESCRIPTION: str = "描述"
     BUFF_WEAPON_TUNE: str = "諧振"
 
     BUFF_TARGET_ALL: str = "全部"

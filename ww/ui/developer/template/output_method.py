@@ -16,6 +16,10 @@ from PySide2.QtWidgets import (
 
 from ww.calc.damage import get_json_row_damage
 from ww.crud.buff import (
+    add_echo_buff_descriptions,
+    add_echo_sonata_buff_descriptions,
+    add_resonator_buff_descriptions,
+    add_weapon_buff_descriptions,
     get_echo_buffs,
     get_echo_sonata_buffs,
     get_resonator_buffs,
@@ -87,8 +91,11 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         buff_type = buff.get(_(ZhTwEnum.BUFF_TYPE), None)
         buff_value = buff.get(_(ZhTwEnum.BUFF_VALUE), None)
         buff_duration = buff.get(_(ZhTwEnum.BUFF_DURATION), None)
+        buff_description = buff.get(_(ZhTwEnum.BUFF_DESCRIPTION), "")
         if not buff or buff_type is None or buff_value is None or buff_duration is None:
             return
+
+        buff_name_col = self.get_column_id(TemplateBuffTableRowEnum.NAME.value)
         buff_type_col = self.get_column_id(TemplateBuffTableRowEnum.TYPE.value)
         buff_value_col = self.get_column_id(TemplateBuffTableRowEnum.VALUE.value)
         buff_duration_col = self.get_column_id(TemplateBuffTableRowEnum.DURATION.value)
@@ -96,10 +103,18 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
         self.set_cell(row, buff_value_col, buff_value)
         self.set_cell(row, buff_duration_col, buff_duration)
 
+        cell = self.cellWidget(row, buff_name_col)
+        cell.setToolTip(buff_description)
+
     def set_cell(self, row: int, col: int, value: str):
         try:
             if self.column_names[col] == TemplateBuffTableRowEnum.NAME.value:
-                combobox = set_combobox(self, row, col, value, self.buffs_list)
+                buff = self.buffs.get(value, {})
+                buff_description = buff.get(_(ZhTwEnum.BUFF_DESCRIPTION), "")
+
+                combobox = set_combobox(
+                    self, row, col, value, self.buffs_list, toolTip=buff_description
+                )
                 combobox.currentTextChanged.connect(self.update_row)
             elif self.column_names[col] == TemplateBuffTableRowEnum.TYPE.value:
                 set_buff_type_combobox(self, row, col, value)
@@ -425,16 +440,19 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             # Resonator
             resonator_name = resonator.resonator_name
             resonator_buffs = get_resonator_buffs(resonator_name)
+            add_resonator_buff_descriptions(resonator_buffs)
             self.add_default_buffs(buffs, resonator_buffs)
 
             # Weapon
             weapon_name = resonator.resonator_weapon_name
             weapon_buffs = get_weapon_buffs(weapon_name)
+            add_weapon_buff_descriptions(weapon_buffs)
             self.add_default_buffs(buffs, weapon_buffs)
 
             # Echo
             echo_name = resonator.resonator_echo_1
             echo_buffs = get_echo_buffs(echo_name)
+            add_echo_buff_descriptions(echo_buffs)
             self.add_default_buffs(buffs, echo_buffs)
 
             # Echo sonata
@@ -454,9 +472,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             for sonata, count in sonata_count.items():
                 if count >= 5:
                     sonatas.add(sonata)
+
+        echo_sonata_buffs = []
         for sonata in sonatas:
-            echo_sonata_buffs = get_echo_sonata_buffs(sonata)
-            self.add_default_buffs(buffs, echo_sonata_buffs)
+            echo_sonata_buffs += get_echo_sonata_buffs(sonata)
+        add_echo_sonata_buff_descriptions(echo_sonata_buffs)
+        self.add_default_buffs(buffs, echo_sonata_buffs)
 
         return buffs
 

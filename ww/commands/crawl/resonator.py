@@ -230,6 +230,6 @@ class ResonatorParser:
 
     def get_data(self) -> str:
         self.get_skills()
-        self.get_chains()
         self.get_inherent_skills()
+        self.get_chains()
         return self.data
