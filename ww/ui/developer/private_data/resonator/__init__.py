@@ -1,10 +1,12 @@
-import sys
-from functools import partial
+import json
+from typing import Dict, Optional, Tuple, Union
 
+from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
     QApplication,
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QMainWindow,
     QMessageBox,
     QProgressBar,
@@ -12,6 +14,7 @@ from PySide2.QtWidgets import (
     QTableWidget,
     QTableWidgetItem,
     QTabWidget,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
@@ -22,6 +25,7 @@ from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.resonator import (
     get_resonator_dir_path,
+    get_resonator_information_fpath,
     get_resonator_skill_fpath,
     get_resonator_stat_fpath,
 )
@@ -33,17 +37,137 @@ from ww.utils.pd import get_empty_df
 class QPrivateDataResonatorInformationTab(QWidget):
     def __init__(self):
         super().__init__()
+        self.resonator_name = None
+
         self.layout = QVBoxLayout()
 
+        # Buttons
+        self.q_layout_btns = QHBoxLayout()
+        self.q_btn_save = QPushButton(_(ZhTwEnum.SAVE))
+        self.q_btn_save.clicked.connect(self.save)
+        self.q_btn_load = QPushButton(_(ZhTwEnum.LOAD))
+        self.q_btn_load.clicked.connect(self.load)
+        self.q_layout_btns.addStretch()
+        self.q_layout_btns.addWidget(self.q_btn_save)
+        self.q_layout_btns.addWidget(self.q_btn_load)
+
+        self.layout.addLayout(self.q_layout_btns)
+
+        # Tabs
+        self.q_tabs = QTabWidget()
+
+        # Skills
+        self.q_skills: Dict[str, Dict[str, Optional[Union[QLineEdit, QTextEdit]]]] = {
+            _(ZhTwEnum.NORMAL_ATTACK): None,
+            _(ZhTwEnum.RESONANCE_SKILL): None,
+            _(ZhTwEnum.FORTE_CIRCUIT): None,
+            _(ZhTwEnum.RESONANCE_LIBERATION): None,
+            _(ZhTwEnum.INTRO_SKILL): None,
+            _(ZhTwEnum.OUTRO_SKILL): None,
+        }
+        self.q_skill_tab = self.get_tab(self.q_skills)
+        self.q_tabs.addTab(self.q_skill_tab, _(ZhTwEnum.TAB_SKILL))
+
+        # Inherent skills
+        self.q_inherent_skills: Dict[
+            str, Dict[str, Optional[Union[QLineEdit, QTextEdit]]]
+        ] = {
+            _(ZhTwEnum.INHERENT_SKILL_1): None,
+            _(ZhTwEnum.INHERENT_SKILL_2): None,
+        }
+        self.q_inherent_skill_tab = self.get_tab(self.q_inherent_skills)
+        self.q_tabs.addTab(self.q_inherent_skill_tab, _(ZhTwEnum.TAB_INHERENT_SKILL))
+
+        # Chains
+        self.q_chains: Dict[str, Dict[str, Optional[Union[QLineEdit, QTextEdit]]]] = {
+            _(ZhTwEnum.CHAIN_1): None,
+            _(ZhTwEnum.CHAIN_2): None,
+            _(ZhTwEnum.CHAIN_3): None,
+            _(ZhTwEnum.CHAIN_4): None,
+            _(ZhTwEnum.CHAIN_5): None,
+            _(ZhTwEnum.CHAIN_6): None,
+        }
+        self.q_chain_tab = self.get_tab(self.q_chains)
+        self.q_tabs.addTab(self.q_chain_tab, _(ZhTwEnum.TAB_CHAIN))
+
+        self.layout.addWidget(self.q_tabs)
+        self.layout.addStretch()
         self.setLayout(self.layout)
 
-    def load(self, resonator_name: str):
-        tsv_fpath = get_resonator_stat_fpath(resonator_name)
+    def get_label_layout(self, name) -> QVBoxLayout:
+        layout = QVBoxLayout()
+        label = QLabel(name)
+        label.setFixedWidth(100)
+        label.setFixedHeight(40)
+        layout.addWidget(label)
+        layout.setAlignment(Qt.AlignTop)
+        return layout
+
+    def get_text_components(self) -> Tuple[QVBoxLayout, QLineEdit, QTextEdit]:
+        layout = QVBoxLayout()
+        text_line = QLineEdit()
+        text_edit = QTextEdit()
+        layout.addWidget(text_line)
+        layout.addWidget(text_edit)
+        layout.setAlignment(Qt.AlignTop)
+        return layout, text_line, text_edit
+
+    def get_tab(self, str2qt: Dict[str, QTextEdit]) -> QWidget:
+        tab = QWidget()
+        layout = QVBoxLayout()
+        for label_name in str2qt.keys():
+            h_layout = QHBoxLayout()
+
+            label_layout = self.get_label_layout(label_name)
+            text_layout, text_line, text_edit = self.get_text_components()
+            str2qt[label_name] = {
+                _(ZhTwEnum.NAME): text_line,
+                _(ZhTwEnum.DESCRIPTION): text_edit,
+            }
+
+            h_layout.addLayout(label_layout)
+            h_layout.addLayout(text_layout, 1)
+
+            layout.addLayout(h_layout)
+        layout.addStretch()
+        tab.setLayout(layout)
+        return tab
+
+    def set_resonator_name(self, name: str):
+        self.resonator_name = name
+
+    def set_text(self, key: str, values: Dict[str, str]):
+        str2qts = [self.q_skills, self.q_inherent_skills, self.q_chains]
+        for str2qt in str2qts:
+            text_components = str2qt.get(key, None)
+            if text_components is None:
+                continue
+
+            text_line = text_components.get(_(ZhTwEnum.NAME), None)
+            text_edit = text_components.get(_(ZhTwEnum.DESCRIPTION), None)
+            text_line_str = values.get(_(ZhTwEnum.NAME), None)
+            text_edit_str = values.get(_(ZhTwEnum.DESCRIPTION), None)
+            if text_line is not None and text_line_str is not None:
+                text_line.setText(text_line_str)
+
+            if text_edit is not None and text_edit_str is not None:
+                text_edit.setText(text_edit_str)
+
+    def load(self):
+        if not self.resonator_name:
+            return
+        tsv_fpath = get_resonator_information_fpath(self.resonator_name)
         if tsv_fpath is None:
             return
 
-        self.q_tsv.set_tsv_fpath(tsv_fpath)
-        self.q_tsv.load(is_confirmation=False)
+        with tsv_fpath.open(mode="r", encoding="utf-8") as fp:
+            data: dict = json.load(fp)
+        for key, values in data.items():
+            self.set_text(key, values)
+
+    def save(self):
+        if not self.resonator_name:
+            return
 
 
 class QPrivateDataResonatorStatTable(QDraggableTableWidget):
@@ -149,9 +273,11 @@ class QPrivateDataResonatorTabs(QWidget):
 
         # Tabs
         self.q_tabs = QTabWidget()
+        self.q_information_tab = QPrivateDataResonatorInformationTab()
         self.q_stat_tab = QPrivateDataResonatorStatTab()
         self.q_skill_tab = QPrivateDataResonatorSkillTab()
 
+        self.q_tabs.addTab(self.q_information_tab, _(ZhTwEnum.TAB_INFORMATION))
         self.q_tabs.addTab(self.q_stat_tab, _(ZhTwEnum.TAB_STAT))
         self.q_tabs.addTab(self.q_skill_tab, _(ZhTwEnum.TAB_SKILL))
 
@@ -169,8 +295,15 @@ class QPrivateDataResonatorTabs(QWidget):
             return
 
         resonator_dir_path = get_resonator_dir_path(resonator_name)
+
+        resonator_information_fpath = get_resonator_information_fpath(resonator_name)
         resonator_stat_fpath = get_resonator_stat_fpath(resonator_name)
         resonator_skill_fpath = get_resonator_skill_fpath(resonator_name)
+        fpaths = [
+            resonator_information_fpath,
+            resonator_stat_fpath,
+            resonator_skill_fpath,
+        ]
         if not resonator_dir_path.is_dir():
             QMessageBox.warning(
                 self,
@@ -178,10 +311,10 @@ class QPrivateDataResonatorTabs(QWidget):
                 f"'{resonator_dir_path}' {_(ZhTwEnum.PATH_MUST_BE_DIR)}",
             )
             return
-        if resonator_stat_fpath.exists():
-            resonator_stat_fpath.unlink()
-        if resonator_skill_fpath.exists():
-            resonator_skill_fpath.unlink()
+        for fpath in fpaths:
+            if fpath.exists():
+                fpath.unlink()
+
         resonator_dir_path.rmdir()
 
         self.load_tabs()
@@ -192,5 +325,7 @@ class QPrivateDataResonatorTabs(QWidget):
         if not resonator_name:
             return
 
+        self.q_information_tab.set_resonator_name(resonator_name)
+        self.q_information_tab.load()
         self.q_stat_tab.load(resonator_name)
         self.q_skill_tab.load(resonator_name)

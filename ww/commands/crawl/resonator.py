@@ -76,6 +76,8 @@ class ResonatorParser:
     def get_skill(self, skill: _ResonatorSkillEnum):
         print(skill.value)
 
+        self.data[_skill_table[skill.value]] = {}
+
         skill_name_pattern = self.get_skill_name_pattern(skill)
         skill_name_elements = self.tree.xpath(skill_name_pattern)
         if skill_name_elements:
@@ -93,7 +95,7 @@ class ResonatorParser:
                 skill_name = skill_name.replace(f"{skill.value}: ", "")
 
                 print(skill_name)
-                self.data[_skill_table[skill.value]] = {_(ZhTwEnum.NAME): skill_name}
+                self.data[_skill_table[skill.value]][_(ZhTwEnum.NAME)] = skill_name
 
         skill_pattern = self.get_skill_pattern(skill)
         skill_elements = self.tree.xpath(skill_pattern)
@@ -110,9 +112,9 @@ class ResonatorParser:
                 h_text = html2text(h)
                 skill_description = clear_text(h_text)
                 print(skill_description)
-                self.data[_skill_table[skill.value]] = {
-                    _(ZhTwEnum.DESCRIPTION): skill_description
-                }
+                self.data[_skill_table[skill.value]][
+                    _(ZhTwEnum.DESCRIPTION)
+                ] = skill_description
                 print_divider()
 
     def get_skills(self):
@@ -131,6 +133,8 @@ class ResonatorParser:
     def get_chain(self, num: int):
         chain_prefix = self.get_chain_prefix(num)
 
+        self.data[_chain_table[num]] = {}
+
         chain_name_pattern = self.get_chain_name_pattern(chain_prefix)
         chain_name_elements = self.tree.xpath(chain_name_pattern)
         if chain_name_elements:
@@ -148,7 +152,7 @@ class ResonatorParser:
                 h_text = h_text.replace(chain_prefix, "")
 
                 print(h_text)
-                self.data[_chain_table[num]] = {_(ZhTwEnum.NAME): h_text}
+                self.data[_chain_table[num]][_(ZhTwEnum.NAME)] = h_text
 
         chain_pattern = self.get_chain_pattern(chain_prefix)
         chain_elements = self.tree.xpath(chain_pattern)
@@ -165,7 +169,7 @@ class ResonatorParser:
                 h_text = html2text(h)
                 h_text = clear_text(h_text)
                 print(h_text)
-                self.data[_chain_table[num]] = {_(ZhTwEnum.DESCRIPTION): h_text}
+                self.data[_chain_table[num]][_(ZhTwEnum.DESCRIPTION)] = h_text
                 print_divider()
 
     def get_chains(self):

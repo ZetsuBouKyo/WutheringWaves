@@ -16,7 +16,7 @@ RESONATOR_SKILL_FNAME = f"{_(ZhTwEnum.SKILL)}.tsv"
 def get_resonator_information_fpath(resonator_name: str) -> Optional[Path]:
     if not resonator_name:
         return None
-    return Path(RESONATOR_HOME_PATH) / resonator_name / RESONATOR_STAT_FNAME
+    return Path(RESONATOR_HOME_PATH) / resonator_name / RESONATOR_INFORMATION_FNAME
 
 
 def get_resonator_dir_path(resonator_name: str) -> Optional[Path]:

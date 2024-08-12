@@ -83,6 +83,9 @@ class ZhTwEnum(str, Enum):
     TAB_SKILL: str = "技能"
     TAB_TUNE: str = "諧振"
 
+    TAB_INHERENT_SKILL: str = "固有技能"
+    TAB_CHAIN: str = "共鳴鏈"
+
     LEVEL: str = "等級"
     ENERGY_REGEN: str = "共鳴效率"
 
@@ -116,6 +119,7 @@ class ZhTwEnum(str, Enum):
 
     INHERENT_SKILL_1: str = "固有1"
     INHERENT_SKILL_2: str = "固有2"
+
     CHAIN_1: str = "共鳴鏈1"
     CHAIN_2: str = "共鳴鏈2"
     CHAIN_3: str = "共鳴鏈3"
