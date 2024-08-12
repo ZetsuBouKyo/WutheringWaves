@@ -30,6 +30,22 @@ from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.utils.pd import get_empty_df
 
 
+class QPrivateDataResonatorInformationTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.layout = QVBoxLayout()
+
+        self.setLayout(self.layout)
+
+    def load(self, resonator_name: str):
+        tsv_fpath = get_resonator_stat_fpath(resonator_name)
+        if tsv_fpath is None:
+            return
+
+        self.q_tsv.set_tsv_fpath(tsv_fpath)
+        self.q_tsv.load(is_confirmation=False)
+
+
 class QPrivateDataResonatorStatTable(QDraggableTableWidget):
     def __init__(self):
         column_names = [e.value for e in ResonatorStatEnum]

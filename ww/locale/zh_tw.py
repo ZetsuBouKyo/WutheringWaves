@@ -7,7 +7,11 @@ class ZhTwEnum(str, Enum):
     RESONATOR_3: str = "共鳴者3"
 
     NAME: str = "名稱"
+    CHARACTER: str = "角色"
     DESCRIPTION: str = "描述"
+    INFORMATION: str = "基本資料"
+    SKILL: str = "技能"
+    STAT: str = "屬性"
 
     TOTAL_DAMAGE: str = "總傷害"
 
@@ -65,6 +69,7 @@ class ZhTwEnum(str, Enum):
     TAB_ANALYSIS: str = "分析"
     TAB_ECHO_LIST: str = "列表"
     TAB_ECHO_SKILL: str = "技能"
+    TAB_INFORMATION: str = "基本資料"
 
     TAB_RESONATOR: str = "共鳴者"
     TAB_WEAPON: str = "武器"
@@ -129,8 +134,6 @@ class ZhTwEnum(str, Enum):
 
     BASIC: str = "普攻"
     HEAVY: str = "重擊"
-    SKILL: str = "共鳴技能"
-    LIBERATION: str = "共鳴解放"
     INTRO: str = "變奏"
     OUTRO: str = "延奏"
     ECHO: str = "聲骸"

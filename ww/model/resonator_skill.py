@@ -21,8 +21,8 @@ class ResonatorSkillTypeEnum(str, Enum):
 class ResonatorSkillBonusTypeEnum(str, Enum):
     BASIC: str = _(ZhTwEnum.BASIC)
     HEAVY: str = _(ZhTwEnum.HEAVY)
-    SKILL: str = _(ZhTwEnum.SKILL)
-    LIBERATION: str = _(ZhTwEnum.LIBERATION)
+    SKILL: str = _(ZhTwEnum.RESONANCE_SKILL)
+    LIBERATION: str = _(ZhTwEnum.RESONANCE_LIBERATION)
     INTRO: str = _(ZhTwEnum.INTRO)
     OUTRO: str = _(ZhTwEnum.OUTRO)
     ECHO: str = _(ZhTwEnum.ECHO)

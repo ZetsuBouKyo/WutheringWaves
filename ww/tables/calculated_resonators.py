@@ -3,6 +3,7 @@ from typing import Optional
 
 import pandas as pd
 
+from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoesEnum, EchoSonataEnum
 from ww.model.resonator import ResonatorStatEnum
 from ww.model.resonators import CalculatedResonatorsEnum, ResonatorsEnum
@@ -15,12 +16,11 @@ from ww.utils.number import get_number
 from ww.utils.pd import get_df
 from ww.utils.table import print_transpose_table
 
-RESONATOR_HOME_PATH = "./data/v1/zh_tw/角色"
-RESONATOR_STAT = "屬性"
+RESONATOR_HOME_PATH = f"./data/v1/zh_tw/{_(ZhTwEnum.CHARACTER)}"
 
 
 def get_custom_resonator_stat(name: str) -> Optional[pd.DataFrame]:
-    p = Path(RESONATOR_HOME_PATH) / name / RESONATOR_STAT
+    p = Path(RESONATOR_HOME_PATH) / name / f"{_(ZhTwEnum.STAT)}"
     if not p.exists():
         return None
     return get_df(p)

@@ -6,6 +6,7 @@ from typer import Typer
 
 from ww.commands.crawl.id_parser import id_parser
 from ww.commands.crawl.resonator import ResonatorParser
+from ww.commands.crawl.weapon import WeaponParser
 
 app = Typer(name="crawl")
 
@@ -14,6 +15,7 @@ WEAPON_IDS_PATH = "./cache/v1/zh_tw/raw/weapon_id.json"
 MONSTER_IDS_PATH = "./cache/v1/zh_tw/raw/monster_id.json"
 
 RESONATORS_HOME_PATH = "./cache/v1/zh_tw/output/resonators"
+WEAPONS_HOME_PATH = "./cache/v1/zh_tw/output/weapons"
 
 
 @app.command()
@@ -44,6 +46,24 @@ def get_resonator(home: str):
         print(data_str)
 
         fpath_out = Path(RESONATORS_HOME_PATH) / f"{fpath.stem}.json"
+        os.makedirs(fpath_out.parent, exist_ok=True)
+        with fpath_out.open(mode="w", encoding="utf-8") as fp:
+            json.dump(data, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def get_weapon(home: str):
+    home = Path(home)
+    for fpath in home.glob("*.html"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            text = fp.read()
+
+        parser = WeaponParser(text)
+        data = parser.get_data()
+        data_str = json.dumps(data, indent=4, ensure_ascii=False)
+        print(data_str)
+
+        fpath_out = Path(WEAPONS_HOME_PATH) / f"{fpath.stem}.json"
         os.makedirs(fpath_out.parent, exist_ok=True)
         with fpath_out.open(mode="w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=4, ensure_ascii=False)
