@@ -4,12 +4,7 @@ from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import ResonatorBuffEnum, WeaponBuffEnum
-from ww.tables.buff import (
-    ResonatorBuffTable,
-    WeaponBuffTable,
-    get_resonator_buff_fpath,
-    get_weapon_buff_fpath,
-)
+from ww.tables.buff import WeaponBuffTable, get_weapon_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
 from ww.ui.table.cell.combobox import (
