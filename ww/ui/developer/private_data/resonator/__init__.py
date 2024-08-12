@@ -3,16 +3,11 @@ from typing import Dict, Optional, Tuple, Union
 
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
-    QApplication,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QMainWindow,
     QMessageBox,
-    QProgressBar,
     QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
     QTabWidget,
     QTextEdit,
     QVBoxLayout,
@@ -106,6 +101,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
     def get_text_components(self) -> Tuple[QVBoxLayout, QLineEdit, QTextEdit]:
         layout = QVBoxLayout()
         text_line = QLineEdit()
+        text_line.setFixedHeight(40)
         text_edit = QTextEdit()
         layout.addWidget(text_line)
         layout.addWidget(text_edit)

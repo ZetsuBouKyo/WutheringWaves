@@ -12,6 +12,7 @@ class ZhTwEnum(str, Enum):
     INFORMATION: str = "基本資料"
     SKILL: str = "技能"
     STAT: str = "屬性"
+    TUNE: str = "諧振"
 
     TOTAL_DAMAGE: str = "總傷害"
 
@@ -117,6 +118,7 @@ class ZhTwEnum(str, Enum):
     INTRO_SKILL: str = "變奏技能"
     OUTRO_SKILL: str = "延奏技能"
 
+    INHERENT_SKILL: str = "固有技能"
     INHERENT_SKILL_1: str = "固有1"
     INHERENT_SKILL_2: str = "固有2"
 

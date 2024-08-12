@@ -1,19 +1,27 @@
 from pathlib import Path
 from typing import Any, Optional
 
+from ww.locale import ZhTwEnum, _
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.crud import search
 from ww.utils.pd import get_empty_df, safe_get_df
 
 WEAPON_HOME_PATH = "./data/v1/zh_tw/武器"
-WEAPON_STAT_FNAME = "屬性.tsv"
-WEAPON_RANK_FNAME = "諧振.tsv"
+WEAPON_INFORMATION_FNAME = f"{_(ZhTwEnum.INFORMATION)}.json"
+WEAPON_STAT_FNAME = f"{_(ZhTwEnum.STAT)}.tsv"
+WEAPON_RANK_FNAME = f"{_(ZhTwEnum.TUNE)}.tsv"
 
 
-def get_weapon_dir_path(resonator_name: str) -> Optional[Path]:
-    if not resonator_name:
+def get_weapon_dir_path(weapon_name: str) -> Optional[Path]:
+    if not weapon_name:
         return None
-    return Path(WEAPON_HOME_PATH) / resonator_name
+    return Path(WEAPON_HOME_PATH) / weapon_name
+
+
+def get_weapon_information_fpath(weapon_name: str) -> Optional[Path]:
+    if not weapon_name:
+        return None
+    return Path(WEAPON_HOME_PATH) / weapon_name / WEAPON_INFORMATION_FNAME
 
 
 def get_weapon_stat_fpath(weapon_name: str) -> Optional[Path]:
