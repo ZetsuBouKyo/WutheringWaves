@@ -37,7 +37,7 @@ from ww.utils.pd import get_empty_df
 class QPrivateDataResonatorInformationTab(QWidget):
     def __init__(self):
         super().__init__()
-        self.resonator_name = None
+        self.resonator_name_combobox = None
 
         self.layout = QVBoxLayout()
 
@@ -133,8 +133,8 @@ class QPrivateDataResonatorInformationTab(QWidget):
         tab.setLayout(layout)
         return tab
 
-    def set_resonator_name(self, name: str):
-        self.resonator_name = name
+    def set_resonator_name_combobox(self, combobox: QAutoCompleteComboBox):
+        self.resonator_name_combobox = combobox
 
     def set_text(self, key: str, values: Dict[str, str]):
         str2qts = [self.q_skills, self.q_inherent_skills, self.q_chains]
@@ -153,21 +153,52 @@ class QPrivateDataResonatorInformationTab(QWidget):
             if text_edit is not None and text_edit_str is not None:
                 text_edit.setText(text_edit_str)
 
+    def get_data(self) -> Dict[str, Dict[str, str]]:
+        data = {}
+        str2qts = [self.q_skills, self.q_inherent_skills, self.q_chains]
+        for str2qt in str2qts:
+            for title_name, line in str2qt.items():
+                data[title_name] = {}
+                for key, value in line.items():
+                    if isinstance(value, QLineEdit):
+                        data[title_name][key] = value.text()
+                    elif isinstance(value, QTextEdit):
+                        data[title_name][key] = value.toPlainText()
+        return data
+
     def load(self):
-        if not self.resonator_name:
+        if not self.resonator_name_combobox:
             return
-        tsv_fpath = get_resonator_information_fpath(self.resonator_name)
-        if tsv_fpath is None:
+        resonator_name = self.resonator_name_combobox.currentText()
+
+        json_fpath = get_resonator_information_fpath(resonator_name)
+        if json_fpath is None:
             return
 
-        with tsv_fpath.open(mode="r", encoding="utf-8") as fp:
+        if not json_fpath.exists():
+            return
+
+        with json_fpath.open(mode="r", encoding="utf-8") as fp:
             data: dict = json.load(fp)
         for key, values in data.items():
             self.set_text(key, values)
 
     def save(self):
-        if not self.resonator_name:
+        if not self.resonator_name_combobox:
             return
+        resonator_name = self.resonator_name_combobox.currentText()
+        if not resonator_name:
+            return
+
+        data = self.get_data()
+        json_fpath = get_resonator_information_fpath(resonator_name)
+        if json_fpath is None:
+            return
+        if json_fpath.is_dir():
+            return
+
+        with json_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(data, fp, indent=4, ensure_ascii=False)
 
 
 class QPrivateDataResonatorStatTable(QDraggableTableWidget):
@@ -325,7 +356,7 @@ class QPrivateDataResonatorTabs(QWidget):
         if not resonator_name:
             return
 
-        self.q_information_tab.set_resonator_name(resonator_name)
+        self.q_information_tab.set_resonator_name_combobox(self.q_resonator_combobox)
         self.q_information_tab.load()
         self.q_stat_tab.load(resonator_name)
         self.q_skill_tab.load(resonator_name)
