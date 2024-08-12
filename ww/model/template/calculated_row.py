@@ -2,15 +2,12 @@ from decimal import Decimal
 from enum import Enum
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict
 
 from ww.locale import ZhTwEnum, _
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.element import ElementEnum
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillBonusTypeEnum,
-    ResonatorSkillTypeEnum,
-)
+from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillTypeEnum
 
 
 class CalculatedTemplateEnum(str, Enum):
@@ -57,7 +54,7 @@ class CalculatedTemplateRowModel(BaseModel):
     resonator_skill_element: Optional[ElementEnum] = None
     resonator_skill_base_attr: Optional[ResonatorSkillBaseAttrEnum] = None
     resonator_skill_type: Optional[ResonatorSkillTypeEnum] = None
-    resonator_skill_type_bonus: Optional[ResonatorSkillBonusTypeEnum] = None
+    resonator_skill_type_bonus: Optional[SkillBonusTypeEnum] = None
     resonator_skill_dmg: Optional[Decimal] = None
 
     echo_element: Optional[ElementEnum] = None
@@ -68,7 +65,7 @@ class CalculatedTemplateRowModel(BaseModel):
     damage_crit: Optional[Decimal] = None
 
     final_element: Optional[ElementEnum] = None
-    final_bonus_type: Optional[ResonatorSkillBonusTypeEnum] = None
+    final_bonus_type: Optional[SkillBonusTypeEnum] = None
     final_skill_dmg: Optional[Decimal] = None
 
     final_atk: Optional[Decimal] = None

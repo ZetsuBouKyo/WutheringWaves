@@ -3,7 +3,7 @@ from typing import List, Optional
 from PySide2.QtWidgets import QTableWidget
 
 from ww.crud import get_actions, get_buff_types, get_elements
-from ww.crud.buff import get_buff_sources, get_buff_targets
+from ww.crud.buff import get_buff_sources, get_buff_targets, get_skill_bonus_types
 from ww.crud.echo import get_echo_names, get_echo_sonatas, get_echoes
 from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import (
@@ -12,7 +12,6 @@ from ww.crud.resonator import (
     get_resonator_inherent_skills,
     get_resonator_levels,
     get_resonator_names,
-    get_resonator_skill_bonus_types,
     get_resonator_skill_levels,
 )
 from ww.crud.template import get_template_ids
@@ -110,24 +109,6 @@ def set_resonator_skill_level_combobox(
         value,
         [],
         getOptions=get_resonator_skill_levels,
-        toolTip=toolTip,
-    )
-
-
-def set_resonator_skill_bonus_type_combobox(
-    table: QTableWidget,
-    row: int,
-    column: int,
-    value: str,
-    toolTip: Optional[str] = None,
-) -> QAutoCompleteComboBox:
-    return set_combobox(
-        table,
-        row,
-        column,
-        value,
-        [],
-        getOptions=get_resonator_skill_bonus_types,
         toolTip=toolTip,
     )
 
@@ -309,4 +290,22 @@ def set_action_combobox(
 ) -> QAutoCompleteComboBox:
     return set_combobox(
         table, row, column, value, [], getOptions=get_actions, toolTip=toolTip
+    )
+
+
+def set_skill_bonus_type_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table,
+        row,
+        column,
+        value,
+        [],
+        getOptions=get_skill_bonus_types,
+        toolTip=toolTip,
     )

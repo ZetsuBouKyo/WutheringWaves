@@ -45,7 +45,7 @@ from ww.ui.table.cell.combobox import (
     set_buff_type_combobox,
     set_combobox,
     set_resonator_name_combobox,
-    set_resonator_skill_bonus_type_combobox,
+    set_skill_bonus_type_combobox,
 )
 from ww.utils.number import get_number
 
@@ -308,7 +308,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 getOptions=self._get_resonator_skill_ids,
             )
         elif self.column_names[col] == TemplateRowEnum.SKILL_BONUS_TYPE.value:
-            set_resonator_skill_bonus_type_combobox(
+            set_skill_bonus_type_combobox(
                 self, row, col, self.ouput_methods[row].skill_bonus_type
             )
         elif (

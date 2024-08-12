@@ -13,7 +13,7 @@ from ww.ui.table.cell.combobox import (
     set_buff_type_combobox,
     set_element_combobox,
     set_resonator_name_combobox,
-    set_resonator_skill_bonus_type_combobox,
+    set_skill_bonus_type_combobox,
 )
 
 
@@ -91,7 +91,7 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
         elif self.column_names[col] == ResonatorBuffEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
         elif self.column_names[col] == ResonatorBuffEnum.SKILL_TYPE.value:
-            set_resonator_skill_bonus_type_combobox(self, row, col, value)
+            set_skill_bonus_type_combobox(self, row, col, value)
         elif self.column_names[col] == ResonatorBuffEnum.TARGET.value:
             set_buff_target_combobox(self, row, col, value)
         else:

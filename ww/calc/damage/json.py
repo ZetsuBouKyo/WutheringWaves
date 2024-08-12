@@ -1,13 +1,10 @@
 from typing import List, Optional
 
 from ww.crud.template import get_template
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.echo import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillBonusTypeEnum,
-    ResonatorSkillEnum,
-)
+from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
 from ww.model.resonators import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
@@ -188,7 +185,7 @@ def get_json_row_damage(
     if manual_bonus_type:
         bonus_type = manual_bonus_type
     elif resonator_skill_bonus_type is None:
-        bonus_type = ResonatorSkillBonusTypeEnum.ECHO.value
+        bonus_type = SkillBonusTypeEnum.ECHO.value
     else:
         bonus_type = resonator_skill_bonus_type
     calculated_row.final_bonus_type = bonus_type

@@ -18,17 +18,6 @@ class ResonatorSkillTypeEnum(str, Enum):
     FORTE_CIRCUIT: str = _(ZhTwEnum.FORTE_CIRCUIT)
 
 
-class ResonatorSkillBonusTypeEnum(str, Enum):
-    BASIC: str = _(ZhTwEnum.BASIC)
-    HEAVY: str = _(ZhTwEnum.HEAVY)
-    SKILL: str = _(ZhTwEnum.RESONANCE_SKILL)
-    LIBERATION: str = _(ZhTwEnum.RESONANCE_LIBERATION)
-    INTRO: str = _(ZhTwEnum.INTRO)
-    OUTRO: str = _(ZhTwEnum.OUTRO)
-    ECHO: str = _(ZhTwEnum.ECHO)
-    NONE: str = _(ZhTwEnum.NONE)
-
-
 class ResonatorSkillEnum(str, Enum):
     TYPE_BONUS: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_BONUS)
     PRIMARY_KEY: str = _(ZhTwEnum.RESONATOR_SKILL_PRIMARY_KEY)

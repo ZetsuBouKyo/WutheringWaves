@@ -3,7 +3,7 @@ from typing import List, Optional
 
 import pandas as pd
 
-from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum, ResonatorSkillEnum
+from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.echo import EchoSkillEnum, EchoSkillTable
 from ww.tables.resonator import (
@@ -53,10 +53,6 @@ def get_resonator_skill_ids(resonator_name: Optional[str]) -> List[str]:
 
 def get_resonator_skill_levels() -> List[str]:
     return [str(i) for i in range(1, 11)]
-
-
-def get_resonator_skill_bonus_types() -> List[str]:
-    return [e.value for e in ResonatorSkillBonusTypeEnum]
 
 
 def get_resonator_and_echo_skill_ids(resonator_name: Optional[str]) -> List[str]:

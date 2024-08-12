@@ -4,7 +4,7 @@ from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 
 from ww.calc.damage import get_json_damage
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.calc.compare.table import (
@@ -46,14 +46,14 @@ class QDamageCompare(QWidget):
             damage_crit = Decimal("0.0")
 
             damage_distribution = {
-                ResonatorSkillBonusTypeEnum.BASIC.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.HEAVY.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.SKILL.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.LIBERATION.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.INTRO.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.OUTRO.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.ECHO.value: Decimal("0.0"),
-                ResonatorSkillBonusTypeEnum.NONE.value: Decimal("0.0"),
+                SkillBonusTypeEnum.BASIC.value: Decimal("0.0"),
+                SkillBonusTypeEnum.HEAVY.value: Decimal("0.0"),
+                SkillBonusTypeEnum.SKILL.value: Decimal("0.0"),
+                SkillBonusTypeEnum.LIBERATION.value: Decimal("0.0"),
+                SkillBonusTypeEnum.INTRO.value: Decimal("0.0"),
+                SkillBonusTypeEnum.OUTRO.value: Decimal("0.0"),
+                SkillBonusTypeEnum.ECHO.value: Decimal("0.0"),
+                SkillBonusTypeEnum.NONE.value: Decimal("0.0"),
             }
 
             resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
@@ -95,28 +95,28 @@ class QDamageCompare(QWidget):
                 QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
                 QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: damage_crit,
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.BASIC.value
+                    SkillBonusTypeEnum.BASIC.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.HEAVY.value
+                    SkillBonusTypeEnum.HEAVY.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.SKILL.value
+                    SkillBonusTypeEnum.SKILL.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.LIBERATION.value
+                    SkillBonusTypeEnum.LIBERATION.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.INTRO.value
+                    SkillBonusTypeEnum.INTRO.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.OUTRO.value
+                    SkillBonusTypeEnum.OUTRO.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.ECHO.value
+                    SkillBonusTypeEnum.ECHO.value
                 ],
                 QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: damage_distribution[
-                    ResonatorSkillBonusTypeEnum.NONE.value
+                    SkillBonusTypeEnum.NONE.value
                 ],
             }
             # print(calculated_row)

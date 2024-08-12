@@ -1,6 +1,6 @@
 from typing import Dict, List
 
-from ww.model.buff import BuffSourceEnum, BuffTargetEnum
+from ww.model.buff import BuffSourceEnum, BuffTargetEnum, SkillBonusTypeEnum
 from ww.tables.buff import (
     EchoBuffTable,
     EchoSonataBuffTable,
@@ -35,3 +35,7 @@ def get_echo_buffs(name: str) -> List[Dict[str, str]]:
 def get_echo_sonata_buffs(name: str) -> List[Dict[str, str]]:
     table = EchoSonataBuffTable()
     return table.get_rows(name)
+
+
+def get_skill_bonus_types() -> List[str]:
+    return [e.value for e in SkillBonusTypeEnum]

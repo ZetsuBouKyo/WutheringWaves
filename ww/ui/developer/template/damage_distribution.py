@@ -13,7 +13,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.output_method import QTemplateTabOutputMethodTable
@@ -48,7 +48,7 @@ class QTemplateDamageDistributionTab(QWidget):
 
         self.column_names = (
             [_(ZhTwEnum.NAME)]
-            + [e.value for e in ResonatorSkillBonusTypeEnum]
+            + [e.value for e in SkillBonusTypeEnum]
             + [_(ZhTwEnum.TOTAL_DAMAGE)]
         )
         self.q_table = QTemplateDamageDistributionUneditableTable(
@@ -92,14 +92,14 @@ class QTemplateDamageDistributionTab(QWidget):
         # Calculate
         damage_total_resonators = Decimal("0.0")
         damage_total: Dict[str, Decimal] = {}
-        damage_distribution: Dict[str, Dict[ResonatorSkillBonusTypeEnum, Decimal]] = {}
+        damage_distribution: Dict[str, Dict[SkillBonusTypeEnum, Decimal]] = {}
         for calculated_row in calculated_rows:
             resonator_name = calculated_row.resonator_name
             resonator = damage_distribution.get(resonator_name, None)
             if resonator is None:
                 damage_total[resonator_name] = Decimal("0.0")
                 damage_distribution[resonator_name] = {
-                    e.value: Decimal("0.0") for e in ResonatorSkillBonusTypeEnum
+                    e.value: Decimal("0.0") for e in SkillBonusTypeEnum
                 }
 
             resonator_skill_type_bonus = calculated_row.resonator_skill_type_bonus
@@ -109,7 +109,7 @@ class QTemplateDamageDistributionTab(QWidget):
                 )
                 is None
             ):
-                resonator_skill_type_bonus = ResonatorSkillBonusTypeEnum.NONE.value
+                resonator_skill_type_bonus = SkillBonusTypeEnum.NONE.value
 
             damage_distribution[resonator_name][
                 resonator_skill_type_bonus
@@ -129,7 +129,7 @@ class QTemplateDamageDistributionTab(QWidget):
 
             resonator_total_damage = damage_total[resonator_name]
             row[0] = resonator_name
-            for i, e in enumerate(ResonatorSkillBonusTypeEnum):
+            for i, e in enumerate(SkillBonusTypeEnum):
                 resonator_skill_type_bonus = e.value
                 resonator_damage = resonator[resonator_skill_type_bonus]
                 resonator_damage_percentage = resonator_damage / resonator_total_damage

@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Dict, Optional, Tuple, Union
 
 from PySide2.QtCore import Qt
@@ -193,6 +194,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
         if json_fpath.is_dir():
             return
 
+        os.makedirs(json_fpath.parent, exist_ok=True)
         with json_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=4, ensure_ascii=False)
 
