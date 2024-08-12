@@ -3,15 +3,8 @@ from typing import List
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import EchoBuffEnum, ResonatorBuffEnum, WeaponBuffEnum
-from ww.tables.buff import (
-    EchoBuffTable,
-    ResonatorBuffTable,
-    WeaponBuffTable,
-    get_echo_buff_fpath,
-    get_resonator_buff_fpath,
-    get_weapon_buff_fpath,
-)
+from ww.model.buff import EchoBuffEnum
+from ww.tables.buff import EchoBuffTable, get_echo_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
 from ww.ui.table.cell.combobox import (
@@ -43,10 +36,10 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
         self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
-        col_resonator_name = self.get_column_id(EchoBuffEnum.NAME.value)
-        resonator_name = row[col_resonator_name]
-        if not resonator_name:
-            resonator_name = _(ZhTwEnum.NONE.value)
+        col_name = self.get_column_id(EchoBuffEnum.NAME.value)
+        name = row[col_name]
+        if not name:
+            name = _(ZhTwEnum.NONE.value)
 
         col_suffix = self.get_column_id(EchoBuffEnum.SUFFIX.value)
         suffix = row[col_suffix]
@@ -78,9 +71,9 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
             target = _(ZhTwEnum.NONE.value)
 
         if suffix == _(ZhTwEnum.NONE.value):
-            primary_key = f"[{final_type}-{target}]{resonator_name}"
+            primary_key = f"[{final_type}-{target}]{name}"
         else:
-            primary_key = f"[{final_type}-{target}]{resonator_name}-{suffix}"
+            primary_key = f"[{final_type}-{target}]{name}-{suffix}"
         return primary_key
 
     def set_cell(self, row: int, col: int, value: str):
