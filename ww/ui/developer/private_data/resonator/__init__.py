@@ -27,6 +27,7 @@ from ww.tables.resonator import (
 )
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
+from ww.ui.widget import ScrollableWidget
 from ww.utils.pd import get_empty_df
 
 
@@ -86,7 +87,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
         self.q_chain_tab = self.get_tab(self.q_chains)
         self.q_tabs.addTab(self.q_chain_tab, _(ZhTwEnum.TAB_CHAIN))
 
-        self.layout.addWidget(self.q_tabs)
+        self.layout.addWidget(self.q_tabs, 1)
         self.layout.addStretch()
         self.setLayout(self.layout)
 
@@ -109,7 +110,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
         layout.setAlignment(Qt.AlignTop)
         return layout, text_line, text_edit
 
-    def get_tab(self, str2qt: Dict[str, QTextEdit]) -> QWidget:
+    def get_tab(self, str2qt: Dict[str, QTextEdit]) -> ScrollableWidget:
         tab = QWidget()
         layout = QVBoxLayout()
         for label_name in str2qt.keys():
@@ -128,7 +129,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
             layout.addLayout(h_layout)
         layout.addStretch()
         tab.setLayout(layout)
-        return tab
+        return ScrollableWidget(tab)
 
     def set_resonator_name_combobox(self, combobox: QAutoCompleteComboBox):
         self.resonator_name_combobox = combobox
