@@ -4,6 +4,7 @@ from pathlib import Path
 
 from typer import Typer
 
+from ww.commands.crawl.echo import EchoParser
 from ww.commands.crawl.id_parser import id_parser
 from ww.commands.crawl.resonator import ResonatorParser
 from ww.commands.crawl.weapon import WeaponParser
@@ -16,6 +17,7 @@ MONSTER_IDS_PATH = "./cache/v1/zh_tw/raw/monster_id.json"
 
 RESONATORS_HOME_PATH = "./cache/v1/zh_tw/output/resonators"
 WEAPONS_HOME_PATH = "./cache/v1/zh_tw/output/weapons"
+ECHOES_HOME_PATH = "./cache/v1/zh_tw/output/echoes"
 
 
 @app.command()
@@ -67,3 +69,22 @@ def get_weapon(home: str):
         os.makedirs(fpath_out.parent, exist_ok=True)
         with fpath_out.open(mode="w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def get_echo(home: str):
+    home = Path(home)
+    data = {}
+    for fpath in home.glob("*.html"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            text = fp.read()
+
+        parser = EchoParser(text)
+        name, description = parser.get_data()
+        data[name] = description
+    data_str = json.dumps(data, indent=4, ensure_ascii=False)
+    print(data_str)
+    fpath_out = Path(ECHOES_HOME_PATH) / "echo_skill_descriptions.json"
+    os.makedirs(fpath_out.parent, exist_ok=True)
+    with fpath_out.open(mode="w", encoding="utf-8") as fp:
+        json.dump(data, fp, indent=4, ensure_ascii=False)
