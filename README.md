@@ -1,14 +1,21 @@
-# Wuthering Waves
+# Wuthering Waves 鳴潮
 
-A damage calculator for Wuthering Waves and other related tools.
+Damage calculator for Wuthering Waves, analysis of gacha pool records, resource planning, and guide image output. Short-term development will focus on Traditional Chinese, with future consideration for adding multiple languages.
 
-鳴潮小程式，主要用於計算傷害、分析抽卡卡池紀錄。短期開發以繁中為主，未來考慮加入多語系。
+鳴潮傷害計算機、分析抽卡卡池紀錄、資源規劃、攻略圖片輸出。短期開發以繁中為主，未來考慮加入多語系。
 
 ## Build
 
 ```bash
 poetry install
 pyinstaller.exe -y .\app.spec
+```
+
+## Development
+
+```bash
+poetry install
+python app.py
 ```
 
 ## FAQ

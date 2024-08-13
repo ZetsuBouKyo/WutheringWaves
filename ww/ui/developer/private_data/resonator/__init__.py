@@ -291,7 +291,7 @@ class QPrivateDataResonatorTabs(QWidget):
             getOptions=get_resonator_names
         )
         self.q_resonator_combobox.setFixedHeight(40)
-        self.q_resonator_combobox.setFixedWidth(150)
+        self.q_resonator_combobox.setFixedWidth(300)
         self.q_resonator_combobox.currentTextChanged.connect(self.load_tabs)
         self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
         self.q_delete_btn.clicked.connect(self.delete)

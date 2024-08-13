@@ -47,6 +47,8 @@ class QResonatorsTable(QDraggableTableWidget):
         ]
         for col in cols:
             self.setColumnWidth(col, 400)
+        col_resonator_name = self.get_column_id(ResonatorsEnum.NAME.value)
+        self.setColumnWidth(col_resonator_name, 300)
 
     def get_row_id(self, row: List[str]) -> str:
         _id = []

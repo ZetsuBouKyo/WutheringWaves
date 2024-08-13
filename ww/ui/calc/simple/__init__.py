@@ -27,7 +27,6 @@ from ww.tables.monster import MonstersTable
 from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
-from ww.ui.table.cell import set_uneditable_cell
 from ww.ui.widget import ScrollableWidget
 from ww.utils.number import get_number
 
@@ -280,6 +279,8 @@ class QDamageSimple(QWidget):
             echo_skill_table,
             monsters_table,
         )
+        if results is None:
+            results = CalculatedTemplateRowModel()
 
         self.set_results(self.sub_right_layout, results)
 

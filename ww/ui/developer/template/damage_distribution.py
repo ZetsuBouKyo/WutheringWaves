@@ -26,10 +26,7 @@ class QTemplateDamageDistributionUneditableTable(QUneditableTable):
 
     def _init_column_width(self):
         for _, col_index in self.column_names_table.items():
-            if col_index == 0:
-                self.setColumnWidth(col_index, 100)
-            else:
-                self.setColumnWidth(col_index, 190)
+            self.setColumnWidth(col_index, 200)
 
 
 class QTemplateDamageDistributionTab(QWidget):
