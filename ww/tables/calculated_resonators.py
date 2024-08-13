@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Optional
 
@@ -698,4 +699,5 @@ def get_calculated_resonators_df() -> pd.DataFrame:
 def calc():
     df = get_calculated_resonators_df()
     fpath = Path(CALCULATED_RESONATOR_PATH)
+    os.makedirs(fpath.parent, exist_ok=True)
     df.to_csv(fpath, sep="\t", index=False)
