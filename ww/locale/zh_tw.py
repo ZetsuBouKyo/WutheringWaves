@@ -13,6 +13,7 @@ class ZhTwEnum(str, Enum):
     SKILL: str = "技能"
     STAT: str = "屬性"
     TUNE: str = "諧振"
+    BUFF: str = "增益"
 
     TOTAL_DAMAGE: str = "總傷害"
 
@@ -145,20 +146,43 @@ class ZhTwEnum(str, Enum):
     ECHO: str = "聲骸"
     NONE: str = "無"
 
-    DAMAGE: str = "[計算]傷害"
-    DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
-    DAMAGE_CRIT: str = "[計算]暴擊傷害"
+    RESULT_RESONATOR_NAME: str = "[角色]名稱"
+    RESULT_SKILL_ID: str = "[操作]技能代稱"
 
-    FINAL_ELEMENT: str = "[總]屬性"
-    FINAL_BONUS_TYPE: str = "[總]加成種類"
-    FINAL_SKILL_DMG: str = "[總]技能倍率"
+    RESULT_RESONATOR_SKILL_LEVEL: str = "[角色技能]等級"
+    RESULT_RESONATOR_SKILL_ELEMENT: str = "[角色技能]屬性"
+    RESULT_RESONATOR_SKILL_BASE_ATTR: str = "[角色技能]基礎參數"
+    RESULT_RESONATOR_SKILL_TYPE: str = "[角色技能]種類"
+    RESULT_RESONATOR_SKILL_TYPE_BONUS: str = "[角色技能]加成種類"
+    RESULT_RESONATOR_SKILL_DMG: str = "[角色技能]倍率"
 
-    FINAL_ATK: str = "[總]攻擊"
-    FINAL_ATK_ADDITION: str = "[總]額外攻擊"
-    FINAL_ATK_P: str = "[總]攻擊百分比"
-    FINAL_CRIT_RATE: str = "[總]暴擊"
-    FINAL_CRIT_DMG: str = "[總]暴擊傷害"
-    FINAL_BONUS: str = "[總]加成區百分比"
+    RESULT_ECHO_ELEMENT: str = "[聲骸]屬性"
+    RESULT_ECHO_SKILL_DMG: str = "[聲骸]技能倍率"
+
+    RESULT_DAMAGE: str = "[計算]傷害"
+    RESULT_DAMAGE_NO_CRIT: str = "[計算]無暴擊傷害"
+    RESULT_DAMAGE_CRIT: str = "[計算]暴擊傷害"
+
+    RESULT_ELEMENT: str = "[總]屬性"
+    RESULT_BONUS_TYPE: str = "[總]加成種類"
+    RESULT_SKILL_DMG: str = "[總]技能倍率"
+
+    RESULT_HP: str = "[總]生命"
+    RESULT_HP_ADDITION: str = "[總]額外生命"
+    RESULT_HP_P: str = "[總]生命百分比"
+    RESULT_ATK: str = "[總]攻擊"
+    RESULT_ATK_ADDITION: str = "[總]額外攻擊"
+    RESULT_ATK_P: str = "[總]攻擊百分比"
+    RESULT_DEF: str = "[總]防禦"
+    RESULT_DEF_ADDITION: str = "[總]額外防禦"
+    RESULT_DEF_P: str = "[總]防禦百分比"
+    RESULT_CRIT_RATE: str = "[總]暴擊"
+    RESULT_CRIT_DMG: str = "[總]暴擊傷害"
+    RESULT_BONUS: str = "[總]加成區百分比"
+
+    RESULT_MONSTER_LEVEL: str = "[怪物]等級"
+    RESULT_MONSTER_DEF: str = "[怪物]防禦"
+    RESULT_MONSTER_RES: str = "[怪物]抗性"
 
     SHOW_4_STAR: str = "顯示四星"
     TOTAL_PULLS: str = "全部喚取數量"

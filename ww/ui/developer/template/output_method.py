@@ -9,7 +9,6 @@ from PySide2.QtWidgets import (
     QDialog,
     QHBoxLayout,
     QPushButton,
-    QTableWidgetItem,
     QVBoxLayout,
     QWidget,
 )
@@ -330,15 +329,15 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.column_names[col] == TemplateRowEnum.DAMAGE.value
             or self.column_names[col] == TemplateRowEnum.DAMAGE_NO_CRIT.value
             or self.column_names[col] == TemplateRowEnum.DAMAGE_CRIT.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_ELEMENT.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_BONUS_TYPE.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_SKILL_DMG.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_ATK.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_ATK_ADDITION.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_ATK_P.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_CRIT_RATE.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_CRIT_DMG.value
-            or self.column_names[col] == TemplateRowEnum.FINAL_BONUS.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_ELEMENT.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_BONUS_TYPE.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_SKILL_DMG.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_ATK.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_ATK_ADDITION.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_ATK_P.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_CRIT_RATE.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_CRIT_DMG.value
+            or self.column_names[col] == TemplateRowEnum.RESULT_BONUS.value
             or self.column_names[col] == TemplateRowEnum.BONUS_MAGNIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_AMPLIFIER.value
             or self.column_names[col] == TemplateRowEnum.BONUS_HP_P.value
@@ -517,7 +516,6 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             calculated_resonators_table,
             echo_skill_table,
             monsters_table,
-            _,
         )
         if calculated_row is None:
             return
@@ -538,15 +536,15 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.set_cell(row, col_index, value)
 
         col_names = [
-            TemplateRowEnum.FINAL_ELEMENT,
-            TemplateRowEnum.FINAL_BONUS_TYPE,
-            TemplateRowEnum.FINAL_SKILL_DMG,
-            TemplateRowEnum.FINAL_ATK,
-            TemplateRowEnum.FINAL_ATK_ADDITION,
-            TemplateRowEnum.FINAL_ATK_P,
-            TemplateRowEnum.FINAL_CRIT_RATE,
-            TemplateRowEnum.FINAL_CRIT_DMG,
-            TemplateRowEnum.FINAL_BONUS,
+            TemplateRowEnum.RESULT_ELEMENT,
+            TemplateRowEnum.RESULT_BONUS_TYPE,
+            TemplateRowEnum.RESULT_SKILL_DMG,
+            TemplateRowEnum.RESULT_ATK,
+            TemplateRowEnum.RESULT_ATK_ADDITION,
+            TemplateRowEnum.RESULT_ATK_P,
+            TemplateRowEnum.RESULT_CRIT_RATE,
+            TemplateRowEnum.RESULT_CRIT_DMG,
+            TemplateRowEnum.RESULT_BONUS,
         ]
         for col_name in col_names:
             col_index = self.get_column_id(col_name.value)

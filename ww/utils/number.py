@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from typing import Optional, Union
 
 import numpy as np
@@ -14,11 +14,14 @@ def get_number(n: Optional[Union[str, Decimal]]) -> Decimal:
     if "," in n:
         n = n.replace(",", "")
 
-    if "%" in n:
-        n = n.replace("%", "")
-        return Decimal(n) / Decimal("100.0")
+    try:
+        if "%" in n:
+            n = n.replace("%", "")
+            return Decimal(n) / Decimal("100.0")
 
-    return Decimal(n)
+        return Decimal(n)
+    except (TypeError, InvalidOperation):
+        return Decimal("0.0")
 
 
 def get_string(n: Optional[str]) -> Optional[str]:

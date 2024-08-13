@@ -2,7 +2,7 @@ from enum import Enum
 
 from ww.locale import ZhTwEnum, _
 
-TEMPLATE_BONUS = "[額外]"
+TEMPLATE_BONUS = "[額外]"  # TODO: remove
 
 
 class TemplateRowBuffTypeEnum(str, Enum):
@@ -47,24 +47,24 @@ class TemplateRowEnum(str, Enum):
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"
     REAL_DMG_CRIT: str = "[實戰]暴擊"
 
-    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
-    DAMAGE: str = _(ZhTwEnum.DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.RESULT_DAMAGE)
 
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
 
-    FINAL_ELEMENT: str = _(ZhTwEnum.FINAL_ELEMENT)
-    FINAL_BONUS_TYPE: str = _(ZhTwEnum.FINAL_BONUS_TYPE)
-    FINAL_SKILL_DMG: str = _(ZhTwEnum.FINAL_SKILL_DMG)
+    RESULT_ELEMENT: str = _(ZhTwEnum.RESULT_ELEMENT)
+    RESULT_BONUS_TYPE: str = _(ZhTwEnum.RESULT_BONUS_TYPE)
+    RESULT_SKILL_DMG: str = _(ZhTwEnum.RESULT_SKILL_DMG)
 
-    FINAL_ATK: str = _(ZhTwEnum.FINAL_ATK)
-    FINAL_ATK_ADDITION: str = _(ZhTwEnum.FINAL_ATK_ADDITION)
-    FINAL_ATK_P: str = _(ZhTwEnum.FINAL_ATK_P)
-    FINAL_CRIT_RATE: str = _(ZhTwEnum.FINAL_CRIT_RATE)
-    FINAL_CRIT_DMG: str = _(ZhTwEnum.FINAL_CRIT_DMG)
-    FINAL_BONUS: str = _(ZhTwEnum.FINAL_BONUS)
+    RESULT_ATK: str = _(ZhTwEnum.RESULT_ATK)
+    RESULT_ATK_ADDITION: str = _(ZhTwEnum.RESULT_ATK_ADDITION)
+    RESULT_ATK_P: str = _(ZhTwEnum.RESULT_ATK_P)
+    RESULT_CRIT_RATE: str = _(ZhTwEnum.RESULT_CRIT_RATE)
+    RESULT_CRIT_DMG: str = _(ZhTwEnum.RESULT_CRIT_DMG)
+    RESULT_BONUS: str = _(ZhTwEnum.RESULT_BONUS)
 
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"

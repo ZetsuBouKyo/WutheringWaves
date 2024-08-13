@@ -138,7 +138,7 @@ def get_tsv_row_damage(
         element = echo_skill_element
     else:
         element = resonator_skill_element
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ELEMENT.value] = element
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ELEMENT.value] = element
 
     # Skill DMG
     if not ((resonator_skill_dmg is None) ^ (echo_skill_dmg is None)):
@@ -151,7 +151,7 @@ def get_tsv_row_damage(
         resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_SKILL_DMG.value] = (
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_SKILL_DMG.value] = (
         skill_dmg
     )
 
@@ -170,7 +170,7 @@ def get_tsv_row_damage(
         bonus_type = SkillBonusTypeEnum.ECHO.value
     else:
         bonus_type = resonator_skill_bonus_type
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_BONUS_TYPE.value] = (
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_BONUS_TYPE.value] = (
         bonus_type
     )
 
@@ -190,7 +190,9 @@ def get_tsv_row_damage(
     )
     bonus_atk_p = get_number(row[TemplateEnum.BONUS_ATK_P])
     final_atk_p = calculated_atk_p + bonus_atk_p
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_P.value] = final_atk_p
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_P.value] = (
+        final_atk_p
+    )
 
     # ATK
     resonator_atk = get_number(
@@ -202,7 +204,7 @@ def get_tsv_row_damage(
         )
     )
     final_atk = resonator_atk + weapon_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK.value] = final_atk
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK.value] = final_atk
 
     # Additional ATK
     echo_atk = get_number(
@@ -212,7 +214,7 @@ def get_tsv_row_damage(
     )
     template_bonus_atk = get_number(row[TemplateEnum.BONUS_ATK])
     final_atk_addition = echo_atk + template_bonus_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_ATK_ADDITION.value] = (
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_ADDITION.value] = (
         final_atk_addition
     )
 
@@ -224,7 +226,7 @@ def get_tsv_row_damage(
     )
     bonus_crit_rate = get_number(row[TemplateEnum.BONUS_CRIT_RATE])
     final_crit_rate = resonator_crit_rate + bonus_crit_rate
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_RATE.value] = (
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_RATE.value] = (
         final_crit_rate
     )
 
@@ -236,7 +238,7 @@ def get_tsv_row_damage(
     )
     bonus_crit_dmg = get_number(row[TemplateEnum.BONUS_CRIT_DMG])
     final_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_CRIT_DMG.value] = (
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_DMG.value] = (
         final_crit_dmg
     )
 
@@ -258,7 +260,9 @@ def get_tsv_row_damage(
     template_bonus = get_number(row[TemplateEnum.BONUS_ADDITION])
     final_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
-    calculated_template_row_dict[CalculatedTemplateEnum.FINAL_BONUS.value] = final_bonus
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_BONUS.value] = (
+        final_bonus
+    )
 
     # Other Bonus
     bonus_magnifier = get_number(row[TemplateEnum.BONUS_MAGNIFIER])

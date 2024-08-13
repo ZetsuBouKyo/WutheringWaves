@@ -12,7 +12,6 @@ from ww.model.resonators import (
     ResonatorsEnum,
 )
 from ww.model.template import (
-    CalculatedTemplateEnum,
     CalculatedTemplateRowModel,
     TemplateRowBuffModel,
     TemplateRowBuffTypeEnum,
@@ -72,7 +71,6 @@ def get_json_row_damage(
     calculated_resonators_table: CalculatedResonatorsTable,
     echo_skill_table,
     monsters_table: MonstersTable,
-    _,
 ) -> Optional[CalculatedTemplateRowModel]:
     if resonator_id is None:
         return
@@ -196,6 +194,33 @@ def get_json_row_damage(
     calculated_row.monster_def = monster_def
     calculated_row.monster_res = monster_res
 
+    # HP Percentage
+    calculated_hp_p = get_number(
+        calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorsEnum.CALCULATED_HP_P
+        )
+    )
+    bonus_hp_p = buffs.bonus_hp_p
+    final_hp_p = calculated_hp_p + bonus_hp_p
+    calculated_row.final_hp_p = final_hp_p
+
+    # HP
+    resonator_hp = get_number(
+        calculated_resonators_table.search(resonator_id, CalculatedResonatorsEnum.HP)
+    )
+    final_hp = resonator_hp
+    calculated_row.final_hp = final_hp
+
+    # Additional HP
+    echo_hp = get_number(
+        calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorsEnum.ECHO_HP
+        )
+    )
+    bonus_hp = buffs.bonus_hp
+    final_hp_addition = echo_hp + bonus_hp
+    calculated_row.final_hp_addition = final_hp_addition
+
     # ATK Percentage
     calculated_atk_p = get_number(
         calculated_resonators_table.search(
@@ -224,9 +249,36 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.ECHO_ATK
         )
     )
-    template_bonus_atk = buffs.bonus_atk
-    final_atk_addition = echo_atk + template_bonus_atk
+    bonus_atk = buffs.bonus_atk
+    final_atk_addition = echo_atk + bonus_atk
     calculated_row.final_atk_addition = final_atk_addition
+
+    # DEF Percentage
+    calculated_def_p = get_number(
+        calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorsEnum.CALCULATED_DEF_P
+        )
+    )
+    bonus_def_p = buffs.bonus_def_p
+    final_def_p = calculated_def_p + bonus_def_p
+    calculated_row.final_def_p = final_def_p
+
+    # DEF
+    resonator_def = get_number(
+        calculated_resonators_table.search(resonator_id, CalculatedResonatorsEnum.DEF)
+    )
+    final_def = resonator_def
+    calculated_row.final_def = final_def
+
+    # Additional DEF
+    echo_def = get_number(
+        calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorsEnum.ECHO_DEF
+        )
+    )
+    bonus_def = buffs.bonus_def
+    final_def_addition = echo_def + bonus_def
+    calculated_row.final_def_addition = final_def_addition
 
     # CRIT Rate
     resonator_crit_rate = get_number(
@@ -279,6 +331,10 @@ def get_json_row_damage(
     if resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.ATK.value:
         region_base_attr = (
             final_atk * (get_number("1.0") + final_atk_p) + final_atk_addition
+        )
+    elif resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.DEF.value:
+        region_base_attr = (
+            final_def * (get_number("1.0") + final_def_p) + final_def_addition
         )
     else:
         return
@@ -341,8 +397,6 @@ def get_json_damage(
     if template is None:
         return calculated_rows
 
-    calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
-
     echo_skill_table = EchoSkillTable()
 
     resonators_name2id = {}
@@ -368,7 +422,6 @@ def get_json_damage(
             calculated_resonators_table,
             echo_skill_table,
             monsters_table,
-            calculated_template_columns,
         )
         if calculated_row is not None:
             calculated_rows.append(calculated_row)

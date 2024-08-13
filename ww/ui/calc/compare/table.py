@@ -69,9 +69,9 @@ class QDamageCompareUneditableTableEnum(str, Enum):
     # WEAPON_RANK: str = "[武器]諧振"
     # WEAPON_NAME: str = "[武器]名稱"
     MONSTER_ID: str = "[怪物]名稱"
-    DAMAGE: str = _(ZhTwEnum.DAMAGE)
-    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.RESULT_DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_CRIT)
 
     DAMAGE_DISTRIBUTION_BASIC: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_BASIC)
     DAMAGE_DISTRIBUTION_HEAVY: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_HEAVY)

@@ -36,6 +36,10 @@ class QAutoCompleteComboBox(QComboBox):
             return
         self.model.setStringList(new_options)
 
+    def clear(self):
+        super().clear()
+        self._option = []
+
     def wheelEvent(self, *args, **kwargs):
         # if self.hasFocus() and self.isVisible():
         #     return super().wheelEvent(*args, **kwargs)

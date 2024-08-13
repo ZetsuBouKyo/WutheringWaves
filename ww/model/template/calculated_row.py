@@ -24,20 +24,20 @@ class CalculatedTemplateEnum(str, Enum):
     ECHO_ELEMENT: str = "[聲骸]屬性"
     ECHO_SKILL_DMG: str = "[聲骸]技能倍率"
 
-    DAMAGE: str = _(ZhTwEnum.DAMAGE)
-    DAMAGE_NO_CRIT: str = _(ZhTwEnum.DAMAGE_NO_CRIT)
-    DAMAGE_CRIT: str = _(ZhTwEnum.DAMAGE_CRIT)
+    DAMAGE: str = _(ZhTwEnum.RESULT_DAMAGE)
+    DAMAGE_NO_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_NO_CRIT)
+    DAMAGE_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_CRIT)
 
-    FINAL_ELEMENT: str = _(ZhTwEnum.FINAL_ELEMENT)
-    FINAL_BONUS_TYPE: str = _(ZhTwEnum.FINAL_BONUS_TYPE)
-    FINAL_SKILL_DMG: str = _(ZhTwEnum.FINAL_SKILL_DMG)
+    RESULT_ELEMENT: str = _(ZhTwEnum.RESULT_ELEMENT)
+    RESULT_BONUS_TYPE: str = _(ZhTwEnum.RESULT_BONUS_TYPE)
+    RESULT_SKILL_DMG: str = _(ZhTwEnum.RESULT_SKILL_DMG)
 
-    FINAL_ATK: str = _(ZhTwEnum.FINAL_ATK)
-    FINAL_ATK_ADDITION: str = _(ZhTwEnum.FINAL_ATK_ADDITION)
-    FINAL_ATK_P: str = _(ZhTwEnum.FINAL_ATK_P)
-    FINAL_CRIT_RATE: str = _(ZhTwEnum.FINAL_CRIT_RATE)
-    FINAL_CRIT_DMG: str = _(ZhTwEnum.FINAL_CRIT_DMG)
-    FINAL_BONUS: str = _(ZhTwEnum.FINAL_BONUS)
+    RESULT_ATK: str = _(ZhTwEnum.RESULT_ATK)
+    RESULT_ATK_ADDITION: str = _(ZhTwEnum.RESULT_ATK_ADDITION)
+    RESULT_ATK_P: str = _(ZhTwEnum.RESULT_ATK_P)
+    RESULT_CRIT_RATE: str = _(ZhTwEnum.RESULT_CRIT_RATE)
+    RESULT_CRIT_DMG: str = _(ZhTwEnum.RESULT_CRIT_DMG)
+    RESULT_BONUS: str = _(ZhTwEnum.RESULT_BONUS)
 
     MONSTER_LEVEL: str = "[怪物]等級"
     MONSTER_DEF: str = "[怪物]防禦"
@@ -68,9 +68,15 @@ class CalculatedTemplateRowModel(BaseModel):
     final_bonus_type: Optional[SkillBonusTypeEnum] = None
     final_skill_dmg: Optional[Decimal] = None
 
+    final_hp: Optional[Decimal] = None
+    final_hp_addition: Optional[Decimal] = None
+    final_hp_p: Optional[Decimal] = None
     final_atk: Optional[Decimal] = None
     final_atk_addition: Optional[Decimal] = None
     final_atk_p: Optional[Decimal] = None
+    final_def: Optional[Decimal] = None
+    final_def_addition: Optional[Decimal] = None
+    final_def_p: Optional[Decimal] = None
     final_crit_rate: Optional[Decimal] = None
     final_crit_dmg: Optional[Decimal] = None
     final_bonus: Optional[Decimal] = None
