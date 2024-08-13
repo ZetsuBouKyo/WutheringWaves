@@ -38,12 +38,14 @@ class QDamageSimple(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QHBoxLayout()
+        self._label_width = 200
+        self._input_width = 600
 
         # Left
         self.layout_left = QVBoxLayout()
         self.layout_left.setAlignment(Qt.AlignTop | Qt.AlignLeft)
 
-        self._init_base()
+        self._button_save = self._init_button_save()
         self._combobox_resonator_ids = self._init_combobox_resonator_ids()
         self._combobox_resonator_skills = self._init_combobox_resonator_skills()
         self._combobox_monster_ids = self._init_combobox_monster_ids()
@@ -55,8 +57,6 @@ class QDamageSimple(QWidget):
             q_buff = self._init_input(label_name)
             self.q_buffs[e.value] = q_buff
 
-        self._button_save = self._init_button_save()
-
         # Right
         self.layout_right = QVBoxLayout()
         self.layout_right.setAlignment(Qt.AlignTop | Qt.AlignLeft)
@@ -67,13 +67,6 @@ class QDamageSimple(QWidget):
         self.layout.addLayout(self.layout_right)
         self.layout.addStretch()
         self.setLayout(self.layout)
-
-    def _init_base(self):
-        self._label_width = 200
-        self._input_width = 600
-
-        self._echo_skill_table = EchoSkillTable()
-        self._calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
 
     def _init_combobox(
         self, label_name: str, getOptions, currentTextChanged
@@ -170,7 +163,7 @@ class QDamageSimple(QWidget):
         line.setPlaceholderText("")
         if tooltip is not None:
             line.setToolTip(tooltip)
-        layout.addWidget(line)
+        layout.addWidget(line, 1)
 
         self.layout_left.addLayout(layout)
 
@@ -183,6 +176,7 @@ class QDamageSimple(QWidget):
         btn = QPushButton(_(ZhTwEnum.CALCULATE))
         btn.clicked.connect(self._calculate)
 
+        layout.addStretch()
         layout.addWidget(btn)
         self.layout_left.addLayout(layout)
         return btn
@@ -219,6 +213,7 @@ class QDamageSimple(QWidget):
             monsters_table.search(monster_id, MonstersEnum.LEVEL)
         )
         monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
+        echo_skill_table = EchoSkillTable()
         results = get_json_row_damage(
             row,
             resonator_id,
@@ -228,7 +223,7 @@ class QDamageSimple(QWidget):
             monster_def,
             resonators_table,
             calculated_resonators_table,
-            self._echo_skill_table,
+            echo_skill_table,
             monsters_table,
         )
 
@@ -241,6 +236,7 @@ class QDamageSimple(QWidget):
         label = QLabel("計算結果")
         label.setFixedWidth(self._label_width)
         label.setFixedHeight(40)
+        layout.addStretch()
         layout.addWidget(label)
 
         self.layout_right.addLayout(layout)
