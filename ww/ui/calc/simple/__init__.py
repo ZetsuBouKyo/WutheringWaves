@@ -1,5 +1,4 @@
-from decimal import Decimal
-from typing import Dict, Optional, Union
+from typing import Dict, Optional
 
 from PySide2.QtCore import Qt
 from PySide2.QtWidgets import (
@@ -7,7 +6,6 @@ from PySide2.QtWidgets import (
     QLabel,
     QLineEdit,
     QPushButton,
-    QTableWidget,
     QVBoxLayout,
     QWidget,
 )
@@ -19,7 +17,6 @@ from ww.model.monsters import MonstersEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.model.resonators import ResonatorsEnum
 from ww.model.template import (
-    CalculatedTemplateEnum,
     CalculatedTemplateRowModel,
     TemplateBuffTableRowModel,
     TemplateRowBuffTypeEnum,
@@ -31,82 +28,136 @@ from ww.tables.resonator import ResonatorSkillTable
 from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table.cell import set_uneditable_cell
+from ww.ui.widget import ScrollableWidget
 from ww.utils.number import get_number
 
 
 class QDamageSimple(QWidget):
     def __init__(self):
         super().__init__()
-        self.layout = QHBoxLayout()
+        self.init_results()
+
+        self.layout = QVBoxLayout()
+        self.init_calculate_button(self.layout)
+
+        self.two_columns_layout = QHBoxLayout()
         self._label_width = 200
-        self._input_width = 600
 
         # Left
-        self.layout_left = QVBoxLayout()
-        self.layout_left.setAlignment(Qt.AlignTop | Qt.AlignLeft)
+        self.left_layout = QVBoxLayout()
+        self.init_left_layout(self.left_layout)
 
-        self._button_save = self._init_button_save()
-        self._combobox_resonator_ids = self._init_combobox_resonator_ids()
-        self._combobox_resonator_skills = self._init_combobox_resonator_skills()
-        self._combobox_monster_ids = self._init_combobox_monster_ids()
+        # Right
+        self.right_layout = QVBoxLayout()
+        self.init_result_labels(self.right_layout)
+
+        self.two_columns_layout.addLayout(self.left_layout, 1)
+        self.two_columns_layout.addLayout(self.right_layout, 1)
+
+        self.layout.addLayout(self.two_columns_layout)
+        self.setLayout(self.layout)
+
+    def init_results(self):
+        self.q_result_labels: Dict[str, Optional[QLabel]] = {
+            _(ZhTwEnum.RESULT_RESONATOR_NAME): None,
+            _(ZhTwEnum.RESULT_SKILL_ID): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_LEVEL): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_ELEMENT): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_BASE_ATTR): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_TYPE): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_TYPE_BONUS): None,
+            _(ZhTwEnum.RESULT_RESONATOR_SKILL_DMG): None,
+            _(ZhTwEnum.RESULT_ECHO_ELEMENT): None,
+            _(ZhTwEnum.RESULT_ECHO_SKILL_DMG): None,
+            _(ZhTwEnum.RESULT_DAMAGE): None,
+            _(ZhTwEnum.RESULT_DAMAGE_NO_CRIT): None,
+            _(ZhTwEnum.RESULT_DAMAGE_CRIT): None,
+            _(ZhTwEnum.RESULT_ELEMENT): None,
+            _(ZhTwEnum.RESULT_BONUS_TYPE): None,
+            _(ZhTwEnum.RESULT_SKILL_DMG): None,
+            _(ZhTwEnum.RESULT_HP): None,
+            _(ZhTwEnum.RESULT_HP_ADDITION): None,
+            _(ZhTwEnum.RESULT_HP_P): None,
+            _(ZhTwEnum.RESULT_ATK): None,
+            _(ZhTwEnum.RESULT_ATK_ADDITION): None,
+            _(ZhTwEnum.RESULT_ATK_P): None,
+            _(ZhTwEnum.RESULT_DEF): None,
+            _(ZhTwEnum.RESULT_DEF_ADDITION): None,
+            _(ZhTwEnum.RESULT_DEF_P): None,
+            _(ZhTwEnum.RESULT_CRIT_RATE): None,
+            _(ZhTwEnum.RESULT_CRIT_DMG): None,
+            _(ZhTwEnum.RESULT_BONUS): None,
+            _(ZhTwEnum.RESULT_MONSTER_LEVEL): None,
+            _(ZhTwEnum.RESULT_MONSTER_DEF): None,
+            _(ZhTwEnum.RESULT_MONSTER_RES): None,
+        }
+
+    def init_left_layout(self, layout: QVBoxLayout):
+        q_left = QWidget()
+        q_left_layout = QVBoxLayout()
+        self.q_resonator_id_combobox = self.init_resonator_id_combobox(q_left_layout)
+        self.q_resonator_skill_combobox = self.init_resonator_skill_combobox(
+            q_left_layout
+        )
+        self.q_monster_id_combobox = self.init_monster_id_combobox(q_left_layout)
 
         # Buffs
         self.q_buffs: Dict[str, QLineEdit] = {}
         for e in TemplateRowBuffTypeEnum:
             label_name = f"[{_(ZhTwEnum.BUFF)}]{e.value}"
-            q_buff = self._init_input(label_name)
+            q_buff = self.init_input(q_left_layout, label_name)
             self.q_buffs[e.value] = q_buff
 
-        # Right
-        self.layout_right = QVBoxLayout()
-        self.layout_right.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        self._init_label_result_title()
-        self._init_table_results()
+        q_left.setLayout(q_left_layout)
 
-        self.layout.addLayout(self.layout_left)
-        self.layout.addLayout(self.layout_right)
-        self.layout.addStretch()
-        self.setLayout(self.layout)
+        q_left_scrollable = ScrollableWidget(q_left)
+        layout.addWidget(q_left_scrollable, 1)
 
-    def _init_combobox(
-        self, label_name: str, getOptions, currentTextChanged
+    def init_combobox(
+        self,
+        parent_layout: QVBoxLayout,
+        label_name: str,
+        getOptions,
+        currentTextChanged,
     ) -> QAutoCompleteComboBox:
         layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignLeft)
 
         label = QLabel(label_name)
         label.setFixedWidth(self._label_width)
         layout.addWidget(label)
 
         combobox = QAutoCompleteComboBox(getOptions=getOptions)
-        combobox.setFixedWidth(self._input_width)
         combobox.setFixedHeight(40)
         if currentTextChanged is not None:
             combobox.currentTextChanged.connect(currentTextChanged)  # not working
-        layout.addWidget(combobox)
-
-        self.layout_left.addLayout(layout)
+        layout.addWidget(combobox, 1)
+        parent_layout.addLayout(layout)
 
         return combobox
 
-    def _combobox_event_update_resonator(self, resonator_id: str):
+    def clear_resonator_skill_combobox(self, resonator_id: str):
         if resonator_id == "":
             return
 
-        self._combobox_resonator_skills.clear()
+        self.q_resonator_skill_combobox.clear()
 
         # TODO: resonator skill -> row
 
-    def _init_combobox_resonator_ids(self) -> QAutoCompleteComboBox:
-        return self._init_combobox(
-            "共鳴者", get_resonator_ids, self._combobox_event_update_resonator
+    def init_resonator_id_combobox(
+        self, parent_layout: QVBoxLayout
+    ) -> QAutoCompleteComboBox:
+        return self.init_combobox(
+            parent_layout,
+            "共鳴者",
+            get_resonator_ids,
+            self.clear_resonator_skill_combobox,
         )
 
     def get_resonator_id(self) -> str:
-        return self._combobox_resonator_ids.currentText()
+        return self.q_resonator_id_combobox.currentText()
 
-    def _get_resonator_skills(self):
-        resonator_id = self._combobox_resonator_ids.currentText()
+    def get_resonator_skills(self):
+        resonator_id = self.q_resonator_id_combobox.currentText()
         if not resonator_id:
             return []
         resonators_table = ResonatorsTable()
@@ -127,30 +178,36 @@ class QDamageSimple(QWidget):
         ]
         return names
 
-    def _init_combobox_resonator_skills(self) -> QAutoCompleteComboBox:
-        return self._init_combobox(
+    def init_resonator_skill_combobox(
+        self, parent_layout: QVBoxLayout
+    ) -> QAutoCompleteComboBox:
+        return self.init_combobox(
+            parent_layout,
             "共鳴者技能",
-            self._get_resonator_skills,
+            self.get_resonator_skills,
             None,
         )
 
-    def _get_monster_ids(self):
+    def get_monster_ids(self):
         monsters_table = MonstersTable()
         names = [
             name for name in monsters_table.df[MonstersEnum.NAME].to_list() if name
         ]
         return names
 
-    def _init_combobox_monster_ids(self) -> QAutoCompleteComboBox:
-        return self._init_combobox("怪物", self._get_monster_ids, None)
+    def init_monster_id_combobox(
+        self, parent_layout: QVBoxLayout
+    ) -> QAutoCompleteComboBox:
+        return self.init_combobox(parent_layout, "怪物", self.get_monster_ids, None)
 
     def get_monster_id(self) -> str:
-        monster_id = self._combobox_monster_ids.currentText()
+        monster_id = self.q_monster_id_combobox.currentText()
         return monster_id
 
-    def _init_input(self, label_name: str, tooltip: str = None) -> QLineEdit:
+    def init_input(
+        self, parent_layout: QVBoxLayout, label_name: str, tooltip: str = None
+    ) -> QLineEdit:
         layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignLeft)
 
         label = QLabel(label_name)
         label.setFixedWidth(self._label_width)
@@ -158,35 +215,32 @@ class QDamageSimple(QWidget):
         layout.addWidget(label)
 
         line = QLineEdit()
-        line.setFixedWidth(self._input_width)
         line.setFixedHeight(40)
         line.setPlaceholderText("")
         if tooltip is not None:
             line.setToolTip(tooltip)
         layout.addWidget(line, 1)
-
-        self.layout_left.addLayout(layout)
+        parent_layout.addLayout(layout)
 
         return line
 
-    def _init_button_save(self):
+    def init_calculate_button(self, parent_layout: QVBoxLayout) -> QPushButton:
         layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignLeft)
 
         btn = QPushButton(_(ZhTwEnum.CALCULATE))
-        btn.clicked.connect(self._calculate)
+        btn.clicked.connect(self.calculate)
 
         layout.addStretch()
         layout.addWidget(btn)
-        self.layout_left.addLayout(layout)
+        parent_layout.addLayout(layout)
         return btn
 
-    def _calculate(self):
+    def calculate(self):
         resonators_table = ResonatorsTable()
         calculated_resonators_table = CalculatedResonatorsTable()
 
         resonator_id = self.get_resonator_id()
-        resonator_skill_id = self._combobox_resonator_skills.currentText()
+        resonator_skill_id = self.q_resonator_skill_combobox.currentText()
         resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
         monster_id = self.get_monster_id()
         if not resonator_name or not resonator_skill_id or not monster_id:
@@ -227,23 +281,30 @@ class QDamageSimple(QWidget):
             monsters_table,
         )
 
-        self._set_table_results(results)
+        self.set_results(self.sub_right_layout, results)
 
-    def _init_label_result_title(self):
+    def init_result_label(
+        self, parent_layout: QVBoxLayout, key: str, value: str
+    ) -> QLabel:
         layout = QHBoxLayout()
-        layout.setAlignment(Qt.AlignLeft)
 
-        label = QLabel("計算結果")
-        label.setFixedWidth(self._label_width)
-        label.setFixedHeight(40)
-        layout.addStretch()
-        layout.addWidget(label)
+        key_label = QLabel(key)
+        key_label.setFixedWidth(self._label_width)
+        key_label.setFixedHeight(40)
+        layout.addWidget(key_label)
 
-        self.layout_right.addLayout(layout)
+        value_label = QLabel(value)
+        value_label.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        value_label.setCursor(Qt.IBeamCursor)
+        value_label.setFixedHeight(40)
+        layout.addWidget(value_label, 1)
 
-    def _set_table_results(self, results: Optional[CalculatedTemplateRowModel]):
-        if results is None:
-            return
+        parent_layout.addLayout(layout)
+        return value_label
+
+    def set_results(
+        self, parent_layout: QVBoxLayout, results: CalculatedTemplateRowModel
+    ):
         damage = None
         damage_no_crit = None
         damage_crit = None
@@ -253,7 +314,6 @@ class QDamageSimple(QWidget):
             damage_no_crit = f"{results.damage_no_crit:.2f}"
         if results.damage_crit is not None:
             damage_crit = f"{results.damage_crit:.2f}"
-
         data = {
             _(ZhTwEnum.RESULT_RESONATOR_NAME): results.resonator_name,
             _(ZhTwEnum.RESULT_SKILL_ID): results.skill_id,
@@ -291,25 +351,24 @@ class QDamageSimple(QWidget):
             _(ZhTwEnum.RESULT_MONSTER_DEF): results.monster_def,
             _(ZhTwEnum.RESULT_MONSTER_RES): results.monster_res,
         }
-        for i, row_name in enumerate(data.keys()):
-            value = data.get(row_name, None)
+        for i, key in enumerate(data.keys()):
+            value = data.get(key, None)
             if value is None:
                 value = ""
             value = str(value)
+            q_label = self.q_result_labels.get(key, None)
+            if q_label is None:
+                q_label = self.init_result_label(parent_layout, key, value)
+                self.q_result_labels[key] = q_label
+            else:
+                q_label.setText(value)
 
-            set_uneditable_cell(self.table, i, 0, row_name)
-            set_uneditable_cell(self.table, i, 1, value)
-
-    def _init_table_results(self):
-        layout = QHBoxLayout()
-        self.table_row = len(CalculatedTemplateRowModel.model_fields)
-        self.table_col = 2
-        self.table = QTableWidget(self.table_row, self.table_col)
-
-        self.table.setColumnWidth(0, 200)
-
+    def init_result_labels(self, parent_layout: QVBoxLayout):
         results = CalculatedTemplateRowModel()
-        self._set_table_results(results)
 
-        layout.addWidget(self.table)
-        self.layout_right.addLayout(layout)
+        q_result_labels = QWidget()
+        self.sub_right_layout = QVBoxLayout()
+        self.set_results(self.sub_right_layout, results)
+        q_result_labels.setLayout(self.sub_right_layout)
+
+        parent_layout.addWidget(ScrollableWidget(q_result_labels))
