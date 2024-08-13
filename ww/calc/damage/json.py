@@ -156,7 +156,7 @@ def get_json_row_damage(
         element = echo_skill_element
     else:
         element = resonator_skill_element
-    calculated_row.final_element = element
+    calculated_row.result_element = element
 
     # Skill DMG
     if not ((resonator_skill_dmg is None) ^ (echo_skill_dmg is None)):
@@ -169,7 +169,7 @@ def get_json_row_damage(
         resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
-    calculated_row.final_skill_dmg = skill_dmg
+    calculated_row.result_skill_dmg = skill_dmg
 
     # Bonus Type
     if not (
@@ -186,7 +186,7 @@ def get_json_row_damage(
         bonus_type = SkillBonusTypeEnum.ECHO.value
     else:
         bonus_type = resonator_skill_bonus_type
-    calculated_row.final_bonus_type = bonus_type
+    calculated_row.result_bonus_type = bonus_type
 
     # Monster
     monster_res = get_number(monsters_table.search(monster_id, f"{element}抗性"))
@@ -201,15 +201,15 @@ def get_json_row_damage(
         )
     )
     bonus_hp_p = buffs.bonus_hp_p
-    final_hp_p = calculated_hp_p + bonus_hp_p
-    calculated_row.final_hp_p = final_hp_p
+    result_hp_p = calculated_hp_p + bonus_hp_p
+    calculated_row.result_hp_p = result_hp_p
 
     # HP
     resonator_hp = get_number(
         calculated_resonators_table.search(resonator_id, CalculatedResonatorsEnum.HP)
     )
-    final_hp = resonator_hp
-    calculated_row.final_hp = final_hp
+    result_hp = resonator_hp
+    calculated_row.result_hp = result_hp
 
     # Additional HP
     echo_hp = get_number(
@@ -218,8 +218,8 @@ def get_json_row_damage(
         )
     )
     bonus_hp = buffs.bonus_hp
-    final_hp_addition = echo_hp + bonus_hp
-    calculated_row.final_hp_addition = final_hp_addition
+    result_hp_addition = echo_hp + bonus_hp
+    calculated_row.result_hp_addition = result_hp_addition
 
     # ATK Percentage
     calculated_atk_p = get_number(
@@ -228,8 +228,8 @@ def get_json_row_damage(
         )
     )
     bonus_atk_p = buffs.bonus_atk_p
-    final_atk_p = calculated_atk_p + bonus_atk_p
-    calculated_row.final_atk_p = final_atk_p
+    result_atk_p = calculated_atk_p + bonus_atk_p
+    calculated_row.result_atk_p = result_atk_p
 
     # ATK
     resonator_atk = get_number(
@@ -240,8 +240,8 @@ def get_json_row_damage(
             resonator_id, CalculatedResonatorsEnum.WEAPON_ATK
         )
     )
-    final_atk = resonator_atk + weapon_atk
-    calculated_row.final_atk = final_atk
+    result_atk = resonator_atk + weapon_atk
+    calculated_row.result_atk = result_atk
 
     # Additional ATK
     echo_atk = get_number(
@@ -250,8 +250,8 @@ def get_json_row_damage(
         )
     )
     bonus_atk = buffs.bonus_atk
-    final_atk_addition = echo_atk + bonus_atk
-    calculated_row.final_atk_addition = final_atk_addition
+    result_atk_addition = echo_atk + bonus_atk
+    calculated_row.result_atk_addition = result_atk_addition
 
     # DEF Percentage
     calculated_def_p = get_number(
@@ -260,15 +260,15 @@ def get_json_row_damage(
         )
     )
     bonus_def_p = buffs.bonus_def_p
-    final_def_p = calculated_def_p + bonus_def_p
-    calculated_row.final_def_p = final_def_p
+    result_def_p = calculated_def_p + bonus_def_p
+    calculated_row.result_def_p = result_def_p
 
     # DEF
     resonator_def = get_number(
         calculated_resonators_table.search(resonator_id, CalculatedResonatorsEnum.DEF)
     )
-    final_def = resonator_def
-    calculated_row.final_def = final_def
+    result_def = resonator_def
+    calculated_row.result_def = result_def
 
     # Additional DEF
     echo_def = get_number(
@@ -277,8 +277,8 @@ def get_json_row_damage(
         )
     )
     bonus_def = buffs.bonus_def
-    final_def_addition = echo_def + bonus_def
-    calculated_row.final_def_addition = final_def_addition
+    result_def_addition = echo_def + bonus_def
+    calculated_row.result_def_addition = result_def_addition
 
     # CRIT Rate
     resonator_crit_rate = get_number(
@@ -287,8 +287,8 @@ def get_json_row_damage(
         )
     )
     bonus_crit_rate = buffs.bonus_crit_rate
-    final_crit_rate = resonator_crit_rate + bonus_crit_rate
-    calculated_row.final_crit_rate = final_crit_rate
+    result_crit_rate = resonator_crit_rate + bonus_crit_rate
+    calculated_row.result_crit_rate = result_crit_rate
 
     # CRIT DMG
     resonator_crit_dmg = get_number(
@@ -297,8 +297,8 @@ def get_json_row_damage(
         )
     )
     bonus_crit_dmg = buffs.bonus_crit_dmg
-    final_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
-    calculated_row.final_crit_dmg = final_crit_dmg
+    result_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
+    calculated_row.result_crit_dmg = result_crit_dmg
 
     # BONUS
     calculated_element_bonus_key_name = f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{element}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}"
@@ -316,9 +316,9 @@ def get_json_row_damage(
     )
 
     template_bonus = buffs.bonus_addition
-    final_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
+    result_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
-    calculated_row.final_bonus = final_bonus
+    calculated_row.result_bonus = result_bonus
 
     # Other Bonus
     bonus_magnifier = buffs.bonus_magnifier
@@ -330,11 +330,11 @@ def get_json_row_damage(
     # DMG
     if resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.ATK.value:
         region_base_attr = (
-            final_atk * (get_number("1.0") + final_atk_p) + final_atk_addition
+            result_atk * (get_number("1.0") + result_atk_p) + result_atk_addition
         )
     elif resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.DEF.value:
         region_base_attr = (
-            final_def * (get_number("1.0") + final_def_p) + final_def_addition
+            result_def * (get_number("1.0") + result_def_p) + result_def_addition
         )
     else:
         return
@@ -342,15 +342,17 @@ def get_json_row_damage(
     region_skill_dmg = skill_dmg + bonus_skill_dmg_addition
     region_bonus_magnifier = get_number("1.0") + bonus_magnifier
     region_bonus_amplifier = get_number("1.0") + bonus_amplifier
-    region_bonus = get_number("1.0") + final_bonus
+    region_bonus = get_number("1.0") + result_bonus
     region_def = (get_number("800.0") + get_number("8.0") * resonator_level) / (
         get_number("800.0")
         + get_number("8.0") * resonator_level
         + monster_def * (1 - bonus_ignore_def)
     )
     region_bonus_reduce_res = get_number("1.0") + bonus_reduce_res - monster_res
-    region_crit_dmg = final_crit_dmg
-    region_crit = final_crit_dmg * final_crit_rate + get_number("1.0") - final_crit_rate
+    region_crit_dmg = result_crit_dmg
+    region_crit = (
+        result_crit_dmg * result_crit_rate + get_number("1.0") - result_crit_rate
+    )
 
     dmg_no_crit = (
         region_base_attr

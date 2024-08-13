@@ -189,9 +189,9 @@ def get_tsv_row_damage(
         )
     )
     bonus_atk_p = get_number(row[TemplateEnum.BONUS_ATK_P])
-    final_atk_p = calculated_atk_p + bonus_atk_p
+    result_atk_p = calculated_atk_p + bonus_atk_p
     calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_P.value] = (
-        final_atk_p
+        result_atk_p
     )
 
     # ATK
@@ -203,8 +203,8 @@ def get_tsv_row_damage(
             resonator_id, CalculatedResonatorsEnum.WEAPON_ATK
         )
     )
-    final_atk = resonator_atk + weapon_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK.value] = final_atk
+    result_atk = resonator_atk + weapon_atk
+    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK.value] = result_atk
 
     # Additional ATK
     echo_atk = get_number(
@@ -213,9 +213,9 @@ def get_tsv_row_damage(
         )
     )
     template_bonus_atk = get_number(row[TemplateEnum.BONUS_ATK])
-    final_atk_addition = echo_atk + template_bonus_atk
+    result_atk_addition = echo_atk + template_bonus_atk
     calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_ADDITION.value] = (
-        final_atk_addition
+        result_atk_addition
     )
 
     # CRIT Rate
@@ -225,9 +225,9 @@ def get_tsv_row_damage(
         )
     )
     bonus_crit_rate = get_number(row[TemplateEnum.BONUS_CRIT_RATE])
-    final_crit_rate = resonator_crit_rate + bonus_crit_rate
+    result_crit_rate = resonator_crit_rate + bonus_crit_rate
     calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_RATE.value] = (
-        final_crit_rate
+        result_crit_rate
     )
 
     # CRIT DMG
@@ -237,9 +237,9 @@ def get_tsv_row_damage(
         )
     )
     bonus_crit_dmg = get_number(row[TemplateEnum.BONUS_CRIT_DMG])
-    final_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
+    result_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
     calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_DMG.value] = (
-        final_crit_dmg
+        result_crit_dmg
     )
 
     # BONUS
@@ -258,10 +258,10 @@ def get_tsv_row_damage(
     )
 
     template_bonus = get_number(row[TemplateEnum.BONUS_ADDITION])
-    final_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
+    result_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
     calculated_template_row_dict[CalculatedTemplateEnum.RESULT_BONUS.value] = (
-        final_bonus
+        result_bonus
     )
 
     # Other Bonus
@@ -274,7 +274,7 @@ def get_tsv_row_damage(
     # DMG
     if resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.ATK.value:
         region_base_attr = (
-            final_atk * (get_number("1.0") + final_atk_p) + final_atk_addition
+            result_atk * (get_number("1.0") + result_atk_p) + result_atk_addition
         )
     else:
         return
@@ -282,15 +282,17 @@ def get_tsv_row_damage(
     region_skill_dmg = skill_dmg + bonus_skill_dmg_addition
     region_bonus_magnifier = get_number("1.0") + bonus_magnifier
     region_bonus_amplifier = get_number("1.0") + bonus_amplifier
-    region_bonus = get_number("1.0") + final_bonus
+    region_bonus = get_number("1.0") + result_bonus
     region_def = (get_number("800.0") + get_number("8.0") * resonator_level) / (
         get_number("800.0")
         + get_number("8.0") * resonator_level
         + monster_def * (1 - bonus_ignore_def)
     )
     region_bonus_reduce_res = get_number("1.0") + bonus_reduce_res - monster_res
-    region_crit_dmg = final_crit_dmg
-    region_crit = final_crit_dmg * final_crit_rate + get_number("1.0") - final_crit_rate
+    region_crit_dmg = result_crit_dmg
+    region_crit = (
+        result_crit_dmg * result_crit_rate + get_number("1.0") - result_crit_rate
+    )
 
     dmg_no_crit = (
         region_base_attr

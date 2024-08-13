@@ -64,29 +64,29 @@ class CalculatedTemplateRowModel(BaseModel):
     damage_no_crit: Optional[Decimal] = None
     damage_crit: Optional[Decimal] = None
 
-    final_element: Optional[ElementEnum] = None
-    final_bonus_type: Optional[SkillBonusTypeEnum] = None
-    final_skill_dmg: Optional[Decimal] = None
+    result_element: Optional[ElementEnum] = None
+    result_bonus_type: Optional[SkillBonusTypeEnum] = None
+    result_skill_dmg: Optional[Decimal] = None
 
-    final_hp: Optional[Decimal] = None
-    final_hp_addition: Optional[Decimal] = None
-    final_hp_p: Optional[Decimal] = None
-    final_atk: Optional[Decimal] = None
-    final_atk_addition: Optional[Decimal] = None
-    final_atk_p: Optional[Decimal] = None
-    final_def: Optional[Decimal] = None
-    final_def_addition: Optional[Decimal] = None
-    final_def_p: Optional[Decimal] = None
-    final_crit_rate: Optional[Decimal] = None
-    final_crit_dmg: Optional[Decimal] = None
-    final_bonus: Optional[Decimal] = None
+    result_hp: Optional[Decimal] = None
+    result_hp_addition: Optional[Decimal] = None
+    result_hp_p: Optional[Decimal] = None
+    result_atk: Optional[Decimal] = None
+    result_atk_addition: Optional[Decimal] = None
+    result_atk_p: Optional[Decimal] = None
+    result_def: Optional[Decimal] = None
+    result_def_addition: Optional[Decimal] = None
+    result_def_p: Optional[Decimal] = None
+    result_crit_rate: Optional[Decimal] = None
+    result_crit_dmg: Optional[Decimal] = None
+    result_bonus: Optional[Decimal] = None
 
     monster_level: Optional[Decimal] = None
     monster_def: Optional[Decimal] = None
     monster_res: Optional[Decimal] = None
 
     # @field_validator(
-    #     "resonator_skill_element", "echo_element", "final_element", mode="before"
+    #     "resonator_skill_element", "echo_element", "result_element", mode="before"
     # )
     # def empty_str_to_none(cls, v):
     #     if v == "":

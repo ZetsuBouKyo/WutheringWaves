@@ -65,7 +65,7 @@ class QDamageCompare(QWidget):
                 row_damage = row.damage
                 row_damage_no_crit = row.damage_no_crit
                 row_damage_crit = row.damage_crit
-                row_bonus_type = row.final_bonus_type
+                row_bonus_type = row.result_bonus_type
 
                 damage_distribution[row_bonus_type] += row_damage
 
