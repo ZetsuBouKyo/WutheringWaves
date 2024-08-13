@@ -10,3 +10,7 @@ A damage calculator for Wuthering Waves and other related tools.
 poetry install
 pyinstaller.exe -y .\app.spec
 ```
+
+# FAQ
+
+https://www.twitch.tv/zetsuboukyo
