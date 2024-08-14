@@ -13,8 +13,11 @@ from ww.model.resonator import (
 )
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.echo import EchoesTable
-from ww.tables.resonator import ResonatorStatTable
-from ww.tables.resonators import CALCULATED_RESONATOR_PATH, ResonatorsTable
+from ww.tables.resonator import (
+    CALCULATED_RESONATOR_PATH,
+    ResonatorsTable,
+    ResonatorStatTable,
+)
 from ww.tables.weapon import WeaponRankTable, WeaponStatTable
 from ww.utils.number import get_number
 from ww.utils.pd import get_df

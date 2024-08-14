@@ -6,7 +6,7 @@ from ww.calc.damage import get_json_damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator import ResonatorColumnEnum
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonator import ResonatorsTable
 from ww.ui.calc.compare.table import (
     QDamageCompareTable,
     QDamageCompareUneditableTable,

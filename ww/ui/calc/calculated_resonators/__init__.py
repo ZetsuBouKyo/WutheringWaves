@@ -3,7 +3,7 @@ from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 from ww.model.echo import EchoListEnum
 from ww.model.resonator import CalculatedResonatorColumnEnum
 from ww.tables.echo import EchoListTable
-from ww.tables.resonators import CalculatedResonatorsTable
+from ww.tables.resonator import CalculatedResonatorsTable
 from ww.ui.table import QUneditableDataFrameTable
 
 echo_list_table = EchoListTable()

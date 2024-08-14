@@ -25,7 +25,7 @@ from ww.model.template import (
     TemplateRowModel,
 )
 from ww.tables.echo import EchoListTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
+from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.help import QTemplateHelpTab

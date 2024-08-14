@@ -301,3 +301,87 @@ class ZhTwEnum(str, Enum):
     BUFF_SOURCE_RESONANCE_LIBERATION: str = "共鳴解放"
     BUFF_SOURCE_INTRO_SKILL: str = "變奏技能"
     BUFF_SOURCE_OUTRO_SKILL: str = "延奏技能"
+
+    ID: str = "角色代稱"
+
+    # Resonator Stat
+    RESONATOR_HP: str = "角色生命"
+    RESONATOR_ATK: str = "角色攻擊"
+    RESONATOR_DEF: str = "角色防禦"
+
+    # Resonator Base Stat
+    RESONATOR_BASE_CRIT_RATE: str = "角色基礎暴擊"
+    RESONATOR_BASE_CRIT_DMG: str = "角色基礎暴擊傷害"
+    RESONATOR_BASE_ENERGY_REGEN: str = "角色基礎共鳴效率"
+
+    # Calculated
+    CALCULATED_RESONATOR_HP: str = "角色生命面板"
+    CALCULATED_RESONATOR_HP_P: str = "角色生命百分比面板"
+    CALCULATED_RESONATOR_ATK: str = "角色攻擊面板"
+    CALCULATED_RESONATOR_ATK_P: str = "角色攻擊百分比面板"
+    CALCULATED_RESONATOR_DEF: str = "角色防禦面板"
+    CALCULATED_RESONATOR_DEF_P: str = "角色防禦百分比面板"
+    CALCULATED_RESONATOR_CRIT_RATE: str = "角色暴擊面板"
+    CALCULATED_RESONATOR_CRIT_DMG: str = "角色暴傷面板"
+    CALCULATED_RESONATOR_ENERGY_REGEN: str = "角色共鳴效率面板"
+
+    CALCULATED_RESONATOR_RESONANCE_SKILL_DMG_BONUS: str = "角色共鳴技能傷害加成面板"
+    CALCULATED_RESONATOR_BASIC_ATTACK_DMG_BONUS: str = "角色普攻傷害加成面板"
+    CALCULATED_RESONATOR_HEAVY_ATTACK_DMG_BONUS: str = "角色重擊傷害加成面板"
+    CALCULATED_RESONATOR_RESONANCE_LIBERATION_DMG_BONUS: str = (
+        "角色共鳴解放傷害加成面板"
+    )
+
+    CALCULATED_RESONATOR_PHYSICAL_DMG_BONUS: str = "角色物理傷害加成面板"
+    CALCULATED_RESONATOR_GLACIO_DMG_BONUS: str = "角色冷凝傷害加成面板"
+    CALCULATED_RESONATOR_FUSION_DMG_BONUS: str = "角色熱熔傷害加成面板"
+    CALCULATED_RESONATOR_ELECTRO_DMG_BONUS: str = "角色導電傷害加成面板"
+    CALCULATED_RESONATOR_AERO_DMG_BONUS: str = "角色氣動傷害加成面板"
+    CALCULATED_RESONATOR_SPECTRO_DMG_BONUS: str = "角色衍射傷害加成面板"
+    CALCULATED_RESONATOR_HAVOC_DMG_BONUS: str = "角色湮滅傷害加成面板"
+
+    CALCULATED_RESONATOR_PHYSICAL_DMG_RES: str = "角色物理傷害抗性面板"
+    CALCULATED_RESONATOR_GLACIO_DMG_RES: str = "角色冷凝傷害抗性面板"
+    CALCULATED_RESONATOR_FUSION_DMG_RES: str = "角色熱熔傷害抗性面板"
+    CALCULATED_RESONATOR_ELECTRO_DMG_RES: str = "角色導電傷害抗性面板"
+    CALCULATED_RESONATOR_AERO_DMG_RES: str = "角色氣動傷害抗性面板"
+    CALCULATED_RESONATOR_SPECTRO_DMG_RES: str = "角色衍射傷害抗性面板"
+    CALCULATED_RESONATOR_HAVOC_DMG_RES: str = "角色湮滅傷害抗性面板"
+
+    CALCULATED_RESONATOR_HEALING_BONUS: str = "角色治療效果加成面板"
+
+    # Weapon
+    RESONATOR_WEAPON_ATK: str = "[主]武器攻擊"
+    RESONATOR_WEAPON_HP_P: str = "[副]武器生命百分比"
+    RESONATOR_WEAPON_ATK_P: str = "[副]武器攻擊百分比"
+    RESONATOR_WEAPON_DEF_P: str = "[副]武器防禦百分比"
+    RESONATOR_WEAPON_CRIT_RATE: str = "[副]武器暴擊"
+    RESONATOR_WEAPON_CRIT_DMG: str = "[副]武器暴擊傷害"
+    RESONATOR_WEAPON_ENERGY_REGEN: str = "[副]武器共鳴效率"
+
+    RESONATOR_WEAPON_RANK_ATK_P: str = "武器諧振攻擊提升"
+    RESONATOR_WEAPON_RANK_ENERGY_REGEN: str = "武器諧振共鳴效率提升"
+    RESONATOR_WEAPON_RANK_ATTRIBUTE_DMG_BONUS: str = "武器諧振全屬性傷害加成提升"
+
+    # Echo
+    RESONATOR_ECHO_HP: str = "聲骸生命"
+    RESONATOR_ECHO_HP_P: str = "聲骸生命百分比"
+    RESONATOR_ECHO_ATK: str = "聲骸攻擊"
+    RESONATOR_ECHO_ATK_P: str = "聲骸攻擊百分比"
+    RESONATOR_ECHO_DEF: str = "聲骸防禦"
+    RESONATOR_ECHO_DEF_P: str = "聲骸防禦百分比"
+    RESONATOR_ECHO_CRIT_RATE: str = "聲骸暴擊"
+    RESONATOR_ECHO_CRIT_DMG: str = "聲骸暴擊傷害"
+    RESONATOR_ECHO_ENERGY_REGEN: str = "聲骸共鳴效率"
+
+    RESONATOR_ECHO_RESONANCE_SKILL_DMG_BONUS: str = "聲骸共鳴技能傷害加成"
+    RESONATOR_ECHO_BASIC_ATTACK_DMG_BONUS: str = "聲骸普攻傷害加成"
+    RESONATOR_ECHO_HEAVY_ATTACK_DMG_BONUS: str = "聲骸重擊傷害加成"
+    RESONATOR_ECHO_RESONANCE_LIBERATION_DMG_BONUS: str = "聲骸共鳴解放傷害加成"
+    RESONATOR_ECHO_GLACIO_DMG_BONUS: str = "聲骸冷凝加成"
+    RESONATOR_ECHO_FUSION_DMG_BONUS: str = "聲骸熱熔加成"
+    RESONATOR_ECHO_ELECTRO_DMG_BONUS: str = "聲骸導電加成"
+    RESONATOR_ECHO_AERO_DMG_BONUS: str = "聲骸氣動加成"
+    RESONATOR_ECHO_SPECTRO_DMG_BONUS: str = "聲骸衍射加成"
+    RESONATOR_ECHO_HAVOC_DMG_BONUS: str = "聲骸湮滅加成"
+    RESONATOR_ECHO_HEALING_BONUS: str = "聲骸治療效果加成百分比"

@@ -24,8 +24,11 @@ from ww.model.template import (
 )
 from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersTable
-from ww.tables.resonator import ResonatorSkillTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
+from ww.tables.resonator import (
+    CalculatedResonatorsTable,
+    ResonatorSkillTable,
+    ResonatorsTable,
+)
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.widget import ScrollableWidget
 from ww.utils.number import get_number

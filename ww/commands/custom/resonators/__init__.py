@@ -7,7 +7,7 @@ from typer import Argument, Option, Typer
 
 from ww.model.resonator import ResonatorColumnEnum
 from ww.tables.calculated_resonators import calc as _calc
-from ww.tables.resonators import (
+from ww.tables.resonator import (
     CALCULATED_RESONATOR_PATH,
     CalculatedResonatorsTable,
     ResonatorsTable,

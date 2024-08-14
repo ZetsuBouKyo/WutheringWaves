@@ -38,7 +38,7 @@ from ww.model.template import (
 )
 from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersEnum, MonstersTable
-from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
+from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.progress_bar import QHProgressBar

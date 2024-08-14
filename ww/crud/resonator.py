@@ -9,9 +9,9 @@ from ww.tables.echo import EchoSkillEnum, EchoSkillTable
 from ww.tables.resonator import (
     RESONATOR_HOME_PATH,
     ResonatorSkillTable,
+    ResonatorsTable,
     ResonatorStatTable,
 )
-from ww.tables.resonators import ResonatorsTable
 
 
 def get_resonator_names() -> List[str]:

@@ -3,7 +3,7 @@ from typing import List
 from PySide2.QtWidgets import QTableWidgetItem
 
 from ww.model.resonator import ResonatorColumnEnum
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonator import ResonatorsTable
 from ww.ui.table import QDraggableTableWidget
 from ww.ui.table.cell import set_item, set_uneditable_cell
 from ww.ui.table.cell.combobox import (

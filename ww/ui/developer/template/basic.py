@@ -20,7 +20,7 @@ from ww.model.template import (
     TemplateResonatorModel,
     TemplateResonatorTableRowEnum,
 )
-from ww.tables.resonators import ResonatorsTable
+from ww.tables.resonator import ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QBaseTableWidget
 from ww.ui.table.cell import set_item
