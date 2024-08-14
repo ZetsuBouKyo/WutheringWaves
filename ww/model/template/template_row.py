@@ -36,6 +36,7 @@ class TemplateRowActionEnum(str, Enum):
     SWITCH_AIR: str = "空中入場"
     GRAPPLE: str = "鉤索"
     COORDINATED_ATTACK: str = "協同攻擊"
+    DODGE: str = "閃避"
     NONE: str = "無"
 
 
