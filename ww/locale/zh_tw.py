@@ -90,6 +90,35 @@ class ZhTwEnum(str, Enum):
 
     LEVEL: str = "等級"
     ENERGY_REGEN: str = "共鳴效率"
+    RESONANCE_SKILL_DMG_BONUS: str = "共鳴技能傷害加成"
+    BASIC_ATTACK_DMG_BONUS: str = "普攻傷害加成"
+    HEAVY_ATTACK_DMG_BONUS: str = "重擊傷害加成"
+    RESONANCE_LIBERATION_DMG_BONUS: str = "共鳴解放傷害加成"
+    HEALING_BONUS: str = "治療效果加成"
+
+    PHYSICAL_DMG_BONUS: str = "物理傷害加成"
+    GLACIO_DMG_BONUS: str = "冷凝傷害加成"
+    FUSION_DMG_BONUS: str = "熱熔傷害加成"
+    ELECTRO_DMG_BONUS: str = "導電傷害加成"
+    AERO_DMG_BONUS: str = "氣動傷害加成"
+    SPECTRO_DMG_BONUS: str = "衍射傷害加成"
+    HAVOC_DMG_BONUS: str = "湮滅傷害加成"
+
+    PHYSICAL_DMG_RES: str = "物理傷害抗性"
+    GLACIO_DMG_RES: str = "冷凝傷害抗性"
+    FUSION_DMG_RES: str = "熱熔傷害抗性"
+    ELECTRO_DMG_RES: str = "導電傷害抗性"
+    AERO_DMG_RES: str = "氣動傷害抗性"
+    SPECTRO_DMG_RES: str = "衍射傷害抗性"
+    HAVOC_DMG_RES: str = "湮滅傷害抗性"
+
+    NORMAL_ATTACK_LV: str = "常態攻擊LV"
+    RESONANCE_SKILL_LV: str = ""
+    RESONANCE_LIBERATION_LV: str = ""
+    FORTE_CIRCUIT_LV: str = ""
+    INTRO_SKILL_LV: str = ""
+    # inherent_skill_1: str = ""
+    # inherent_skill_2: str = ""
 
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"
@@ -123,6 +152,7 @@ class ZhTwEnum(str, Enum):
     INHERENT_SKILL_1: str = "固有1"
     INHERENT_SKILL_2: str = "固有2"
 
+    CHAIN: str = "共鳴鏈"
     CHAIN_1: str = "共鳴鏈1"
     CHAIN_2: str = "共鳴鏈2"
     CHAIN_3: str = "共鳴鏈3"

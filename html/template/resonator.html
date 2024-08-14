@@ -1,0 +1,145 @@
+<div class="container">
+  <div class="resonator-title">
+    <div class="cell-row">
+      <img src="{{resonator.resonator_src}}" />
+    </div>
+    <div class="cell-row">
+      <div class="resonator-name">{{resonator.name}}</div>
+    </div>
+    <div class="cell-row">
+      <img class="element" src="{{resonator.element_src}}" />
+    </div>
+    <div class="cell-row">
+      <div class="resonator-sub-info">
+        <div class="resonator-element {{resonator.element_class_name}}">{{resonator.element}}</div>
+        <div class="resonator-chain">{{_(ZhTwEnum.CHAIN)}} {{resonator.chain}}</div>
+      </div>
+    </div>
+  </div>
+  <div class="table">
+    <table>
+      <tr>
+        <td>{{_(ZhTwEnum.LEVEL)}}: {{resonator.level}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HP)}}: {{resonator.hp}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ATK)}}: {{resonator.attack}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.DEF)}}: {{resonator.defense}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.CRIT_RATE)}}: {{resonator.crit_rate}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.CRIT_DMG)}}: {{resonator.crit_dmg}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ENERGY_REGEN)}}: {{resonator.energy_regen}}</td>
+        <td>Maria Anders</td>
+        <td>Germany</td>
+        <td>Germany</td>
+        <td>Germany</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<style>
+  body {
+    background-color: rgb(8, 12, 20);
+    color: rgb(240, 240, 240);
+    width: 1920px;
+  }
+  div.cell-row {
+    display: flex;
+    align-self: center;
+  }
+  div.table {
+    display: flex;
+    margin-top: 12px;
+  }
+  div.resonator-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    height: 48px;
+  }
+  div.resonator-name {
+    display: flex;
+    align-self: center;
+    font-size: 28px;
+    margin-left: 10px;
+  }
+  div.resonator-sub-info {
+    display: flex;
+    flex-direction: column;
+  }
+  div.resonator-element {
+    font-size: 16px;
+  }
+  div.resonator-chain {
+    font-size: 8px;
+    align-self: flex-end;
+  }
+  img {
+    height: 48px;
+    object-fit: contain;
+  }
+  div.container {
+    margin: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  td {
+    padding: 0px 12px;
+  }
+  .element {
+    height: 42px;
+    margin-left: 4px;
+  }
+  .glacio {
+    color: rgb(72, 172, 252);
+  }
+  .fusion {
+    color: rgb(248, 116, 76);
+  }
+  .ELECTRO {
+    color: rgb(184, 108, 252);
+  }
+  .aero {
+    color: rgb(88, 252, 180);
+  }
+  .spectro {
+    color: rgb(255, 228, 108);
+  }
+  .havoc {
+    color: rgb(208, 140, 180);
+  }
+</style>
