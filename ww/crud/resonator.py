@@ -3,8 +3,8 @@ from typing import List, Optional
 
 import pandas as pd
 
+from ww.model.resonator import ResonatorColumnEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
-from ww.model.resonators import ResonatorsEnum
 from ww.tables.echo import EchoSkillEnum, EchoSkillTable
 from ww.tables.resonator import (
     RESONATOR_HOME_PATH,
@@ -35,7 +35,9 @@ def get_resonator_levels() -> List[str]:
 
 def get_resonator_ids() -> List[str]:
     resonators_table = ResonatorsTable()
-    names = [name for name in resonators_table.df[ResonatorsEnum.ID].to_list() if name]
+    names = [
+        name for name in resonators_table.df[ResonatorColumnEnum.ID].to_list() if name
+    ]
     return names
 
 

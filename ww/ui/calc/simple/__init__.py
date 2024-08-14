@@ -14,8 +14,8 @@ from ww.calc.damage import get_json_row_damage
 from ww.crud.resonator import get_resonator_ids
 from ww.locale import ZhTwEnum, _
 from ww.model.monsters import MonstersEnum
+from ww.model.resonator import ResonatorColumnEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
-from ww.model.resonators import ResonatorsEnum
 from ww.model.template import (
     CalculatedTemplateRowModel,
     TemplateBuffTableRowModel,
@@ -160,7 +160,7 @@ class QDamageSimple(QWidget):
         if not resonator_id:
             return []
         resonators_table = ResonatorsTable()
-        resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
+        resonator_name = resonators_table.search(resonator_id, ResonatorColumnEnum.NAME)
         if resonator_name is None:
             return []
 
@@ -240,7 +240,7 @@ class QDamageSimple(QWidget):
 
         resonator_id = self.get_resonator_id()
         resonator_skill_id = self.q_resonator_skill_combobox.currentText()
-        resonator_name = resonators_table.search(resonator_id, ResonatorsEnum.NAME)
+        resonator_name = resonators_table.search(resonator_id, ResonatorColumnEnum.NAME)
         monster_id = self.get_monster_id()
         if not resonator_name or not resonator_skill_id or not monster_id:
             return

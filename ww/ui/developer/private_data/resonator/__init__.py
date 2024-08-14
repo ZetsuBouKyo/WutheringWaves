@@ -17,7 +17,7 @@ from PySide2.QtWidgets import (
 
 from ww.crud.resonator import get_resonator_names
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator import ResonatorStatEnum
+from ww.model.resonator import ResonatorStatColumnEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.resonator import (
     get_resonator_dir_path,
@@ -202,7 +202,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
 
 class QPrivateDataResonatorStatTable(QDraggableTableWidget):
     def __init__(self):
-        column_names = [e.value for e in ResonatorStatEnum]
+        column_names = [e.value for e in ResonatorStatColumnEnum]
         df = get_empty_df(column_names)
         data = df.values.tolist()
         rows = len(data)
@@ -211,7 +211,7 @@ class QPrivateDataResonatorStatTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=ResonatorStatEnum.LEVEL.value,
+            column_id_name=ResonatorStatColumnEnum.LEVEL.value,
             column_names=column_names,
         )
 

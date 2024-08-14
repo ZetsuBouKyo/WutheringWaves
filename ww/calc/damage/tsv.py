@@ -6,13 +6,13 @@ import pandas as pd
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.echo import EchoSkillEnum
 from ww.model.monsters import MonstersEnum
-from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
-from ww.model.resonators import (
+from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorsEnum,
-    ResonatorsEnum,
+    CalculatedResonatorColumnEnum,
+    ResonatorColumnEnum,
 )
+from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
 from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersTable
@@ -49,7 +49,7 @@ def get_tsv_row_damage(
     manual_bonus_type = get_string(row[TemplateEnum.BONUS_TYPE])
 
     resonator_level = get_number(
-        resonators_table.search(resonator_id, ResonatorsEnum.LEVEL)
+        resonators_table.search(resonator_id, ResonatorColumnEnum.LEVEL)
     )
 
     # Skill
@@ -57,12 +57,12 @@ def get_tsv_row_damage(
 
     # Resonator Skill Level
     resonator_skills = [
-        ResonatorsEnum.NORMAL_ATTACK_LV,
-        ResonatorsEnum.RESONANCE_SKILL_LV,
-        ResonatorsEnum.RESONANCE_LIBERATION_LV,
-        ResonatorsEnum.FORTE_CIRCUIT_LV,
-        ResonatorsEnum.INTRO_SKILL_LV,
-        ResonatorsEnum.OUTRO_SKILL_LV,
+        ResonatorColumnEnum.NORMAL_ATTACK_LV,
+        ResonatorColumnEnum.RESONANCE_SKILL_LV,
+        ResonatorColumnEnum.RESONANCE_LIBERATION_LV,
+        ResonatorColumnEnum.FORTE_CIRCUIT_LV,
+        ResonatorColumnEnum.INTRO_SKILL_LV,
+        ResonatorColumnEnum.OUTRO_SKILL_LV,
     ]
     resonator_skill_levels = {}
     for s in resonator_skills:
@@ -185,7 +185,7 @@ def get_tsv_row_damage(
     # ATK Percentage
     calculated_atk_p = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorsEnum.CALCULATED_ATK_P
+            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_ATK_P
         )
     )
     bonus_atk_p = get_number(row[TemplateEnum.BONUS_ATK_P])
@@ -196,11 +196,13 @@ def get_tsv_row_damage(
 
     # ATK
     resonator_atk = get_number(
-        calculated_resonators_table.search(resonator_id, CalculatedResonatorsEnum.ATK)
+        calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorColumnEnum.ATK
+        )
     )
     weapon_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorsEnum.WEAPON_ATK
+            resonator_id, CalculatedResonatorColumnEnum.WEAPON_ATK
         )
     )
     result_atk = resonator_atk + weapon_atk
@@ -209,7 +211,7 @@ def get_tsv_row_damage(
     # Additional ATK
     echo_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorsEnum.ECHO_ATK
+            resonator_id, CalculatedResonatorColumnEnum.ECHO_ATK
         )
     )
     template_bonus_atk = get_number(row[TemplateEnum.BONUS_ATK])
@@ -221,7 +223,7 @@ def get_tsv_row_damage(
     # CRIT Rate
     resonator_crit_rate = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorsEnum.CALCULATED_CRIT_RATE
+            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_RATE
         )
     )
     bonus_crit_rate = get_number(row[TemplateEnum.BONUS_CRIT_RATE])
@@ -233,7 +235,7 @@ def get_tsv_row_damage(
     # CRIT DMG
     resonator_crit_dmg = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorsEnum.CALCULATED_CRIT_DMG
+            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_DMG
         )
     )
     bonus_crit_dmg = get_number(row[TemplateEnum.BONUS_CRIT_DMG])
@@ -346,7 +348,7 @@ def get_tsv_damage(
     resonators_name2id = {}
     r_ids = [r_id_1, r_id_2, r_id_3]
     for r_id in r_ids:
-        n = get_string(resonators_table.search(r_id, ResonatorsEnum.NAME))
+        n = get_string(resonators_table.search(r_id, ResonatorColumnEnum.NAME))
         if n:
             resonators_name2id[n] = r_id
 

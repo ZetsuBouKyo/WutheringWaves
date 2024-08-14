@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Any, List, Optional
 
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator import ResonatorStatEnum
+from ww.model.resonator import ResonatorStatColumnEnum
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.crud import get_row, search
 from ww.utils.pd import get_empty_df, safe_get_df
@@ -40,14 +40,14 @@ def get_resonator_skill_fpath(resonator_name: str) -> Optional[Path]:
 class ResonatorStatTable:
     def __init__(self, name):
         _path = get_resonator_stat_fpath(name)
-        self.column_names = [e.value for e in ResonatorStatEnum]
+        self.column_names = [e.value for e in ResonatorStatColumnEnum]
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
         else:
             self.df = get_empty_df(self.column_names)
 
-    def search(self, id: str, col: ResonatorStatEnum) -> Optional[Any]:
-        return search(self.df, id, col, ResonatorStatEnum.LEVEL.value)
+    def search(self, id: str, col: ResonatorStatColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorStatColumnEnum.LEVEL.value)
 
 
 class ResonatorSkillTable:

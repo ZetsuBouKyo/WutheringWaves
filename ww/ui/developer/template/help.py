@@ -1,13 +1,4 @@
-from PySide2.QtCore import Qt
-from PySide2.QtWidgets import (
-    QDesktopWidget,
-    QDialog,
-    QHBoxLayout,
-    QPushButton,
-    QTableWidgetItem,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 
 class QTemplateHelpTab(QWidget):

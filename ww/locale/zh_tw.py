@@ -38,14 +38,15 @@ class ZhTwEnum(str, Enum):
     INITIALIZING: str = "初始化..."
     INITIALIZED: str = "初始化完成。"
 
+    CALCULATE: str = "計算"
+    COMMENT: str = "註解"
+    DELETE: str = "刪除"
+    EXPORT_IMAGE: str = "輸出圖片"
+
     FILE: str = "檔案"
     FILE_EXISTS: str = "檔案已存在"
     FILE_OVERWRITE_OR_NOT: str = "確定要覆蓋檔案"
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
-
-    CALCULATE: str = "計算"
-    COMMENT: str = "註解"
-    DELETE: str = "刪除"
 
     WARNING: str = "警告"
 

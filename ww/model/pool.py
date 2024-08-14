@@ -15,6 +15,7 @@ class GachaPoolTypeEnum(str, Enum):
 
 class PoolModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
+
     total: int = 0
     standard_resonator_5: int = 0
     featured_resonator_5: int = 0

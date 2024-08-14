@@ -5,7 +5,7 @@ from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 from ww.calc.damage import get_json_damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.resonators import ResonatorsEnum
+from ww.model.resonator import ResonatorColumnEnum
 from ww.tables.resonators import ResonatorsTable
 from ww.ui.calc.compare.table import (
     QDamageCompareTable,
@@ -58,7 +58,7 @@ class QDamageCompare(QWidget):
                 }
 
                 resonator_name = resonators_table.search(
-                    resonator_id, ResonatorsEnum.NAME
+                    resonator_id, ResonatorColumnEnum.NAME
                 )
                 rows = get_json_damage(template_id, monster_id, resonator_id, "", "")
                 for row in rows:

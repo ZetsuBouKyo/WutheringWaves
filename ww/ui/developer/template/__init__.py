@@ -19,8 +19,13 @@ from ww.crud.template import (
 )
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoListEnum
-from ww.model.template import TemplateModel, TemplateRowModel
+from ww.model.template import (
+    TemplateHtmlResonatorModel,
+    TemplateModel,
+    TemplateRowModel,
+)
 from ww.tables.echo import EchoListTable
+from ww.tables.resonators import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.help import QTemplateHelpTab
@@ -31,6 +36,22 @@ echo_list_table = EchoListTable()
 echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
 
 
+def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonatorModel:
+    if not resonator_id:
+        return
+    calculated_resonators_table = CalculatedResonatorsTable()
+    calculated_resonator = calculated_resonators_table.get_row(resonator_id)
+    if calculated_resonator is None:
+        return
+    print(calculated_resonator)
+    resonators_table = ResonatorsTable()
+    resonator = resonators_table.get_row(resonator_id)
+    if resonator is None:
+        return
+    print(resonator)
+    TemplateHtmlResonatorModel()
+
+
 class QTemplateTabs(QWidget):
     def __init__(self):
         super().__init__()
@@ -38,6 +59,8 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
+        self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGE))
+        self.q_export_image_btn.clicked.connect(self.export_images)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
@@ -48,6 +71,7 @@ class QTemplateTabs(QWidget):
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_export_image_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
@@ -105,6 +129,10 @@ class QTemplateTabs(QWidget):
         )
 
         return template
+
+    def export_images(self):
+        template = self.get_template()
+        get_template_html_resonator_model(template.test_resonator_id_1)
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))

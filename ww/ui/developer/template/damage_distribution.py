@@ -1,16 +1,7 @@
 from decimal import Decimal
 from typing import Dict, List
 
-from PySide2.QtWidgets import (
-    QDesktopWidget,
-    QDialog,
-    QHBoxLayout,
-    QPushButton,
-    QTableWidgetItem,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum

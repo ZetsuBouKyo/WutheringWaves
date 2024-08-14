@@ -6,6 +6,7 @@ from typing import List, Optional
 from ww.model.template import TemplateModel
 
 TEMPLATE_HOME_PATH = "./cache/v1/zh_tw/custom/template"
+TEMPLATE_OUTPUT_HOME_PATH = "./cache/v1/zh_tw/output/template"
 
 
 def get_template_path(
@@ -17,6 +18,12 @@ def get_template_path(
     template_home_path = Path(template_home_path)
     template_path = template_home_path / template_fname
     return template_path
+
+
+def get_template_output_home_path(template_id: str) -> Optional[Path]:
+    if not template_id:
+        return None
+    return Path(TEMPLATE_OUTPUT_HOME_PATH) / template_id
 
 
 def get_template(
