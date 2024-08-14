@@ -27,6 +27,7 @@ class TemplateRowActionEnum(str, Enum):
     ATTACK_N: str = "普攻xN"
     AIR_ATTACK: str = "空中攻擊"
     HEAVY_ATTACK: str = "重擊"
+    AIR_HEAVY_ATTACK: str = "空中重擊"
     RESONANCE_SKILL: str = "共鳴技能"
     RESONANCE_LIBERATION: str = "共鳴解放"
     ECHO: str = "聲骸"
