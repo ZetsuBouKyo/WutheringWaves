@@ -109,6 +109,7 @@ class TemplateRowModel(BaseModel):
     time_end: str = ""
     cumulative_time: str = ""
     frame: str = ""
+    comment: str = ""
 
 
 class TemplateModel(BaseModel):

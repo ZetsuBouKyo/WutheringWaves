@@ -44,6 +44,7 @@ class ZhTwEnum(str, Enum):
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
 
     CALCULATE: str = "計算"
+    COMMENT: str = "註解"
     DELETE: str = "刪除"
 
     WARNING: str = "警告"

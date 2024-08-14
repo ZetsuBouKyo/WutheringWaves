@@ -9,6 +9,7 @@ from PySide2.QtWidgets import (
     QDialog,
     QHBoxLayout,
     QPushButton,
+    QTextEdit,
     QVBoxLayout,
     QWidget,
 )
@@ -294,7 +295,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         return cell
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == TemplateRowEnum.CALCULATE.value:
+        if self.column_names[col] == TemplateRowEnum.COMMENT.value:
+            btn = QPushButton(_(ZhTwEnum.COMMENT))
+            btn.clicked.connect(self.add_comment)
+            self.setCellWidget(row, col, btn)
+        elif self.column_names[col] == TemplateRowEnum.CALCULATE.value:
             btn = QPushButton(_(ZhTwEnum.CALCULATE))
             btn.clicked.connect(partial(self.calculate_row, None))
             self.setCellWidget(row, col, btn)
@@ -421,6 +426,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         # Update following cells
         self.update_row_buffs(row, buffs)
 
+        dialog.done(1)
+
+    def set_row_comment(self, row: int, dialog: QDialog, text_edit: QTextEdit):
+        text = text_edit.toPlainText()
+        self.ouput_methods[row].comment = text
         dialog.done(1)
 
     def add_default_buffs(
@@ -557,6 +567,41 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.set_cell(row, col_index, value)
         return calculated_row
 
+    def add_comment(self):
+        row = self.get_selected_row()
+        if row is None:
+            return
+
+        width = 1200
+        height = 600
+        center = QDesktopWidget().availableGeometry().center()
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        layout = QVBoxLayout()
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves Template Buff")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+
+        text = self.ouput_methods[row].comment
+        text_edit = QTextEdit()
+        text_edit.setText(text)
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QDataPushButton("OK")
+        ok_btn.clicked.connect(partial(self.set_row_comment, row, dialog, text_edit))
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addWidget(text_edit)
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
+
     def add_buff(self, btn: QDataPushButton):
         row = self.get_selected_row()
         if row is None:
@@ -566,9 +611,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         width = 1200
         height = 600
-
         center = QDesktopWidget().availableGeometry().center()
-
         x0 = center.x() - width // 2
         y0 = center.y() - height // 2
 
