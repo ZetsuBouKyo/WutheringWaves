@@ -37,12 +37,16 @@ def get_png(html_fpath: str, out: str, name: str):
         template = Template(fp.read())
 
     resonator = get_resonator_example()
-    html_str = template.render(resonator=resonator)
+    html_str = template.render(resonator=resonator, ZhTwEnum=ZhTwEnum, _=_)
 
     h2png = Html2Image(
-        custom_flags=["--no-sandbox"],
+        custom_flags=[
+            "--no-sandbox",
+            "--default-background-color=00000000",
+            "--force-device-scale-factor=2",
+        ],
         output_path=out,
-        size=(1920, 1000),  # (pixel, pixel)
+        size=(1920, 276),  # (pixel, pixel)
     )
     h2png.screenshot(
         html_str=html_str,

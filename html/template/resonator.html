@@ -11,61 +11,168 @@
     </div>
     <div class="cell-row">
       <div class="resonator-sub-info">
-        <div class="resonator-element {{resonator.element_class_name}}">{{resonator.element}}</div>
-        <div class="resonator-chain">{{_(ZhTwEnum.CHAIN)}} {{resonator.chain}}</div>
+        <div class="resonator-top {{resonator.element_class_name}}">{{resonator.element}}</div>
+        <div class="resonator-bottom">{{_(ZhTwEnum.CHAIN)}} {{resonator.chain}}</div>
+      </div>
+    </div>
+    <div class="cell-row">
+      <div class="resonator-sub-info margin-left">
+        <div class="resonator-top">{{resonator.weapon_name}}</div>
+        <div class="resonator-bottom">
+          LV{{resonator.weapon_level}}&nbsp;&nbsp;{{_(ZhTwEnum.TUNE)}} {{resonator.weapon_rank}}
+        </div>
       </div>
     </div>
   </div>
   <div class="table">
+    <table class="margin-right">
+      <tr>
+        <td>{{_(ZhTwEnum.LEVEL)}}</td>
+        <td align="right">{{resonator.level}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HP)}}</td>
+        <td align="right">{{resonator.hp}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ATK)}}</td>
+        <td align="right">{{resonator.attack}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.DEF)}}</td>
+        <td align="right">{{resonator.defense}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.CRIT_RATE)}}</td>
+        <td align="right">{{resonator.crit_rate}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.CRIT_DMG)}}</td>
+        <td align="right">{{resonator.crit_dmg}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
+        <td align="right">{{resonator.energy_regen}}</td>
+      </tr>
+    </table>
+    <table class="margin-right">
+      <tr>
+        <td>{{_(ZhTwEnum.RESONANCE_SKILL_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.resonance_skill_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.BASIC_ATTACK_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.basic_attack_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HEAVY_ATTACK_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.heavy_attack_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.RESONANCE_LIBERATION_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.resonance_liberation_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HEALING_BONUS)}}</td>
+        <td align="right">{{resonator.healing_bonus}}</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td align="right">&nbsp;</td>
+      </tr>
+    </table>
+    <table class="margin-right">
+      <tr>
+        <td>{{_(ZhTwEnum.PHYSICAL_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.physical_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.GLACIO_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.glacio_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.FUSION_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.fusion_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ELECTRO_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.electro_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.AERO_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.aero_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.SPECTRO_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.spectro_dmg_bonus}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HAVOC_DMG_BONUS)}}</td>
+        <td align="right">{{resonator.havoc_dmg_bonus}}</td>
+      </tr>
+    </table>
+    <table class="margin-right">
+      <tr>
+        <td>{{_(ZhTwEnum.PHYSICAL_DMG_RES)}}</td>
+        <td align="right">{{resonator.physical_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.GLACIO_DMG_RES)}}</td>
+        <td align="right">{{resonator.glacio_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.FUSION_DMG_RES)}}</td>
+        <td align="right">{{resonator.fusion_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.ELECTRO_DMG_RES)}}</td>
+        <td align="right">{{resonator.electro_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.AERO_DMG_RES)}}</td>
+        <td align="right">{{resonator.aero_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.SPECTRO_DMG_RES)}}</td>
+        <td align="right">{{resonator.spectro_dmg_res}}</td>
+      </tr>
+      <tr>
+        <td>{{_(ZhTwEnum.HAVOC_DMG_RES)}}</td>
+        <td align="right">{{resonator.havoc_dmg_res}}</td>
+      </tr>
+    </table>
     <table>
       <tr>
-        <td>{{_(ZhTwEnum.LEVEL)}}: {{resonator.level}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.NORMAL_ATTACK_LV)}}</td>
+        <td align="right">{{resonator.normal_attack_lv}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.HP)}}: {{resonator.hp}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.RESONANCE_SKILL_LV)}}</td>
+        <td align="right">{{resonator.resonance_skill_lv}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.ATK)}}: {{resonator.attack}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.FORTE_CIRCUIT_LV)}}</td>
+        <td align="right">{{resonator.forte_circuit_lv}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.DEF)}}: {{resonator.defense}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.RESONANCE_LIBERATION_LV)}}</td>
+        <td align="right">{{resonator.resonance_liberation_lv}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.CRIT_RATE)}}: {{resonator.crit_rate}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.INTRO_SKILL_LV)}}</td>
+        <td align="right">{{resonator.intro_skill_lv}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.CRIT_DMG)}}: {{resonator.crit_dmg}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.INHERENT_SKILL_1)}}</td>
+        <td align="right">{{resonator.inherent_skill_1}}</td>
       </tr>
       <tr>
-        <td>{{_(ZhTwEnum.ENERGY_REGEN)}}: {{resonator.energy_regen}}</td>
-        <td>Maria Anders</td>
-        <td>Germany</td>
-        <td>Germany</td>
-        <td>Germany</td>
+        <td>{{_(ZhTwEnum.INHERENT_SKILL_2)}}</td>
+        <td align="right">{{resonator.inherent_skill_2}}</td>
       </tr>
     </table>
   </div>
@@ -73,9 +180,8 @@
 
 <style>
   body {
-    background-color: rgb(8, 12, 20);
     color: rgb(240, 240, 240);
-    width: 1920px;
+    width: 1900px;
   }
   div.cell-row {
     display: flex;
@@ -86,6 +192,7 @@
     margin-top: 12px;
   }
   div.resonator-title {
+    color: rgb(240, 240, 240);
     display: flex;
     flex-wrap: wrap;
     align-items: flex-start;
@@ -94,18 +201,18 @@
   div.resonator-name {
     display: flex;
     align-self: center;
-    font-size: 28px;
+    font-size: 34px;
     margin-left: 10px;
   }
   div.resonator-sub-info {
     display: flex;
     flex-direction: column;
   }
-  div.resonator-element {
+  div.resonator-top {
     font-size: 16px;
   }
-  div.resonator-chain {
-    font-size: 8px;
+  div.resonator-bottom {
+    font-size: 12px;
     align-self: flex-end;
   }
   img {
@@ -113,16 +220,32 @@
     object-fit: contain;
   }
   div.container {
-    margin: 12px;
+    width: 1280px;
+    background-color: rgb(8, 12, 20);
+    padding: 12px;
     display: flex;
     flex-direction: column;
+    border-radius: 8px;
+    color: rgb(16, 24, 40);
+    border: 4px solid;
+  }
+  .margin-left {
+    margin-left: 12px;
+  }
+  .margin-right {
+    margin-right: 12px;
+  }
+  table {
+    border-radius: 8px;
+    border-color: rgb(240, 240, 240);
+    border: 2px solid;
+    width: 244px;
   }
   td {
     padding: 0px 12px;
   }
   .element {
     height: 42px;
-    margin-left: 4px;
   }
   .glacio {
     color: rgb(72, 172, 252);
