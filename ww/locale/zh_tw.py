@@ -113,12 +113,10 @@ class ZhTwEnum(str, Enum):
     HAVOC_DMG_RES: str = "湮滅傷害抗性"
 
     NORMAL_ATTACK_LV: str = "常態攻擊LV"
-    RESONANCE_SKILL_LV: str = ""
-    RESONANCE_LIBERATION_LV: str = ""
-    FORTE_CIRCUIT_LV: str = ""
-    INTRO_SKILL_LV: str = ""
-    # inherent_skill_1: str = ""
-    # inherent_skill_2: str = ""
+    RESONANCE_SKILL_LV: str = "共鳴技能LV"
+    FORTE_CIRCUIT_LV: str = "共鳴回路LV"
+    RESONANCE_LIBERATION_LV: str = "共鳴解放LV"
+    INTRO_SKILL_LV: str = "變奏技能LV"
 
     MAGNIFIER: str = "倍率"
     AMPLIFIER: str = "加深"
@@ -149,8 +147,8 @@ class ZhTwEnum(str, Enum):
     OUTRO_SKILL: str = "延奏技能"
 
     INHERENT_SKILL: str = "固有技能"
-    INHERENT_SKILL_1: str = "固有1"
-    INHERENT_SKILL_2: str = "固有2"
+    INHERENT_SKILL_1: str = "固有技能1"
+    INHERENT_SKILL_2: str = "固有技能2"
 
     CHAIN: str = "共鳴鏈"
     CHAIN_1: str = "共鳴鏈1"
