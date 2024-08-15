@@ -7,6 +7,7 @@ from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     CalculatedResonatorModel,
     CalculatedResonatorTsvColumnEnum,
+    ResonatorModel,
     ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
@@ -87,6 +88,18 @@ class ResonatorsTable:
 
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorTsvColumnEnum.ID.value)
+
+    def get_resonator_model(self, id: str) -> ResonatorModel:
+        model = ResonatorModel()
+        row = self.get_row(id)
+        if row is None:
+            return model
+        row_dict = row.iloc[0].to_dict()
+
+        for e in ResonatorTsvColumnEnum:
+            value = row_dict.get(e.value, "")
+            setattr(model, e.name.lower(), value)
+        return model
 
 
 class CalculatedResonatorsTable:

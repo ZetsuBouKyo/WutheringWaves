@@ -2,9 +2,7 @@ from pathlib import Path
 
 from PySide2.QtWidgets import (
     QHBoxLayout,
-    QLabel,
     QMessageBox,
-    QProgressBar,
     QPushButton,
     QTabWidget,
     QVBoxLayout,
@@ -17,15 +15,11 @@ from ww.crud.template import (
     get_template_path,
     save_template,
 )
+from ww.html.template import get_html_template_resonator_model
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoTsvColumnEnum
-from ww.model.template import (
-    TemplateHtmlResonatorModel,
-    TemplateModel,
-    TemplateRowModel,
-)
+from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echo import EchoListTable
-from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.help import QTemplateHelpTab
@@ -36,67 +30,6 @@ echo_list_table = EchoListTable()
 echo_list = [
     row[EchoTsvColumnEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()
 ]
-
-
-def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonatorModel:
-    if not resonator_id:
-        return
-    calculated_resonators_table = CalculatedResonatorsTable()
-    calculated_resonator = calculated_resonators_table.get_calculated_resonator_model(
-        resonator_id
-    )
-    if calculated_resonator is None:
-        return
-
-    resonators_table = ResonatorsTable()
-    resonator = resonators_table.get_row(resonator_id)
-    if resonator is None:
-        return
-
-    template_html_model = TemplateHtmlResonatorModel(
-        name="",
-        chain="",
-        element="",
-        weapon_name="",
-        weapon_rank="",
-        weapon_level="",
-        level="",
-        hp=calculated_resonator.calculated_hp,
-        attack=calculated_resonator.calculated_atk,
-        defense=calculated_resonator.calculated_def,
-        crit_rate=calculated_resonator.calculated_crit_rate,
-        crit_dmg=calculated_resonator.calculated_crit_dmg,
-        energy_regen=calculated_resonator.calculated_energy_regen,
-        resonance_skill_dmg_bonus=calculated_resonator.calculated_resonance_skill_dmg_bonus,
-        basic_attack_dmg_bonus=calculated_resonator.calculated_basic_attack_dmg_bonus,
-        heavy_attack_dmg_bonus=calculated_resonator.calculated_heavy_attack_dmg_bonus,
-        resonance_liberation_dmg_bonus=calculated_resonator.calculated_resonance_liberation_dmg_bonus,
-        healing_bonus=calculated_resonator.calculated_healing_bonus,
-        physical_dmg_bonus=calculated_resonator.calculated_physical_dmg_bonus,
-        glacio_dmg_bonus=calculated_resonator.calculated_glacio_dmg_bonus,
-        fusion_dmg_bonus=calculated_resonator.calculated_fusion_dmg_bonus,
-        electro_dmg_bonus=calculated_resonator.calculated_electro_dmg_bonus,
-        aero_dmg_bonus=calculated_resonator.calculated_aero_dmg_bonus,
-        spectro_dmg_bonus=calculated_resonator.calculated_spectro_dmg_bonus,
-        havoc_dmg_bonus=calculated_resonator.calculated_havoc_dmg_bonus,
-        physical_dmg_res=calculated_resonator.calculated_physical_dmg_res,
-        glacio_dmg_res=calculated_resonator.calculated_glacio_dmg_res,
-        fusion_dmg_res=calculated_resonator.calculated_fusion_dmg_res,
-        electro_dmg_res=calculated_resonator.calculated_electro_dmg_res,
-        aero_dmg_res=calculated_resonator.calculated_aero_dmg_res,
-        spectro_dmg_res=calculated_resonator.calculated_spectro_dmg_res,
-        havoc_dmg_res=calculated_resonator.calculated_havoc_dmg_res,
-        normal_attack_lv="",
-        resonance_skill_lv="",
-        resonance_liberation_lv="",
-        forte_circuit_lv="",
-        inherent_skill_1="",
-        inherent_skill_2="",
-        resonator_src="",
-        element_class_name="",
-        element_src="",
-    )
-    print(template_html_model)
 
 
 class QTemplateTabs(QWidget):
@@ -179,7 +112,7 @@ class QTemplateTabs(QWidget):
 
     def export_images(self):
         template = self.get_template()
-        get_template_html_resonator_model(template.test_resonator_id_1)
+        get_html_template_resonator_model(template.test_resonator_id_1)
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))
