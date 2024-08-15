@@ -40,15 +40,17 @@ def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonato
     if not resonator_id:
         return
     calculated_resonators_table = CalculatedResonatorsTable()
-    calculated_resonator = calculated_resonators_table.get_row(resonator_id)
+    calculated_resonator = calculated_resonators_table.get_calculated_resonator_model(
+        resonator_id
+    )
     if calculated_resonator is None:
         return
-    print(calculated_resonator)
+
     resonators_table = ResonatorsTable()
     resonator = resonators_table.get_row(resonator_id)
     if resonator is None:
         return
-    print(resonator)
+
     TemplateHtmlResonatorModel()
 
 

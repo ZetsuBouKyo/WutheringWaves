@@ -200,7 +200,7 @@ def get_tsv_row_damage(
     # ATK
     resonator_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ATK
+            resonator_id, CalculatedResonatorColumnEnum.ATTACK
         )
     )
     weapon_atk = get_number(

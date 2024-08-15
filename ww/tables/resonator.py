@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Any, List, Optional
 
+import pandas as pd
+
 from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     CalculatedResonatorColumnEnum,
@@ -71,7 +73,7 @@ class ResonatorSkillTable:
     def search(self, id: str, col: ResonatorSkillEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorSkillEnum.PRIMARY_KEY.value)
 
-    def get_row(self, id: str) -> Optional[List[Any]]:
+    def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorSkillEnum.PRIMARY_KEY.value)
 
 
@@ -83,7 +85,7 @@ class ResonatorsTable:
     def search(self, id: str, col: ResonatorColumnEnum) -> Optional[Any]:
         return search(self.df, id, col, ResonatorColumnEnum.ID.value)
 
-    def get_row(self, id: str) -> Optional[List[Any]]:
+    def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorColumnEnum.ID.value)
 
 
@@ -95,8 +97,17 @@ class CalculatedResonatorsTable:
     def search(self, id: str, col: CalculatedResonatorColumnEnum) -> Optional[Any]:
         return search(self.df, id, col, CalculatedResonatorColumnEnum.ID.value)
 
-    def get_row(self, id: str) -> Optional[List[Any]]:
+    def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, CalculatedResonatorColumnEnum.ID.value)
 
     def get_calculated_resonator_model(self, id: str) -> CalculatedResonatorModel:
+        model = CalculatedResonatorModel()
         row = self.get_row(id)
+        if row is None:
+            return model
+        row_dict = row.iloc[0].to_dict()
+
+        for e in CalculatedResonatorColumnEnum:
+            value = row_dict.get(e.value, "")
+            setattr(model, e.name.lower(), value)
+        return model

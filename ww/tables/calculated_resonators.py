@@ -153,10 +153,10 @@ class CalculatedResonator:
         )
 
         self._new_row[CalculatedResonatorColumnEnum.HP.value] = get_number(resonator_hp)
-        self._new_row[CalculatedResonatorColumnEnum.ATK.value] = get_number(
+        self._new_row[CalculatedResonatorColumnEnum.ATTACK.value] = get_number(
             resonator_atk
         )
-        self._new_row[CalculatedResonatorColumnEnum.DEF.value] = get_number(
+        self._new_row[CalculatedResonatorColumnEnum.DEFENSE.value] = get_number(
             resonator_def
         )
 
@@ -465,7 +465,7 @@ class CalculatedResonator:
 
         # ATK
         self._new_row[CalculatedResonatorColumnEnum.CALCULATED_ATK.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.ATK.value]
+            self._new_row[CalculatedResonatorColumnEnum.ATTACK.value]
             + self._new_row[CalculatedResonatorColumnEnum.WEAPON_ATK.value]
         ) * (
             get_number("1.0")
@@ -486,7 +486,7 @@ class CalculatedResonator:
 
         # DEF
         self._new_row[CalculatedResonatorColumnEnum.CALCULATED_DEF.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.DEF.value]
+            self._new_row[CalculatedResonatorColumnEnum.DEFENSE.value]
             * (
                 get_number("1.0")
                 + self._new_row[CalculatedResonatorColumnEnum.CALCULATED_DEF_P.value]

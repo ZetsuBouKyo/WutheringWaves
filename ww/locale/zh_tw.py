@@ -302,7 +302,7 @@ class ZhTwEnum(str, Enum):
     BUFF_SOURCE_INTRO_SKILL: str = "變奏技能"
     BUFF_SOURCE_OUTRO_SKILL: str = "延奏技能"
 
-    ID: str = "角色代稱"
+    RESONATOR_ID: str = "角色代稱"
 
     # Resonator Stat
     RESONATOR_HP: str = "角色生命"
