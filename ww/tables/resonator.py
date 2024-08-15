@@ -7,9 +7,9 @@ from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     CalculatedResonatorModel,
     CalculatedResonatorTsvColumnEnum,
-    ResonatorModel,
     ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
+    ResonatorTsvModel,
 )
 from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.tables.crud import get_row, search
@@ -89,8 +89,8 @@ class ResonatorsTable:
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorTsvColumnEnum.ID.value)
 
-    def get_resonator_model(self, id: str) -> ResonatorModel:
-        model = ResonatorModel()
+    def get_resonator_model(self, id: str) -> ResonatorTsvModel:
+        model = ResonatorTsvModel()
         row = self.get_row(id)
         if row is None:
             return model

@@ -65,7 +65,7 @@ class ResonatorTsvColumnEnum(str, Enum):
     ECHO_5: str = "聲骸5"
 
 
-class ResonatorModel(BaseModel):
+class ResonatorTsvModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     id: str = "角色代稱"
@@ -310,3 +310,10 @@ class CalculatedResonatorModel(BaseModel):
     echo_spectro_dmg_bonus: str = ""
     echo_havoc_dmg_bonus: str = ""
     echo_healing_bonus: str = ""
+
+
+class ResonatorModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    name: str = ""
+    element: str = ""

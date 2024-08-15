@@ -4,6 +4,7 @@ from ww.locale import ZhTwEnum, _
 
 
 class ElementEnum(str, Enum):
+    PHYSICAL: str = _(ZhTwEnum.PHYSICAL)
     GLACIO: str = _(ZhTwEnum.GLACIO)
     FUSION: str = _(ZhTwEnum.FUSION)
     ELECTRO: str = _(ZhTwEnum.ELECTRO)

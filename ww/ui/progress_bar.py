@@ -24,6 +24,9 @@ class QHProgressBar(QWidget):
         self.q_progress_bar.setValue(percentage)
         self.q_progress_label.setText(message)
 
+    def set_message(self, message: str):
+        self.q_progress_label.setText(message)
+
     def set_percentage(self, percentage: int):
         self.q_progress_bar.setValue(percentage)
 

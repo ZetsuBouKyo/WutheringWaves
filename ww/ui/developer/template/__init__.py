@@ -15,7 +15,7 @@ from ww.crud.template import (
     get_template_path,
     save_template,
 )
-from ww.html.template import get_html_template_resonator_model
+from ww.html.template import export_html_template_resonator_model_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoTsvColumnEnum
 from ww.model.template import TemplateModel, TemplateRowModel
@@ -112,7 +112,16 @@ class QTemplateTabs(QWidget):
 
     def export_images(self):
         template = self.get_template()
-        get_html_template_resonator_model(template.test_resonator_id_1)
+        export_html_template_resonator_model_as_png(
+            template.id, template.test_resonator_id_1
+        )
+        export_html_template_resonator_model_as_png(
+            template.id, template.test_resonator_id_2
+        )
+        export_html_template_resonator_model_as_png(
+            template.id, template.test_resonator_id_3
+        )
+        self.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))
