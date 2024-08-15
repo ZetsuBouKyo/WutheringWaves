@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 from ww.locale import ZhTwEnum, _
 
 
-class ResonatorStatColumnEnum(str, Enum):
+class ResonatorStatTsvColumnEnum(str, Enum):
     LEVEL: str = _(ZhTwEnum.LEVEL)
     HP: str = _(ZhTwEnum.HP)
     ATK: str = _(ZhTwEnum.ATK)

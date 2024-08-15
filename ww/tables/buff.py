@@ -4,10 +4,10 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 
 from ww.model.buff import (
-    EchoBuffEnum,
-    EchoSonataBuffEnum,
-    ResonatorBuffEnum,
-    WeaponBuffEnum,
+    EchoBuffTsvColumnEnum,
+    EchoSonataBuffTsvColumnEnum,
+    ResonatorBuffTsvColumnEnum,
+    WeaponBuffTsvColumnEnum,
 )
 from ww.tables.base import BaseTable
 from ww.tables.crud import df_to_list, get_rows
@@ -38,34 +38,42 @@ def get_echo_sonata_buff_fpath() -> Path:
 class ResonatorBuffTable(BaseTable):
     def __init__(self):
         super().__init__(
-            get_resonator_buff_fpath(), [e.value for e in ResonatorBuffEnum]
+            get_resonator_buff_fpath(), [e.value for e in ResonatorBuffTsvColumnEnum]
         )
 
     def get_rows(self, name: str) -> List[Dict[str, str]]:
-        return df_to_list(get_rows(self.df, name, ResonatorBuffEnum.NAME.value))
+        return df_to_list(
+            get_rows(self.df, name, ResonatorBuffTsvColumnEnum.NAME.value)
+        )
 
 
 class WeaponBuffTable(BaseTable):
     def __init__(self):
-        super().__init__(get_weapon_buff_fpath(), [e.value for e in WeaponBuffEnum])
+        super().__init__(
+            get_weapon_buff_fpath(), [e.value for e in WeaponBuffTsvColumnEnum]
+        )
 
     def get_rows(self, name: str) -> List[Dict[str, str]]:
-        return df_to_list(get_rows(self.df, name, WeaponBuffEnum.NAME.value))
+        return df_to_list(get_rows(self.df, name, WeaponBuffTsvColumnEnum.NAME.value))
 
 
 class EchoBuffTable(BaseTable):
     def __init__(self):
-        super().__init__(get_echo_buff_fpath(), [e.value for e in EchoBuffEnum])
+        super().__init__(
+            get_echo_buff_fpath(), [e.value for e in EchoBuffTsvColumnEnum]
+        )
 
     def get_rows(self, name: str) -> List[Dict[str, str]]:
-        return df_to_list(get_rows(self.df, name, EchoBuffEnum.NAME.value))
+        return df_to_list(get_rows(self.df, name, EchoBuffTsvColumnEnum.NAME.value))
 
 
 class EchoSonataBuffTable(BaseTable):
     def __init__(self):
         super().__init__(
-            get_echo_sonata_buff_fpath(), [e.value for e in EchoSonataBuffEnum]
+            get_echo_sonata_buff_fpath(), [e.value for e in EchoSonataBuffTsvColumnEnum]
         )
 
     def get_rows(self, name: str) -> List[Dict[str, str]]:
-        return df_to_list(get_rows(self.df, name, EchoSonataBuffEnum.NAME.value))
+        return df_to_list(
+            get_rows(self.df, name, EchoSonataBuffTsvColumnEnum.NAME.value)
+        )

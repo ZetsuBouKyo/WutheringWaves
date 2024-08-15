@@ -41,7 +41,7 @@ class TemplateRowActionEnum(str, Enum):
     NONE: str = "無"
 
 
-class TemplateRowEnum(str, Enum):
+class TemplateColumnEnum(str, Enum):
     COMMENT: str = _(ZhTwEnum.COMMENT)
     CALCULATE: str = _(ZhTwEnum.CALCULATE)
     BONUS_BUFF: str = "增益"

@@ -4,8 +4,8 @@ from typing import List, Optional
 import pandas as pd
 
 from ww.model.resonator import ResonatorTsvColumnEnum
-from ww.model.resonator_skill import ResonatorSkillEnum
-from ww.tables.echo import EchoSkillEnum, EchoSkillTable
+from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
+from ww.tables.echo import EchoSkillTable, EchoSkillTsvColumnEnum
 from ww.tables.resonator import (
     RESONATOR_HOME_PATH,
     ResonatorSkillTable,
@@ -49,7 +49,7 @@ def get_resonator_skill_ids(resonator_name: Optional[str]) -> List[str]:
     table = ResonatorSkillTable(resonator_name)
     names = [
         name
-        for name in table.df[ResonatorSkillEnum.PRIMARY_KEY.value].to_list()
+        for name in table.df[ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value].to_list()
         if name
     ]
     return names
@@ -64,7 +64,9 @@ def get_resonator_and_echo_skill_ids(resonator_name: Optional[str]) -> List[str]
     echo_skill_table = EchoSkillTable()
     echo_skill_ids = [
         name
-        for name in echo_skill_table.df[EchoSkillEnum.PRIMARY_KEY.value].to_list()
+        for name in echo_skill_table.df[
+            EchoSkillTsvColumnEnum.PRIMARY_KEY.value
+        ].to_list()
         if name
     ]
     return resonator_skill_ids + echo_skill_ids

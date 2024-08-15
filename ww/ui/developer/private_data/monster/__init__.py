@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
-from ww.model.monsters import MonstersEnum
+from ww.model.monsters import MonsterTsvColumnEnum
 from ww.tables.monster import MonstersTable, get_monsters_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 
@@ -17,7 +17,7 @@ class QPrivateDataMonsterTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=MonstersEnum.NAME.value,
+            column_id_name=MonsterTsvColumnEnum.NAME.value,
             column_names=column_names,
         )
 

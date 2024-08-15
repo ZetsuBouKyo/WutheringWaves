@@ -1,12 +1,12 @@
 from enum import Enum
 
 
-class EchoListEnum(str, Enum):
+class EchoTsvColumnEnum(str, Enum):
     PRIMARY_KEY: str = "名稱"
     COST: str = "COST"
 
 
-class EchoSkillEnum(str, Enum):
+class EchoSkillTsvColumnEnum(str, Enum):
     PRIMARY_KEY: str = "代稱"
     ELEMENT: str = "屬性"
     DMG: str = "倍率"
@@ -24,7 +24,7 @@ class EchoSonataEnum(str, Enum):
     REJUVENATING_GLOW: str = "隱世回光"
 
 
-class EchoesEnum(str, Enum):
+class ResonatorEchoTsvColumnEnum(str, Enum):
     ID: str = "代稱"
     COST: str = "COST"
     PREFIX: str = "字首"

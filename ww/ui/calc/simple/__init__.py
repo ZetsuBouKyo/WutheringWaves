@@ -13,9 +13,9 @@ from PySide2.QtWidgets import (
 from ww.calc.damage import get_json_row_damage
 from ww.crud.resonator import get_resonator_ids
 from ww.locale import ZhTwEnum, _
-from ww.model.monsters import MonstersEnum
+from ww.model.monsters import MonsterTsvColumnEnum
 from ww.model.resonator import ResonatorTsvColumnEnum
-from ww.model.resonator_skill import ResonatorSkillEnum
+from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.model.template import (
     CalculatedTemplateRowModel,
     TemplateBuffTableRowModel,
@@ -176,7 +176,7 @@ class QDamageSimple(QWidget):
         names = [
             name
             for name in resonator_skills_table.df[
-                ResonatorSkillEnum.PRIMARY_KEY.value
+                ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value
             ].to_list()
             if name
         ]
@@ -195,7 +195,9 @@ class QDamageSimple(QWidget):
     def get_monster_ids(self):
         monsters_table = MonstersTable()
         names = [
-            name for name in monsters_table.df[MonstersEnum.NAME].to_list() if name
+            name
+            for name in monsters_table.df[MonsterTsvColumnEnum.NAME].to_list()
+            if name
         ]
         return names
 
@@ -270,9 +272,11 @@ class QDamageSimple(QWidget):
 
         monsters_table = MonstersTable()
         monster_level = get_number(
-            monsters_table.search(monster_id, MonstersEnum.LEVEL)
+            monsters_table.search(monster_id, MonsterTsvColumnEnum.LEVEL)
         )
-        monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
+        monster_def = get_number(
+            monsters_table.search(monster_id, MonsterTsvColumnEnum.DEF)
+        )
         echo_skill_table = EchoSkillTable()
         results = get_json_row_damage(
             row,

@@ -7,10 +7,10 @@ from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     CalculatedResonatorModel,
     CalculatedResonatorTsvColumnEnum,
-    ResonatorStatColumnEnum,
+    ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
-from ww.model.resonator_skill import ResonatorSkillEnum
+from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.tables.crud import get_row, search
 from ww.utils.pd import get_empty_df, safe_get_df
 
@@ -50,31 +50,31 @@ def get_resonator_skill_fpath(resonator_name: str) -> Optional[Path]:
 class ResonatorStatTable:
     def __init__(self, name):
         _path = get_resonator_stat_fpath(name)
-        self.column_names = [e.value for e in ResonatorStatColumnEnum]
+        self.column_names = [e.value for e in ResonatorStatTsvColumnEnum]
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
         else:
             self.df = get_empty_df(self.column_names)
 
-    def search(self, id: str, col: ResonatorStatColumnEnum) -> Optional[Any]:
-        return search(self.df, id, col, ResonatorStatColumnEnum.LEVEL.value)
+    def search(self, id: str, col: ResonatorStatTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorStatTsvColumnEnum.LEVEL.value)
 
 
 class ResonatorSkillTable:
     def __init__(self, name):
         _path = get_resonator_skill_fpath(name)
-        self.column_names = [e.value for e in ResonatorSkillEnum]
+        self.column_names = [e.value for e in ResonatorSkillTsvColumnEnum]
 
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
         else:
             self.df = get_empty_df(self.column_names)
 
-    def search(self, id: str, col: ResonatorSkillEnum) -> Optional[Any]:
-        return search(self.df, id, col, ResonatorSkillEnum.PRIMARY_KEY.value)
+    def search(self, id: str, col: ResonatorSkillTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value)
 
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
-        return get_row(self.df, id, ResonatorSkillEnum.PRIMARY_KEY.value)
+        return get_row(self.df, id, ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value)
 
 
 class ResonatorsTable:

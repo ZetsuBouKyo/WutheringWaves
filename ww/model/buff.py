@@ -28,7 +28,7 @@ class BuffSourceEnum(str, Enum):
     OUTRO_SKILL: str = _(ZhTwEnum.BUFF_SOURCE_OUTRO_SKILL)
 
 
-class ResonatorBuffEnum(str, Enum):
+class ResonatorBuffTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.BUFF_ID)
     NAME: str = _(ZhTwEnum.BUFF_NAME)
     SOURCE: str = _(ZhTwEnum.BUFF_SOURCE)
@@ -41,7 +41,7 @@ class ResonatorBuffEnum(str, Enum):
     DURATION: str = _(ZhTwEnum.BUFF_DURATION)
 
 
-class WeaponBuffEnum(str, Enum):
+class WeaponBuffTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.BUFF_ID)
     NAME: str = _(ZhTwEnum.BUFF_NAME)
     SUFFIX: str = _(ZhTwEnum.BUFF_SUFFIX)
@@ -53,7 +53,7 @@ class WeaponBuffEnum(str, Enum):
     DURATION: str = _(ZhTwEnum.BUFF_DURATION)
 
 
-class EchoBuffEnum(str, Enum):
+class EchoBuffTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.BUFF_ID)
     NAME: str = _(ZhTwEnum.BUFF_NAME)
     SUFFIX: str = _(ZhTwEnum.BUFF_SUFFIX)
@@ -65,7 +65,7 @@ class EchoBuffEnum(str, Enum):
     DURATION: str = _(ZhTwEnum.BUFF_DURATION)
 
 
-class EchoSonataBuffEnum(str, Enum):
+class EchoSonataBuffTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.BUFF_ID)
     NAME: str = _(ZhTwEnum.BUFF_NAME)
     SUFFIX: str = _(ZhTwEnum.BUFF_SUFFIX)

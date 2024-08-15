@@ -4,16 +4,19 @@ from typing import Dict, Optional, Union
 import pandas as pd
 
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.echo import EchoSkillEnum
-from ww.model.monsters import MonstersEnum
+from ww.model.echo import EchoSkillTsvColumnEnum
+from ww.model.monsters import MonsterTsvColumnEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
     CalculatedResonatorTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
-from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
-from ww.model.template import CalculatedTemplateEnum, TemplateEnum
+from ww.model.resonator_skill import (
+    ResonatorSkillBaseAttrEnum,
+    ResonatorSkillTsvColumnEnum,
+)
+from ww.model.template import CalculatedTemplateColumnEnum, TemplateEnum
 from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersTable
 from ww.tables.resonator import (
@@ -37,7 +40,7 @@ def get_tsv_row_damage(
     echo_skill_table,
     monsters_table: MonstersTable,
     calculated_template_columns,
-) -> Optional[Dict[CalculatedTemplateEnum, Union[str, Decimal]]]:
+) -> Optional[Dict[CalculatedTemplateColumnEnum, Union[str, Decimal]]]:
     if resonator_id is None:
         return
 
@@ -45,7 +48,7 @@ def get_tsv_row_damage(
         column: None for column in calculated_template_columns
     }
 
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_NAME.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESONATOR_NAME.value] = (
         resonator_name
     )
 
@@ -76,16 +79,16 @@ def get_tsv_row_damage(
     resonator_skill_table = ResonatorSkillTable(resonator_name)
 
     resonator_skill_element = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.ELEMENT
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.ELEMENT
     )
     resonator_skill_base_attr = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.BASE_ATTR
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.BASE_ATTR
     )
     resonator_skill_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.TYPE_ZH_TW
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_ZH_TW
     )
     resonator_skill_bonus_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.TYPE_BONUS
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_BONUS
     )
     resonator_skill_lv = resonator_skill_levels.get(f"{resonator_skill_type}LV", None)
     resonator_skill_dmg = resonator_skill_table.search(
@@ -94,40 +97,42 @@ def get_tsv_row_damage(
     if resonator_skill_dmg is not None:
         resonator_skill_dmg = get_number(resonator_skill_dmg)
 
-    calculated_template_row_dict[CalculatedTemplateEnum.SKILL_ID.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.SKILL_ID.value] = (
         template_row_skill_id
     )
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_LEVEL.value] = (
-        resonator_skill_lv
-    )
     calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_ELEMENT.value
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_LEVEL.value
+    ] = resonator_skill_lv
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_ELEMENT.value
     ] = resonator_skill_element
     calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_BASE_ATTR.value
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_BASE_ATTR.value
     ] = resonator_skill_base_attr
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_TYPE.value] = (
-        resonator_skill_type
-    )
     calculated_template_row_dict[
-        CalculatedTemplateEnum.RESONATOR_SKILL_TYPE_BONUS.value
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_TYPE.value
+    ] = resonator_skill_type
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_TYPE_BONUS.value
     ] = resonator_skill_bonus_type
-    calculated_template_row_dict[CalculatedTemplateEnum.RESONATOR_SKILL_DMG.value] = (
-        resonator_skill_dmg
-    )
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESONATOR_SKILL_DMG.value
+    ] = resonator_skill_dmg
 
     # Echo Skill
     echo_skill_element = echo_skill_table.search(
-        template_row_skill_id, EchoSkillEnum.ELEMENT
+        template_row_skill_id, EchoSkillTsvColumnEnum.ELEMENT
     )
-    echo_skill_dmg = echo_skill_table.search(template_row_skill_id, EchoSkillEnum.DMG)
+    echo_skill_dmg = echo_skill_table.search(
+        template_row_skill_id, EchoSkillTsvColumnEnum.DMG
+    )
     if echo_skill_dmg is not None:
         echo_skill_dmg = get_number(echo_skill_dmg)
 
-    calculated_template_row_dict[CalculatedTemplateEnum.ECHO_ELEMENT.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.ECHO_ELEMENT.value] = (
         echo_skill_element
     )
-    calculated_template_row_dict[CalculatedTemplateEnum.ECHO_SKILL_DMG.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.ECHO_SKILL_DMG.value] = (
         echo_skill_dmg
     )
 
@@ -141,7 +146,9 @@ def get_tsv_row_damage(
         element = echo_skill_element
     else:
         element = resonator_skill_element
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ELEMENT.value] = element
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESULT_ELEMENT.value] = (
+        element
+    )
 
     # Skill DMG
     if not ((resonator_skill_dmg is None) ^ (echo_skill_dmg is None)):
@@ -154,9 +161,9 @@ def get_tsv_row_damage(
         resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_SKILL_DMG.value] = (
-        skill_dmg
-    )
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESULT_SKILL_DMG.value
+    ] = skill_dmg
 
     # Bonus Type
     if not (
@@ -173,17 +180,21 @@ def get_tsv_row_damage(
         bonus_type = SkillBonusTypeEnum.ECHO.value
     else:
         bonus_type = resonator_skill_bonus_type
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_BONUS_TYPE.value] = (
-        bonus_type
-    )
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESULT_BONUS_TYPE.value
+    ] = bonus_type
 
     # Monster
     monster_res = get_number(monsters_table.search(monster_name, f"{element}抗性"))
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_LEVEL.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.MONSTER_LEVEL.value] = (
         monster_level
     )
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_DEF.value] = monster_def
-    calculated_template_row_dict[CalculatedTemplateEnum.MONSTER_RES.value] = monster_res
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.MONSTER_DEF.value] = (
+        monster_def
+    )
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.MONSTER_RES.value] = (
+        monster_res
+    )
 
     # ATK Percentage
     calculated_atk_p = get_number(
@@ -193,7 +204,7 @@ def get_tsv_row_damage(
     )
     bonus_atk_p = get_number(row[TemplateEnum.BONUS_ATK_P])
     result_atk_p = calculated_atk_p + bonus_atk_p
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_P.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESULT_ATK_P.value] = (
         result_atk_p
     )
 
@@ -209,7 +220,9 @@ def get_tsv_row_damage(
         )
     )
     result_atk = resonator_atk + weapon_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK.value] = result_atk
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESULT_ATK.value] = (
+        result_atk
+    )
 
     # Additional ATK
     echo_atk = get_number(
@@ -219,9 +232,9 @@ def get_tsv_row_damage(
     )
     template_bonus_atk = get_number(row[TemplateEnum.BONUS_ATK])
     result_atk_addition = echo_atk + template_bonus_atk
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_ATK_ADDITION.value] = (
-        result_atk_addition
-    )
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESULT_ATK_ADDITION.value
+    ] = result_atk_addition
 
     # CRIT Rate
     resonator_crit_rate = get_number(
@@ -231,9 +244,9 @@ def get_tsv_row_damage(
     )
     bonus_crit_rate = get_number(row[TemplateEnum.BONUS_CRIT_RATE])
     result_crit_rate = resonator_crit_rate + bonus_crit_rate
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_RATE.value] = (
-        result_crit_rate
-    )
+    calculated_template_row_dict[
+        CalculatedTemplateColumnEnum.RESULT_CRIT_RATE.value
+    ] = result_crit_rate
 
     # CRIT DMG
     resonator_crit_dmg = get_number(
@@ -243,7 +256,7 @@ def get_tsv_row_damage(
     )
     bonus_crit_dmg = get_number(row[TemplateEnum.BONUS_CRIT_DMG])
     result_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_CRIT_DMG.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESULT_CRIT_DMG.value] = (
         result_crit_dmg
     )
 
@@ -265,7 +278,7 @@ def get_tsv_row_damage(
     template_bonus = get_number(row[TemplateEnum.BONUS_ADDITION])
     result_bonus = calculated_element_bonus + calculated_skill_bonus + template_bonus
 
-    calculated_template_row_dict[CalculatedTemplateEnum.RESULT_BONUS.value] = (
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.RESULT_BONUS.value] = (
         result_bonus
     )
 
@@ -321,11 +334,13 @@ def get_tsv_row_damage(
     dmg_crit = dmg_no_crit * region_crit_dmg
     dmg_avg = dmg_no_crit * region_crit
 
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE.value] = int(dmg_avg)
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_NO_CRIT.value] = int(
-        dmg_no_crit
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.DAMAGE.value] = int(
+        dmg_avg
     )
-    calculated_template_row_dict[CalculatedTemplateEnum.DAMAGE_CRIT.value] = int(
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.DAMAGE_NO_CRIT.value] = (
+        int(dmg_no_crit)
+    )
+    calculated_template_row_dict[CalculatedTemplateColumnEnum.DAMAGE_CRIT.value] = int(
         dmg_crit
     )
 
@@ -339,11 +354,15 @@ def get_tsv_damage(
     resonators_table = ResonatorsTable()
 
     monsters_table = MonstersTable()
-    monster_level = get_number(monsters_table.search(monster_name, MonstersEnum.LEVEL))
-    monster_def = get_number(monsters_table.search(monster_name, MonstersEnum.DEF))
+    monster_level = get_number(
+        monsters_table.search(monster_name, MonsterTsvColumnEnum.LEVEL)
+    )
+    monster_def = get_number(
+        monsters_table.search(monster_name, MonsterTsvColumnEnum.DEF)
+    )
 
     template_table = TemplateTable(template_id)
-    calculated_template_columns = [e.value for e in CalculatedTemplateEnum]
+    calculated_template_columns = [e.value for e in CalculatedTemplateColumnEnum]
     calculated_template_dict = {column: [] for column in calculated_template_columns}
 
     echo_skill_table = EchoSkillTable()

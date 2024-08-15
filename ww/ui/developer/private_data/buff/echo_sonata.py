@@ -3,7 +3,7 @@ from typing import List
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import EchoSonataBuffEnum
+from ww.model.buff import EchoSonataBuffTsvColumnEnum
 from ww.tables.buff import EchoSonataBuffTable, get_echo_sonata_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
@@ -28,7 +28,7 @@ class QPrivateDataEchoSonataBuffTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=EchoSonataBuffEnum.ID.value,
+            column_id_name=EchoSonataBuffTsvColumnEnum.ID.value,
             column_names=column_names,
         )
 
@@ -36,21 +36,23 @@ class QPrivateDataEchoSonataBuffTable(QDraggableTableWidget):
         self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
-        col_name = self.get_column_id(EchoSonataBuffEnum.NAME.value)
+        col_name = self.get_column_id(EchoSonataBuffTsvColumnEnum.NAME.value)
         name = row[col_name]
         if not name:
             name = _(ZhTwEnum.NONE.value)
 
-        col_suffix = self.get_column_id(EchoSonataBuffEnum.SUFFIX.value)
+        col_suffix = self.get_column_id(EchoSonataBuffTsvColumnEnum.SUFFIX.value)
         suffix = row[col_suffix]
         if not suffix:
             suffix = _(ZhTwEnum.NONE.value)
 
-        col_type = self.get_column_id(EchoSonataBuffEnum.TYPE.value)
+        col_type = self.get_column_id(EchoSonataBuffTsvColumnEnum.TYPE.value)
         type_ = row[col_type]
-        col_element = self.get_column_id(EchoSonataBuffEnum.ELEMENT.value)
+        col_element = self.get_column_id(EchoSonataBuffTsvColumnEnum.ELEMENT.value)
         element = row[col_element]
-        col_skill_type = self.get_column_id(EchoSonataBuffEnum.SKILL_TYPE.value)
+        col_skill_type = self.get_column_id(
+            EchoSonataBuffTsvColumnEnum.SKILL_TYPE.value
+        )
         skill_type = row[col_skill_type]
         if type_:
             if not element:
@@ -65,7 +67,7 @@ class QPrivateDataEchoSonataBuffTable(QDraggableTableWidget):
         else:
             final_type = _(ZhTwEnum.NONE.value)
 
-        col_target = self.get_column_id(EchoSonataBuffEnum.TARGET.value)
+        col_target = self.get_column_id(EchoSonataBuffTsvColumnEnum.TARGET.value)
         target = row[col_target]
         if not target:
             target = _(ZhTwEnum.NONE.value)
@@ -77,17 +79,17 @@ class QPrivateDataEchoSonataBuffTable(QDraggableTableWidget):
         return primary_key
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == EchoSonataBuffEnum.ID.value:
+        if self.column_names[col] == EchoSonataBuffTsvColumnEnum.ID.value:
             set_uneditable_cell(self, row, col, value)
-        elif self.column_names[col] == EchoSonataBuffEnum.NAME.value:
+        elif self.column_names[col] == EchoSonataBuffTsvColumnEnum.NAME.value:
             set_echo_sonata_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoSonataBuffEnum.TYPE.value:
+        elif self.column_names[col] == EchoSonataBuffTsvColumnEnum.TYPE.value:
             set_buff_type_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoSonataBuffEnum.ELEMENT.value:
+        elif self.column_names[col] == EchoSonataBuffTsvColumnEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoSonataBuffEnum.SKILL_TYPE.value:
+        elif self.column_names[col] == EchoSonataBuffTsvColumnEnum.SKILL_TYPE.value:
             set_skill_bonus_type_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoSonataBuffEnum.TARGET.value:
+        elif self.column_names[col] == EchoSonataBuffTsvColumnEnum.TARGET.value:
             set_buff_target_combobox(self, row, col, value)
         else:
             super().set_cell(row, col, value)

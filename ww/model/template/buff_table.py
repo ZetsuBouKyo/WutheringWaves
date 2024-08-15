@@ -6,7 +6,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 from ww.model.template.template_row import TemplateRowBuffTypeEnum
 
 
-class TemplateBuffTableRowEnum(str, Enum):
+class TemplateBuffTableColumnEnum(str, Enum):
     NAME: str = "名稱"
     TYPE: str = "種類"
     VALUE: str = "數值"

@@ -3,7 +3,7 @@ from typing import List
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import ResonatorBuffEnum
+from ww.model.buff import ResonatorBuffTsvColumnEnum
 from ww.tables.buff import ResonatorBuffTable, get_resonator_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
@@ -29,7 +29,7 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=ResonatorBuffEnum.ID.value,
+            column_id_name=ResonatorBuffTsvColumnEnum.ID.value,
             column_names=column_names,
         )
 
@@ -37,26 +37,26 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
         self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
-        col_resonator_name = self.get_column_id(ResonatorBuffEnum.NAME.value)
+        col_resonator_name = self.get_column_id(ResonatorBuffTsvColumnEnum.NAME.value)
         resonator_name = row[col_resonator_name]
         if not resonator_name:
             resonator_name = _(ZhTwEnum.NONE.value)
 
-        col_source = self.get_column_id(ResonatorBuffEnum.SOURCE.value)
+        col_source = self.get_column_id(ResonatorBuffTsvColumnEnum.SOURCE.value)
         source = row[col_source]
         if not source:
             source = _(ZhTwEnum.NONE.value)
 
-        col_suffix = self.get_column_id(ResonatorBuffEnum.SUFFIX.value)
+        col_suffix = self.get_column_id(ResonatorBuffTsvColumnEnum.SUFFIX.value)
         suffix = row[col_suffix]
         if not suffix:
             suffix = _(ZhTwEnum.NONE.value)
 
-        col_type = self.get_column_id(ResonatorBuffEnum.TYPE.value)
+        col_type = self.get_column_id(ResonatorBuffTsvColumnEnum.TYPE.value)
         type_ = row[col_type]
-        col_element = self.get_column_id(ResonatorBuffEnum.ELEMENT.value)
+        col_element = self.get_column_id(ResonatorBuffTsvColumnEnum.ELEMENT.value)
         element = row[col_element]
-        col_skill_type = self.get_column_id(ResonatorBuffEnum.SKILL_TYPE.value)
+        col_skill_type = self.get_column_id(ResonatorBuffTsvColumnEnum.SKILL_TYPE.value)
         skill_type = row[col_skill_type]
         if type_:
             if not element:
@@ -71,7 +71,7 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
         else:
             final_type = _(ZhTwEnum.NONE.value)
 
-        col_target = self.get_column_id(ResonatorBuffEnum.TARGET.value)
+        col_target = self.get_column_id(ResonatorBuffTsvColumnEnum.TARGET.value)
         target = row[col_target]
         if not target:
             target = _(ZhTwEnum.NONE.value)
@@ -80,19 +80,19 @@ class QPrivateDataResonatorBuffTable(QDraggableTableWidget):
         return primary_key
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == ResonatorBuffEnum.ID.value:
+        if self.column_names[col] == ResonatorBuffTsvColumnEnum.ID.value:
             set_uneditable_cell(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.NAME.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.NAME.value:
             set_resonator_name_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.SOURCE.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.SOURCE.value:
             set_buff_source_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.TYPE.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.TYPE.value:
             set_buff_type_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.ELEMENT.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.SKILL_TYPE.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.SKILL_TYPE.value:
             set_skill_bonus_type_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.TARGET.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.TARGET.value:
             set_buff_target_combobox(self, row, col, value)
         else:
             super().set_cell(row, col, value)

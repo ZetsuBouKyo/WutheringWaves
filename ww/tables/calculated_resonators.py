@@ -5,10 +5,10 @@ from typing import Optional
 import pandas as pd
 
 from ww.locale import ZhTwEnum, _
-from ww.model.echo import EchoesEnum, EchoSonataEnum
+from ww.model.echo import EchoSonataEnum, ResonatorEchoTsvColumnEnum
 from ww.model.resonator import (
     CalculatedResonatorTsvColumnEnum,
-    ResonatorStatColumnEnum,
+    ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
@@ -143,13 +143,13 @@ class CalculatedResonator:
 
         resonator_table = ResonatorStatTable(resonator_name)
         resonator_hp = resonator_table.search(
-            resonator_level, ResonatorStatColumnEnum.HP
+            resonator_level, ResonatorStatTsvColumnEnum.HP
         )
         resonator_atk = resonator_table.search(
-            resonator_level, ResonatorStatColumnEnum.ATK
+            resonator_level, ResonatorStatTsvColumnEnum.ATK
         )
         resonator_def = resonator_table.search(
-            resonator_level, ResonatorStatColumnEnum.DEF
+            resonator_level, ResonatorStatTsvColumnEnum.DEF
         )
 
         self._new_row[CalculatedResonatorTsvColumnEnum.HP.value] = get_number(
@@ -223,80 +223,114 @@ class CalculatedResonator:
         ] = weapon_rank_energy_regen
 
     def _update_by_echo(self, echo_id: str):
-        echo_main_hp = get_number(self.echo_table.search(echo_id, EchoesEnum.MAIN_HP))
-        echo_main_atk = get_number(self.echo_table.search(echo_id, EchoesEnum.MAIN_ATK))
+        echo_main_hp = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_HP)
+        )
+        echo_main_atk = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_ATK)
+        )
         echo_main_hp_p = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_HP_P)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_HP_P)
         )
         echo_main_atk_p = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_ATK_P)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_ATK_P)
         )
         echo_main_def_p = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_DEF_P)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_DEF_P)
         )
         echo_main_crit_rate = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_CRIT_RATE)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_CRIT_RATE)
         )
         echo_main_crit_dmg = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_CRIT_DMG)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_CRIT_DMG)
         )
         echo_main_energy_regen = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_ENERGY_REGEN)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_ENERGY_REGEN
+            )
         )
 
         echo_main_glacio_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_GLACIO_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_GLACIO_DMG_BONUS
+            )
         )
         echo_main_fusion_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_FUSION_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_FUSION_DMG_BONUS
+            )
         )
         echo_main_electro_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_ELECTRO_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_ELECTRO_DMG_BONUS
+            )
         )
         echo_main_aero_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_AERO_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_AERO_DMG_BONUS
+            )
         )
         echo_main_spectro_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_SPECTRO_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_SPECTRO_DMG_BONUS
+            )
         )
         echo_main_havoc_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_HAVOC_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_HAVOC_DMG_BONUS
+            )
         )
         echo_main_healing_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.MAIN_HEALING_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.MAIN_HEALING_BONUS
+            )
         )
 
-        echo_sub_hp = get_number(self.echo_table.search(echo_id, EchoesEnum.SUB_HP))
-        echo_sub_hp_p = get_number(self.echo_table.search(echo_id, EchoesEnum.SUB_HP_P))
-        echo_sub_atk = get_number(self.echo_table.search(echo_id, EchoesEnum.SUB_ATK))
-        echo_sub_atk_p = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_ATK_P)
+        echo_sub_hp = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_HP)
         )
-        echo_sub_def = get_number(self.echo_table.search(echo_id, EchoesEnum.SUB_DEF))
+        echo_sub_hp_p = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_HP_P)
+        )
+        echo_sub_atk = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_ATK)
+        )
+        echo_sub_atk_p = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_ATK_P)
+        )
+        echo_sub_def = get_number(
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_DEF)
+        )
         echo_sub_def_p = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_DEF_P)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_DEF_P)
         )
         echo_sub_crit_rate = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_CRIT_RATE)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE)
         )
         echo_sub_crit_dmg = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_CRIT_DMG)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG)
         )
         echo_sub_energy_regen = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_ENERGY_REGEN)
+            self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.SUB_ENERGY_REGEN)
         )
         echo_sub_resonance_skill_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_RESONANCE_SKILL_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS
+            )
         )
         echo_sub_basic_attack_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_BASIC_ATTACK_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS
+            )
         )
         echo_sub_heavy_attack_dmg_bonus = get_number(
-            self.echo_table.search(echo_id, EchoesEnum.SUB_HEAVY_ATTACK_DMG_BONUS)
+            self.echo_table.search(
+                echo_id, ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS
+            )
         )
         echo_sub_resonance_liberation_dmg_bonus = get_number(
             self.echo_table.search(
-                echo_id, EchoesEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS
+                echo_id, ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS
             )
         )
 
@@ -377,11 +411,21 @@ class CalculatedResonator:
 
     def _update_by_echo_sonata(self):
         sonatas = [
-            self.echo_table.search(self.echo_id_1, EchoesEnum.ECHO_SONATA),
-            self.echo_table.search(self.echo_id_2, EchoesEnum.ECHO_SONATA),
-            self.echo_table.search(self.echo_id_3, EchoesEnum.ECHO_SONATA),
-            self.echo_table.search(self.echo_id_4, EchoesEnum.ECHO_SONATA),
-            self.echo_table.search(self.echo_id_5, EchoesEnum.ECHO_SONATA),
+            self.echo_table.search(
+                self.echo_id_1, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+            ),
+            self.echo_table.search(
+                self.echo_id_2, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+            ),
+            self.echo_table.search(
+                self.echo_id_3, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+            ),
+            self.echo_table.search(
+                self.echo_id_4, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+            ),
+            self.echo_table.search(
+                self.echo_id_5, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+            ),
         ]
 
         count_sonatas = {e.value: 0 for e in EchoSonataEnum}

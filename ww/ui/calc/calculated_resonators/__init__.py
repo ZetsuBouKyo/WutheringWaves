@@ -1,13 +1,15 @@
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
-from ww.model.echo import EchoListEnum
+from ww.model.echo import EchoTsvColumnEnum
 from ww.model.resonator import CalculatedResonatorTsvColumnEnum
 from ww.tables.echo import EchoListTable
 from ww.tables.resonator import CalculatedResonatorsTable
 from ww.ui.table import QUneditableDataFrameTable
 
 echo_list_table = EchoListTable()
-echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
+echo_list = [
+    row[EchoTsvColumnEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()
+]
 
 
 class QCalculatedResonatorsTable(QUneditableDataFrameTable):

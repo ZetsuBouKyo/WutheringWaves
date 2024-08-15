@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class MonstersEnum(str, Enum):
+class MonsterTsvColumnEnum(str, Enum):
     NAME: str = "怪物名稱"
     LEVEL: str = "等級"
     DEF: str = "防禦"

@@ -1,6 +1,6 @@
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
-from ww.model.echo import EchoListEnum
+from ww.model.echo import EchoTsvColumnEnum
 from ww.tables.echo import EchoListTable, get_echo_list_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 
@@ -17,7 +17,7 @@ class QPrivateDataEchoListTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=EchoListEnum.PRIMARY_KEY.value,
+            column_id_name=EchoTsvColumnEnum.PRIMARY_KEY.value,
             column_names=column_names,
         )
 

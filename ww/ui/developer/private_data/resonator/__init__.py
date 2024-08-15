@@ -17,8 +17,8 @@ from PySide2.QtWidgets import (
 
 from ww.crud.resonator import get_resonator_names
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator import ResonatorStatColumnEnum
-from ww.model.resonator_skill import ResonatorSkillEnum
+from ww.model.resonator import ResonatorStatTsvColumnEnum
+from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.tables.resonator import (
     get_resonator_dir_path,
     get_resonator_information_fpath,
@@ -202,7 +202,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
 
 class QPrivateDataResonatorStatTable(QDraggableTableWidget):
     def __init__(self):
-        column_names = [e.value for e in ResonatorStatColumnEnum]
+        column_names = [e.value for e in ResonatorStatTsvColumnEnum]
         df = get_empty_df(column_names)
         data = df.values.tolist()
         rows = len(data)
@@ -211,7 +211,7 @@ class QPrivateDataResonatorStatTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=ResonatorStatColumnEnum.LEVEL.value,
+            column_id_name=ResonatorStatTsvColumnEnum.LEVEL.value,
             column_names=column_names,
         )
 
@@ -238,7 +238,7 @@ class QPrivateDataResonatorStatTab(QWidget):
 
 class QPrivateDataResonatorSkillTable(QDraggableTableWidget):
     def __init__(self):
-        column_names = [e.value for e in ResonatorSkillEnum]
+        column_names = [e.value for e in ResonatorSkillTsvColumnEnum]
         df = get_empty_df(column_names)
         data = df.values.tolist()
         rows = len(data)
@@ -247,7 +247,7 @@ class QPrivateDataResonatorSkillTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=ResonatorSkillEnum.PRIMARY_KEY.value,
+            column_id_name=ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value,
             column_names=column_names,
         )
 

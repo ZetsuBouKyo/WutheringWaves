@@ -1,7 +1,11 @@
 from pathlib import Path
 from typing import Any, Optional
 
-from ww.model.echo import EchoesEnum, EchoListEnum, EchoSkillEnum
+from ww.model.echo import (
+    EchoSkillTsvColumnEnum,
+    EchoTsvColumnEnum,
+    ResonatorEchoTsvColumnEnum,
+)
 from ww.tables.crud import search
 from ww.utils.pd import get_empty_df, safe_get_df
 
@@ -33,34 +37,34 @@ def get_echo_sonata_descriptions_fpath() -> Path:
 
 class EchoesTable:
     def __init__(self):
-        column_names = [e.value for e in EchoesEnum]
+        column_names = [e.value for e in ResonatorEchoTsvColumnEnum]
         self.df = safe_get_df(ECHOES_PATH, column_names)
 
-    def search(self, id: str, col: EchoesEnum) -> Optional[Any]:
-        return search(self.df, id, col, EchoesEnum.ID.value)
+    def search(self, id: str, col: ResonatorEchoTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorEchoTsvColumnEnum.ID.value)
 
 
 class EchoListTable:
     def __init__(self):
         _path = get_echo_list_fpath()
-        self.column_names = [e.value for e in EchoListEnum]
+        self.column_names = [e.value for e in EchoTsvColumnEnum]
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
         else:
             self.df = get_empty_df(self.column_names)
 
-    def search(self, id: str, col: EchoListEnum) -> Optional[Any]:
-        return search(self.df, id, col, EchoListEnum.PRIMARY_KEY.value)
+    def search(self, id: str, col: EchoTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, EchoTsvColumnEnum.PRIMARY_KEY.value)
 
 
 class EchoSkillTable:
     def __init__(self):
         _path = get_echo_skill_fpath()
-        self.column_names = [e.value for e in EchoSkillEnum]
+        self.column_names = [e.value for e in EchoSkillTsvColumnEnum]
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
         else:
             self.df = get_empty_df(self.column_names)
 
-    def search(self, id: str, col: EchoSkillEnum) -> Optional[Any]:
-        return search(self.df, id, col, EchoSkillEnum.PRIMARY_KEY.value)
+    def search(self, id: str, col: EchoSkillTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, EchoSkillTsvColumnEnum.PRIMARY_KEY.value)

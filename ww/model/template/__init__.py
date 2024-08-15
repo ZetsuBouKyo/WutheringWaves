@@ -4,35 +4,35 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from ww.model.template.buff_table import (
-    TemplateBuffTableRowEnum,
+    TemplateBuffTableColumnEnum,
     TemplateBuffTableRowModel,
 )
 from ww.model.template.calculated_row import (
-    CalculatedTemplateEnum,
+    CalculatedTemplateColumnEnum,
     CalculatedTemplateRowModel,
 )
 from ww.model.template.html import TemplateHtmlResonatorModel
-from ww.model.template.resonator_table import TemplateResonatorTableRowEnum
+from ww.model.template.resonator_table import TemplateResonatorTableColumnEnum
 from ww.model.template.template_row import (
     TEMPLATE_BONUS,
+    TemplateColumnEnum,
     TemplateRowActionEnum,
     TemplateRowBuffTypeEnum,
-    TemplateRowEnum,
 )
 from ww.model.template.tsv import TemplateEnum
 
 __all__ = [
     "TEMPLATE_BONUS",
-    "CalculatedTemplateEnum",
+    "CalculatedTemplateColumnEnum",
     "CalculatedTemplateRowModel",
-    "TemplateBuffTableRowEnum",
+    "TemplateBuffTableColumnEnum",
     "TemplateBuffTableRowModel",
     "TemplateEnum",
     "TemplateHtmlResonatorModel",
-    "TemplateResonatorTableRowEnum",
+    "TemplateResonatorTableColumnEnum",
     "TemplateRowActionEnum",
     "TemplateRowBuffTypeEnum",
-    "TemplateRowEnum",
+    "TemplateColumnEnum",
 ]
 
 

@@ -3,7 +3,7 @@ from typing import List
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import ResonatorBuffEnum, WeaponBuffEnum
+from ww.model.buff import ResonatorBuffTsvColumnEnum, WeaponBuffTsvColumnEnum
 from ww.tables.buff import WeaponBuffTable, get_weapon_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
@@ -28,7 +28,7 @@ class QPrivateDataWeaponBuffTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=WeaponBuffEnum.ID.value,
+            column_id_name=WeaponBuffTsvColumnEnum.ID.value,
             column_names=column_names,
         )
 
@@ -36,26 +36,26 @@ class QPrivateDataWeaponBuffTable(QDraggableTableWidget):
         self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
-        col_weapon_name = self.get_column_id(WeaponBuffEnum.NAME.value)
+        col_weapon_name = self.get_column_id(WeaponBuffTsvColumnEnum.NAME.value)
         weapon_name = row[col_weapon_name]
         if not weapon_name:
             weapon_name = _(ZhTwEnum.NONE.value)
 
-        col_suffix = self.get_column_id(WeaponBuffEnum.SUFFIX.value)
+        col_suffix = self.get_column_id(WeaponBuffTsvColumnEnum.SUFFIX.value)
         suffix = row[col_suffix]
         if not suffix:
             suffix = _(ZhTwEnum.NONE.value)
 
-        col_rank = self.get_column_id(WeaponBuffEnum.RANK.value)
+        col_rank = self.get_column_id(WeaponBuffTsvColumnEnum.RANK.value)
         rank = row[col_rank]
         if not rank:
             rank = _(ZhTwEnum.NONE.value)
 
-        col_type = self.get_column_id(WeaponBuffEnum.TYPE.value)
+        col_type = self.get_column_id(WeaponBuffTsvColumnEnum.TYPE.value)
         type_ = row[col_type]
-        col_element = self.get_column_id(WeaponBuffEnum.ELEMENT.value)
+        col_element = self.get_column_id(WeaponBuffTsvColumnEnum.ELEMENT.value)
         element = row[col_element]
-        col_skill_type = self.get_column_id(WeaponBuffEnum.SKILL_TYPE.value)
+        col_skill_type = self.get_column_id(WeaponBuffTsvColumnEnum.SKILL_TYPE.value)
         skill_type = row[col_skill_type]
         if type_:
             if not element:
@@ -79,17 +79,17 @@ class QPrivateDataWeaponBuffTable(QDraggableTableWidget):
         return primary_key
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == WeaponBuffEnum.ID.value:
+        if self.column_names[col] == WeaponBuffTsvColumnEnum.ID.value:
             set_uneditable_cell(self, row, col, value)
-        elif self.column_names[col] == WeaponBuffEnum.NAME.value:
+        elif self.column_names[col] == WeaponBuffTsvColumnEnum.NAME.value:
             set_weapon_name_combobox(self, row, col, value)
-        elif self.column_names[col] == WeaponBuffEnum.RANK.value:
+        elif self.column_names[col] == WeaponBuffTsvColumnEnum.RANK.value:
             set_weapon_rank_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.TYPE.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.TYPE.value:
             set_buff_type_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.ELEMENT.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
-        elif self.column_names[col] == ResonatorBuffEnum.SKILL_TYPE.value:
+        elif self.column_names[col] == ResonatorBuffTsvColumnEnum.SKILL_TYPE.value:
             set_skill_bonus_type_combobox(self, row, col, value)
         else:
             super().set_cell(row, col, value)

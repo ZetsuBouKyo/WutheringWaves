@@ -18,7 +18,7 @@ class ResonatorSkillTypeEnum(str, Enum):
     FORTE_CIRCUIT: str = _(ZhTwEnum.FORTE_CIRCUIT)
 
 
-class ResonatorSkillEnum(str, Enum):
+class ResonatorSkillTsvColumnEnum(str, Enum):
     TYPE_BONUS: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_BONUS)
     PRIMARY_KEY: str = _(ZhTwEnum.RESONATOR_SKILL_PRIMARY_KEY)
     TYPE_ZH_TW: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_ZH_TW)

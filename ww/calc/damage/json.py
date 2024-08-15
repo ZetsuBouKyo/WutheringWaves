@@ -2,15 +2,18 @@ from typing import List, Optional
 
 from ww.crud.template import get_template
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.echo import EchoSkillEnum
-from ww.model.monsters import MonstersEnum
+from ww.model.echo import EchoSkillTsvColumnEnum
+from ww.model.monsters import MonsterTsvColumnEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
     CalculatedResonatorTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
-from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
+from ww.model.resonator_skill import (
+    ResonatorSkillBaseAttrEnum,
+    ResonatorSkillTsvColumnEnum,
+)
 from ww.model.template import (
     CalculatedTemplateRowModel,
     TemplateRowBuffModel,
@@ -112,16 +115,16 @@ def get_json_row_damage(
     resonator_skill_table = ResonatorSkillTable(resonator_name)
 
     resonator_skill_element = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.ELEMENT
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.ELEMENT
     )
     resonator_skill_base_attr = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.BASE_ATTR
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.BASE_ATTR
     )
     resonator_skill_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.TYPE_ZH_TW
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_ZH_TW
     )
     resonator_skill_bonus_type = resonator_skill_table.search(
-        template_row_skill_id, ResonatorSkillEnum.TYPE_BONUS
+        template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_BONUS
     )
     resonator_skill_lv = resonator_skill_levels.get(f"{resonator_skill_type}LV", None)
     resonator_skill_dmg = resonator_skill_table.search(
@@ -140,9 +143,11 @@ def get_json_row_damage(
 
     # Echo Skill
     echo_skill_element = echo_skill_table.search(
-        template_row_skill_id, EchoSkillEnum.ELEMENT
+        template_row_skill_id, EchoSkillTsvColumnEnum.ELEMENT
     )
-    echo_skill_dmg = echo_skill_table.search(template_row_skill_id, EchoSkillEnum.DMG)
+    echo_skill_dmg = echo_skill_table.search(
+        template_row_skill_id, EchoSkillTsvColumnEnum.DMG
+    )
     if echo_skill_dmg is not None:
         echo_skill_dmg = get_number(echo_skill_dmg)
 
@@ -401,8 +406,12 @@ def get_json_damage(
     resonators_table = ResonatorsTable()
 
     monsters_table = MonstersTable()
-    monster_level = get_number(monsters_table.search(monster_id, MonstersEnum.LEVEL))
-    monster_def = get_number(monsters_table.search(monster_id, MonstersEnum.DEF))
+    monster_level = get_number(
+        monsters_table.search(monster_id, MonsterTsvColumnEnum.LEVEL)
+    )
+    monster_def = get_number(
+        monsters_table.search(monster_id, MonsterTsvColumnEnum.DEF)
+    )
 
     template = get_template(template_id)
     if template is None:

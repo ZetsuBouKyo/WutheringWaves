@@ -10,7 +10,7 @@ from ww.model.element import ElementEnum
 from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillTypeEnum
 
 
-class CalculatedTemplateEnum(str, Enum):
+class CalculatedTemplateColumnEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     SKILL_ID: str = "[操作]技能代稱"
 

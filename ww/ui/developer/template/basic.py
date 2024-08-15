@@ -18,7 +18,7 @@ from ww.model.resonator import ResonatorTsvColumnEnum
 from ww.model.template import (
     TemplateModel,
     TemplateResonatorModel,
-    TemplateResonatorTableRowEnum,
+    TemplateResonatorTableColumnEnum,
 )
 from ww.tables.resonator import ResonatorsTable
 from ww.ui.combobox import QAutoCompleteComboBox
@@ -37,7 +37,7 @@ from ww.ui.table.cell.combobox import (
 
 class QTemplateTabResonatorTable(QBaseTableWidget):
     def __init__(self, resonators: List[TemplateResonatorModel] = []):
-        self.column_names = [e.value for e in TemplateResonatorTableRowEnum]
+        self.column_names = [e.value for e in TemplateResonatorTableColumnEnum]
         self.column_names_table: Dict[str, int] = {
             self.column_names[i]: i for i in range(len(self.column_names))
         }
@@ -76,57 +76,57 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
             for col in range(self.columnCount()):
                 cell = self.get_cell(row, col)
                 if col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_NAME.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_NAME.value
                 ):
                     resonator.resonator_name = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_CHAIN.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_CHAIN.value
                 ):
                     resonator.resonator_chain = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_WEAPON_NAME.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_WEAPON_NAME.value
                 ):
                     resonator.resonator_weapon_name = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_WEAPON_RANK.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_WEAPON_RANK.value
                 ):
                     resonator.resonator_weapon_rank = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_1.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_INHERENT_SKILL_1.value
                 ):
                     if cell == "1":
                         resonator.resonator_inherent_skill_1 = True
                     elif cell == "0":
                         resonator.resonator_inherent_skill_1 = False
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_2.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_INHERENT_SKILL_2.value
                 ):
                     if cell == "1":
                         resonator.resonator_inherent_skill_2 = True
                     elif cell == "0":
                         resonator.resonator_inherent_skill_2 = False
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_1.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_1.value
                 ):
                     resonator.resonator_echo_1 = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_1.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_1.value
                 ):
                     resonator.resonator_echo_sonata_1 = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_2.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_2.value
                 ):
                     resonator.resonator_echo_sonata_2 = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_3.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_3.value
                 ):
                     resonator.resonator_echo_sonata_3 = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_4.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_4.value
                 ):
                     resonator.resonator_echo_sonata_4 = cell
                 elif col == self.get_column_id(
-                    TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_5.value
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_5.value
                 ):
                     resonator.resonator_echo_sonata_5 = cell
 
@@ -134,61 +134,64 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
         return data
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == TemplateResonatorTableRowEnum.RESONATOR_NAME.value:
+        if (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_NAME.value
+        ):
             set_resonator_name_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_CHAIN.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_CHAIN.value
         ):
             set_resonator_chain_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_WEAPON_NAME.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_WEAPON_NAME.value
         ):
             set_weapon_name_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_WEAPON_RANK.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_WEAPON_RANK.value
         ):
             set_weapon_rank_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_1.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_INHERENT_SKILL_1.value
         ):
             set_resonator_inherent_skill_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_INHERENT_SKILL_2.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_INHERENT_SKILL_2.value
         ):
             set_resonator_inherent_skill_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_1.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_1.value
         ):
             set_echo_name_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_1.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_1.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_2.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_2.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_3.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_3.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_4.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_4.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
         elif (
             self.column_names[col]
-            == TemplateResonatorTableRowEnum.RESONATOR_ECHO_SONATA_5.value
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_5.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
         else:

@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class TemplateResonatorTableRowEnum(str, Enum):
+class TemplateResonatorTableColumnEnum(str, Enum):
     RESONATOR_NAME: str = "[角色]名稱"
     RESONATOR_CHAIN: str = "[角色]共鳴鏈"
     RESONATOR_WEAPON_NAME: str = "[武器]名稱"

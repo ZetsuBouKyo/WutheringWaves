@@ -3,7 +3,7 @@ from typing import List
 from PySide2.QtWidgets import QVBoxLayout, QWidget
 
 from ww.locale import ZhTwEnum, _
-from ww.model.buff import EchoBuffEnum
+from ww.model.buff import EchoBuffTsvColumnEnum
 from ww.tables.buff import EchoBuffTable, get_echo_buff_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
 from ww.ui.table.cell import set_uneditable_cell
@@ -28,7 +28,7 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
             rows,
             columns,
             data=data,
-            column_id_name=EchoBuffEnum.ID.value,
+            column_id_name=EchoBuffTsvColumnEnum.ID.value,
             column_names=column_names,
         )
 
@@ -36,21 +36,21 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
         self.setColumnWidth(0, 400)
 
     def get_row_id(self, row: List[str]) -> str:
-        col_name = self.get_column_id(EchoBuffEnum.NAME.value)
+        col_name = self.get_column_id(EchoBuffTsvColumnEnum.NAME.value)
         name = row[col_name]
         if not name:
             name = _(ZhTwEnum.NONE.value)
 
-        col_suffix = self.get_column_id(EchoBuffEnum.SUFFIX.value)
+        col_suffix = self.get_column_id(EchoBuffTsvColumnEnum.SUFFIX.value)
         suffix = row[col_suffix]
         if not suffix:
             suffix = _(ZhTwEnum.NONE.value)
 
-        col_type = self.get_column_id(EchoBuffEnum.TYPE.value)
+        col_type = self.get_column_id(EchoBuffTsvColumnEnum.TYPE.value)
         type_ = row[col_type]
-        col_element = self.get_column_id(EchoBuffEnum.ELEMENT.value)
+        col_element = self.get_column_id(EchoBuffTsvColumnEnum.ELEMENT.value)
         element = row[col_element]
-        col_skill_type = self.get_column_id(EchoBuffEnum.SKILL_TYPE.value)
+        col_skill_type = self.get_column_id(EchoBuffTsvColumnEnum.SKILL_TYPE.value)
         skill_type = row[col_skill_type]
         if type_:
             if not element:
@@ -65,7 +65,7 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
         else:
             final_type = _(ZhTwEnum.NONE.value)
 
-        col_target = self.get_column_id(EchoBuffEnum.TARGET.value)
+        col_target = self.get_column_id(EchoBuffTsvColumnEnum.TARGET.value)
         target = row[col_target]
         if not target:
             target = _(ZhTwEnum.NONE.value)
@@ -77,17 +77,17 @@ class QPrivateDataEchoBuffTable(QDraggableTableWidget):
         return primary_key
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == EchoBuffEnum.ID.value:
+        if self.column_names[col] == EchoBuffTsvColumnEnum.ID.value:
             set_uneditable_cell(self, row, col, value)
-        elif self.column_names[col] == EchoBuffEnum.NAME.value:
+        elif self.column_names[col] == EchoBuffTsvColumnEnum.NAME.value:
             set_echo_name_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoBuffEnum.TYPE.value:
+        elif self.column_names[col] == EchoBuffTsvColumnEnum.TYPE.value:
             set_buff_type_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoBuffEnum.ELEMENT.value:
+        elif self.column_names[col] == EchoBuffTsvColumnEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoBuffEnum.SKILL_TYPE.value:
+        elif self.column_names[col] == EchoBuffTsvColumnEnum.SKILL_TYPE.value:
             set_skill_bonus_type_combobox(self, row, col, value)
-        elif self.column_names[col] == EchoBuffEnum.TARGET.value:
+        elif self.column_names[col] == EchoBuffTsvColumnEnum.TARGET.value:
             set_buff_target_combobox(self, row, col, value)
         else:
             super().set_cell(row, col, value)

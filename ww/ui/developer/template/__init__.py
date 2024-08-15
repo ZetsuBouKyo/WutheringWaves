@@ -18,7 +18,7 @@ from ww.crud.template import (
     save_template,
 )
 from ww.locale import ZhTwEnum, _
-from ww.model.echo import EchoListEnum
+from ww.model.echo import EchoTsvColumnEnum
 from ww.model.template import (
     TemplateHtmlResonatorModel,
     TemplateModel,
@@ -33,7 +33,9 @@ from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
 
 echo_list_table = EchoListTable()
-echo_list = [row[EchoListEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()]
+echo_list = [
+    row[EchoTsvColumnEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()
+]
 
 
 def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonatorModel:
@@ -51,7 +53,7 @@ def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonato
     if resonator is None:
         return
 
-    TemplateHtmlResonatorModel(
+    template_html_model = TemplateHtmlResonatorModel(
         name="",
         chain="",
         element="",
@@ -94,6 +96,7 @@ def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonato
         element_class_name="",
         element_src="",
     )
+    print(template_html_model)
 
 
 class QTemplateTabs(QWidget):
