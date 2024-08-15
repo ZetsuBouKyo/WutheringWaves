@@ -5,7 +5,7 @@ from html2image import Html2Image
 from PIL import Image
 from typer import Argument, Option, Typer
 
-from ww.model.resonator import ResonatorColumnEnum
+from ww.model.resonator import ResonatorTsvColumnEnum
 from ww.tables.calculated_resonators import calc as _calc
 from ww.tables.resonator import (
     CALCULATED_RESONATOR_PATH,
@@ -84,7 +84,7 @@ def list():
 
 
 @app.command()
-def search(id: str, col: ResonatorColumnEnum = Argument(...)):
+def search(id: str, col: ResonatorTsvColumnEnum = Argument(...)):
     table = ResonatorsTable()
     cell = table.search(id, col)
 

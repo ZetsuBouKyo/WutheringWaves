@@ -7,8 +7,8 @@ from ww.model.monsters import MonstersEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorColumnEnum,
-    ResonatorColumnEnum,
+    CalculatedResonatorTsvColumnEnum,
+    ResonatorTsvColumnEnum,
 )
 from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
 from ww.model.template import (
@@ -85,7 +85,7 @@ def get_json_row_damage(
     manual_bonus_type = get_string(row.skill_bonus_type)
 
     resonator_level = get_number(
-        resonators_table.search(resonator_id, ResonatorColumnEnum.LEVEL)
+        resonators_table.search(resonator_id, ResonatorTsvColumnEnum.LEVEL)
     )
 
     # Buffs
@@ -96,12 +96,12 @@ def get_json_row_damage(
 
     # Resonator Skill Level
     resonator_skills = [
-        ResonatorColumnEnum.NORMAL_ATTACK_LV,
-        ResonatorColumnEnum.RESONANCE_SKILL_LV,
-        ResonatorColumnEnum.RESONANCE_LIBERATION_LV,
-        ResonatorColumnEnum.FORTE_CIRCUIT_LV,
-        ResonatorColumnEnum.INTRO_SKILL_LV,
-        ResonatorColumnEnum.OUTRO_SKILL_LV,
+        ResonatorTsvColumnEnum.NORMAL_ATTACK_LV,
+        ResonatorTsvColumnEnum.RESONANCE_SKILL_LV,
+        ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV,
+        ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV,
+        ResonatorTsvColumnEnum.INTRO_SKILL_LV,
+        ResonatorTsvColumnEnum.OUTRO_SKILL_LV,
     ]
     resonator_skill_levels = {}
     for s in resonator_skills:
@@ -200,7 +200,7 @@ def get_json_row_damage(
     # HP Percentage
     calculated_hp_p = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_HP_P
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P
         )
     )
     bonus_hp_p = buffs.bonus_hp_p
@@ -210,7 +210,7 @@ def get_json_row_damage(
     # HP
     resonator_hp = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.HP
+            resonator_id, CalculatedResonatorTsvColumnEnum.HP
         )
     )
     result_hp = resonator_hp
@@ -219,7 +219,7 @@ def get_json_row_damage(
     # Additional HP
     echo_hp = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ECHO_HP
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_HP
         )
     )
     bonus_hp = buffs.bonus_hp
@@ -229,7 +229,7 @@ def get_json_row_damage(
     # ATK Percentage
     calculated_atk_p = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_ATK_P
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P
         )
     )
     bonus_atk_p = buffs.bonus_atk_p
@@ -239,12 +239,12 @@ def get_json_row_damage(
     # ATK
     resonator_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ATTACK
+            resonator_id, CalculatedResonatorTsvColumnEnum.ATTACK
         )
     )
     weapon_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.WEAPON_ATK
+            resonator_id, CalculatedResonatorTsvColumnEnum.WEAPON_ATK
         )
     )
     result_atk = resonator_atk + weapon_atk
@@ -253,7 +253,7 @@ def get_json_row_damage(
     # Additional ATK
     echo_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ECHO_ATK
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_ATK
         )
     )
     bonus_atk = buffs.bonus_atk
@@ -263,7 +263,7 @@ def get_json_row_damage(
     # DEF Percentage
     calculated_def_p = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_DEF_P
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P
         )
     )
     bonus_def_p = buffs.bonus_def_p
@@ -273,7 +273,7 @@ def get_json_row_damage(
     # DEF
     resonator_def = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.DEFENSE
+            resonator_id, CalculatedResonatorTsvColumnEnum.DEFENSE
         )
     )
     result_def = resonator_def
@@ -282,7 +282,7 @@ def get_json_row_damage(
     # Additional DEF
     echo_def = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ECHO_DEF
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_DEF
         )
     )
     bonus_def = buffs.bonus_def
@@ -292,7 +292,7 @@ def get_json_row_damage(
     # CRIT Rate
     resonator_crit_rate = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_RATE
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE
         )
     )
     bonus_crit_rate = buffs.bonus_crit_rate
@@ -302,7 +302,7 @@ def get_json_row_damage(
     # CRIT DMG
     resonator_crit_dmg = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_DMG
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG
         )
     )
     bonus_crit_dmg = buffs.bonus_crit_dmg
@@ -413,7 +413,7 @@ def get_json_damage(
     resonators_name2id = {}
     r_ids = [r_id_1, r_id_2, r_id_3]
     for r_id in r_ids:
-        n = get_string(resonators_table.search(r_id, ResonatorColumnEnum.NAME))
+        n = get_string(resonators_table.search(r_id, ResonatorTsvColumnEnum.NAME))
         if n:
             resonators_name2id[n] = r_id
 

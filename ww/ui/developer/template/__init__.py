@@ -51,7 +51,49 @@ def get_template_html_resonator_model(resonator_id: str) -> TemplateHtmlResonato
     if resonator is None:
         return
 
-    TemplateHtmlResonatorModel()
+    TemplateHtmlResonatorModel(
+        name="",
+        chain="",
+        element="",
+        weapon_name="",
+        weapon_rank="",
+        weapon_level="",
+        level="",
+        hp=calculated_resonator.calculated_hp,
+        attack=calculated_resonator.calculated_atk,
+        defense=calculated_resonator.calculated_def,
+        crit_rate=calculated_resonator.calculated_crit_rate,
+        crit_dmg=calculated_resonator.calculated_crit_dmg,
+        energy_regen=calculated_resonator.calculated_energy_regen,
+        resonance_skill_dmg_bonus=calculated_resonator.calculated_resonance_skill_dmg_bonus,
+        basic_attack_dmg_bonus=calculated_resonator.calculated_basic_attack_dmg_bonus,
+        heavy_attack_dmg_bonus=calculated_resonator.calculated_heavy_attack_dmg_bonus,
+        resonance_liberation_dmg_bonus=calculated_resonator.calculated_resonance_liberation_dmg_bonus,
+        healing_bonus=calculated_resonator.calculated_healing_bonus,
+        physical_dmg_bonus=calculated_resonator.calculated_physical_dmg_bonus,
+        glacio_dmg_bonus=calculated_resonator.calculated_glacio_dmg_bonus,
+        fusion_dmg_bonus=calculated_resonator.calculated_fusion_dmg_bonus,
+        electro_dmg_bonus=calculated_resonator.calculated_electro_dmg_bonus,
+        aero_dmg_bonus=calculated_resonator.calculated_aero_dmg_bonus,
+        spectro_dmg_bonus=calculated_resonator.calculated_spectro_dmg_bonus,
+        havoc_dmg_bonus=calculated_resonator.calculated_havoc_dmg_bonus,
+        physical_dmg_res=calculated_resonator.calculated_physical_dmg_res,
+        glacio_dmg_res=calculated_resonator.calculated_glacio_dmg_res,
+        fusion_dmg_res=calculated_resonator.calculated_fusion_dmg_res,
+        electro_dmg_res=calculated_resonator.calculated_electro_dmg_res,
+        aero_dmg_res=calculated_resonator.calculated_aero_dmg_res,
+        spectro_dmg_res=calculated_resonator.calculated_spectro_dmg_res,
+        havoc_dmg_res=calculated_resonator.calculated_havoc_dmg_res,
+        normal_attack_lv="",
+        resonance_skill_lv="",
+        resonance_liberation_lv="",
+        forte_circuit_lv="",
+        inherent_skill_1="",
+        inherent_skill_2="",
+        resonator_src="",
+        element_class_name="",
+        element_src="",
+    )
 
 
 class QTemplateTabs(QWidget):

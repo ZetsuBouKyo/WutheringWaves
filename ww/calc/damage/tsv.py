@@ -9,8 +9,8 @@ from ww.model.monsters import MonstersEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
-    CalculatedResonatorColumnEnum,
-    ResonatorColumnEnum,
+    CalculatedResonatorTsvColumnEnum,
+    ResonatorTsvColumnEnum,
 )
 from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillEnum
 from ww.model.template import CalculatedTemplateEnum, TemplateEnum
@@ -52,7 +52,7 @@ def get_tsv_row_damage(
     manual_bonus_type = get_string(row[TemplateEnum.BONUS_TYPE])
 
     resonator_level = get_number(
-        resonators_table.search(resonator_id, ResonatorColumnEnum.LEVEL)
+        resonators_table.search(resonator_id, ResonatorTsvColumnEnum.LEVEL)
     )
 
     # Skill
@@ -60,12 +60,12 @@ def get_tsv_row_damage(
 
     # Resonator Skill Level
     resonator_skills = [
-        ResonatorColumnEnum.NORMAL_ATTACK_LV,
-        ResonatorColumnEnum.RESONANCE_SKILL_LV,
-        ResonatorColumnEnum.RESONANCE_LIBERATION_LV,
-        ResonatorColumnEnum.FORTE_CIRCUIT_LV,
-        ResonatorColumnEnum.INTRO_SKILL_LV,
-        ResonatorColumnEnum.OUTRO_SKILL_LV,
+        ResonatorTsvColumnEnum.NORMAL_ATTACK_LV,
+        ResonatorTsvColumnEnum.RESONANCE_SKILL_LV,
+        ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV,
+        ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV,
+        ResonatorTsvColumnEnum.INTRO_SKILL_LV,
+        ResonatorTsvColumnEnum.OUTRO_SKILL_LV,
     ]
     resonator_skill_levels = {}
     for s in resonator_skills:
@@ -188,7 +188,7 @@ def get_tsv_row_damage(
     # ATK Percentage
     calculated_atk_p = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_ATK_P
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P
         )
     )
     bonus_atk_p = get_number(row[TemplateEnum.BONUS_ATK_P])
@@ -200,12 +200,12 @@ def get_tsv_row_damage(
     # ATK
     resonator_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ATTACK
+            resonator_id, CalculatedResonatorTsvColumnEnum.ATTACK
         )
     )
     weapon_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.WEAPON_ATK
+            resonator_id, CalculatedResonatorTsvColumnEnum.WEAPON_ATK
         )
     )
     result_atk = resonator_atk + weapon_atk
@@ -214,7 +214,7 @@ def get_tsv_row_damage(
     # Additional ATK
     echo_atk = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.ECHO_ATK
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_ATK
         )
     )
     template_bonus_atk = get_number(row[TemplateEnum.BONUS_ATK])
@@ -226,7 +226,7 @@ def get_tsv_row_damage(
     # CRIT Rate
     resonator_crit_rate = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_RATE
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE
         )
     )
     bonus_crit_rate = get_number(row[TemplateEnum.BONUS_CRIT_RATE])
@@ -238,7 +238,7 @@ def get_tsv_row_damage(
     # CRIT DMG
     resonator_crit_dmg = get_number(
         calculated_resonators_table.search(
-            resonator_id, CalculatedResonatorColumnEnum.CALCULATED_CRIT_DMG
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG
         )
     )
     bonus_crit_dmg = get_number(row[TemplateEnum.BONUS_CRIT_DMG])
@@ -351,7 +351,7 @@ def get_tsv_damage(
     resonators_name2id = {}
     r_ids = [r_id_1, r_id_2, r_id_3]
     for r_id in r_ids:
-        n = get_string(resonators_table.search(r_id, ResonatorColumnEnum.NAME))
+        n = get_string(resonators_table.search(r_id, ResonatorTsvColumnEnum.NAME))
         if n:
             resonators_name2id[n] = r_id
 

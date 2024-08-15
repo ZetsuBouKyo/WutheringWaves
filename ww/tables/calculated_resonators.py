@@ -7,9 +7,9 @@ import pandas as pd
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoesEnum, EchoSonataEnum
 from ww.model.resonator import (
-    CalculatedResonatorColumnEnum,
-    ResonatorColumnEnum,
+    CalculatedResonatorTsvColumnEnum,
     ResonatorStatColumnEnum,
+    ResonatorTsvColumnEnum,
 )
 from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.echo import EchoesTable
@@ -38,9 +38,9 @@ class CalculatedResonator:
         self._old_row = row
         self._new_row = {}
 
-        self.weapon_name = self._old_row[ResonatorColumnEnum.WEAPON_NAME]
-        self.weapon_level = self._old_row[ResonatorColumnEnum.WEAPON_LEVEL]
-        self.weapon_rank = self._old_row[ResonatorColumnEnum.WEAPON_RANK]
+        self.weapon_name = self._old_row[ResonatorTsvColumnEnum.WEAPON_NAME]
+        self.weapon_level = self._old_row[ResonatorTsvColumnEnum.WEAPON_LEVEL]
+        self.weapon_rank = self._old_row[ResonatorTsvColumnEnum.WEAPON_RANK]
 
         self.echo_table = EchoesTable()
 
@@ -62,84 +62,84 @@ class CalculatedResonator:
         return self._new_row
 
     def _init(self):
-        self._new_row[CalculatedResonatorColumnEnum.ID.value] = self._old_row[
-            ResonatorColumnEnum.ID
+        self._new_row[CalculatedResonatorTsvColumnEnum.ID.value] = self._old_row[
+            ResonatorTsvColumnEnum.ID
         ]
 
     def _init_base(self):
-        self._new_row[CalculatedResonatorColumnEnum.BASE_CRIT_RATE.value] = get_number(
-            "0.05"
+        self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_RATE.value] = (
+            get_number("0.05")
         )
-        self._new_row[CalculatedResonatorColumnEnum.BASE_CRIT_DMG.value] = get_number(
-            "1.5"
+        self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_DMG.value] = (
+            get_number("1.5")
         )
-        self._new_row[CalculatedResonatorColumnEnum.BASE_ENERGY_REGEN.value] = (
+        self._new_row[CalculatedResonatorTsvColumnEnum.BASE_ENERGY_REGEN.value] = (
             get_number("1.0")
         )
 
     def _init_calculated(self):
         self.calculated_key_names = [
-            CalculatedResonatorColumnEnum.CALCULATED_HP.value,
-            CalculatedResonatorColumnEnum.CALCULATED_HP_P.value,
-            CalculatedResonatorColumnEnum.CALCULATED_ATK.value,
-            CalculatedResonatorColumnEnum.CALCULATED_ATK_P.value,
-            CalculatedResonatorColumnEnum.CALCULATED_DEF.value,
-            CalculatedResonatorColumnEnum.CALCULATED_DEF_P.value,
-            CalculatedResonatorColumnEnum.CALCULATED_CRIT_RATE.value,
-            CalculatedResonatorColumnEnum.CALCULATED_CRIT_DMG.value,
-            CalculatedResonatorColumnEnum.CALCULATED_ENERGY_REGEN.value,
-            CalculatedResonatorColumnEnum.CALCULATED_RESONANCE_SKILL_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_PHYSICAL_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_GLACIO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_FUSION_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_ELECTRO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_AERO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_SPECTRO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_HAVOC_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.CALCULATED_PHYSICAL_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_GLACIO_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_FUSION_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_ELECTRO_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_AERO_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_SPECTRO_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_HAVOC_DMG_RES.value,
-            CalculatedResonatorColumnEnum.CALCULATED_HEALING_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HP.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ATK.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_DEF.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ENERGY_REGEN.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_SKILL_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_PHYSICAL_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_GLACIO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_FUSION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ELECTRO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_AERO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_SPECTRO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HAVOC_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_PHYSICAL_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_GLACIO_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_FUSION_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ELECTRO_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_AERO_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_SPECTRO_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HAVOC_DMG_RES.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HEALING_BONUS.value,
         ]
         for key in self.calculated_key_names:
             self._new_row[key] = get_number("0.0")
 
     def _init_echo(self):
         self.echo_key_names = [
-            CalculatedResonatorColumnEnum.ECHO_HP.value,
-            CalculatedResonatorColumnEnum.ECHO_HP_P.value,
-            CalculatedResonatorColumnEnum.ECHO_ATK.value,
-            CalculatedResonatorColumnEnum.ECHO_ATK_P.value,
-            CalculatedResonatorColumnEnum.ECHO_DEF.value,
-            CalculatedResonatorColumnEnum.ECHO_DEF_P.value,
-            CalculatedResonatorColumnEnum.ECHO_CRIT_RATE.value,
-            CalculatedResonatorColumnEnum.ECHO_CRIT_DMG.value,
-            CalculatedResonatorColumnEnum.ECHO_ENERGY_REGEN.value,
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_GLACIO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_FUSION_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_ELECTRO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_AERO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_SPECTRO_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_HAVOC_DMG_BONUS.value,
-            CalculatedResonatorColumnEnum.ECHO_HEALING_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_HP.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_HP_P.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_ATK.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_ATK_P.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_DEF.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_DEF_P.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_CRIT_RATE.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_CRIT_DMG.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_ELECTRO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value,
         ]
         for key in self.echo_key_names:
             self._new_row[key] = get_number("0.0")
 
     def _update_by_resonator(self):
-        resonator_name = self._old_row[ResonatorColumnEnum.NAME]
-        resonator_level = self._old_row[ResonatorColumnEnum.LEVEL]
+        resonator_name = self._old_row[ResonatorTsvColumnEnum.NAME]
+        resonator_level = self._old_row[ResonatorTsvColumnEnum.LEVEL]
 
         resonator_table = ResonatorStatTable(resonator_name)
         resonator_hp = resonator_table.search(
@@ -152,11 +152,13 @@ class CalculatedResonator:
             resonator_level, ResonatorStatColumnEnum.DEF
         )
 
-        self._new_row[CalculatedResonatorColumnEnum.HP.value] = get_number(resonator_hp)
-        self._new_row[CalculatedResonatorColumnEnum.ATTACK.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.HP.value] = get_number(
+            resonator_hp
+        )
+        self._new_row[CalculatedResonatorTsvColumnEnum.ATTACK.value] = get_number(
             resonator_atk
         )
-        self._new_row[CalculatedResonatorColumnEnum.DEFENSE.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.DEFENSE.value] = get_number(
             resonator_def
         )
 
@@ -176,25 +178,25 @@ class CalculatedResonator:
             self.weapon_level, WeaponStatEnum.ENERGY_REGEN
         )
 
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_ATK.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ATK.value] = get_number(
             weapon_atk
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_ATK_P.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ATK_P.value] = get_number(
             weapon_atk_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_DEF_P.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_DEF_P.value] = get_number(
             weapon_def_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_HP_P.value] = get_number(
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_HP_P.value] = get_number(
             weapon_hp_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_CRIT_DMG.value] = get_number(
-            weapon_crit_dmg
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_DMG.value] = (
+            get_number(weapon_crit_dmg)
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_CRIT_RATE.value] = (
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_RATE.value] = (
             get_number(weapon_crit_rate)
         )
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_ENERGY_REGEN.value] = (
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ENERGY_REGEN.value] = (
             get_number(weapon_energy_regen)
         )
 
@@ -210,15 +212,15 @@ class CalculatedResonator:
             weapon_table.search(self.weapon_rank, WeaponRankEnum.ENERGY_REGEN)
         )
 
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_RANK_ATK_P.value] = (
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATK_P.value] = (
             weapon_rank_atk_p
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
         ] = weapon_rank_attribute_dmg_bonus
-        self._new_row[CalculatedResonatorColumnEnum.WEAPON_RANK_ENERGY_REGEN.value] = (
-            weapon_rank_energy_regen
-        )
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ENERGY_REGEN.value
+        ] = weapon_rank_energy_regen
 
     def _update_by_echo(self, echo_id: str):
         echo_main_hp = get_number(self.echo_table.search(echo_id, EchoesEnum.MAIN_HP))
@@ -298,74 +300,74 @@ class CalculatedResonator:
             )
         )
 
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_HP.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HP.value] += (
             echo_main_hp + echo_sub_hp
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_HP_P.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HP_P.value] += (
             echo_main_hp_p + echo_sub_hp_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_ATK.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ATK.value] += (
             echo_main_atk + echo_sub_atk
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_ATK_P.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ATK_P.value] += (
             echo_main_atk_p + echo_sub_atk_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_DEF.value] += echo_sub_def
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_DEF_P.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_DEF.value] += echo_sub_def
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_DEF_P.value] += (
             echo_main_def_p + echo_sub_def_p
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_CRIT_RATE.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_RATE.value] += (
             echo_main_crit_rate + echo_sub_crit_rate
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_CRIT_DMG.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_DMG.value] += (
             echo_main_crit_dmg + echo_sub_crit_dmg
         )
-        self._new_row[CalculatedResonatorColumnEnum.ECHO_ENERGY_REGEN.value] += (
+        self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value] += (
             echo_main_energy_regen + echo_sub_energy_regen
         )
 
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
         ] += echo_sub_resonance_skill_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
         ] += echo_sub_basic_attack_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
         ] += echo_sub_heavy_attack_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
         ] += echo_sub_resonance_liberation_dmg_bonus
 
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_GLACIO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
         ] += echo_main_glacio_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_FUSION_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
         ] += echo_main_fusion_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_ELECTRO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_ELECTRO_DMG_BONUS.value
         ] += echo_main_electro_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_AERO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
         ] += echo_main_aero_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
         ] += echo_main_spectro_dmg_bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
         ] += echo_main_havoc_dmg_bonus
 
         self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_HEALING_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value
         ] += echo_main_healing_bonus
 
     def _update_by_echoes(self):
-        self.echo_id_1 = self._old_row[ResonatorColumnEnum.ECHO_1]
-        self.echo_id_2 = self._old_row[ResonatorColumnEnum.ECHO_2]
-        self.echo_id_3 = self._old_row[ResonatorColumnEnum.ECHO_3]
-        self.echo_id_4 = self._old_row[ResonatorColumnEnum.ECHO_4]
-        self.echo_id_5 = self._old_row[ResonatorColumnEnum.ECHO_5]
+        self.echo_id_1 = self._old_row[ResonatorTsvColumnEnum.ECHO_1]
+        self.echo_id_2 = self._old_row[ResonatorTsvColumnEnum.ECHO_2]
+        self.echo_id_3 = self._old_row[ResonatorTsvColumnEnum.ECHO_3]
+        self.echo_id_4 = self._old_row[ResonatorTsvColumnEnum.ECHO_4]
+        self.echo_id_5 = self._old_row[ResonatorTsvColumnEnum.ECHO_5]
 
         self._update_by_echo(self.echo_id_1)
         self._update_by_echo(self.echo_id_2)
@@ -389,324 +391,340 @@ class CalculatedResonator:
             count_sonatas[sonata] += 1
 
         if count_sonatas[EchoSonataEnum.LINGERING_TUNES.value] >= 2:
-            self._new_row[CalculatedResonatorColumnEnum.ECHO_ATK_P.value] += get_number(
-                "0.1"
-            )
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_ATK_P.value
+            ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.MOONLIT_CLOUDS.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_ENERGY_REGEN.value
+                CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.FREEZING_FROST.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_GLACIO_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.MOLTEN_RIFT.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_FUSION_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.VOID_THUNDER.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_ELECTRO_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_ELECTRO_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.SIERRA_GALE.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_AERO_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.CELESTIAL_LIGHT.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.SUN_SINKING_ECLIPSE.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
             ] += get_number("0.1")
 
         if count_sonatas[EchoSonataEnum.REJUVENATING_GLOW.value] >= 2:
             self._new_row[
-                CalculatedResonatorColumnEnum.ECHO_HEALING_BONUS.value
+                CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value
             ] += get_number("0.1")
 
     def _update_calculated(self):
         # HP Percentage
-        stat_bonus_hp_p = get_number(self._old_row[ResonatorColumnEnum.STAT_BONUS_HP_P])
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_HP_P.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.WEAPON_HP_P.value]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_HP_P.value]
+        stat_bonus_hp_p = get_number(
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_HP_P]
+        )
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_HP_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HP_P.value]
             + stat_bonus_hp_p
         )
 
         # HP
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_HP.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.HP.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_HP.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.HP.value]
             * (
                 get_number("1.0")
-                + self._new_row[CalculatedResonatorColumnEnum.CALCULATED_HP_P.value]
+                + self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P.value]
             )
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_HP.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HP.value]
         )
 
         # ATK Percentage
         stat_bonus_atk_p = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_ATK_P]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_ATK_P]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_ATK_P.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.WEAPON_ATK_P.value]
-            + self._new_row[CalculatedResonatorColumnEnum.WEAPON_RANK_ATK_P.value]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_ATK_P.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ATK_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATK_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ATK_P.value]
             + stat_bonus_atk_p
         )
 
         # ATK
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_ATK.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.ATTACK.value]
-            + self._new_row[CalculatedResonatorColumnEnum.WEAPON_ATK.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_ATK.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.ATTACK.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ATK.value]
         ) * (
             get_number("1.0")
-            + self._new_row[CalculatedResonatorColumnEnum.CALCULATED_ATK_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P.value]
         ) + self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_ATK.value
+            CalculatedResonatorTsvColumnEnum.ECHO_ATK.value
         ]
 
         # DEF Percentage
         stat_bonus_def_p = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_DEF_P]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_DEF_P]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_DEF_P.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.WEAPON_DEF_P.value]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_DEF_P.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_DEF_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_DEF_P.value]
             + stat_bonus_def_p
         )
 
         # DEF
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_DEF.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.DEFENSE.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_DEF.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.DEFENSE.value]
             * (
                 get_number("1.0")
-                + self._new_row[CalculatedResonatorColumnEnum.CALCULATED_DEF_P.value]
+                + self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P.value]
             )
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_DEF.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_DEF.value]
         )
 
         # CRIT Rate
         stat_bonus_crit_rate = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_CRIT_RATE]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_RATE]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_CRIT_RATE.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.BASE_CRIT_RATE.value]
-            + self._new_row[CalculatedResonatorColumnEnum.WEAPON_CRIT_RATE.value]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_CRIT_RATE.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_RATE.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_RATE.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_RATE.value]
             + stat_bonus_crit_rate
         )
 
         # CRIT DMG
         stat_bonus_crit_dmg = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_CRIT_DMG]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_DMG]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_CRIT_DMG.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.BASE_CRIT_DMG.value]
-            + self._new_row[CalculatedResonatorColumnEnum.WEAPON_CRIT_DMG.value]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_CRIT_DMG.value]
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG.value] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_DMG.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_DMG.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_DMG.value]
             + stat_bonus_crit_dmg
         )
 
         # Energy Regen
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_ENERGY_REGEN.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.BASE_ENERGY_REGEN.value]
-            + self._new_row[CalculatedResonatorColumnEnum.WEAPON_ENERGY_REGEN.value]
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ENERGY_REGEN.value
+        ] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.BASE_ENERGY_REGEN.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_ENERGY_REGEN.value]
             + self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ENERGY_REGEN.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ENERGY_REGEN.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_ENERGY_REGEN.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value]
         )
 
         # Resonance Skill DMG Bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_RESONANCE_SKILL_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_SKILL_DMG_BONUS.value
         ] = self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
         ]
 
         # Basic Attack DMG Bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value
         ] = self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
         ]
 
         # Heavy Attack DMG Bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value
         ] = self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
         ]
 
         # Resonance Liberation DMG Bonus
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value
         ] = self._new_row[
-            CalculatedResonatorColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
         ]
 
         # Glacio DMG Bonus
         stat_bonus_glacio_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_GLACIO_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_GLACIO_DMG_BONUS]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_GLACIO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_GLACIO_DMG_BONUS.value
         ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_GLACIO_DMG_BONUS.value]
+            + self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
+            ]
             + stat_bonus_glacio_dmg_bonus
         )
 
         # Fusion DMG Bonus
         stat_bonus_fusion_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_FUSION_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_FUSION_DMG_BONUS]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_FUSION_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_FUSION_DMG_BONUS.value
         ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_FUSION_DMG_BONUS.value]
+            + self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
+            ]
             + stat_bonus_fusion_dmg_bonus
         )
 
         # Electro DMG Bonus
         stat_bonus_electro_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_ELECTRO_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_ELECTRO_DMG_BONUS]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_ELECTRO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ELECTRO_DMG_BONUS.value
         ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_ELECTRO_DMG_BONUS.value]
+            + self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_ELECTRO_DMG_BONUS.value
+            ]
             + stat_bonus_electro_dmg_bonus
         )
 
         # Aero DMG Bonus
         stat_bonus_aero_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_AERO_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_BONUS]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_AERO_DMG_BONUS.value] = (
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_AERO_DMG_BONUS.value
+        ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_AERO_DMG_BONUS.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value]
             + stat_bonus_aero_dmg_bonus
         )
 
         # Spectro DMG Bonus
         stat_bonus_spectro_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_SPECTRO_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_SPECTRO_DMG_BONUS]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_SPECTRO_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_SPECTRO_DMG_BONUS.value
         ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_SPECTRO_DMG_BONUS.value]
+            + self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
+            ]
             + stat_bonus_spectro_dmg_bonus
         )
 
         # Havoc DMG Bonus
         stat_bonus_havoc_dmg_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_HAVOC_DMG_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_BONUS]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_HAVOC_DMG_BONUS.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HAVOC_DMG_BONUS.value
         ] = (
             self._new_row[
-                CalculatedResonatorColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
             ]
-            + self._new_row[CalculatedResonatorColumnEnum.ECHO_HAVOC_DMG_BONUS.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value]
             + stat_bonus_havoc_dmg_bonus
         )
 
         # Healing Bonus
         stat_bonus_healing_bonus = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_HEALING_BONUS]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_HEALING_BONUS]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_HEALING_BONUS.value] = (
-            self._new_row[CalculatedResonatorColumnEnum.ECHO_HEALING_BONUS.value]
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HEALING_BONUS.value
+        ] = (
+            self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value]
             + stat_bonus_healing_bonus
         )
 
         # Physical DMG RES
         stat_bonus_physical_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_PHYSICAL_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_PHYSICAL_DMG_RES]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_PHYSICAL_DMG_RES.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_PHYSICAL_DMG_RES.value
         ] = stat_bonus_physical_dmg_res
 
         # Glacio DMG RES
         stat_bonus_glacio_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_GLACIO_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_GLACIO_DMG_RES]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_GLACIO_DMG_RES.value] = (
-            stat_bonus_glacio_dmg_res
-        )
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_GLACIO_DMG_RES.value
+        ] = stat_bonus_glacio_dmg_res
 
         # Fusion DMG RES
         stat_bonus_fusion_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_FUSION_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_FUSION_DMG_RES]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_FUSION_DMG_RES.value] = (
-            stat_bonus_fusion_dmg_res
-        )
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_FUSION_DMG_RES.value
+        ] = stat_bonus_fusion_dmg_res
 
         # Electro DMG RES
         stat_bonus_electro_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_ELECTRO_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_ELECTRO_DMG_RES]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_ELECTRO_DMG_RES.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ELECTRO_DMG_RES.value
         ] = stat_bonus_electro_dmg_res
 
         # Aero DMG RES
         stat_bonus_aero_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_AERO_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_RES]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_AERO_DMG_RES.value] = (
-            stat_bonus_aero_dmg_res
-        )
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_AERO_DMG_RES.value
+        ] = stat_bonus_aero_dmg_res
 
         # Spectro DMG RES
         stat_bonus_spectro_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_SPECTRO_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_SPECTRO_DMG_RES]
         )
         self._new_row[
-            CalculatedResonatorColumnEnum.CALCULATED_SPECTRO_DMG_RES.value
+            CalculatedResonatorTsvColumnEnum.CALCULATED_SPECTRO_DMG_RES.value
         ] = stat_bonus_spectro_dmg_res
 
         # Havoc DMG RES
         stat_bonus_havoc_dmg_res = get_number(
-            self._old_row[ResonatorColumnEnum.STAT_BONUS_HAVOC_DMG_RES]
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_RES]
         )
-        self._new_row[CalculatedResonatorColumnEnum.CALCULATED_HAVOC_DMG_RES.value] = (
-            stat_bonus_havoc_dmg_res
-        )
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_HAVOC_DMG_RES.value
+        ] = stat_bonus_havoc_dmg_res
 
 
 def get_calculated_resonators_df() -> pd.DataFrame:
     resonators_table = ResonatorsTable()
     resonators_df = resonators_table.df
 
-    calculated_resonators_columns = [e.value for e in CalculatedResonatorColumnEnum]
+    calculated_resonators_columns = [e.value for e in CalculatedResonatorTsvColumnEnum]
 
     calculated_resonators_dict = {
         column: [] for column in calculated_resonators_columns
@@ -719,7 +737,7 @@ def get_calculated_resonators_df() -> pd.DataFrame:
             new_resonator = CalculatedResonator(row)
             new_resonator_dict = new_resonator.get_row_dict()
             new_resonator_id = new_resonator_dict.get(
-                CalculatedResonatorColumnEnum.ID.value, None
+                CalculatedResonatorTsvColumnEnum.ID.value, None
             )
             if not new_resonator_id:
                 for col in calculated_resonators_columns:

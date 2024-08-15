@@ -12,7 +12,7 @@ class ResonatorStatColumnEnum(str, Enum):
     DEF: str = _(ZhTwEnum.DEF)
 
 
-class ResonatorColumnEnum(str, Enum):
+class ResonatorTsvColumnEnum(str, Enum):
     ID: str = "角色代稱"
     PREFIX: str = "字首"
     SUFFIX: str = "字尾"
@@ -65,11 +65,66 @@ class ResonatorColumnEnum(str, Enum):
     ECHO_5: str = "聲骸5"
 
 
+class ResonatorModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    id: str = "角色代稱"
+    prefix: str = "字首"
+    suffix: str = "字尾"
+    name: str = "角色名稱"
+
+    weapon_name: str = "武器名稱"
+    weapon_level: str = "武器等級"
+    weapon_rank: str = "武器諧振"
+
+    level: str = "角色等級"
+    resonance_chain: str = "共鳴鏈"
+    max_sta: str = "耐力上限"
+
+    normal_attack_lv: str = "常態攻擊lv"
+    resonance_skill_lv: str = "共鳴技能lv"
+    resonance_liberation_lv: str = "共鳴解放lv"
+    forte_circuit_lv: str = "共鳴回路lv"
+    intro_skill_lv: str = "變奏技能lv"
+    outro_skill_lv: str = "延奏技能lv"
+
+    stat_bonus_hp_p: str = "生命百分比"
+    stat_bonus_atk_p: str = "攻擊百分比"
+    stat_bonus_def_p: str = "防禦百分比"
+    stat_bonus_crit_rate: str = "暴擊"
+    stat_bonus_crit_dmg: str = "暴擊傷害"
+
+    stat_bonus_glacio_dmg_bonus: str = "冷凝加成"
+    stat_bonus_fusion_dmg_bonus: str = "熱熔加成"
+    stat_bonus_electro_dmg_bonus: str = "導電加成"
+    stat_bonus_aero_dmg_bonus: str = "氣動加成"
+    stat_bonus_spectro_dmg_bonus: str = "衍射加成"
+    stat_bonus_havoc_dmg_bonus: str = "湮滅加成"
+    stat_bonus_healing_bonus: str = "治療效果加成"
+
+    inherent_skill_1: str = "固有一階"
+    inherent_skill_2: str = "固有二階"
+
+    stat_bonus_physical_dmg_res: str = "物理抗性"
+    stat_bonus_glacio_dmg_res: str = "冷凝抗性"
+    stat_bonus_fusion_dmg_res: str = "熱熔抗性"
+    stat_bonus_electro_dmg_res: str = "導電抗性"
+    stat_bonus_aero_dmg_res: str = "氣動抗性"
+    stat_bonus_spectro_dmg_res: str = "衍射抗性"
+    stat_bonus_havoc_dmg_res: str = "湮滅抗性"
+
+    echo_1: str = "聲骸1"
+    echo_2: str = "聲骸2"
+    echo_3: str = "聲骸3"
+    echo_4: str = "聲骸4"
+    echo_5: str = "聲骸5"
+
+
 CALCULATED_RESONATORS_DMG_BONUS_PREFIX: str = "角色"
 CALCULATED_RESONATORS_DMG_BONUS_SUFFIX: str = "傷害加成面板"
 
 
-class CalculatedResonatorColumnEnum(str, Enum):
+class CalculatedResonatorTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.RESONATOR_ID)
 
     # Resonator Stat
@@ -174,8 +229,6 @@ class CalculatedResonatorColumnEnum(str, Enum):
 
 
 class CalculatedResonatorModel(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-
     id: str = ""
 
     # resonator stat

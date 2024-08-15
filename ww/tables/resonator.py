@@ -5,10 +5,10 @@ import pandas as pd
 
 from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
-    CalculatedResonatorColumnEnum,
     CalculatedResonatorModel,
-    ResonatorColumnEnum,
+    CalculatedResonatorTsvColumnEnum,
     ResonatorStatColumnEnum,
+    ResonatorTsvColumnEnum,
 )
 from ww.model.resonator_skill import ResonatorSkillEnum
 from ww.tables.crud import get_row, search
@@ -79,26 +79,26 @@ class ResonatorSkillTable:
 
 class ResonatorsTable:
     def __init__(self):
-        self.column_names = [e.value for e in ResonatorColumnEnum]
+        self.column_names = [e.value for e in ResonatorTsvColumnEnum]
         self.df = safe_get_df(RESONATORS_PATH, self.column_names)
 
-    def search(self, id: str, col: ResonatorColumnEnum) -> Optional[Any]:
-        return search(self.df, id, col, ResonatorColumnEnum.ID.value)
+    def search(self, id: str, col: ResonatorTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, ResonatorTsvColumnEnum.ID.value)
 
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
-        return get_row(self.df, id, ResonatorColumnEnum.ID.value)
+        return get_row(self.df, id, ResonatorTsvColumnEnum.ID.value)
 
 
 class CalculatedResonatorsTable:
     def __init__(self):
-        self.column_names = [e.value for e in CalculatedResonatorColumnEnum]
+        self.column_names = [e.value for e in CalculatedResonatorTsvColumnEnum]
         self.df = safe_get_df(CALCULATED_RESONATOR_PATH, self.column_names)
 
-    def search(self, id: str, col: CalculatedResonatorColumnEnum) -> Optional[Any]:
-        return search(self.df, id, col, CalculatedResonatorColumnEnum.ID.value)
+    def search(self, id: str, col: CalculatedResonatorTsvColumnEnum) -> Optional[Any]:
+        return search(self.df, id, col, CalculatedResonatorTsvColumnEnum.ID.value)
 
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
-        return get_row(self.df, id, CalculatedResonatorColumnEnum.ID.value)
+        return get_row(self.df, id, CalculatedResonatorTsvColumnEnum.ID.value)
 
     def get_calculated_resonator_model(self, id: str) -> CalculatedResonatorModel:
         model = CalculatedResonatorModel()
@@ -107,7 +107,7 @@ class CalculatedResonatorsTable:
             return model
         row_dict = row.iloc[0].to_dict()
 
-        for e in CalculatedResonatorColumnEnum:
+        for e in CalculatedResonatorTsvColumnEnum:
             value = row_dict.get(e.value, "")
             setattr(model, e.name.lower(), value)
         return model

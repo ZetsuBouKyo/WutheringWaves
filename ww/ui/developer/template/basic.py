@@ -14,7 +14,7 @@ from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import get_resonator_ids
 from ww.crud.template import get_template_ids
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator import ResonatorColumnEnum
+from ww.model.resonator import ResonatorTsvColumnEnum
 from ww.model.template import (
     TemplateModel,
     TemplateResonatorModel,
@@ -315,7 +315,7 @@ class QTemplateBasicTab(QWidget):
             if not resonator_id:
                 continue
             resonator_name = resonators_table.search(
-                resonator_id, ResonatorColumnEnum.NAME.value
+                resonator_id, ResonatorTsvColumnEnum.NAME.value
             )
             if table.get(resonator_name, None) is not None:
                 QMessageBox.warning(self, _(ZhTwEnum.WARNING), "角色重複。")

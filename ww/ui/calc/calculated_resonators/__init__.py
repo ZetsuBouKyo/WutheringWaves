@@ -1,7 +1,7 @@
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ww.model.echo import EchoListEnum
-from ww.model.resonator import CalculatedResonatorColumnEnum
+from ww.model.resonator import CalculatedResonatorTsvColumnEnum
 from ww.tables.echo import EchoListTable
 from ww.tables.resonator import CalculatedResonatorsTable
 from ww.ui.table import QUneditableDataFrameTable
@@ -17,8 +17,8 @@ class QCalculatedResonatorsTable(QUneditableDataFrameTable):
         super().__init__(calculated_resonators_table_df)
 
     def _init_column_width(self):
-        for e in CalculatedResonatorColumnEnum:
-            if e.value == CalculatedResonatorColumnEnum.ID.value:
+        for e in CalculatedResonatorTsvColumnEnum:
+            if e.value == CalculatedResonatorTsvColumnEnum.ID.value:
                 col = self.get_column_id(e.value)
                 self.setColumnWidth(col, 500)
             else:
