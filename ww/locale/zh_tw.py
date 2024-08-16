@@ -16,6 +16,7 @@ class ZhTwEnum(str, Enum):
     STAT: str = "屬性"
     TUNE: str = "諧振"
     BUFF: str = "增益"
+    BUFF_NAME_TO_DELETE: str = "增益名稱"
 
     TOTAL_DAMAGE: str = "總傷害"
 
@@ -44,6 +45,7 @@ class ZhTwEnum(str, Enum):
     CALCULATE: str = "計算"
     COMMENT: str = "註解"
     DELETE: str = "刪除"
+    DELETE_BUFFS: str = "刪除增益"
     EXPORT_IMAGE: str = "輸出圖片"
 
     FILE: str = "檔案"

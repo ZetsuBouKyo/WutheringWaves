@@ -8,6 +8,8 @@ from PySide2.QtWidgets import (
     QDesktopWidget,
     QDialog,
     QHBoxLayout,
+    QLabel,
+    QLineEdit,
     QPushButton,
     QTextEdit,
     QVBoxLayout,
@@ -173,6 +175,60 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 self.progress_bar.set_percentage(percentage)
         if is_progress:
             self.progress_bar.set(100.0, _(ZhTwEnum.CALCULATED))
+
+    def remove_buffs(self, dialog: QDialog, line: QLineEdit):
+        buff_name = line.text()
+        if not buff_name:
+            dialog.done(1)
+        for i in range(len(self.ouput_methods)):
+            buffs = self.ouput_methods[i].buffs
+            new_buffs = []
+            for buff in buffs:
+                if buff.name == buff_name:
+                    continue
+                new_buffs.append(buff)
+            self.ouput_methods[i].buffs = new_buffs
+        self.calculate(is_progress=False)
+        dialog.done(1)
+
+    def delete_buffs(self):
+        width = 1200
+        height = 600
+        center = QDesktopWidget().availableGeometry().center()
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        layout = QVBoxLayout()
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+
+        line_layout = QHBoxLayout()
+        label = QLabel(_(ZhTwEnum.BUFF_NAME_TO_DELETE))
+        label.setFixedWidth(150)
+        label.setFixedHeight(40)
+        line = QLineEdit()
+        line.setFixedWidth(200)
+        line.setFixedHeight(40)
+        line_layout.addWidget(label)
+        line_layout.addWidget(line)
+        line_layout.addStretch()
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QPushButton("OK")
+        ok_btn.clicked.connect(partial(self.remove_buffs, dialog, line))
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addLayout(line_layout)
+        layout.addStretch()
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
 
     def load(self, rows: List[TemplateRowModel]):
         self.ouput_methods = rows
@@ -688,7 +744,10 @@ class QTemplateOutputMethodTab(QWidget):
         self.q_btns_layout = QHBoxLayout()
         self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
+        self.q_delete_buffs_btn = QPushButton(_(ZhTwEnum.DELETE_BUFFS))
+        self.q_delete_buffs_btn.clicked.connect(self.delete_buffs)
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_delete_buffs_btn)
         self.q_btns_layout.addWidget(self.q_calculate_btn)
 
         self.q_output_method_table = QTemplateTabOutputMethodTable(basic, progress_bar)
@@ -700,6 +759,9 @@ class QTemplateOutputMethodTab(QWidget):
 
     def calculate(self):
         self.q_output_method_table.calculate()
+
+    def delete_buffs(self):
+        self.q_output_method_table.delete_buffs()
 
     def load(self, rows: List[TemplateRowModel]):
         self.q_output_method_table.load(rows)
