@@ -59,6 +59,7 @@ class CalculatedTemplateRowModel(BaseModel):
     resonator_skill_dmg: Optional[Decimal] = None
 
     echo_element: Optional[ElementEnum] = None
+    echo_skill_base_attr: Optional[SkillBaseAttrEnum] = None
     echo_skill_dmg: Optional[Decimal] = None
 
     damage: Optional[Decimal] = None
@@ -67,6 +68,7 @@ class CalculatedTemplateRowModel(BaseModel):
 
     result_element: Optional[ElementEnum] = None
     result_bonus_type: Optional[SkillBonusTypeEnum] = None
+    result_skill_base_attr: Optional[SkillBaseAttrEnum] = None
     result_skill_dmg: Optional[Decimal] = None
 
     result_hp: Optional[Decimal] = None

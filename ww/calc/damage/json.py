@@ -73,7 +73,7 @@ def get_json_row_damage(
     monster_def,
     resonators_table: ResonatorsTable,
     calculated_resonators_table: CalculatedResonatorsTable,
-    echo_skill_table,
+    echo_skill_table: EchoSkillTable,
     monsters_table: MonstersTable,
 ) -> Optional[CalculatedTemplateRowModel]:
     if resonator_id is None:
@@ -143,6 +143,9 @@ def get_json_row_damage(
     echo_skill_element = echo_skill_table.search(
         template_row_skill_id, EchoSkillTsvColumnEnum.ELEMENT
     )
+    echo_skill_base_attr = echo_skill_table.search(
+        template_row_skill_id, EchoSkillTsvColumnEnum.BASE_ATTRIBUTE
+    )
     echo_skill_dmg = echo_skill_table.search(
         template_row_skill_id, EchoSkillTsvColumnEnum.DMG
     )
@@ -151,6 +154,12 @@ def get_json_row_damage(
 
     calculated_row.echo_element = echo_skill_element
     calculated_row.echo_skill_dmg = echo_skill_dmg
+
+    # Base attribute
+    if resonator_skill_base_attr is None:
+        base_attr = echo_skill_base_attr
+    else:
+        base_attr = resonator_skill_base_attr
 
     # Element
     if not ((resonator_skill_element is None) ^ (echo_skill_element is None)):
@@ -162,6 +171,7 @@ def get_json_row_damage(
         element = echo_skill_element
     else:
         element = resonator_skill_element
+
     calculated_row.result_element = element
 
     # Skill DMG
@@ -172,7 +182,6 @@ def get_json_row_damage(
 
     if resonator_skill_dmg is None:
         skill_dmg = echo_skill_dmg
-        resonator_skill_base_attr = SkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
     calculated_row.result_skill_dmg = skill_dmg
@@ -188,10 +197,12 @@ def get_json_row_damage(
 
     if manual_bonus_type:
         bonus_type = manual_bonus_type
-    elif resonator_skill_bonus_type is None:
+    elif echo_skill_element and echo_skill_dmg and echo_skill_base_attr:
         bonus_type = SkillBonusTypeEnum.ECHO.value
-    else:
+    elif resonator_skill_bonus_type:
         bonus_type = resonator_skill_bonus_type
+    else:
+        bonus_type = SkillBonusTypeEnum.NONE.value
     calculated_row.result_bonus_type = bonus_type
 
     # Monster
@@ -340,11 +351,11 @@ def get_json_row_damage(
     bonus_reduce_res = buffs.bonus_reduce_res
 
     # DMG
-    if resonator_skill_base_attr == SkillBaseAttrEnum.ATK.value:
+    if base_attr == SkillBaseAttrEnum.ATK.value:
         region_base_attr = (
             result_atk * (get_number("1.0") + result_atk_p) + result_atk_addition
         )
-    elif resonator_skill_base_attr == SkillBaseAttrEnum.DEF.value:
+    elif base_attr == SkillBaseAttrEnum.DEF.value:
         region_base_attr = (
             result_def * (get_number("1.0") + result_def_p) + result_def_addition
         )

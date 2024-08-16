@@ -90,7 +90,7 @@ class QTemplateDamageDistributionTab(QWidget):
                     e.value: Decimal("0.0") for e in SkillBonusTypeEnum
                 }
 
-            resonator_skill_type_bonus = calculated_row.resonator_skill_type_bonus
+            resonator_skill_type_bonus = calculated_row.result_bonus_type
             if (
                 damage_distribution.get(resonator_name, {}).get(
                     resonator_skill_type_bonus, None
