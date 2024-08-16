@@ -50,6 +50,8 @@ class ZhTwEnum(str, Enum):
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
+    OUTPUT_METHOD: str = "輸出手法"
+
     INFO: str = "資訊"
     WARNING: str = "警告"
 

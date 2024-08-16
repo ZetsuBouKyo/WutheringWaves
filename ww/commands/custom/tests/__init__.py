@@ -5,7 +5,7 @@ from html2image import Html2Image
 from jinja2 import Template
 from typer import Typer
 
-from ww.html.template import (
+from ww.html.template.resonator import (
     get_element_class_name,
     get_element_icon_fpath,
     get_resonator_icon_fpath,

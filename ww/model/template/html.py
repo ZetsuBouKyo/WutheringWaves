@@ -1,3 +1,5 @@
+from typing import List
+
 from pydantic import BaseModel
 
 
@@ -50,3 +52,8 @@ class TemplateHtmlResonatorModel(BaseModel):
     resonator_src: str = ""
     element_class_name: str = ""
     element_src: str = ""
+
+
+class TemplateHtmlOutputMethodModel(BaseModel):
+    resonator_name: str = ""
+    actions: List[str] = []

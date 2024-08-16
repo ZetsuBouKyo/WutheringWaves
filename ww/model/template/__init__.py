@@ -11,7 +11,10 @@ from ww.model.template.calculated_row import (
     CalculatedTemplateColumnEnum,
     CalculatedTemplateRowModel,
 )
-from ww.model.template.html import TemplateHtmlResonatorModel
+from ww.model.template.html import (
+    TemplateHtmlOutputMethodModel,
+    TemplateHtmlResonatorModel,
+)
 from ww.model.template.resonator_table import TemplateResonatorTableColumnEnum
 from ww.model.template.template_row import (
     TEMPLATE_BONUS,
@@ -27,12 +30,13 @@ __all__ = [
     "CalculatedTemplateRowModel",
     "TemplateBuffTableColumnEnum",
     "TemplateBuffTableRowModel",
+    "TemplateColumnEnum",
     "TemplateEnum",
+    "TemplateHtmlOutputMethodModel",
     "TemplateHtmlResonatorModel",
     "TemplateResonatorTableColumnEnum",
     "TemplateRowActionEnum",
     "TemplateRowBuffTypeEnum",
-    "TemplateColumnEnum",
 ]
 
 
