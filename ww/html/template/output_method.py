@@ -14,6 +14,17 @@ def get_html_template_output_method_model(
     rows: List[TemplateRowModel],
 ) -> List[TemplateHtmlOutputMethodModel]:
     output_methods = []
+    current_output_method = TemplateHtmlOutputMethodModel()
+    for row in rows:
+        if row.resonator_name != current_output_method.resonator_name:
+            if not current_output_method.is_none():
+                output_methods.append(current_output_method)
+
+            current_output_method = TemplateHtmlOutputMethodModel()
+            current_output_method.resonator_name = row.resonator_name
+        else:
+            current_output_method.actions.append(row.action)
+
     return output_methods
 
 
