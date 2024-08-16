@@ -8,7 +8,7 @@ from ww.html.template.export import export_html_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
-from ww.utils import get_url
+from ww.utils import get_local_file_url
 
 ELEMENT_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/element/icon"
 RESONATOR_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/resonator/icon"
@@ -20,7 +20,7 @@ TEMPLATE_RESONATOR_HTML_PATH = "./html/template/resonator.html"
 def get_element_icon_fpath(element: str) -> Optional[str]:
     element_path = Path(ELEMENT_ICON_HOME_PATH) / f"{element}.png"
     if element_path.exists():
-        return get_url(element_path)
+        return get_local_file_url(element_path)
     return None
 
 
@@ -39,7 +39,7 @@ def get_element_class_name(element: str) -> Optional[str]:
 def get_resonator_icon_fpath(resonator_name: str) -> Optional[str]:
     element_path = Path(RESONATOR_ICON_HOME_PATH) / f"{resonator_name}.png"
     if element_path.exists():
-        return get_url(element_path)
+        return get_local_file_url(element_path)
     return None
 
 
@@ -132,4 +132,4 @@ def export_html_template_resonator_model_as_png(template_id: str, resonator_id: 
     html_str = template.render(resonator=resonator, ZhTwEnum=ZhTwEnum, _=_)
     png_fname = f"{resonator_id}.png"
 
-    export_html_as_png(template_id, png_fname, html_str)
+    export_html_as_png(template_id, png_fname, html_str, 276)

@@ -1,0 +1,135 @@
+<div class="container">
+  {% for output_method in output_methods %}
+  <div class="rows {{'margin-bottom' if loop.index < output_methods|length}}">
+    <div class="left-row">
+      <div class="resonator-icon">
+        <img class="resonator-icon" src="{{output_method.resonator_src}}" />
+      </div>
+    </div>
+    <div class="right-row">
+      <div class="actions">
+        {% for action in output_method.actions %}
+        <div class="action">
+          <div class="action-text">
+            {{action.name}}
+          </div>
+          {% if action.src != "" %}
+          <img class="action-icon" src="{{action.src}}" />
+          {% endif %}
+          <img class="action-next" src="{{right_arrow_src}}" />
+        </div>
+        {% endfor %}
+      </div>
+      {% for comment in output_method.comments %}
+      <div class="comments">
+        <div class="comment">
+          {{comment}}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<style>
+  body {
+    color: rgb(240, 240, 240);
+    width: 1900px;
+  }
+
+  div.resonator-icon {
+    height: 48px;
+    object-fit: contain;
+    border-radius: 8px;
+    border: 2px solid rgb(240, 240, 240);
+    padding: 4px;
+  }
+
+  img.resonator-icon {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  div.container {
+    width: 1280px;
+    background-color: rgb(8, 12, 20);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    color: rgb(16, 24, 40);
+    border: 4px solid;
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .left-row {
+    display: flex;
+    flex-direction: row;
+    margin-right: 8px;
+  }
+
+  .right-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .action {
+    height: 60px;
+    margin-right: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .action-text {
+    font-size: 24px;
+    color: rgb(240, 240, 240);
+  }
+
+  .action-icon {
+    height: 32px;
+    margin-left: 8px;
+    object-fit: contain;
+  }
+
+  .action-next {
+    height: 32px;
+    margin-left: 12px;
+    margin-right: 4px;
+    object-fit: contain;
+  }
+
+  .comments {
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .comment {
+    margin-top: 8px;
+    display: flex;
+    color: rgb(220, 220, 240);
+  }
+
+  .margin-left {
+    margin-left: 12px;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .margin-right {
+    margin-right: 12px;
+  }
+</style>

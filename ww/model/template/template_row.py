@@ -38,6 +38,7 @@ class TemplateRowActionEnum(str, Enum):
     GRAPPLE: str = "鉤索"
     COORDINATED_ATTACK: str = "協同攻擊"
     DODGE: str = "閃避"
+    JUMP: str = "跳"
     NONE: str = "無"
 
 

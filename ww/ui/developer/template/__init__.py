@@ -15,13 +15,13 @@ from ww.crud.template import (
     get_template_path,
     save_template,
 )
-from ww.html.template import export_html_template_resonator_model_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoTsvColumnEnum
 from ww.model.template import TemplateModel, TemplateRowModel
 from ww.tables.echo import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
+from ww.ui.developer.template.export import QTemplateExportTab
 from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
@@ -39,8 +39,6 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
-        self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGE))
-        self.q_export_image_btn.clicked.connect(self.export_images)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
@@ -51,7 +49,6 @@ class QTemplateTabs(QWidget):
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
-        self.q_btns_layout.addWidget(self.q_export_image_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
@@ -70,6 +67,8 @@ class QTemplateTabs(QWidget):
         )
         # Damage analysis
         self.q_template_damage_distribution = QTemplateDamageDistributionTab(self)
+        # Export
+        self.q_template_export = QTemplateExportTab(self)
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
@@ -80,6 +79,7 @@ class QTemplateTabs(QWidget):
         self.q_tabs.addTab(
             self.q_template_damage_distribution, _(ZhTwEnum.TAB_DAMAGE_DISTRIBUTION)
         )
+        self.q_tabs.addTab(self.q_template_export, _(ZhTwEnum.TAB_EXPORT))
         self.q_tabs.addTab(self.q_template_help_tab, _(ZhTwEnum.TAB_HELP))
 
         self.layout.addLayout(self.q_btns_layout)
@@ -109,19 +109,6 @@ class QTemplateTabs(QWidget):
         )
 
         return template
-
-    def export_images(self):
-        template = self.get_template()
-        export_html_template_resonator_model_as_png(
-            template.id, template.test_resonator_id_1
-        )
-        export_html_template_resonator_model_as_png(
-            template.id, template.test_resonator_id_2
-        )
-        export_html_template_resonator_model_as_png(
-            template.id, template.test_resonator_id_3
-        )
-        self.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))

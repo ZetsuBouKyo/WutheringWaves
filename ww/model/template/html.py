@@ -54,9 +54,16 @@ class TemplateHtmlResonatorModel(BaseModel):
     element_src: str = ""
 
 
+class TemplateHtmlOutputMethodActionModel(BaseModel):
+    name: str = ""
+    src: str = ""
+
+
 class TemplateHtmlOutputMethodModel(BaseModel):
     resonator_name: str = ""
-    actions: List[str] = []
+    resonator_src: str = ""
+    actions: List[TemplateHtmlOutputMethodActionModel] = []
+    comments: List[str] = []
 
     def is_none(cls) -> bool:
         if not cls.resonator_name or len(cls.actions) == 0:

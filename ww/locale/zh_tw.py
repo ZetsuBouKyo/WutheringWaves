@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class ZhTwEnum(str, Enum):
+
     RESONATOR_1: str = "共鳴者1"
     RESONATOR_2: str = "共鳴者2"
     RESONATOR_3: str = "共鳴者3"
@@ -10,6 +11,7 @@ class ZhTwEnum(str, Enum):
     CHARACTER: str = "角色"
     DESCRIPTION: str = "描述"
     INFORMATION: str = "基本資料"
+    RESONATOR: str = "共鳴者"
     SKILL: str = "技能"
     STAT: str = "屬性"
     TUNE: str = "諧振"
@@ -74,6 +76,7 @@ class ZhTwEnum(str, Enum):
     TAB_BASIC: str = "基本資料"
     TAB_OUTPUT_METHOD: str = "輸出手法"
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
+    TAB_EXPORT: str = "輸出"
     TAB_HELP: str = "說明"
     TAB_ANALYSIS: str = "分析"
     TAB_ECHO_LIST: str = "列表"
