@@ -9,6 +9,7 @@ class EchoTsvColumnEnum(str, Enum):
 class EchoSkillTsvColumnEnum(str, Enum):
     PRIMARY_KEY: str = "代稱"
     ELEMENT: str = "屬性"
+    BASE_ATTRIBUTE: str = "Base Attribute"
     DMG: str = "倍率"
 
 

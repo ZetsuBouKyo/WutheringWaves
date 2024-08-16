@@ -56,6 +56,14 @@ def get_html_template_output_method_model(
     output_methods = []
     current_output_method = TemplateHtmlOutputMethodModel()
     for row in rows:
+        action_name = row.action
+
+        if (
+            not action_name
+            or action_name == TemplateRowActionEnum.COORDINATED_ATTACK.value
+        ):
+            continue
+
         if row.resonator_name != current_output_method.resonator_name:
             if not current_output_method.is_none():
                 output_methods.append(current_output_method)
@@ -67,9 +75,6 @@ def get_html_template_output_method_model(
             current_output_method.resonator_name = resonator_name
             current_output_method.resonator_src = resonator_src
 
-        action_name = row.action
-        if not action_name:
-            continue
         action_src = action_icons.get(action_name, "")
         action = TemplateHtmlOutputMethodActionModel(name=action_name, src=action_src)
         current_output_method.actions.append(action)

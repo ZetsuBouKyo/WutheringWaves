@@ -3,6 +3,7 @@ from typing import Dict, Optional, Union
 
 import pandas as pd
 
+from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.echo import EchoSkillTsvColumnEnum
 from ww.model.monsters import MonsterTsvColumnEnum
@@ -12,10 +13,7 @@ from ww.model.resonator import (
     CalculatedResonatorTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
-from ww.model.resonator_skill import (
-    ResonatorSkillBaseAttrEnum,
-    ResonatorSkillTsvColumnEnum,
-)
+from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.model.template import CalculatedTemplateColumnEnum, TemplateEnum
 from ww.tables.echo import EchoSkillTable
 from ww.tables.monster import MonstersTable
@@ -158,7 +156,7 @@ def get_tsv_row_damage(
 
     if resonator_skill_dmg is None:
         skill_dmg = echo_skill_dmg
-        resonator_skill_base_attr = ResonatorSkillBaseAttrEnum.ATK.value
+        resonator_skill_base_attr = SkillBaseAttrEnum.ATK.value
     else:
         skill_dmg = resonator_skill_dmg
     calculated_template_row_dict[
@@ -290,7 +288,7 @@ def get_tsv_row_damage(
     bonus_reduce_res = get_number(row[TemplateEnum.BONUS_REDUCE_RES])
 
     # DMG
-    if resonator_skill_base_attr == ResonatorSkillBaseAttrEnum.ATK.value:
+    if resonator_skill_base_attr == SkillBaseAttrEnum.ATK.value:
         region_base_attr = (
             result_atk * (get_number("1.0") + result_atk_p) + result_atk_addition
         )

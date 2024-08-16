@@ -3,7 +3,10 @@ from PySide2.QtWidgets import QVBoxLayout, QWidget
 from ww.model.echo import EchoSkillTsvColumnEnum
 from ww.tables.echo import EchoSkillTable, get_echo_skill_fpath
 from ww.ui.table import QDraggableTableWidget, QDraggableTsvTableWidget
-from ww.ui.table.cell.combobox import set_element_combobox
+from ww.ui.table.cell.combobox import (
+    set_element_combobox,
+    set_skill_base_attribute_combobox,
+)
 
 
 class QPrivateDataEchoSkillTable(QDraggableTableWidget):
@@ -25,6 +28,8 @@ class QPrivateDataEchoSkillTable(QDraggableTableWidget):
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == EchoSkillTsvColumnEnum.ELEMENT.value:
             set_element_combobox(self, row, col, value)
+        elif self.column_names[col] == EchoSkillTsvColumnEnum.BASE_ATTRIBUTE.value:
+            set_skill_base_attribute_combobox(self, row, col, value)
         else:
             super().set_cell(row, col, value)
 

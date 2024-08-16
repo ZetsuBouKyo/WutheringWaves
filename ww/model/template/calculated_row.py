@@ -5,9 +5,10 @@ from typing import Optional
 from pydantic import BaseModel, ConfigDict
 
 from ww.locale import ZhTwEnum, _
+from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.element import ElementEnum
-from ww.model.resonator_skill import ResonatorSkillBaseAttrEnum, ResonatorSkillTypeEnum
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
 
 
 class CalculatedTemplateColumnEnum(str, Enum):
@@ -52,7 +53,7 @@ class CalculatedTemplateRowModel(BaseModel):
 
     resonator_skill_level: str = ""
     resonator_skill_element: Optional[ElementEnum] = None
-    resonator_skill_base_attr: Optional[ResonatorSkillBaseAttrEnum] = None
+    resonator_skill_base_attr: Optional[SkillBaseAttrEnum] = None
     resonator_skill_type: Optional[ResonatorSkillTypeEnum] = None
     resonator_skill_type_bonus: Optional[SkillBonusTypeEnum] = None
     resonator_skill_dmg: Optional[Decimal] = None
