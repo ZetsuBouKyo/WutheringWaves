@@ -160,6 +160,7 @@ def get_json_row_damage(
         base_attr = echo_skill_base_attr
     else:
         base_attr = resonator_skill_base_attr
+    calculated_row.result_skill_base_attribute = base_attr
 
     # Element
     if not ((resonator_skill_element is None) ^ (echo_skill_element is None)):

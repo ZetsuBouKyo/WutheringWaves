@@ -205,6 +205,7 @@ class ZhTwEnum(str, Enum):
     RESULT_DAMAGE_CRIT: str = "[計算]暴擊傷害"
 
     RESULT_ELEMENT: str = "[總]屬性"
+    RESULT_SKILL_BASE_ATTRIBUTE: str = "[總]Base attribute"
     RESULT_BONUS_TYPE: str = "[總]加成種類"
     RESULT_SKILL_DMG: str = "[總]技能倍率"
 

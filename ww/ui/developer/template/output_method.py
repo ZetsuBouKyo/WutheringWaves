@@ -244,6 +244,11 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         skill_ids_col = self.get_column_id(TemplateColumnEnum.SKILL_ID.value)
         self.setColumnWidth(skill_ids_col, 400)
 
+        result_skill_base_attr_col = self.get_column_id(
+            TemplateColumnEnum.RESULT_SKILL_BASE_ATTRIBUTE.value
+        )
+        self.setColumnWidth(result_skill_base_attr_col, 200)
+
     def _init_cells(self):
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
@@ -395,6 +400,8 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             or self.column_names[col] == TemplateColumnEnum.DAMAGE_NO_CRIT.value
             or self.column_names[col] == TemplateColumnEnum.DAMAGE_CRIT.value
             or self.column_names[col] == TemplateColumnEnum.RESULT_ELEMENT.value
+            or self.column_names[col]
+            == TemplateColumnEnum.RESULT_SKILL_BASE_ATTRIBUTE.value
             or self.column_names[col] == TemplateColumnEnum.RESULT_BONUS_TYPE.value
             or self.column_names[col] == TemplateColumnEnum.RESULT_SKILL_DMG.value
             or self.column_names[col] == TemplateColumnEnum.RESULT_ATK.value
@@ -634,8 +641,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.set_cell(row, col_index, value)
 
         col_names = [
-            TemplateColumnEnum.RESULT_ELEMENT,
             TemplateColumnEnum.RESULT_BONUS_TYPE,
+            TemplateColumnEnum.RESULT_ELEMENT,
+            TemplateColumnEnum.RESULT_SKILL_BASE_ATTRIBUTE,
             TemplateColumnEnum.RESULT_SKILL_DMG,
             TemplateColumnEnum.RESULT_ATK,
             TemplateColumnEnum.RESULT_ATK_ADDITION,

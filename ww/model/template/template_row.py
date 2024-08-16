@@ -59,8 +59,9 @@ class TemplateColumnEnum(str, Enum):
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
 
-    RESULT_ELEMENT: str = _(ZhTwEnum.RESULT_ELEMENT)
     RESULT_BONUS_TYPE: str = _(ZhTwEnum.RESULT_BONUS_TYPE)
+    RESULT_ELEMENT: str = _(ZhTwEnum.RESULT_ELEMENT)
+    RESULT_SKILL_BASE_ATTRIBUTE: str = _(ZhTwEnum.RESULT_SKILL_BASE_ATTRIBUTE)
     RESULT_SKILL_DMG: str = _(ZhTwEnum.RESULT_SKILL_DMG)
 
     RESULT_ATK: str = _(ZhTwEnum.RESULT_ATK)
