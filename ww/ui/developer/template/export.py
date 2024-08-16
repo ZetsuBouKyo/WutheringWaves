@@ -31,17 +31,25 @@ class QTemplateExportTab(QWidget):
 
         self.layout.addLayout(self.q_btns_layout)
 
-        self.q_resonator_line = self.set_line(self.layout, _(ZhTwEnum.RESONATOR))
+        self.q_output_method_line = self.set_line(
+            self.layout,
+            _(ZhTwEnum.OUTPUT_METHOD),
+            _(ZhTwEnum.TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT),
+        )
 
         self.layout.addStretch()
         self.setLayout(self.layout)
 
-    def set_line(self, parent_layout: QVBoxLayout, label_name: str) -> QLineEdit:
+    def set_line(
+        self, parent_layout: QVBoxLayout, label_name: str, tool_tip: str
+    ) -> QLineEdit:
         layout = QHBoxLayout()
         label = QLabel(label_name)
+        label.setToolTip(tool_tip)
         label.setFixedWidth(150)
         label.setFixedHeight(40)
         line = QLineEdit("")
+        line.setToolTip(tool_tip)
         line.setFixedWidth(400)
         line.setFixedHeight(40)
 
@@ -65,7 +73,7 @@ class QTemplateExportTab(QWidget):
             template.id, template.test_resonator_id_3
         )
 
-        output_methods_height = self.q_resonator_line.text()
+        output_methods_height = self.q_output_method_line.text()
         if output_methods_height:
             try:
                 output_methods_height = int(output_methods_height)

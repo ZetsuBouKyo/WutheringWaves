@@ -53,6 +53,7 @@ class ZhTwEnum(str, Enum):
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
     OUTPUT_METHOD: str = "輸出手法"
+    TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT: str = "輸出手法圖片高度。"
 
     INFO: str = "資訊"
     WARNING: str = "警告"
