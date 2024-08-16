@@ -364,6 +364,31 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             or self.column_names[col] == TemplateColumnEnum.BONUS_REDUCE_RES.value
         ):
             set_uneditable_cell(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateColumnEnum.RESONATING_SPIN_CONCERTO_REGEN.value
+        ):
+            set_item(
+                self, row, col, self.ouput_methods[row].resonating_spin_concerto_regen
+            )
+        elif (
+            self.column_names[col]
+            == TemplateColumnEnum.ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN.value
+        ):
+            set_item(
+                self,
+                row,
+                col,
+                self.ouput_methods[row].accumulated_resonating_spin_concerto_regen,
+            )
+        elif self.column_names[col] == TemplateColumnEnum.TIME_START.value:
+            set_item(self, row, col, self.ouput_methods[row].time_start)
+        elif self.column_names[col] == TemplateColumnEnum.TIME_END.value:
+            set_item(self, row, col, self.ouput_methods[row].time_end)
+        elif self.column_names[col] == TemplateColumnEnum.CUMULATIVE_TIME.value:
+            set_item(self, row, col, self.ouput_methods[row].cumulative_time)
+        elif self.column_names[col] == TemplateColumnEnum.FRAME.value:
+            set_item(self, row, col, self.ouput_methods[row].frame)
         else:
             set_item(self, row, col, "")
 
