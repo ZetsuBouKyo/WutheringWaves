@@ -26,7 +26,7 @@ class QHProgressBar(QWidget):
         self.set_message(message)
 
     def set_message(self, message: str):
-        now = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        now = datetime.now().strftime("%Y/%m/%d %H:%M:%S")
         msg = f"[{now}] {message}"
         self.q_progress_label.setText(msg)
 

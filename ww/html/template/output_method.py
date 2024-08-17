@@ -82,6 +82,8 @@ def get_html_template_output_method_model(
         comment = row.comment
         if comment:
             current_output_method.comments.append(comment)
+    if not current_output_method.is_none():
+        output_methods.append(current_output_method)
 
     return output_methods
 

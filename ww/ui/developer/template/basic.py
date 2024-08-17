@@ -320,6 +320,8 @@ class QTemplateBasicTab(QWidget):
             resonator_name = resonators_table.search(
                 resonator_id, ResonatorTsvColumnEnum.NAME.value
             )
+            if resonator_name is None:
+                continue
             if table.get(resonator_name, None) is not None:
                 QMessageBox.warning(self, _(ZhTwEnum.WARNING), "角色重複。")
                 return table
