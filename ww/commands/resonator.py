@@ -18,6 +18,7 @@ app = Typer(name="resonator")
 def stat(name: str):
     resonator_stat_fpath = base_path / name / STAT
     df = pd.read_csv(resonator_stat_fpath, sep="\t")
+    df.plot.barh()
 
     table_title = f"{name} {STAT}"
     print_table(table_title, df)
