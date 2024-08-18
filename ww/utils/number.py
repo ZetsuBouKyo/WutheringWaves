@@ -3,13 +3,17 @@ from typing import Optional, Union
 
 import numpy as np
 
+from ww.model import Number
 
-def get_number(n: Optional[Union[str, Decimal]]) -> Decimal:
+
+def get_number(n: Optional[Number]) -> Decimal:
     if n is None or n == "" or n == np.nan:
         return Decimal("0.0")
 
-    if type(n) == Decimal:
+    if type(n) is Decimal:
         return n
+    elif type(n) is int or type(n) is float:
+        return Decimal(n)
 
     if "," in n:
         n = n.replace(",", "")
