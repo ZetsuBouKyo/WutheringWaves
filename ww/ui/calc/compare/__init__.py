@@ -2,7 +2,7 @@ from decimal import Decimal, InvalidOperation
 
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
-from ww.calc.damage import get_json_damage
+from ww.calc.damage import Damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator import ResonatorTsvColumnEnum
@@ -46,51 +46,45 @@ class QDamageCompare(QWidget):
                 damage_no_crit = Decimal("0.0")
                 damage_crit = Decimal("0.0")
 
-                damage_distribution = {
-                    SkillBonusTypeEnum.BASIC.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.HEAVY.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.SKILL.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.LIBERATION.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.INTRO.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.OUTRO.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.ECHO.value: Decimal("0.0"),
-                    SkillBonusTypeEnum.NONE.value: Decimal("0.0"),
-                }
-
                 resonator_name = resonators_table.search(
                     resonator_id, ResonatorTsvColumnEnum.NAME
                 )
-                rows = get_json_damage(template_id, monster_id, resonator_id, "", "")
-                for row in rows:
-                    row_resonator_name = row.resonator_name
-                    if row_resonator_name != resonator_name:
-                        continue
-                    row_damage = row.damage
-                    row_damage_no_crit = row.damage_no_crit
-                    row_damage_crit = row.damage_crit
-                    row_bonus_type = row.result_bonus_type
 
-                    damage_distribution[row_bonus_type] += row_damage
+                damage = Damage(monster_id=monster_id)
+                damage_distributions = damage.get_damage_distribution(
+                    template_id, resonator_id, "", "", monster_id=monster_id
+                )
 
-                    damage += row_damage
-                    damage_no_crit += row_damage_no_crit
-                    damage_crit += row_damage_crit
-                    # print(row_damage, row_damage_no_crit, row_damage_crit)
+                damage_distribution = damage_distributions.resonators[resonator_name]
 
-                for key in damage_distribution.keys():
-                    percentage = damage_distribution[key] / damage
+                damage = f"{damage_distribution.damage:.2f}"
+                damage_no_crit = f"{damage_distribution.damage_no_crit:.2f}"
+                damage_crit = f"{damage_distribution.damage_crit:.2f}"
 
-                    percentage_str = f"{percentage:.2%}"
-
-                    damage_distribution_str = f"{damage_distribution[key]:.2f}"
-
-                    damage_distribution[key] = (
-                        f"{damage_distribution_str} ({percentage_str})"
-                    )
-
-                damage = f"{damage:.2f}"
-                damage_no_crit = f"{damage_no_crit:.2f}"
-                damage_crit = f"{damage_crit:.2f}"
+                basic = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.BASIC.name.lower()
+                )
+                heavy = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.HEAVY.name.lower()
+                )
+                skill = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.SKILL.name.lower()
+                )
+                liberation = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.LIBERATION.name.lower()
+                )
+                intro = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.INTRO.name.lower()
+                )
+                outro = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.OUTRO.name.lower()
+                )
+                echo = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.ECHO.name.lower()
+                )
+                none = damage_distribution.get_damage_string_with_percentage(
+                    SkillBonusTypeEnum.NONE.name.lower()
+                )
 
                 calculated_row = {
                     QDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonator_id,
@@ -98,30 +92,14 @@ class QDamageCompare(QWidget):
                     QDamageCompareUneditableTableEnum.DAMAGE.value: damage,
                     QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
                     QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: damage_crit,
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: damage_distribution[
-                        SkillBonusTypeEnum.BASIC.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: damage_distribution[
-                        SkillBonusTypeEnum.HEAVY.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: damage_distribution[
-                        SkillBonusTypeEnum.SKILL.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: damage_distribution[
-                        SkillBonusTypeEnum.LIBERATION.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: damage_distribution[
-                        SkillBonusTypeEnum.INTRO.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: damage_distribution[
-                        SkillBonusTypeEnum.OUTRO.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: damage_distribution[
-                        SkillBonusTypeEnum.ECHO.value
-                    ],
-                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: damage_distribution[
-                        SkillBonusTypeEnum.NONE.value
-                    ],
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: basic,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: heavy,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: skill,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: liberation,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: intro,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: outro,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: echo,
+                    QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: none,
                 }
                 # print(calculated_row)
             except InvalidOperation:

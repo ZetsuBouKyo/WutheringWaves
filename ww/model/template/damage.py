@@ -23,6 +23,15 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     damage_no_crit: Decimal = Decimal("0.0")
     damage_crit: Decimal = Decimal("0.0")
 
+    def get_damage_string_with_percentage(cls, bonus_type: str) -> str:
+        damage = getattr(cls, bonus_type)
+        percentage = damage / cls.damage
+
+        percentage_str = f"{percentage:.2%}"
+        damage_distribution_str = f"{damage:.2f}"
+
+        return f"{damage_distribution_str} ({percentage_str})"
+
 
 class TemplateDamageDistributionModel(BaseModel):
     template_id: str = ""

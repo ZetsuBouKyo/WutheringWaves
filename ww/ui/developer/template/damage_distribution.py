@@ -3,6 +3,7 @@ from typing import Dict, List
 
 from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
+from ww.calc.damage import Damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
@@ -78,51 +79,27 @@ class QTemplateDamageDistributionTab(QWidget):
                 test_resonator_names[2] = test_resonator_name
 
         # Calculate
-        damage_total_resonators = Decimal("0.0")
-        damage_total: Dict[str, Decimal] = {}
-        damage_distribution: Dict[str, Dict[SkillBonusTypeEnum, Decimal]] = {}
-        for calculated_row in calculated_rows:
-            resonator_name = calculated_row.resonator_name
-            resonator = damage_distribution.get(resonator_name, None)
-            if resonator is None:
-                damage_total[resonator_name] = Decimal("0.0")
-                damage_distribution[resonator_name] = {
-                    e.value: Decimal("0.0") for e in SkillBonusTypeEnum
-                }
-
-            resonator_skill_type_bonus = calculated_row.result_bonus_type
-            if (
-                damage_distribution.get(resonator_name, {}).get(
-                    resonator_skill_type_bonus, None
-                )
-                is None
-            ):
-                resonator_skill_type_bonus = SkillBonusTypeEnum.NONE.value
-
-            damage_distribution[resonator_name][
-                resonator_skill_type_bonus
-            ] += calculated_row.damage
-            damage_total[resonator_name] += calculated_row.damage
-            damage_total_resonators += calculated_row.damage
+        damage = Damage(monster_id=template.monster_id)
+        damage_distribution = damage.extract_damage_distribution_from_rows(
+            test_resonators, template.id, template.monster_id, calculated_rows
+        )
 
         # Create table data
 
         data = []
+        damage_total_resonators = damage_distribution.damage
         for resonator_name in test_resonator_names:
             row = ["" for _ in range(len(self.column_names))]
-            resonator = damage_distribution.get(resonator_name, None)
+            resonator = damage_distribution.resonators.get(resonator_name, None)
             if resonator is None:
                 data.append(row)
                 continue
 
-            resonator_total_damage = damage_total[resonator_name]
+            resonator_total_damage = resonator.damage
             row[0] = resonator_name
             for i, e in enumerate(SkillBonusTypeEnum):
-                resonator_skill_type_bonus = e.value
-                resonator_damage = resonator[resonator_skill_type_bonus]
-                resonator_damage_percentage = resonator_damage / resonator_total_damage
-                resonator_damage_str = (
-                    f"{resonator_damage:.2f} ({resonator_damage_percentage:.2%})"
+                resonator_damage_str = resonator.get_damage_string_with_percentage(
+                    e.name.lower()
                 )
                 row[i + 1] = resonator_damage_str
 

@@ -1,13 +1,10 @@
-from decimal import Decimal
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional
 
-from ww.calc.damage.json import get_buffs, get_json_damage, get_json_row_damage
 from ww.calc.damage.tsv import get_tsv_damage, get_tsv_row_damage
 from ww.crud.template import get_template
 from ww.model import Number, SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.echo import EchoSkillTsvColumnEnum
-from ww.model.element import ElementEnum
 from ww.model.monsters import MonsterTsvColumnEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
@@ -34,9 +31,6 @@ from ww.tables.resonator import (
 from ww.utils.number import get_number, get_string
 
 __all__ = [
-    "get_buffs",
-    "get_json_damage",
-    "get_json_row_damage",
     "get_tsv_damage",
     "get_tsv_row_damage",
 ]
@@ -521,7 +515,7 @@ class Damage:
             resonator_id = resonators_name2id.get(resonator_name, None)
             if resonator_id is None:
                 continue
-            calculated_row = self.calculate_row(resonator_id, row)
+            calculated_row = self.get_calculated_row(resonator_id, row)
             if calculated_row is not None:
                 calculated_rows.append(calculated_row)
         return calculated_rows
@@ -533,8 +527,15 @@ class Damage:
         r_id_2: str,
         r_id_3: str,
         monster_id: Optional[str] = None,
-    ):
-        return
+    ) -> TemplateDamageDistributionModel:
+        rows = self.get_calculated_rows(template_id, r_id_1, r_id_2, r_id_3, monster_id)
+
+        r_ids = [r_id_1, r_id_2, r_id_3]
+        resonators_name2id = self.get_resonator_name_to_id(r_ids)
+
+        return self.extract_damage_distribution_from_rows(
+            resonators_name2id, template_id, monster_id, rows
+        )
 
     def extract_damage_distribution_from_rows(
         self,
@@ -549,7 +550,7 @@ class Damage:
 
         for row in rows:
             resonator_name = row.resonator_name
-            resonator = damage_distribution.get(resonator_name, None)
+            resonator = damage_distribution.resonators.get(resonator_name, None)
             if resonator is None:
                 resonator_id = resonator_name_to_id.get(resonator_name, None)
                 if resonator_id is None:
@@ -557,7 +558,7 @@ class Damage:
                 damage_distribution.template_id = template_id
                 damage_distribution.monster_id = monster_id
                 damage_distribution.resonators[resonator_name] = (
-                    TemplateDamageDistributionModel(
+                    TemplateResonatorDamageDistributionModel(
                         resonator_name=resonator_name,
                         resonater_id=resonator_id,
                     )
@@ -569,6 +570,20 @@ class Damage:
             damage_crit = get_number(row.damage_crit)
             if skill_type_bonus == SkillBonusTypeEnum.BASIC.value:
                 damage_distribution.resonators[resonator_name].basic += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.HEAVY.value:
+                damage_distribution.resonators[resonator_name].heavy += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.SKILL.value:
+                damage_distribution.resonators[resonator_name].skill += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.LIBERATION.value:
+                damage_distribution.resonators[resonator_name].liberation += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.INTRO.value:
+                damage_distribution.resonators[resonator_name].intro += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.OUTRO.value:
+                damage_distribution.resonators[resonator_name].outro += damage
+            elif skill_type_bonus == SkillBonusTypeEnum.ECHO.value:
+                damage_distribution.resonators[resonator_name].echo += damage
+            else:
+                damage_distribution.resonators[resonator_name].none += damage
 
             damage_distribution.resonators[resonator_name].damage += damage
             damage_distribution.resonators[

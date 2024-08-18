@@ -10,7 +10,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import get_json_row_damage
+from ww.calc.damage import Damage
 from ww.crud.resonator import get_resonator_ids
 from ww.locale import ZhTwEnum, _
 from ww.model.monsters import MonsterTsvColumnEnum
@@ -243,7 +243,6 @@ class QDamageSimple(QWidget):
 
     def calculate(self):
         resonators_table = ResonatorsTable()
-        calculated_resonators_table = CalculatedResonatorsTable()
 
         resonator_id = self.get_resonator_id()
         resonator_skill_id = self.q_resonator_skill_combobox.currentText()
@@ -270,26 +269,8 @@ class QDamageSimple(QWidget):
             buffs=buffs,
         )
 
-        monsters_table = MonstersTable()
-        monster_level = get_number(
-            monsters_table.search(monster_id, MonsterTsvColumnEnum.LEVEL)
-        )
-        monster_def = get_number(
-            monsters_table.search(monster_id, MonsterTsvColumnEnum.DEF)
-        )
-        echo_skill_table = EchoSkillTable()
-        results = get_json_row_damage(
-            row,
-            resonator_id,
-            resonator_name,
-            monster_id,
-            monster_level,
-            monster_def,
-            resonators_table,
-            calculated_resonators_table,
-            echo_skill_table,
-            monsters_table,
-        )
+        damage = Damage(monster_id)
+        results = damage.get_calculated_row(resonator_id, row)
         if results is None:
             results = CalculatedTemplateRowModel()
 
@@ -346,7 +327,9 @@ class QDamageSimple(QWidget):
             _(ZhTwEnum.RESULT_DAMAGE_CRIT): damage_crit,
             _(ZhTwEnum.RESULT_BONUS_TYPE): results.result_bonus_type,
             _(ZhTwEnum.RESULT_ELEMENT): results.result_element,
-            _(ZhTwEnum.RESULT_SKILL_BASE_ATTRIBUTE): results.result_skill_base_attribute,
+            _(
+                ZhTwEnum.RESULT_SKILL_BASE_ATTRIBUTE
+            ): results.result_skill_base_attribute,
             _(ZhTwEnum.RESULT_SKILL_DMG): results.result_skill_dmg,
             _(ZhTwEnum.RESULT_HP): results.result_hp,
             _(ZhTwEnum.RESULT_HP_ADDITION): results.result_hp_addition,

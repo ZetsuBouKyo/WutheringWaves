@@ -16,7 +16,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import Damage, get_json_row_damage
+from ww.calc.damage import Damage
 from ww.crud.buff import (
     add_echo_buff_descriptions,
     add_echo_sonata_buff_descriptions,
