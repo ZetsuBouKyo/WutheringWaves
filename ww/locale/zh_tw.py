@@ -7,6 +7,13 @@ class ZhTwEnum(str, Enum):
     RESONATOR_2: str = "共鳴者2"
     RESONATOR_3: str = "共鳴者3"
 
+    RESONATOR_ID_1: str = "共鳴者ID 1"
+    RESONATOR_ID_2: str = "共鳴者ID 2"
+    RESONATOR_ID_3: str = "共鳴者ID 3"
+
+    MONSTER_ID: str = "怪物ID"
+    TEMPLATE_ID: str = "模板ID"
+
     NAME: str = "名稱"
     CHARACTER: str = "角色"
     DESCRIPTION: str = "描述"

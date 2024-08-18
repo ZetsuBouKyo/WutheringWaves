@@ -15,9 +15,11 @@ DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
 
 
 class QDamageCompareTableEnum(str, Enum):
-    ID: str = "角色代稱"
-    MONSTER_ID: str = "怪物代稱"
-    TEMPLATE_ID: str = "模板代稱"
+    RESONATOR_ID_1: str = _(ZhTwEnum.RESONATOR_ID_1)
+    RESONATOR_ID_2: str = _(ZhTwEnum.RESONATOR_ID_2)
+    RESONATOR_ID_3: str = _(ZhTwEnum.RESONATOR_ID_3)
+    MONSTER_ID: str = _(ZhTwEnum.MONSTER_ID)
+    TEMPLATE_ID: str = _(ZhTwEnum.TEMPLATE_ID)
 
 
 class QDamageCompareTable(QDraggableTableWidget):
@@ -25,34 +27,33 @@ class QDamageCompareTable(QDraggableTableWidget):
         self,
         fname: str = DAMAGE_COMPARE_TABLE_CACHE_FNAME,
     ):
-        tsv_path = Path(DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
-        column_names = [e.value for e in QDamageCompareTableEnum]
-        self.df = safe_get_df(tsv_path, column_names)
+        _path = Path(DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
+        self.column_names = [e.value for e in QDamageCompareTableEnum]
+
+        if _path is not None:
+            self.df = safe_get_df(_path, self.column_names)
+        else:
+            self.df = get_empty_df(self.column_names)
 
         data = self.df.values.tolist()
         rows = len(data)
         columns = len(data[0])
 
-        super().__init__(
-            rows,
-            columns,
-            data=data,
-            column_id_name=QDamageCompareTableEnum.ID.value,
-            column_names=column_names,
-        )
+        super().__init__(rows, columns, data=data, column_names=self.column_names)
 
     def _init_column_width(self):
-        for e in QDamageCompareTableEnum:
-            col = self.get_column_id(e.value)
-            self.setColumnWidth(col, 600)
-
-    def _init_combobox(self):
-        self._resonator_ids = None
-        self._monster_ids = None
-        self._template_ids = None
+        self.setColumnWidth(0, 600)
+        self.setColumnWidth(1, 600)
+        self.setColumnWidth(2, 600)
+        self.setColumnWidth(3, 350)
+        self.setColumnWidth(4, 1000)
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == QDamageCompareTableEnum.ID.value:
+        if self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_1.value:
+            set_resonator_primary_key_combobox(self, row, col, value)
+        elif self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_2.value:
+            set_resonator_primary_key_combobox(self, row, col, value)
+        elif self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_3.value:
             set_resonator_primary_key_combobox(self, row, col, value)
         elif self.column_names[col] == QDamageCompareTableEnum.MONSTER_ID.value:
             set_monster_primary_key_combobox(self, row, col, value)
