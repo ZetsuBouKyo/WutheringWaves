@@ -16,7 +16,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.calc.damage import get_json_row_damage
+from ww.calc.damage import Damage, get_json_row_damage
 from ww.crud.buff import (
     add_echo_buff_descriptions,
     add_echo_sonata_buff_descriptions,
@@ -588,40 +588,19 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             row = self.get_selected_row()
             if row is None:
                 return
-        data = self.get_row(row)
+        row_data = self.get_row(row)
 
         name_to_id = self.basic.get_test_resonators()
         monster_id = self.basic.get_monster_id()
 
-        resonator_name = data.resonator_name
+        resonator_name = row_data.resonator_name
         resonator_id = name_to_id.get(resonator_name, None)
         if resonator_id is None:
             return
 
-        resonators_table = ResonatorsTable()
-        calculated_resonators_table = CalculatedResonatorsTable()
-        echo_skill_table = EchoSkillTable()
-        monsters_table = MonstersTable()
+        damage = Damage(monster_id=monster_id)
+        calculated_row = damage.get_calculated_row(resonator_id, row_data)
 
-        monster_level = get_number(
-            monsters_table.search(monster_id, MonsterTsvColumnEnum.LEVEL)
-        )
-        monster_def = get_number(
-            monsters_table.search(monster_id, MonsterTsvColumnEnum.DEF)
-        )
-
-        calculated_row = get_json_row_damage(
-            data,
-            resonator_id,
-            resonator_name,
-            monster_id,
-            monster_level,
-            monster_def,
-            resonators_table,
-            calculated_resonators_table,
-            echo_skill_table,
-            monsters_table,
-        )
         if calculated_row is None:
             return
 
