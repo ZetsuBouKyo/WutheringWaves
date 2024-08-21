@@ -61,6 +61,7 @@ class ZhTwEnum(str, Enum):
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
+    DAMAGE_DISTRIBUTION: str = "傷害占比"
     OUTPUT_METHOD: str = "輸出手法"
     TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT: str = "輸出手法圖片高度。"
 

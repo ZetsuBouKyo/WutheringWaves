@@ -7,16 +7,16 @@ import numpy as np
 import pandas as pd
 from html2image import Html2Image
 
+from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
 
 TEMPLATE_PNG_HOME_PATH = "./cache/v1/zh_tw/output/png/template"
 TEMPLATE_DAMAGE_DISTRIBUTION_HOME_PATH = "./cache/v1/zh_tw/output/damage_distribution"
-TEMPLATE_DAMAGE_DISTRIBUTION_RAW_FNAME = "damage_distribution_raw.png"
+TEMPLATE_DAMAGE_DISTRIBUTION_FNAME = "damage_distribution_raw.png"
 
 
-def export_html_as_png(template_id: str, fname: str, html_str: str, height: int):
-    png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
-    os.makedirs(png_home_path, exist_ok=True)
+def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
+    os.makedirs(home_path, exist_ok=True)
 
     h2png = Html2Image(
         custom_flags=[
@@ -24,7 +24,7 @@ def export_html_as_png(template_id: str, fname: str, html_str: str, height: int)
             "--default-background-color=00000000",
             "--force-device-scale-factor=2",
         ],
-        output_path=str(png_home_path),
+        output_path=str(home_path),
         size=(1920, height),  # (pixel, pixel)
         disable_logging=True,
     )
@@ -34,10 +34,17 @@ def export_html_as_png(template_id: str, fname: str, html_str: str, height: int)
     )
 
 
-def export_damage_distribution_raw_png(
-    name: str, damage_distributions: List[TemplateDamageDistributionModel]
+def export_to_template(template_id: str, fname: str, html_str: str, height: int):
+    png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
+    export_html_as_png(png_home_path, fname, html_str, height)
+
+
+def export_damage_distribution(
+    damage_distribution: TemplateDamageDistributionModel,
 ):
-    if not name or len(damage_distributions) == 0:
+    template_id = damage_distribution.template_id
+    if not template_id:
         return
-    # png_home_path = Path(TEMPLATE_DAMAGE_DISTRIBUTION_HOME_PATH) / name
-    # os.makedirs(png_home_path, exist_ok=True)
+
+    png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
+    os.makedirs(png_home_path, exist_ok=True)

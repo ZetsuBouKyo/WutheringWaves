@@ -4,7 +4,7 @@ from typing import Optional
 from jinja2 import Template
 
 from ww.data.resonator import resonators
-from ww.html.template.export import export_html_as_png
+from ww.html.template.export import export_to_template
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
@@ -132,4 +132,4 @@ def export_html_template_resonator_model_as_png(template_id: str, resonator_id: 
     html_str = template.render(resonator=resonator, ZhTwEnum=ZhTwEnum, _=_)
     png_fname = f"{resonator_id}.png"
 
-    export_html_as_png(template_id, png_fname, html_str, 276)
+    export_to_template(template_id, png_fname, html_str, 276)

@@ -3,7 +3,7 @@ from typing import List
 
 from jinja2 import Template
 
-from ww.html.template.export import export_html_as_png
+from ww.html.template.export import export_to_template
 from ww.html.template.resonator import get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import (
@@ -112,4 +112,4 @@ def export_html_template_output_method_model_as_png(
 
     png_fname = f"{_(ZhTwEnum.OUTPUT_METHOD)}.png"
 
-    export_html_as_png(template_id, png_fname, html_str, height)
+    export_to_template(template_id, png_fname, html_str, height)

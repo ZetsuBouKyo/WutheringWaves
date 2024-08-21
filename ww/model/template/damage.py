@@ -1,9 +1,22 @@
 from decimal import Decimal
-from typing import Dict
+from typing import Dict, Optional
 
 from pydantic import BaseModel
 
 from ww.model.resonator import ResonatorName
+
+
+def get_damage_string_with_percentage(
+    numerator: Optional[Decimal], denominator: Optional[Decimal]
+) -> str:
+    if not numerator or not denominator:
+        return "0.00 (0.00%)"
+    percentage = numerator / denominator
+
+    percentage_str = f"{percentage:.2%}"
+    damage_distribution_str = f"{numerator:.2f}"
+
+    return f"{damage_distribution_str} ({percentage_str})"
 
 
 class TemplateResonatorDamageDistributionModel(BaseModel):
@@ -25,12 +38,7 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
 
     def get_damage_string_with_percentage(cls, bonus_type: str) -> str:
         damage = getattr(cls, bonus_type)
-        percentage = damage / cls.damage
-
-        percentage_str = f"{percentage:.2%}"
-        damage_distribution_str = f"{damage:.2f}"
-
-        return f"{damage_distribution_str} ({percentage_str})"
+        return get_damage_string_with_percentage(damage, cls.damage)
 
 
 class TemplateDamageDistributionModel(BaseModel):
@@ -42,3 +50,10 @@ class TemplateDamageDistributionModel(BaseModel):
     damage_crit: Decimal = Decimal("0.0")
 
     resonators: Dict[ResonatorName, TemplateResonatorDamageDistributionModel] = {}
+
+    def get_damage_string_with_percentage(cls, resonator_name: str) -> str:
+        resonator = cls.resonators.get(resonator_name, None)
+        if resonator is None:
+            return "0.00 (0.00%)"
+
+        return get_damage_string_with_percentage(resonator.damage, cls.damage)
