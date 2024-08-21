@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+from typing import List
 
 from jinja2 import Template
 
@@ -16,7 +17,9 @@ MAX_DAMAGE = 1000000
 
 
 def export_damage_distribution_as_png(
-    damage_distribution: TemplateDamageDistributionModel, max_damage: int = MAX_DAMAGE
+    resonator_names: List[str],
+    damage_distribution: TemplateDamageDistributionModel,
+    max_damage: int = MAX_DAMAGE,
 ):
     template_id = damage_distribution.template_id
     if not template_id:
@@ -35,6 +38,7 @@ def export_damage_distribution_as_png(
     html_str = template.render(
         damage_distributions=[damage_distribution],
         resonators=resonators,
+        resonator_names=resonator_names,
         ZhTwEnum=ZhTwEnum,
         get_element_class_name=get_element_class_name,
         get_percentage_str=get_percentage_str,

@@ -106,6 +106,6 @@ class QTemplateExportTab(QWidget):
         damage_distribution = damage.extract_damage_distribution_from_rows(
             test_resonators, template.id, template.monster_id, calculated_rows
         )
-        export_damage_distribution_as_png(damage_distribution)
+        export_damage_distribution_as_png(test_resonators.keys(), damage_distribution)
 
         self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
