@@ -4,11 +4,14 @@ from typing import Dict, Optional
 from pydantic import BaseModel
 
 from ww.model.resonator import ResonatorName
+from ww.utils.number import get_number
 
 
 def get_damage_string_with_percentage(
     numerator: Optional[Decimal], denominator: Optional[Decimal]
 ) -> str:
+    numerator = get_number(numerator)
+    denominator = get_number(denominator)
     if not numerator or not denominator:
         return "0.00 (0.00%)"
     percentage = numerator / denominator

@@ -37,14 +37,3 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
 def export_to_template(template_id: str, fname: str, html_str: str, height: int):
     png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
     export_html_as_png(png_home_path, fname, html_str, height)
-
-
-def export_damage_distribution(
-    damage_distribution: TemplateDamageDistributionModel,
-):
-    template_id = damage_distribution.template_id
-    if not template_id:
-        return
-
-    png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
-    os.makedirs(png_home_path, exist_ok=True)

@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
@@ -7,12 +9,15 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
+from ww.calc.damage import Damage
 from ww.html.template import (
+    export_damage_distribution_as_png,
     export_html_template_output_method_model_as_png,
     export_html_template_resonator_model_as_png,
 )
 from ww.locale import ZhTwEnum, _
-from ww.model.template import TemplateModel
+from ww.model.template import CalculatedTemplateRowModel, TemplateModel
+from ww.ui.developer.template.output_method import QTemplateTabOutputMethodTable
 
 
 class QTemplateExportTab(QWidget):
@@ -84,5 +89,23 @@ class QTemplateExportTab(QWidget):
                 export_html_template_output_method_model_as_png(
                     template.id, template.rows
                 )
+
+        # Damage distribution
+        q_output_method_table: QTemplateTabOutputMethodTable = (
+            self._parent.q_template_output_method_tab.q_output_method_table
+        )
+
+        calculated_rows: List[CalculatedTemplateRowModel] = (
+            q_output_method_table.calculated_rows
+        )
+
+        test_resonators: Dict[str, str] = (
+            self._parent.q_template_basic_tab.get_test_resonators()
+        )
+        damage = Damage(monster_id=template.monster_id)
+        damage_distribution = damage.extract_damage_distribution_from_rows(
+            test_resonators, template.id, template.monster_id, calculated_rows
+        )
+        export_damage_distribution_as_png(damage_distribution)
 
         self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))

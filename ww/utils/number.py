@@ -34,3 +34,14 @@ def get_string(n: Optional[str]) -> Optional[str]:
     elif n is np.nan:
         return ""
     return str(n)
+
+
+def get_percentage_str(
+    numerator: Optional[Decimal], denominator: Optional[Decimal]
+) -> str:
+    numerator = get_number(numerator)
+    denominator = get_number(denominator)
+    if not denominator:
+        return "0.00%"
+    percentage = numerator / denominator
+    return f"{percentage:.2%}"
