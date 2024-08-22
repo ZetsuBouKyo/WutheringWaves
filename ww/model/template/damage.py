@@ -48,6 +48,9 @@ class TemplateDamageDistributionModel(BaseModel):
     template_id: str = ""
     monster_id: str = ""
 
+    duration_1: str = ""
+    duration_2: str = ""
+
     damage: Decimal = Decimal("0.0")
     damage_no_crit: Decimal = Decimal("0.0")
     damage_crit: Decimal = Decimal("0.0")

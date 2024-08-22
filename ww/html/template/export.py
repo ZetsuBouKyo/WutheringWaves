@@ -1,15 +1,12 @@
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import Optional
 
-import matplotlib.pyplot as plt
 import numpy as np
-import pandas as pd
 from html2image import Html2Image
 from PIL import Image
 
 from ww.locale import ZhTwEnum, _
-from ww.model.template import TemplateDamageDistributionModel
 
 TEMPLATE_PNG_HOME_PATH = "./cache/v1/zh_tw/output/png/template"
 TEMPLATE_DAMAGE_DISTRIBUTION_HOME_PATH = "./cache/v1/zh_tw/output/damage_distribution"

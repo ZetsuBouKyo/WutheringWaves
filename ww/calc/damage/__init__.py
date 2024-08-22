@@ -527,6 +527,8 @@ class Damage:
         r_id_2: str,
         r_id_3: str,
         monster_id: Optional[str] = None,
+        duration_1: str = "",
+        duration_2: str = "",
     ) -> TemplateDamageDistributionModel:
         rows = self.get_calculated_rows(template_id, r_id_1, r_id_2, r_id_3, monster_id)
 
@@ -534,7 +536,12 @@ class Damage:
         resonators_name2id = self.get_resonator_name_to_id(r_ids)
 
         return self.extract_damage_distribution_from_rows(
-            resonators_name2id, template_id, monster_id, rows
+            resonators_name2id,
+            template_id,
+            monster_id,
+            rows,
+            duration_1=duration_1,
+            duration_2=duration_2,
         )
 
     def extract_damage_distribution_from_rows(
@@ -543,10 +550,20 @@ class Damage:
         template_id: str,
         monster_id: str,
         rows: List[CalculatedTemplateRowModel] = [],
+        duration_1: str = "",
+        duration_2: str = "",
     ) -> TemplateDamageDistributionModel:
         damage_distribution = TemplateDamageDistributionModel()
         if not resonator_name_to_id:
             return damage_distribution
+        template = get_template(template_id)
+        damage_distribution.duration_1 = template.duration_1
+        damage_distribution.duration_2 = template.duration_2
+
+        if duration_1:
+            damage_distribution.duration_1 = duration_1
+        if duration_2:
+            damage_distribution.duration_2 = duration_2
 
         for row in rows:
             resonator_name = row.resonator_name

@@ -50,4 +50,4 @@ def export_damage_distribution_as_png(
         fp.write(html_str)
 
     fname = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}.png"
-    export_to_template(template_id, fname, html_str, height=276)
+    export_to_template(template_id, fname, html_str, height=320)
