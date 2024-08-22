@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from html2image import Html2Image
+from PIL import Image
 
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
@@ -13,6 +14,34 @@ from ww.model.template import TemplateDamageDistributionModel
 TEMPLATE_PNG_HOME_PATH = "./cache/v1/zh_tw/output/png/template"
 TEMPLATE_DAMAGE_DISTRIBUTION_HOME_PATH = "./cache/v1/zh_tw/output/damage_distribution"
 TEMPLATE_DAMAGE_DISTRIBUTION_FNAME = "damage_distribution_raw.png"
+
+
+def _get_margin_top(data) -> Optional[int]:
+    """Return the count of empty rows."""
+
+    i = 0
+    for row in data:
+        for pixel in row:
+            if pixel[3] != np.int32(0):
+                return i
+        i += 1
+
+
+def crop_image(data):
+    margin_top = _get_margin_top(data)
+    if margin_top is None:
+        return data
+
+    bottom = 0
+    for i in range(margin_top, len(data)):
+        for pixel in data[i]:
+            if pixel[3] != np.int32(0):
+                break
+        else:
+            bottom = i
+            break
+    img_bottom = bottom + margin_top
+    return data[:img_bottom]
 
 
 def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
@@ -32,6 +61,18 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
         html_str=html_str,
         save_as=fname,
     )
+
+    fpath = home_path / fname
+    if not fpath.exists():
+        return
+
+    img = Image.open(fpath)
+    img.load()
+    data = np.asarray(img, dtype="int32")
+    data = crop_image(data)
+    data = data.astype(np.uint8)
+    img = Image.fromarray(data)
+    img.save(fpath)
 
 
 def export_to_template(template_id: str, fname: str, html_str: str, height: int):

@@ -5,11 +5,10 @@ from typing import List
 from jinja2 import Template
 
 from ww.data.resonator import resonators
-from ww.html.template.export import TEMPLATE_PNG_HOME_PATH
+from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
-from ww.utils import get_local_file_url
 from ww.utils.number import get_percentage_str
 
 TEMPLATE_DAMAGE_DISTRIBUTIONS_HTML_PATH = "./html/template/damage_distributions.jinja2"
@@ -34,7 +33,6 @@ def export_damage_distribution_as_png(
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
-    print(damage_distribution)
     html_str = template.render(
         damage_distributions=[damage_distribution],
         resonators=resonators,
@@ -50,3 +48,6 @@ def export_damage_distribution_as_png(
     html_str_path = home_path / f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}.html"
     with html_str_path.open(mode="w", encoding="utf-8") as fp:
         fp.write(html_str)
+
+    fname = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}.png"
+    export_to_template(template_id, fname, html_str, height=276)
