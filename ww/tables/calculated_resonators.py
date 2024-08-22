@@ -112,7 +112,18 @@ class CalculatedResonator:
             self._new_row[key] = get_number("0.0")
 
     def _init_echo(self):
-        self.echo_key_names = [
+        self.echo_key_1 = [
+            CalculatedResonatorTsvColumnEnum.ECHO_1.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SONATA_1.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SONATA_2.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SONATA_3.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SONATA_4.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_SONATA_5.value,
+        ]
+        for key in self.echo_key_1:
+            self._new_row[key] = ""
+
+        self.echo_key_2 = [
             CalculatedResonatorTsvColumnEnum.ECHO_HP.value,
             CalculatedResonatorTsvColumnEnum.ECHO_HP_P.value,
             CalculatedResonatorTsvColumnEnum.ECHO_ATK.value,
@@ -134,7 +145,7 @@ class CalculatedResonator:
             CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value,
         ]
-        for key in self.echo_key_names:
+        for key in self.echo_key_2:
             self._new_row[key] = get_number("0.0")
 
     def _update_by_resonator(self):
@@ -222,7 +233,21 @@ class CalculatedResonator:
             CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ENERGY_REGEN.value
         ] = weapon_rank_energy_regen
 
-    def _update_by_echo(self, echo_id: str):
+    def _update_by_echo(self, echo_id: str, index: int):
+        # Name
+        echo_name = self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.NAME)
+        echo_sonata = self.echo_table.search(
+            echo_id, ResonatorEchoTsvColumnEnum.ECHO_SONATA
+        )
+        if index == 1:
+            self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_1.value] = echo_name
+        echo_enum = getattr(
+            CalculatedResonatorTsvColumnEnum, f"ECHO_SONATA_{index}", None
+        )
+        if echo_enum is not None:
+            self._new_row[echo_enum.value] = echo_sonata
+
+        # Value
         echo_main_hp = get_number(
             self.echo_table.search(echo_id, ResonatorEchoTsvColumnEnum.MAIN_HP)
         )
@@ -403,11 +428,11 @@ class CalculatedResonator:
         self.echo_id_4 = self._old_row[ResonatorTsvColumnEnum.ECHO_4]
         self.echo_id_5 = self._old_row[ResonatorTsvColumnEnum.ECHO_5]
 
-        self._update_by_echo(self.echo_id_1)
-        self._update_by_echo(self.echo_id_2)
-        self._update_by_echo(self.echo_id_3)
-        self._update_by_echo(self.echo_id_4)
-        self._update_by_echo(self.echo_id_5)
+        self._update_by_echo(self.echo_id_1, 1)
+        self._update_by_echo(self.echo_id_2, 2)
+        self._update_by_echo(self.echo_id_3, 3)
+        self._update_by_echo(self.echo_id_4, 4)
+        self._update_by_echo(self.echo_id_5, 5)
 
     def _update_by_echo_sonata(self):
         sonatas = [

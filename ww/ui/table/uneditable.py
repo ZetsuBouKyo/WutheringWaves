@@ -36,7 +36,7 @@ class QUneditableTable(QTableWidget):
         }
 
         rows = len(self.data)
-        columns = len(self.data[0])
+        columns = len(column_names)
         super().__init__(rows, columns)
 
         self.setHorizontalHeaderLabels(self.column_names)

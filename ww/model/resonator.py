@@ -204,6 +204,13 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     )
 
     # Echo
+    ECHO_1: str = _(ZhTwEnum.RESONATOR_ECHO_1)
+    ECHO_SONATA_1: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_1)
+    ECHO_SONATA_2: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_2)
+    ECHO_SONATA_3: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_3)
+    ECHO_SONATA_4: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_4)
+    ECHO_SONATA_5: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_5)
+
     ECHO_HP: str = _(ZhTwEnum.RESONATOR_ECHO_HP)
     ECHO_HP_P: str = _(ZhTwEnum.RESONATOR_ECHO_HP_P)
     ECHO_ATK: str = _(ZhTwEnum.RESONATOR_ECHO_ATK)
@@ -292,6 +299,13 @@ class CalculatedResonatorModel(BaseModel):
     weapon_rank_attribute_dmg_bonus: str = ""
 
     # echo
+    echo_1: str = ""
+    echo_sonata_1: str = ""
+    echo_sonata_2: str = ""
+    echo_sonata_3: str = ""
+    echo_sonata_4: str = ""
+    echo_sonata_5: str = ""
+
     echo_hp: str = ""
     echo_hp_p: str = ""
     echo_atk: str = ""
