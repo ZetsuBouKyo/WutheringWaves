@@ -17,7 +17,7 @@ def get_damage_string_with_percentage(
     percentage = numerator / denominator
 
     percentage_str = f"{percentage:.2%}"
-    damage_distribution_str = f"{numerator:.2f}"
+    damage_distribution_str = f"{numerator:,.2f}"
 
     return f"{damage_distribution_str} ({percentage_str})"
 
@@ -63,3 +63,9 @@ class TemplateDamageDistributionModel(BaseModel):
             return "0.00 (0.00%)"
 
         return get_damage_string_with_percentage(resonator.damage, cls.damage)
+
+    def get_duration_1(cls) -> Decimal:
+        return get_number(cls.duration_1)
+
+    def get_duration_2(cls) -> Decimal:
+        return get_number(cls.duration_2)

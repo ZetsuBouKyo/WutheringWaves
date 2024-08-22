@@ -28,6 +28,10 @@ def get_number(n: Optional[Number]) -> Decimal:
         return Decimal("0.0")
 
 
+def to_number_string(n) -> str:
+    return f"{n:,.2f}"
+
+
 def get_string(n: Optional[str]) -> Optional[str]:
     if n is None:
         return ""

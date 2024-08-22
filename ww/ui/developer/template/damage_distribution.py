@@ -105,7 +105,7 @@ class QTemplateDamageDistributionTab(QWidget):
             resonator_total_damage_percentage = (
                 resonator_total_damage / damage_total_resonators
             )
-            resonator_total_damage_str = f"{resonator_total_damage:.2f} ({resonator_total_damage_percentage:.2%})"
+            resonator_total_damage_str = f"{resonator_total_damage:,.2f} ({resonator_total_damage_percentage:.2%})"
             row[-1] = resonator_total_damage_str
             data.append(row)
 

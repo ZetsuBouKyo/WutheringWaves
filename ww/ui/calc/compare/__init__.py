@@ -63,11 +63,11 @@ class QDamageCompare(QWidget):
             ) in damage_distribution.resonators.values():
                 try:
                     resonater_id = resonator_damage_distribution.resonater_id
-                    damage = f"{resonator_damage_distribution.damage:.2f}"
+                    damage = f"{resonator_damage_distribution.damage:,.2f}"
                     damage_no_crit = (
-                        f"{resonator_damage_distribution.damage_no_crit:.2f}"
+                        f"{resonator_damage_distribution.damage_no_crit:,.2f}"
                     )
-                    damage_crit = f"{resonator_damage_distribution.damage_crit:.2f}"
+                    damage_crit = f"{resonator_damage_distribution.damage_crit:,.2f}"
 
                     basic = (
                         resonator_damage_distribution.get_damage_string_with_percentage(

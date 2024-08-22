@@ -615,7 +615,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             if value == get_number("0.0"):
                 value = ""
             elif type(value) == Decimal:
-                value = f"{value:.2f}"
+                value = f"{value:,.2f}"
 
             self.set_cell(row, col_index, value)
 

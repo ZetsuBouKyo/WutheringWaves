@@ -302,11 +302,11 @@ class QDamageSimple(QWidget):
         damage_no_crit = None
         damage_crit = None
         if results.damage is not None:
-            damage = f"{results.damage:.2f}"
+            damage = f"{results.damage:,.2f}"
         if results.damage_no_crit is not None:
-            damage_no_crit = f"{results.damage_no_crit:.2f}"
+            damage_no_crit = f"{results.damage_no_crit:,.2f}"
         if results.damage_crit is not None:
-            damage_crit = f"{results.damage_crit:.2f}"
+            damage_crit = f"{results.damage_crit:,.2f}"
         data = {
             _(ZhTwEnum.RESULT_RESONATOR_NAME): results.resonator_name,
             _(ZhTwEnum.RESULT_SKILL_ID): results.skill_id,

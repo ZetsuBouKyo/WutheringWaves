@@ -9,7 +9,7 @@ from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
-from ww.utils.number import get_percentage_str
+from ww.utils.number import get_percentage_str, to_number_string
 
 TEMPLATE_DAMAGE_DISTRIBUTIONS_HTML_PATH = "./html/template/damage_distributions.jinja2"
 MAX_DAMAGE = 1000000
@@ -41,6 +41,7 @@ def export_damage_distribution_as_png(
         get_element_class_name=get_element_class_name,
         get_percentage_str=get_percentage_str,
         get_resonator_icon_fpath=get_resonator_icon_fpath,
+        to_number_string=to_number_string,
         max_damage=max_damage,
         _=_,
     )
