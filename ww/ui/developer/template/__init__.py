@@ -93,6 +93,8 @@ class QTemplateTabs(QWidget):
 
         test_resonator_ids = self.q_template_basic_tab.get_test_resonator_ids()
         monster_id = self.q_template_basic_tab.get_monster_id()
+        duration_1 = self.q_template_basic_tab.get_duration_1()
+        duration_2 = self.q_template_basic_tab.get_duration_2()
         description = self.q_template_basic_tab.get_description()
         resonators = self.q_template_basic_tab.get_resonators()
         rows = self.q_template_output_method_tab.get_rows()
@@ -103,6 +105,8 @@ class QTemplateTabs(QWidget):
             test_resonator_id_2=test_resonator_ids[1],
             test_resonator_id_3=test_resonator_ids[2],
             monster_id=monster_id,
+            duration_1=duration_1,
+            duration_2=duration_2,
             description=description,
             resonators=resonators,
             rows=rows,

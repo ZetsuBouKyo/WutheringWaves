@@ -131,6 +131,9 @@ class TemplateModel(BaseModel):
     test_resonator_id_2: str = ""
     test_resonator_id_3: str = ""
 
+    duration_1: str = ""
+    duration_2: str = ""
+
     monster_id: str = ""
     description: str = ""
 

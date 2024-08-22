@@ -3,6 +3,7 @@ from typing import Dict, List
 from PySide2.QtWidgets import (
     QHBoxLayout,
     QLabel,
+    QLineEdit,
     QMessageBox,
     QPlainTextEdit,
     QPushButton,
@@ -279,6 +280,24 @@ class QTemplateBasicTab(QWidget):
         self.q_test_monster_id_layout.addWidget(self.q_test_monster_id_combobox)
         self.q_test_monster_id_layout.addStretch()
 
+        # Duration
+        self.q_duration_layout = QHBoxLayout()
+        self.q_duration_label = QLabel("時間(下限)")
+        self.q_duration_label.setFixedWidth(150)
+        self.q_duration_1_line = QLineEdit()
+        self.q_duration_1_line.setFixedWidth(70)
+        self.q_duration_1_line.setFixedHeight(height)
+        self.q_duration_dash_label = QLabel("-")
+        self.q_duration_dash_label.setFixedWidth(20)
+        self.q_duration_2_line = QLineEdit()
+        self.q_duration_2_line.setFixedWidth(70)
+        self.q_duration_2_line.setFixedHeight(height)
+        self.q_duration_layout.addWidget(self.q_duration_label)
+        self.q_duration_layout.addWidget(self.q_duration_1_line)
+        self.q_duration_layout.addWidget(self.q_duration_dash_label)
+        self.q_duration_layout.addWidget(self.q_duration_2_line)
+        self.q_duration_layout.addStretch()
+
         # Description
         self.q_description_label = QLabel("描述")
         self.q_description_label.setFixedHeight(height)
@@ -296,6 +315,7 @@ class QTemplateBasicTab(QWidget):
         self.layout.addLayout(self.q_test_resonator_2_layout)
         self.layout.addLayout(self.q_test_resonator_3_layout)
         self.layout.addLayout(self.q_test_monster_id_layout)
+        self.layout.addLayout(self.q_duration_layout)
         self.layout.addWidget(self.q_description_label)
         self.layout.addWidget(self.q_description)
         self.layout.addWidget(self.q_resonator_label)
@@ -330,6 +350,12 @@ class QTemplateBasicTab(QWidget):
 
     def get_monster_id(self) -> str:
         return self.q_test_monster_id_combobox.currentText()
+
+    def get_duration_1(self) -> str:
+        return self.q_duration_1_line.text()
+
+    def get_duration_2(self) -> str:
+        return self.q_duration_2_line.text()
 
     def get_description(self) -> str:
         return self.q_description.toPlainText()
@@ -382,6 +408,10 @@ class QTemplateBasicTab(QWidget):
 
         # Monster ID
         self.q_test_monster_id_combobox.setCurrentText(template.monster_id)
+
+        # Duration
+        self.q_duration_1_line.setText(template.duration_1)
+        self.q_duration_2_line.setText(template.duration_2)
 
         # Description
         self.q_description.setPlainText(template.description)
