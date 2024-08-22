@@ -66,6 +66,11 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
     if not fpath.exists():
         return
 
+    html_str_fname = fpath.stem
+    html_str_path = fpath.parent / f"{html_str_fname}.html"
+    with html_str_path.open(mode="w", encoding="utf-8") as fp:
+        fp.write(html_str)
+
     img = Image.open(fpath)
     img.load()
     data = np.asarray(img, dtype="int32")

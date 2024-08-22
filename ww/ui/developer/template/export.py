@@ -12,6 +12,7 @@ from PySide2.QtWidgets import (
 from ww.calc.damage import Damage
 from ww.html.template import (
     export_damage_distribution_as_png,
+    export_echo_as_png,
     export_html_template_output_method_model_as_png,
     export_html_template_resonator_model_as_png,
 )
@@ -109,3 +110,6 @@ class QTemplateExportTab(QWidget):
         export_damage_distribution_as_png(test_resonators.keys(), damage_distribution)
 
         self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
+
+        for resonator_id in test_resonators.values():
+            export_echo_as_png(template.id, resonator_id)

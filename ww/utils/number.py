@@ -45,3 +45,8 @@ def get_percentage_str(
         return "0.00%"
     percentage = numerator / denominator
     return f"{percentage:.2%}"
+
+
+def to_percentage_str(percentage) -> str:
+    percentage = get_number(percentage)
+    return f"{percentage:.2%}"

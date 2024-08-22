@@ -24,6 +24,13 @@ class ZhTwEnum(str, Enum):
     RESONATOR_ECHO_SONATA_4: str = "[聲骸]合鳴4"
     RESONATOR_ECHO_SONATA_5: str = "[聲骸]合鳴5"
 
+    ECHO_1: str = "聲骸1"
+    ECHO_SONATA_1: str = "合鳴1"
+    ECHO_SONATA_2: str = "合鳴2"
+    ECHO_SONATA_3: str = "合鳴3"
+    ECHO_SONATA_4: str = "合鳴4"
+    ECHO_SONATA_5: str = "合鳴5"
+
     MONSTER_ID: str = "怪物ID"
     TEMPLATE_ID: str = "模板ID"
 

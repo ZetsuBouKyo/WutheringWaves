@@ -9,12 +9,13 @@ from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.utils import get_local_file_url
+from ww.utils.number import to_percentage_str
 
 ELEMENT_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/element/icon"
 RESONATOR_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/resonator/icon"
 
 
-TEMPLATE_RESONATOR_HTML_PATH = "./html/template/resonator.html"
+TEMPLATE_RESONATOR_HTML_PATH = "./html/template/resonator.jinja2"
 
 
 def get_element_icon_fpath(element: str) -> Optional[str]:
@@ -106,6 +107,7 @@ def get_html_template_resonator_model(
         resonance_skill_lv=resonator.resonance_skill_lv,
         resonance_liberation_lv=resonator.resonance_liberation_lv,
         forte_circuit_lv=resonator.forte_circuit_lv,
+        intro_skill_lv=resonator.intro_skill_lv,
         inherent_skill_1=resonator.inherent_skill_1,
         inherent_skill_2=resonator.inherent_skill_2,
         resonator_src=resonator_src,
@@ -129,7 +131,9 @@ def export_html_template_resonator_model_as_png(template_id: str, resonator_id: 
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
-    html_str = template.render(resonator=resonator, ZhTwEnum=ZhTwEnum, _=_)
+    html_str = template.render(
+        resonator=resonator, to_percentage_str=to_percentage_str, ZhTwEnum=ZhTwEnum, _=_
+    )
     png_fname = f"{resonator_id}.png"
 
     export_to_template(template_id, png_fname, html_str, 276)
