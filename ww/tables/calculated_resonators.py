@@ -163,6 +163,8 @@ class CalculatedResonator:
             resonator_level, ResonatorStatTsvColumnEnum.DEF
         )
 
+        self._new_row[CalculatedResonatorTsvColumnEnum.NAME.value] = resonator_name
+
         self._new_row[CalculatedResonatorTsvColumnEnum.HP.value] = get_number(
             resonator_hp
         )

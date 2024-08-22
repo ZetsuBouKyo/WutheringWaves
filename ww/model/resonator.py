@@ -129,6 +129,7 @@ CALCULATED_RESONATORS_DMG_BONUS_SUFFIX: str = "傷害加成面板"
 
 class CalculatedResonatorTsvColumnEnum(str, Enum):
     ID: str = _(ZhTwEnum.RESONATOR_ID)
+    NAME: str = _(ZhTwEnum.RESONATOR_NAME)
 
     # Resonator Stat
     HP: str = _(ZhTwEnum.RESONATOR_HP)
@@ -240,6 +241,7 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
 
 class CalculatedResonatorModel(BaseModel):
     id: str = ""
+    name: str = ""
 
     # resonator stat
     hp: str = ""
