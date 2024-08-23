@@ -361,8 +361,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateColumnEnum.COMMENT.value:
-            btn = QPushButton(_(ZhTwEnum.COMMENT))
-            btn.clicked.connect(self.add_comment)
+            btn = QDataPushButton(_(ZhTwEnum.COMMENT))
+            btn.setToolTip(self.ouput_methods[row].comment)
+            btn.clicked.connect(partial(self.add_comment, btn))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateColumnEnum.CALCULATE.value:
             btn = QPushButton(_(ZhTwEnum.CALCULATE))
@@ -521,9 +522,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.done(1)
 
-    def set_row_comment(self, row: int, dialog: QDialog, text_edit: QTextEdit):
+    def set_row_comment(
+        self, row: int, dialog: QDialog, text_edit: QTextEdit, btn: QDataPushButton
+    ):
         text = text_edit.toPlainText()
         self.ouput_methods[row].comment = text
+        btn.setToolTip(text)
         dialog.done(1)
 
     def add_default_buffs(
@@ -642,7 +646,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.set_cell(row, col_index, value)
         return calculated_row
 
-    def add_comment(self):
+    def add_comment(self, btn: QDataPushButton):
         row = self.get_selected_row()
         if row is None:
             return
@@ -666,7 +670,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         btns_layout = QHBoxLayout()
         ok_btn = QDataPushButton("OK")
-        ok_btn.clicked.connect(partial(self.set_row_comment, row, dialog, text_edit))
+        ok_btn.clicked.connect(
+            partial(self.set_row_comment, row, dialog, text_edit, btn)
+        )
         ok_btn.setFixedHeight(40)
         btns_layout.addStretch()
         btns_layout.addWidget(ok_btn)
@@ -752,6 +758,9 @@ class QTemplateOutputMethodTab(QWidget):
 
     def load(self, rows: List[TemplateRowModel]):
         self.q_output_method_table.load(rows)
+
+    def get_rows(self) -> List[TemplateRowModel]:
+        return self.q_output_method_table.get_output_methods()
 
     def get_rows(self) -> List[TemplateRowModel]:
         return self.q_output_method_table.get_output_methods()
