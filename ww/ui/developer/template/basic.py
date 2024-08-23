@@ -282,7 +282,7 @@ class QTemplateBasicTab(QWidget):
 
         # Duration
         self.q_duration_layout = QHBoxLayout()
-        self.q_duration_label = QLabel("時間(下限)")
+        self.q_duration_label = QLabel("時間")
         self.q_duration_label.setFixedWidth(150)
         self.q_duration_1_line = QLineEdit()
         self.q_duration_1_line.setFixedWidth(70)
