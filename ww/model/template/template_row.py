@@ -43,9 +43,10 @@ class TemplateRowActionEnum(str, Enum):
 
 
 class TemplateColumnEnum(str, Enum):
+    LABEL: str = _(ZhTwEnum.LABEL)
     COMMENT: str = _(ZhTwEnum.COMMENT)
     CALCULATE: str = _(ZhTwEnum.CALCULATE)
-    BONUS_BUFF: str = "增益"
+    BONUS_BUFF: str = _(ZhTwEnum.BUFF)
     RESONATOR_NAME: str = "[角色]名稱"
 
     REAL_DMG_NO_CRIT: str = "[實戰]無暴擊"

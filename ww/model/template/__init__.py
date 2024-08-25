@@ -108,6 +108,7 @@ class TemplateRowBuffModel(BaseModel):
 
 
 class TemplateRowModel(BaseModel):
+    labels: List[str] = []
     resonator_name: str = ""
     real_dmg_no_crit: str = ""
     real_dmg_crit: str = ""

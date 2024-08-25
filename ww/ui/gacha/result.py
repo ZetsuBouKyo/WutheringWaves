@@ -18,11 +18,11 @@ from ww.crud.docs import get_gacha_file_html
 from ww.crud.resonator import get_resonator_icon_path
 from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
+from ww.model.pool.id_to_name import GachaResonatorModel
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.docs import get_docs
-from ww.ui.gacha.id_to_name import GachaResonatorModel
 from ww.ui.gacha.pool import PoolModel
-from ww.ui.layout import FlowLayout
+from ww.ui.layout import FlowLayout, clear_layout
 from ww.ui.widget import ScrollableWidget
 
 
@@ -62,16 +62,6 @@ class QGachaIcon(QWidget):
         layout.addLayout(label_layout)
 
         self.setLayout(layout)
-
-
-def clear_layout(layout):
-    while layout.count():
-        item = layout.takeAt(0)
-        widget = item.widget()
-        if widget is not None:
-            widget.deleteLater()
-        else:
-            clear_layout(item.layout())
 
 
 class QGachaResults(QWidget):

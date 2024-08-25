@@ -74,6 +74,7 @@ class ZhTwEnum(str, Enum):
     DELETE: str = "刪除"
     DELETE_BUFFS: str = "刪除增益"
     EXPORT_IMAGE: str = "輸出圖片"
+    LABEL: str = "標籤"
 
     FILE: str = "檔案"
     FILE_EXISTS: str = "檔案已存在"

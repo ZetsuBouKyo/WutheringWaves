@@ -1,7 +1,7 @@
 from copy import deepcopy
 
 from ww.model.pool import GachaPoolTypeEnum, PoolModel
-from ww.ui.gacha.id_to_name import resonators, weapons
+from ww.model.pool.id_to_name import resonators, weapons
 
 
 def parse(data: dict):

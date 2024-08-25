@@ -25,7 +25,7 @@ from PySide2.QtWidgets import (
 
 from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
-from ww.ui.gacha.id_to_name import (
+from ww.model.pool.id_to_name import (
     GachaResonatorModel,
     GachaWeaponModel,
     resonators,

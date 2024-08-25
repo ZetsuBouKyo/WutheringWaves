@@ -2,6 +2,16 @@ from PySide2.QtCore import QPoint, QRect, QSize, Qt
 from PySide2.QtWidgets import QLayout, QSizePolicy
 
 
+def clear_layout(layout):
+    while layout.count():
+        item = layout.takeAt(0)
+        widget = item.widget()
+        if widget is not None:
+            widget.deleteLater()
+        else:
+            clear_layout(item.layout())
+
+
 class FlowLayout(QLayout):
     def __init__(self, parent=None, margin=0, spacing=-1):
         super(FlowLayout, self).__init__(parent)

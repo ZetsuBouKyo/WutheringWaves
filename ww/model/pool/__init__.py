@@ -3,7 +3,7 @@ from typing import List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict
 
-from ww.ui.gacha.id_to_name import GachaResonatorModel, GachaWeaponModel
+from ww.model.pool.id_to_name import GachaResonatorModel, GachaWeaponModel
 
 
 class GachaPoolTypeEnum(str, Enum):

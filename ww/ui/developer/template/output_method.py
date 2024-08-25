@@ -1,3 +1,4 @@
+from copy import deepcopy
 from decimal import Decimal
 from functools import partial
 from typing import Dict, List, Optional
@@ -38,11 +39,9 @@ from ww.model.template import (
     TemplateRowBuffTypeEnum,
     TemplateRowModel,
 )
-from ww.tables.echo import EchoSkillTable
-from ww.tables.monster import MonstersTable, MonsterTsvColumnEnum
-from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.input_chips import QInputChipsWidget
 from ww.ui.progress_bar import QHProgressBar
 from ww.ui.table import QDraggableTableWidget
 from ww.ui.table.cell import set_item, set_uneditable_cell
@@ -360,7 +359,12 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         return cell
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == TemplateColumnEnum.COMMENT.value:
+        if self.column_names[col] == TemplateColumnEnum.LABEL.value:
+            btn = QDataPushButton(_(ZhTwEnum.LABEL))
+            btn.setToolTip(self.ouput_methods[row].comment)
+            btn.clicked.connect(partial(self.add_labels, btn))
+            self.setCellWidget(row, col, btn)
+        elif self.column_names[col] == TemplateColumnEnum.COMMENT.value:
             btn = QDataPushButton(_(ZhTwEnum.COMMENT))
             btn.setToolTip(self.ouput_methods[row].comment)
             btn.clicked.connect(partial(self.add_comment, btn))
@@ -522,6 +526,21 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.done(1)
 
+    def set_row_labels(
+        self,
+        row: int,
+        dialog: QDialog,
+        input_chips: QInputChipsWidget,
+        btn: QDataPushButton,
+    ):
+        chips = deepcopy(input_chips.get_chips())
+        self.ouput_methods[row].labels = chips
+        chips_str = ", ".join(chips)
+        btn.setToolTip(chips_str)
+
+        input_chips.reset()
+        dialog.done(1)
+
     def set_row_comment(
         self, row: int, dialog: QDialog, text_edit: QTextEdit, btn: QDataPushButton
     ):
@@ -645,6 +664,43 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
             self.set_cell(row, col_index, value)
         return calculated_row
+
+    def add_labels(self, btn: QDataPushButton):
+        row = self.get_selected_row()
+        if row is None:
+            return
+
+        width = 1200
+        height = 600
+        center = QDesktopWidget().availableGeometry().center()
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        layout = QVBoxLayout()
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves Labels")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+
+        labels = self.ouput_methods[row].labels
+        input_chips = QInputChipsWidget()
+        input_chips.add_chips(labels)
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QDataPushButton("OK")
+        ok_btn.clicked.connect(
+            partial(self.set_row_labels, row, dialog, input_chips, btn)
+        )
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addWidget(input_chips)
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
 
     def add_comment(self, btn: QDataPushButton):
         row = self.get_selected_row()
