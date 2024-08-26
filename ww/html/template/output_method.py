@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from jinja2 import Template
 
@@ -52,10 +52,18 @@ action_icons = {
 
 def get_html_template_output_method_model(
     rows: List[TemplateRowModel],
-) -> List[TemplateHtmlOutputMethodModel]:
-    output_methods = []
+) -> Dict[str, List[TemplateHtmlOutputMethodModel]]:
+    output_methods: Dict[str, List[TemplateHtmlOutputMethodModel]] = {}
     current_output_method = TemplateHtmlOutputMethodModel()
     for row in rows:
+        labels = row.labels
+        if len(labels) == 0:
+            labels = [""]
+        for label in labels:
+            if output_methods.get(label, None) is not None:
+                continue
+            output_methods[label] = []
+
         action_name = row.action
 
         if (
@@ -66,7 +74,8 @@ def get_html_template_output_method_model(
 
         if row.resonator_name != current_output_method.resonator_name:
             if not current_output_method.is_none():
-                output_methods.append(current_output_method)
+                for label in labels:
+                    output_methods[label].append(current_output_method)
 
             resonator_name = row.resonator_name
             resonator_src = get_resonator_icon_fpath(resonator_name)
@@ -83,7 +92,8 @@ def get_html_template_output_method_model(
         if comment:
             current_output_method.comments.append(comment)
     if not current_output_method.is_none():
-        output_methods.append(current_output_method)
+        for label in labels:
+            output_methods[label].append(current_output_method)
 
     return output_methods
 
@@ -103,13 +113,16 @@ def export_html_template_output_method_model_as_png(
     output_methods = get_html_template_output_method_model(rows)
 
     right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
-    html_str = template.render(
-        output_methods=output_methods,
-        ZhTwEnum=ZhTwEnum,
-        _=_,
-        right_arrow_src=right_arrow_src,
-    )
+    for fname_suffix, rows in output_methods.items():
+        html_str = template.render(
+            output_methods=rows,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+            right_arrow_src=right_arrow_src,
+        )
 
-    png_fname = f"{_(ZhTwEnum.OUTPUT_METHOD)}.png"
+        png_fname = f"{_(ZhTwEnum.OUTPUT_METHOD)}.png"
+        if fname_suffix:
+            png_fname = f"{_(ZhTwEnum.OUTPUT_METHOD)}-{fname_suffix}.png"
 
-    export_to_template(template_id, png_fname, html_str, height)
+        export_to_template(template_id, png_fname, html_str, height)
