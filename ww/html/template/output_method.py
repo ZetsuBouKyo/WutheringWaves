@@ -89,7 +89,7 @@ def get_html_template_output_method_model(
 
 
 def export_html_template_output_method_model_as_png(
-    template_id: str, rows: List[TemplateRowModel], height: int = 1000
+    template_id: str, rows: List[TemplateRowModel], height: int = 2000
 ):
     if not template_id or len(rows) == 0:
         return

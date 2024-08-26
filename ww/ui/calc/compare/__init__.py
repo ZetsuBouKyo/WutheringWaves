@@ -26,7 +26,7 @@ class QDamageCompare(QWidget):
         self.q_btns_layout = QHBoxLayout()
         self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
-        self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGE))
+        self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGES))
         self.q_export_image_btn.clicked.connect(self.export_images)
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_export_image_btn)

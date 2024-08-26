@@ -1,3 +1,4 @@
+from functools import partial
 from typing import Dict, List
 
 from PySide2.QtWidgets import (
@@ -27,26 +28,61 @@ class QTemplateExportTab(QWidget):
         super().__init__()
         self._parent = parent
         self.layout = QVBoxLayout()
+        self._btn_height = 40
+        self._btn_width = 200
 
-        # Buttons
+        # All
         self.q_btns_layout = QHBoxLayout()
-        self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGE))
-        self.q_export_image_btn.clicked.connect(self.export_images)
+        self.q_export_all_images_btn = QPushButton(_(ZhTwEnum.EXPORT_ALL_IMAGES))
+        self.q_export_all_images_btn.clicked.connect(self.export_all_images)
+        self.q_export_all_images_btn.setFixedWidth(self._btn_width)
+        self.q_export_all_images_btn.setFixedHeight(self._btn_height)
         self.q_btns_layout.addStretch()
-        self.q_btns_layout.addWidget(self.q_export_image_btn)
+        self.q_btns_layout.addWidget(self.q_export_all_images_btn)
 
         self.layout.addLayout(self.q_btns_layout)
 
-        self.q_output_method_line = self.set_line(
+        # Resonator
+        self.q_btns_2_layout = QHBoxLayout()
+        self.q_export_resonator_images_btn = QPushButton(
+            _(ZhTwEnum.EXPORT_RESONATOR_IMAGES)
+        )
+        self.q_export_resonator_images_btn.clicked.connect(
+            partial(self.export_resonator_images, True)
+        )
+        self.q_export_resonator_images_btn.setFixedWidth(self._btn_width)
+        self.q_export_resonator_images_btn.setFixedHeight(self._btn_height)
+        self.q_btns_2_layout.addStretch()
+        self.q_btns_2_layout.addWidget(self.q_export_resonator_images_btn)
+
+        self.layout.addLayout(self.q_btns_2_layout)
+
+        # Output methods
+        self.q_output_method_line = self.init_output_method(
             self.layout,
             _(ZhTwEnum.OUTPUT_METHOD),
             _(ZhTwEnum.TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT),
         )
 
+        # Damage distribution
+        self.q_btns_3_layout = QHBoxLayout()
+        self.q_export_dmg_dist_images_btn = QPushButton(
+            _(ZhTwEnum.EXPORT_DAMAGE_DISTRIBUTION_IMAGES)
+        )
+        self.q_export_dmg_dist_images_btn.clicked.connect(
+            partial(self.export_damage_distribution, True)
+        )
+        self.q_export_dmg_dist_images_btn.setFixedWidth(self._btn_width)
+        self.q_export_dmg_dist_images_btn.setFixedHeight(self._btn_height)
+        self.q_btns_3_layout.addStretch()
+        self.q_btns_3_layout.addWidget(self.q_export_dmg_dist_images_btn)
+
+        self.layout.addLayout(self.q_btns_3_layout)
+
         self.layout.addStretch()
         self.setLayout(self.layout)
 
-    def set_line(
+    def init_output_method(
         self, parent_layout: QVBoxLayout, label_name: str, tool_tip: str
     ) -> QLineEdit:
         layout = QHBoxLayout()
@@ -63,10 +99,17 @@ class QTemplateExportTab(QWidget):
         layout.addWidget(line)
         layout.addStretch()
 
+        btn = QPushButton(_(ZhTwEnum.EXPORT_OUTPUT_METHOD_IMAGES))
+        btn.clicked.connect(partial(self.export_output_method_images, True))
+        btn.setFixedWidth(self._btn_width)
+        btn.setFixedHeight(self._btn_height)
+
+        layout.addWidget(btn)
+
         parent_layout.addLayout(layout)
         return line
 
-    def export_images(self):
+    def export_resonator_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
 
         export_html_template_resonator_model_as_png(
@@ -79,6 +122,17 @@ class QTemplateExportTab(QWidget):
             template.id, template.test_resonator_id_3
         )
 
+        test_resonators: Dict[str, str] = (
+            self._parent.q_template_basic_tab.get_test_resonators()
+        )
+        for resonator_id in test_resonators.values():
+            export_echo_as_png(template.id, resonator_id)
+
+        if is_progress:
+            self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
+
+    def export_output_method_images(self, is_progress: bool = False):
+        template: TemplateModel = self._parent.get_template()
         output_methods_height = self.q_output_method_line.text()
         if output_methods_height:
             try:
@@ -90,8 +144,12 @@ class QTemplateExportTab(QWidget):
                 export_html_template_output_method_model_as_png(
                     template.id, template.rows
                 )
+        if is_progress:
+            self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
 
-        # Damage distribution
+    def export_damage_distribution(self, is_progress: bool = False):
+        template: TemplateModel = self._parent.get_template()
+
         q_output_method_table: QTemplateTabOutputMethodTable = (
             self._parent.q_template_output_method_tab.q_output_method_table
         )
@@ -109,7 +167,12 @@ class QTemplateExportTab(QWidget):
         )
         export_damage_distribution_as_png(test_resonators.keys(), damage_distribution)
 
-        self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
+        if is_progress:
+            self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
 
-        for resonator_id in test_resonators.values():
-            export_echo_as_png(template.id, resonator_id)
+    def export_all_images(self):
+        self.export_resonator_images()
+        self.export_output_method_images()
+        self.export_damage_distribution()
+
+        self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
