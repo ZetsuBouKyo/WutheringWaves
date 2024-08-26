@@ -21,9 +21,9 @@ class QTemplateDamageDistributionUneditableTable(QUneditableTable):
 
 
 class QTemplateDamageDistributionTab(QWidget):
-    def __init__(self, template_tabs):
+    def __init__(self, parent):
         super().__init__()
-        self.q_template_tabs = template_tabs
+        self._parent = parent
 
         self.layout = QVBoxLayout()
 
@@ -50,17 +50,15 @@ class QTemplateDamageDistributionTab(QWidget):
         self.setLayout(self.layout)
 
     def analyze(self):
-        self.q_template_basic_tab: QTemplateBasicTab = (
-            self.q_template_tabs.q_template_basic_tab
-        )
+        self.q_template_basic_tab: QTemplateBasicTab = self._parent.q_template_basic_tab
         self.q_output_method_table: QTemplateTabOutputMethodTable = (
-            self.q_template_tabs.q_template_output_method_tab.q_output_method_table
+            self._parent.q_template_output_method_tab.q_output_method_table
         )
 
         calculated_rows: List[CalculatedTemplateRowModel] = (
             self.q_output_method_table.calculated_rows
         )
-        template: TemplateModel = self.q_template_tabs.get_template()
+        template: TemplateModel = self._parent.get_template()
 
         test_resonator_id_1 = template.test_resonator_id_1
         test_resonator_id_2 = template.test_resonator_id_2

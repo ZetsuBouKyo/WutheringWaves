@@ -94,13 +94,13 @@ class QChipsWidget(QWidget):
 
 
 class QInputChipsWidget(QWidget):
-    def __init__(self):
+    def __init__(self, getOptions=None):
         super().__init__()
         self.layout = QVBoxLayout()
 
         # Input
         self.q_input_layout = QHBoxLayout()
-        self.q_input = QLineEdit()
+        self.q_input = QAutoCompleteComboBox(getOptions=getOptions)
         self.q_input.setFixedWidth(200)
         self.q_input.setFixedHeight(40)
         self.q_add_btn = QPushButton("+")
@@ -121,7 +121,7 @@ class QInputChipsWidget(QWidget):
         self.setLayout(self.layout)
 
     def add_chip(self):
-        chip = self.q_input.text()
+        chip = self.q_input.currentText()
         if not chip:
             return
         self.q_chips.add_chip(chip)

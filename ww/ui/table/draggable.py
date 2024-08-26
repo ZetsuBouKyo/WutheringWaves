@@ -70,6 +70,8 @@ class QDraggableTableWidget(QBaseTableWidget):
     def _init_column_width(self): ...
 
     def _init_cells(self):
+        r = len(self.data)
+        self.setRowCount(r)
         for row in range(self.rowCount()):
             for col in range(self.columnCount()):
                 cell = self.data[row][col]
@@ -258,6 +260,9 @@ class QDraggableTableWidget(QBaseTableWidget):
             r = [self.get_cell(row, col) for col in range(self.columnCount())]
             data.append(r)
         return data
+
+    def get_raw_data(self, row_count: int = 1) -> List[List[str]]:
+        return [["" for _ in range(len(self.column_names))] for _ in range(row_count)]
 
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]

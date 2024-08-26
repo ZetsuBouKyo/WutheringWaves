@@ -1,6 +1,6 @@
 from decimal import Decimal
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
 
@@ -47,6 +47,8 @@ class CalculatedTemplateColumnEnum(str, Enum):
 
 class CalculatedTemplateRowModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
+
+    labels: List[str] = []
 
     resonator_name: str = ""
     skill_id: str = ""

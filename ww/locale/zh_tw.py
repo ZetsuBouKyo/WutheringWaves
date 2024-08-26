@@ -45,6 +45,9 @@ class ZhTwEnum(str, Enum):
     BUFF: str = "增益"
     BUFF_NAME_TO_DELETE: str = "增益名稱"
 
+    DURATION_1: str = "時間(下限)"
+    DURATION_2: str = "時間(上限)"
+
     TOTAL_DAMAGE: str = "總傷害"
 
     PHYSICAL: str = "物理"
@@ -110,6 +113,7 @@ class ZhTwEnum(str, Enum):
     PROGRESS_BAR: str = "進度條"
 
     TAB_BASIC: str = "基本資料"
+    TAB_LABEL: str = "標籤"
     TAB_OUTPUT_METHOD: str = "輸出手法"
     TAB_DAMAGE_DISTRIBUTION: str = "傷害占比"
     TAB_EXPORT: str = "輸出"

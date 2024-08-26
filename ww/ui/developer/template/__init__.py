@@ -23,6 +23,7 @@ from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.export import QTemplateExportTab
 from ww.ui.developer.template.help import QTemplateHelpTab
+from ww.ui.developer.template.label import QTemplateLabelTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
 
@@ -61,18 +62,26 @@ class QTemplateTabs(QWidget):
 
         # Basic
         self.q_template_basic_tab = QTemplateBasicTab()
+
+        # Label
+        self.q_template_label_tab = QTemplateLabelTab()
+
         # Output method
         self.q_template_output_method_tab = QTemplateOutputMethodTab(
-            self.q_template_basic_tab, self.q_progress_bar
+            self, self.q_progress_bar
         )
+
         # Damage analysis
         self.q_template_damage_distribution = QTemplateDamageDistributionTab(self)
+
         # Export
         self.q_template_export = QTemplateExportTab(self)
+
         # Help
         self.q_template_help_tab = QTemplateHelpTab()
 
         self.q_tabs.addTab(self.q_template_basic_tab, _(ZhTwEnum.TAB_BASIC))
+        self.q_tabs.addTab(self.q_template_label_tab, _(ZhTwEnum.TAB_LABEL))
         self.q_tabs.addTab(
             self.q_template_output_method_tab, _(ZhTwEnum.TAB_OUTPUT_METHOD)
         )
@@ -91,6 +100,8 @@ class QTemplateTabs(QWidget):
         template_id = self.q_template_basic_tab.get_template_id()
         template_id = template_id.strip()
 
+        labels = self.q_template_label_tab.get_labels()
+
         test_resonator_ids = self.q_template_basic_tab.get_test_resonator_ids()
         monster_id = self.q_template_basic_tab.get_monster_id()
         duration_1 = self.q_template_basic_tab.get_duration_1()
@@ -101,6 +112,7 @@ class QTemplateTabs(QWidget):
 
         template = TemplateModel(
             id=template_id,
+            labels=labels,
             test_resonator_id_1=test_resonator_ids[0],
             test_resonator_id_2=test_resonator_ids[1],
             test_resonator_id_3=test_resonator_ids[2],
@@ -179,6 +191,7 @@ class QTemplateTabs(QWidget):
         self.q_template_basic_tab.load(template)
 
         self.q_progress_bar.set_percentage(60.0)
+        self.q_template_label_tab.load(template.labels)
         self.q_template_output_method_tab.load(template.rows)
 
         self.q_progress_bar.set(100.0, _(ZhTwEnum.LOADED))

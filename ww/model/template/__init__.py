@@ -20,6 +20,7 @@ from ww.model.template.html import (
     TemplateHtmlOutputMethodModel,
     TemplateHtmlResonatorModel,
 )
+from ww.model.template.label import TemplateLabelTableColumnEnum
 from ww.model.template.resonator_table import TemplateResonatorTableColumnEnum
 from ww.model.template.template_row import (
     TEMPLATE_BONUS,
@@ -41,6 +42,7 @@ __all__ = [
     "TemplateHtmlOutputMethodActionModel",
     "TemplateHtmlOutputMethodModel",
     "TemplateHtmlResonatorModel",
+    "TemplateLabelTableColumnEnum",
     "TemplateResonatorDamageDistributionModel",
     "TemplateResonatorTableColumnEnum",
     "TemplateRowActionEnum",
@@ -125,8 +127,19 @@ class TemplateRowModel(BaseModel):
     comment: str = ""
 
 
+class TemplateLabelModel(BaseModel):
+    name: str = ""
+    duration_1: str = ""
+    duration_2: str = ""
+
+    def get_row(cls):
+        return [cls.name, cls.duration_1, cls.duration_2]
+
+
 class TemplateModel(BaseModel):
     id: str = ""
+
+    labels: List[TemplateLabelModel] = []
 
     test_resonator_id_1: str = ""
     test_resonator_id_2: str = ""

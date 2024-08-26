@@ -41,6 +41,7 @@ from ww.model.template import (
 )
 from ww.ui.button import QDataPushButton
 from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.developer.template.label import QTemplateLabelTab
 from ww.ui.input_chips import QInputChipsWidget
 from ww.ui.progress_bar import QHProgressBar
 from ww.ui.table import QDraggableTableWidget
@@ -128,8 +129,11 @@ class QTemplateTabOutputMethodBuffTable(QDraggableTableWidget):
 
 
 class QTemplateTabOutputMethodTable(QDraggableTableWidget):
-    def __init__(self, basic: QTemplateBasicTab, progress_bar: QHProgressBar):
-        self.basic = basic
+
+    def __init__(self, parent, progress_bar: QHProgressBar):
+        self.q_template_basic_tab: QTemplateBasicTab = parent.q_template_basic_tab
+        self.q_template_label_tab: QTemplateLabelTab = parent.q_template_label_tab
+
         self.progress_bar = progress_bar
 
         ouput_methods = [TemplateRowModel()]
@@ -561,7 +565,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def get_default_buffs(self) -> Dict[str, Dict[str, str]]:
         buffs = {}
         sonatas = set()
-        for resonator in self.basic.get_resonators():
+        for resonator in self.q_template_basic_tab.get_resonators():
             # Resonator
             resonator_name = resonator.resonator_name
             resonator_buffs = get_resonator_buffs(resonator_name)
@@ -613,8 +617,8 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 return
         row_data = self.get_row(row)
 
-        name_to_id = self.basic.get_test_resonators()
-        monster_id = self.basic.get_monster_id()
+        name_to_id = self.q_template_basic_tab.get_test_resonators()
+        monster_id = self.q_template_basic_tab.get_monster_id()
 
         resonator_name = row_data.resonator_name
         resonator_id = name_to_id.get(resonator_name, None)
@@ -684,7 +688,9 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         dialog.setGeometry(x0, y0, width, height)
 
         labels = self.ouput_methods[row].labels
-        input_chips = QInputChipsWidget()
+        input_chips = QInputChipsWidget(
+            getOptions=self.q_template_label_tab.get_label_names
+        )
         input_chips.add_chips(labels)
 
         btns_layout = QHBoxLayout()
@@ -786,7 +792,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
 class QTemplateOutputMethodTab(QWidget):
 
-    def __init__(self, basic: QTemplateBasicTab, progress_bar: QHProgressBar):
+    def __init__(self, parent, progress_bar: QHProgressBar):
         super().__init__()
         self.layout = QVBoxLayout()
 
@@ -799,7 +805,7 @@ class QTemplateOutputMethodTab(QWidget):
         self.q_btns_layout.addWidget(self.q_delete_buffs_btn)
         self.q_btns_layout.addWidget(self.q_calculate_btn)
 
-        self.q_output_method_table = QTemplateTabOutputMethodTable(basic, progress_bar)
+        self.q_output_method_table = QTemplateTabOutputMethodTable(parent, progress_bar)
 
         self.layout.addLayout(self.q_btns_layout)
         self.layout.addWidget(self.q_output_method_table)
