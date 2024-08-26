@@ -54,16 +54,8 @@ def get_html_template_output_method_model(
     rows: List[TemplateRowModel],
 ) -> Dict[str, List[TemplateHtmlOutputMethodModel]]:
     output_methods: Dict[str, List[TemplateHtmlOutputMethodModel]] = {}
-    current_output_method = TemplateHtmlOutputMethodModel()
+    current_output_methods: Dict[str, TemplateHtmlOutputMethodModel] = {}
     for row in rows:
-        labels = row.labels
-        if len(labels) == 0:
-            labels = [""]
-        for label in labels:
-            if output_methods.get(label, None) is not None:
-                continue
-            output_methods[label] = []
-
         action_name = row.action
 
         if (
@@ -72,28 +64,43 @@ def get_html_template_output_method_model(
         ):
             continue
 
-        if row.resonator_name != current_output_method.resonator_name:
-            if not current_output_method.is_none():
-                for label in labels:
-                    output_methods[label].append(current_output_method)
+        labels = row.labels
+        if "" not in labels:
+            labels.append("")
 
-            resonator_name = row.resonator_name
-            resonator_src = get_resonator_icon_fpath(resonator_name)
-
-            current_output_method = TemplateHtmlOutputMethodModel()
-            current_output_method.resonator_name = resonator_name
-            current_output_method.resonator_src = resonator_src
-
-        action_src = action_icons.get(action_name, "")
-        action = TemplateHtmlOutputMethodActionModel(name=action_name, src=action_src)
-        current_output_method.actions.append(action)
-
-        comment = row.comment
-        if comment:
-            current_output_method.comments.append(comment)
-    if not current_output_method.is_none():
         for label in labels:
-            output_methods[label].append(current_output_method)
+            if output_methods.get(label, None) is None:
+                output_methods[label] = []
+            if current_output_methods.get(label, None) is None:
+                resonator_name = row.resonator_name
+                resonator_src = get_resonator_icon_fpath(resonator_name)
+
+                current_output_methods[label] = TemplateHtmlOutputMethodModel()
+                current_output_methods[label].resonator_name = resonator_name
+                current_output_methods[label].resonator_src = resonator_src
+            else:
+                if row.resonator_name != current_output_methods[label].resonator_name:
+                    output_methods[label].append(current_output_methods[label])
+
+                    resonator_name = row.resonator_name
+                    resonator_src = get_resonator_icon_fpath(resonator_name)
+
+                    current_output_methods[label] = TemplateHtmlOutputMethodModel()
+                    current_output_methods[label].resonator_name = resonator_name
+                    current_output_methods[label].resonator_src = resonator_src
+
+            action_src = action_icons.get(action_name, "")
+            action = TemplateHtmlOutputMethodActionModel(
+                name=action_name, src=action_src
+            )
+            current_output_methods[label].actions.append(action)
+
+            comment = row.comment
+            if comment:
+                current_output_methods[label].comments.append(comment)
+
+    for label_name, current_output_method in current_output_methods.items():
+        output_methods[label_name].append(current_output_method)
 
     return output_methods
 

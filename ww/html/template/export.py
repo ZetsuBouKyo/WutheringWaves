@@ -38,6 +38,8 @@ def crop_image(data):
             bottom = i
             break
     img_bottom = bottom + margin_top
+    if bottom == 0:
+        return data
     return data[:img_bottom]
 
 
@@ -71,9 +73,11 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
     img = Image.open(fpath)
     img.load()
     data = np.asarray(img, dtype="int32")
-    data = crop_image(data)
-    data = data.astype(np.uint8)
-    img = Image.fromarray(data)
+    new_data = crop_image(data)
+    if len(data) == len(new_data):
+        return
+    new_data = new_data.astype(np.uint8)
+    img = Image.fromarray(new_data)
     img.save(fpath)
 
 

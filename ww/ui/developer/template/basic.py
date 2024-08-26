@@ -317,10 +317,9 @@ class QTemplateBasicTab(QWidget):
         self.layout.addLayout(self.q_test_monster_id_layout)
         self.layout.addLayout(self.q_duration_layout)
         self.layout.addWidget(self.q_description_label)
-        self.layout.addWidget(self.q_description)
+        self.layout.addWidget(self.q_description, 1)
         self.layout.addWidget(self.q_resonator_label)
         self.layout.addWidget(self.q_resonator_table)
-        self.layout.addStretch()
 
         self.setLayout(self.layout)
 

@@ -1,6 +1,7 @@
 from decimal import Decimal
 from typing import List, Optional
 
+import pandas as pd
 from pydantic import BaseModel
 
 from ww.model.template.buff_table import (
@@ -125,6 +126,23 @@ class TemplateRowModel(BaseModel):
     cumulative_time: str = ""
     frame: str = ""
     comment: str = ""
+
+    def get_labels_str(cls):
+        return ", ".join(cls.labels)
+
+    def get_buffs_str(cls):
+        buff_data = {e.value: [] for e in TemplateBuffTableColumnEnum}
+
+        for buff in cls.buffs:
+            # Tool tips
+            buff_data[TemplateBuffTableColumnEnum.NAME.value].append(buff.name)
+            buff_data[TemplateBuffTableColumnEnum.TYPE.value].append(buff.type)
+            buff_data[TemplateBuffTableColumnEnum.VALUE.value].append(buff.value)
+            buff_data[TemplateBuffTableColumnEnum.STACK.value].append(buff.stack)
+            buff_data[TemplateBuffTableColumnEnum.DURATION.value].append(buff.duration)
+
+        df = pd.DataFrame(buff_data)
+        return df.to_html()
 
 
 class TemplateLabelModel(BaseModel):

@@ -14,6 +14,7 @@ class QHProgressBar(QWidget):
         self.q_progress_bar.setToolTip(_(ZhTwEnum.PROGRESS_BAR))
         self.q_progress_bar.setMinimum(0)
         self.q_progress_bar.setMaximum(100)
+        self.q_progress_bar.setFixedWidth(800)
         self.q_progress_label = QLabel("")
         self.q_progress_layout.addWidget(self.q_progress_label)
         self.q_progress_layout.addStretch()

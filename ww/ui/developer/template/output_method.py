@@ -365,7 +365,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == TemplateColumnEnum.LABEL.value:
             btn = QDataPushButton(_(ZhTwEnum.LABEL))
-            btn.setToolTip(self.ouput_methods[row].comment)
+            btn.setToolTip(self.ouput_methods[row].get_labels_str())
             btn.clicked.connect(partial(self.add_labels, btn))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateColumnEnum.COMMENT.value:
@@ -379,6 +379,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateColumnEnum.BONUS_BUFF.value:
             btn = QDataPushButton("+")
+            btn.setToolTip(self.ouput_methods[row].get_buffs_str())
             btn.clicked.connect(partial(self.add_buff, btn))
             self.setCellWidget(row, col, btn)
         elif self.column_names[col] == TemplateColumnEnum.RESONATOR_NAME.value:
