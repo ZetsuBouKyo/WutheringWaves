@@ -1,3 +1,4 @@
+from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List
 
@@ -64,7 +65,7 @@ def get_html_template_output_method_model(
         ):
             continue
 
-        labels = row.labels
+        labels = deepcopy(row.labels)
         if "" not in labels:
             labels.append("")
 
