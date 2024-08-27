@@ -91,7 +91,7 @@ class QTemplateExportTab(QWidget):
         self.layout.addStretch()
         self.setLayout(self.layout)
 
-    def init_output_method(self, parent_layout: QVBoxLayout) -> QLineEdit:
+    def init_output_method(self, parent_layout: QVBoxLayout):
         layout = QHBoxLayout()
         suffix_label = QLabel(_(ZhTwEnum.LABEL))
         suffix_label.setFixedWidth(60)
@@ -131,6 +131,30 @@ class QTemplateExportTab(QWidget):
         self.q_output_method_height_line = height_line
         self.q_output_method_label_combobox = suffix_combobox
 
+    def init_damage_distribution(self, parent_layout: QVBoxLayout):
+        layout = QHBoxLayout()
+        btn = QPushButton(_(ZhTwEnum.EXPORT_DAMAGE_DISTRIBUTION_IMAGES))
+        btn.clicked.connect(partial(self.export_damage_distribution, True))
+        btn.setFixedWidth(self._btn_width)
+        btn.setFixedHeight(self._btn_height)
+
+        suffix_label = QLabel(_(ZhTwEnum.LABEL))
+        suffix_label.setFixedWidth(60)
+        suffix_label.setFixedHeight(40)
+        suffix_combobox = QAutoCompleteComboBox(
+            getOptions=self.q_template_label_tab.get_label_names
+        )
+        suffix_combobox.setFixedWidth(120)
+        suffix_combobox.setFixedHeight(40)
+
+        layout.addWidget(btn)
+        layout.addWidget(suffix_combobox)
+        layout.addStretch()
+
+        parent_layout.addLayout(layout)
+
+        self.q_damage_distribution_combobox = suffix_combobox
+
     def export_resonator_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
 
@@ -158,17 +182,19 @@ class QTemplateExportTab(QWidget):
 
         label = self.q_output_method_label_combobox.currentText()
         if label.strip() == "":
-            label = None
+            labels = None
+        else:
+            labels = [label]
         output_methods_height = self.q_output_method_height_line.text()
         if output_methods_height:
             try:
                 output_methods_height = int(output_methods_height)
                 export_html_template_output_method_model_as_png(
-                    template.id, template.rows, output_methods_height, labels=[label]
+                    template.id, template.rows, output_methods_height, labels=labels
                 )
             except ValueError:
                 export_html_template_output_method_model_as_png(
-                    template.id, template.rows, labels=[label]
+                    template.id, template.rows, labels=labels
                 )
         if is_progress:
             self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
