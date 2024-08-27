@@ -1,6 +1,6 @@
 from copy import deepcopy
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, Optional
 
 from jinja2 import Template
 
@@ -53,6 +53,7 @@ action_icons = {
 
 def get_html_template_output_method_model(
     rows: List[TemplateRowModel],
+    labels: Optional[List[str]] = None,
 ) -> Dict[str, List[TemplateHtmlOutputMethodModel]]:
     output_methods: Dict[str, List[TemplateHtmlOutputMethodModel]] = {}
     current_output_methods: Dict[str, TemplateHtmlOutputMethodModel] = {}
@@ -65,11 +66,13 @@ def get_html_template_output_method_model(
         ):
             continue
 
-        labels = deepcopy(row.labels)
-        if "" not in labels:
-            labels.append("")
+        _labels = deepcopy(row.labels)
+        if "" not in _labels:
+            _labels.append("")
 
-        for label in labels:
+        for label in _labels:
+            if labels is not None and label not in labels:
+                continue
             if output_methods.get(label, None) is None:
                 output_methods[label] = []
             if current_output_methods.get(label, None) is None:
@@ -107,7 +110,10 @@ def get_html_template_output_method_model(
 
 
 def export_html_template_output_method_model_as_png(
-    template_id: str, rows: List[TemplateRowModel], height: int = 2000
+    template_id: str,
+    rows: List[TemplateRowModel],
+    height: int = 2000,
+    labels: Optional[List[str]] = None,
 ):
     if not template_id or len(rows) == 0:
         return
@@ -118,7 +124,7 @@ def export_html_template_output_method_model_as_png(
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
-    output_methods = get_html_template_output_method_model(rows)
+    output_methods = get_html_template_output_method_model(rows, labels=labels)
 
     right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
     for fname_suffix, rows in output_methods.items():

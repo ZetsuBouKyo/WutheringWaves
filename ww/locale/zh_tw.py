@@ -76,6 +76,7 @@ class ZhTwEnum(str, Enum):
     COMMENT: str = "註解"
     DELETE: str = "刪除"
     DELETE_BUFFS: str = "刪除增益"
+    EXPORT_IMAGE_HEIGHT = "輸出圖片高度"
     EXPORT_IMAGES: str = "輸出圖片"
     EXPORT_ALL_IMAGES: str = "輸出全部圖片"
     EXPORT_DAMAGE_DISTRIBUTION_IMAGES: str = "輸出傷害占比圖片"

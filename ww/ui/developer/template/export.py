@@ -19,7 +19,13 @@ from ww.html.template import (
 )
 from ww.locale import ZhTwEnum, _
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
-from ww.ui.developer.template.output_method import QTemplateTabOutputMethodTable
+from ww.ui.combobox import QAutoCompleteComboBox
+from ww.ui.developer.template.basic import QTemplateBasicTab
+from ww.ui.developer.template.label import QTemplateLabelTab
+from ww.ui.developer.template.output_method import (
+    QTemplateOutputMethodTab,
+    QTemplateTabOutputMethodTable,
+)
 
 
 class QTemplateExportTab(QWidget):
@@ -27,6 +33,13 @@ class QTemplateExportTab(QWidget):
     def __init__(self, parent):
         super().__init__()
         self._parent = parent
+
+        self.q_template_label_tab: QTemplateLabelTab = self._parent.q_template_label_tab
+        self.q_template_basic_tab: QTemplateBasicTab = self._parent.q_template_basic_tab
+        self.q_template_output_method_tab: QTemplateOutputMethodTab = (
+            self._parent.q_template_output_method_tab
+        )
+
         self.layout = QVBoxLayout()
         self._btn_height = 40
         self._btn_width = 200
@@ -37,8 +50,8 @@ class QTemplateExportTab(QWidget):
         self.q_export_all_images_btn.clicked.connect(self.export_all_images)
         self.q_export_all_images_btn.setFixedWidth(self._btn_width)
         self.q_export_all_images_btn.setFixedHeight(self._btn_height)
-        self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_export_all_images_btn)
+        self.q_btns_layout.addStretch()
 
         self.layout.addLayout(self.q_btns_layout)
 
@@ -52,17 +65,13 @@ class QTemplateExportTab(QWidget):
         )
         self.q_export_resonator_images_btn.setFixedWidth(self._btn_width)
         self.q_export_resonator_images_btn.setFixedHeight(self._btn_height)
-        self.q_btns_2_layout.addStretch()
         self.q_btns_2_layout.addWidget(self.q_export_resonator_images_btn)
+        self.q_btns_2_layout.addStretch()
 
         self.layout.addLayout(self.q_btns_2_layout)
 
         # Output methods
-        self.q_output_method_line = self.init_output_method(
-            self.layout,
-            _(ZhTwEnum.OUTPUT_METHOD),
-            _(ZhTwEnum.TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT),
-        )
+        self.init_output_method(self.layout)
 
         # Damage distribution
         self.q_btns_3_layout = QHBoxLayout()
@@ -74,31 +83,36 @@ class QTemplateExportTab(QWidget):
         )
         self.q_export_dmg_dist_images_btn.setFixedWidth(self._btn_width)
         self.q_export_dmg_dist_images_btn.setFixedHeight(self._btn_height)
-        self.q_btns_3_layout.addStretch()
         self.q_btns_3_layout.addWidget(self.q_export_dmg_dist_images_btn)
+        self.q_btns_3_layout.addStretch()
 
         self.layout.addLayout(self.q_btns_3_layout)
 
         self.layout.addStretch()
         self.setLayout(self.layout)
 
-    def init_output_method(
-        self, parent_layout: QVBoxLayout, label_name: str, tool_tip: str
-    ) -> QLineEdit:
+    def init_output_method(self, parent_layout: QVBoxLayout) -> QLineEdit:
         layout = QHBoxLayout()
-        label = QLabel(label_name)
-        label.setToolTip(tool_tip)
-        label.setFixedWidth(150)
-        label.setFixedHeight(40)
-        line = QLineEdit("")
-        line.setToolTip(tool_tip)
-        line.setFixedWidth(400)
-        line.setFixedHeight(40)
+        suffix_label = QLabel(_(ZhTwEnum.LABEL))
+        suffix_label.setFixedWidth(60)
+        suffix_label.setFixedHeight(40)
+        suffix_combobox = QAutoCompleteComboBox(
+            getOptions=self.q_template_label_tab.get_label_names
+        )
+        suffix_combobox.setFixedWidth(120)
+        suffix_combobox.setFixedHeight(40)
 
-        layout.addWidget(label)
-        layout.addWidget(line)
-        layout.addStretch()
+        # Height
+        height_label = QLabel(_(ZhTwEnum.EXPORT_IMAGE_HEIGHT))
+        height_label.setToolTip(_(ZhTwEnum.TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT))
+        height_label.setFixedWidth(120)
+        height_label.setFixedHeight(40)
+        height_line = QLineEdit("")
+        height_line.setToolTip(_(ZhTwEnum.TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT))
+        height_line.setFixedWidth(200)
+        height_line.setFixedHeight(40)
 
+        # Button
         btn = QPushButton(_(ZhTwEnum.EXPORT_OUTPUT_METHOD_IMAGES))
         btn.clicked.connect(partial(self.export_output_method_images, True))
         btn.setFixedWidth(self._btn_width)
@@ -106,8 +120,16 @@ class QTemplateExportTab(QWidget):
 
         layout.addWidget(btn)
 
+        layout.addWidget(suffix_label)
+        layout.addWidget(suffix_combobox)
+        layout.addWidget(height_label)
+        layout.addWidget(height_line)
+        layout.addStretch()
+
         parent_layout.addLayout(layout)
-        return line
+
+        self.q_output_method_height_line = height_line
+        self.q_output_method_label_combobox = suffix_combobox
 
     def export_resonator_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
@@ -123,7 +145,7 @@ class QTemplateExportTab(QWidget):
         )
 
         test_resonators: Dict[str, str] = (
-            self._parent.q_template_basic_tab.get_test_resonators()
+            self.q_template_basic_tab.get_test_resonators()
         )
         for resonator_id in test_resonators.values():
             export_echo_as_png(template.id, resonator_id)
@@ -133,16 +155,20 @@ class QTemplateExportTab(QWidget):
 
     def export_output_method_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
-        output_methods_height = self.q_output_method_line.text()
+
+        label = self.q_output_method_label_combobox.currentText()
+        if label.strip() == "":
+            label = None
+        output_methods_height = self.q_output_method_height_line.text()
         if output_methods_height:
             try:
                 output_methods_height = int(output_methods_height)
                 export_html_template_output_method_model_as_png(
-                    template.id, template.rows, output_methods_height
+                    template.id, template.rows, output_methods_height, labels=[label]
                 )
             except ValueError:
                 export_html_template_output_method_model_as_png(
-                    template.id, template.rows
+                    template.id, template.rows, labels=[label]
                 )
         if is_progress:
             self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
@@ -151,7 +177,7 @@ class QTemplateExportTab(QWidget):
         template: TemplateModel = self._parent.get_template()
 
         q_output_method_table: QTemplateTabOutputMethodTable = (
-            self._parent.q_template_output_method_tab.q_output_method_table
+            self.q_template_output_method_tab.q_output_method_table
         )
 
         calculated_rows: List[CalculatedTemplateRowModel] = (
@@ -159,7 +185,7 @@ class QTemplateExportTab(QWidget):
         )
 
         test_resonators: Dict[str, str] = (
-            self._parent.q_template_basic_tab.get_test_resonators()
+            self.q_template_basic_tab.get_test_resonators()
         )
         damage = Damage(monster_id=template.monster_id)
         damage_distribution = damage.extract_damage_distribution_from_rows(
