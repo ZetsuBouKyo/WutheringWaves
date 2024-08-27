@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from jinja2 import Template
 
@@ -19,6 +19,7 @@ def export_damage_distribution_as_png(
     resonator_names: List[str],
     damage_distribution: TemplateDamageDistributionModel,
     max_damage: int = MAX_DAMAGE,
+    suffix: Optional[str] = None,
 ):
     template_id = damage_distribution.template_id
     if not template_id:
@@ -46,9 +47,13 @@ def export_damage_distribution_as_png(
         _=_,
     )
 
-    html_str_path = home_path / f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}.html"
+    name = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
+    if suffix:
+        name = f"{name}-{suffix}"
+
+    html_str_path = home_path / f"{name}.html"
     with html_str_path.open(mode="w", encoding="utf-8") as fp:
         fp.write(html_str)
 
-    fname = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}.png"
+    fname = f"{name}.png"
     export_to_template(template_id, fname, html_str, height=320)

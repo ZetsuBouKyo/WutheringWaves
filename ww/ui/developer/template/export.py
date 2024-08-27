@@ -74,19 +74,7 @@ class QTemplateExportTab(QWidget):
         self.init_output_method(self.layout)
 
         # Damage distribution
-        self.q_btns_3_layout = QHBoxLayout()
-        self.q_export_dmg_dist_images_btn = QPushButton(
-            _(ZhTwEnum.EXPORT_DAMAGE_DISTRIBUTION_IMAGES)
-        )
-        self.q_export_dmg_dist_images_btn.clicked.connect(
-            partial(self.export_damage_distribution, True)
-        )
-        self.q_export_dmg_dist_images_btn.setFixedWidth(self._btn_width)
-        self.q_export_dmg_dist_images_btn.setFixedHeight(self._btn_height)
-        self.q_btns_3_layout.addWidget(self.q_export_dmg_dist_images_btn)
-        self.q_btns_3_layout.addStretch()
-
-        self.layout.addLayout(self.q_btns_3_layout)
+        self.init_damage_distribution(self.layout)
 
         self.layout.addStretch()
         self.setLayout(self.layout)
@@ -119,7 +107,6 @@ class QTemplateExportTab(QWidget):
         btn.setFixedHeight(self._btn_height)
 
         layout.addWidget(btn)
-
         layout.addWidget(suffix_label)
         layout.addWidget(suffix_combobox)
         layout.addWidget(height_label)
@@ -148,6 +135,7 @@ class QTemplateExportTab(QWidget):
         suffix_combobox.setFixedHeight(40)
 
         layout.addWidget(btn)
+        layout.addWidget(suffix_label)
         layout.addWidget(suffix_combobox)
         layout.addStretch()
 
@@ -180,12 +168,16 @@ class QTemplateExportTab(QWidget):
     def export_output_method_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
 
+        # Label
         label = self.q_output_method_label_combobox.currentText()
         if label.strip() == "":
             labels = None
         else:
             labels = [label]
+
+        # Height
         output_methods_height = self.q_output_method_height_line.text()
+
         if output_methods_height:
             try:
                 output_methods_height = int(output_methods_height)
@@ -202,22 +194,38 @@ class QTemplateExportTab(QWidget):
     def export_damage_distribution(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
 
+        # Calculated rows
         q_output_method_table: QTemplateTabOutputMethodTable = (
             self.q_template_output_method_tab.q_output_method_table
         )
-
         calculated_rows: List[CalculatedTemplateRowModel] = (
             q_output_method_table.calculated_rows
         )
 
+        # Resonators
         test_resonators: Dict[str, str] = (
             self.q_template_basic_tab.get_test_resonators()
         )
+
+        # Label
+        label = self.q_damage_distribution_combobox.currentText()
+        if label.strip() == "":
+            labels = None
+        else:
+            labels = [label]
+
         damage = Damage(monster_id=template.monster_id)
-        damage_distribution = damage.extract_damage_distribution_from_rows(
-            test_resonators, template.id, template.monster_id, calculated_rows
+        damage_distributions = damage.extract_damage_distribution_from_rows_with_labels(
+            test_resonators,
+            template.id,
+            template.monster_id,
+            calculated_rows,
+            labels=labels,
         )
-        export_damage_distribution_as_png(test_resonators.keys(), damage_distribution)
+        for label_name, damage_distribution in damage_distributions.items():
+            export_damage_distribution_as_png(
+                test_resonators.keys(), damage_distribution, suffix=label_name
+            )
 
         if is_progress:
             self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))

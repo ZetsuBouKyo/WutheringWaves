@@ -171,3 +171,9 @@ class TemplateModel(BaseModel):
 
     resonators: List[TemplateResonatorModel] = []
     rows: List[TemplateRowModel] = []
+
+    def get_label(cls, label_name: str) -> Optional[TemplateLabelModel]:
+        for label in cls.labels:
+            if label.name == label_name:
+                return label
+        return None
