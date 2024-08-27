@@ -445,6 +445,10 @@ class Damage:
             region_base_attr = (
                 result_def * (get_number("1.0") + result_def_p) + result_def_addition
             )
+        elif base_attr == SkillBaseAttrEnum.HP.value:
+            region_base_attr = (
+                result_hp * (get_number("1.0") + result_hp_p) + result_hp_addition
+            )
         else:
             return
 
