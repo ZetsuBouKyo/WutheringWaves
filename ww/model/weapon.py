@@ -5,6 +5,7 @@ from ww.locale import ZhTwEnum, _
 
 class WeaponPassiveStatEnum(str, Enum):
     ATK_P: str = _(ZhTwEnum.WEAPON_ATK_P_INCREASE)
+    HP_P: str = _(ZhTwEnum.WEAPON_HP_P_INCREASE)
     ATTRIBUTE_DMG_BONUS: str = _(ZhTwEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
     ENERGY_REGEN: str = _(ZhTwEnum.WEAPON_ENERGY_REGEN_INCREASE)
 
@@ -32,5 +33,6 @@ class WeaponStatEnum(str, Enum):
 class WeaponRankEnum(str, Enum):
     LEVEL: str = _(ZhTwEnum.LEVEL)
     ATK_P: str = _(ZhTwEnum.WEAPON_ATK_P_INCREASE)
+    HP_P: str = _(ZhTwEnum.WEAPON_HP_P_INCREASE)
     ATTRIBUTE_DMG_BONUS: str = _(ZhTwEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
     ENERGY_REGEN: str = _(ZhTwEnum.WEAPON_ENERGY_REGEN_INCREASE)

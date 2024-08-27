@@ -187,6 +187,7 @@ class ZhTwEnum(str, Enum):
     WEAPON_SUB_STAT: str = "副屬性"
     WEAPON_PASSIVE_STAT: str = "固有屬性"
     WEAPON_ATK_P_INCREASE: str = "攻擊提升"
+    WEAPON_HP_P_INCREASE: str = "生命提升"
     WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE: str = "全屬性傷害加成提升"
     WEAPON_ENERGY_REGEN_INCREASE: str = "共鳴效率提升"
 
@@ -410,6 +411,7 @@ class ZhTwEnum(str, Enum):
     RESONATOR_WEAPON_ENERGY_REGEN: str = "[副]武器共鳴效率"
 
     RESONATOR_WEAPON_RANK_ATK_P: str = "武器諧振攻擊提升"
+    RESONATOR_WEAPON_RANK_HP_P: str = "武器諧振生命提升"
     RESONATOR_WEAPON_RANK_ENERGY_REGEN: str = "武器諧振共鳴效率提升"
     RESONATOR_WEAPON_RANK_ATTRIBUTE_DMG_BONUS: str = "武器諧振全屬性傷害加成提升"
 

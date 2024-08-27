@@ -218,6 +218,9 @@ class CalculatedResonator:
         weapon_rank_atk_p = get_number(
             weapon_table.search(self.weapon_rank, WeaponRankEnum.ATK_P)
         )
+        weapon_rank_hp_p = get_number(
+            weapon_table.search(self.weapon_rank, WeaponRankEnum.HP_P)
+        )
         weapon_rank_attribute_dmg_bonus = get_number(
             weapon_table.search(self.weapon_rank, WeaponRankEnum.ATTRIBUTE_DMG_BONUS)
         )
@@ -227,6 +230,9 @@ class CalculatedResonator:
 
         self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATK_P.value] = (
             weapon_rank_atk_p
+        )
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_HP_P.value] = (
+            weapon_rank_hp_p
         )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
@@ -513,6 +519,7 @@ class CalculatedResonator:
         )
         self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P.value] = (
             self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_HP_P.value]
+            + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_HP_P.value]
             + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_HP_P.value]
             + stat_bonus_hp_p
         )
