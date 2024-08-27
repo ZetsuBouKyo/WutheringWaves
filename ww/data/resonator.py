@@ -21,6 +21,7 @@ JIANXIN: str = "鑒心"
 ROVER_SPECTRO_MALE: str = "漂泊者·衍射(男)"
 ROVER_SPECTRO_FEMALE: str = "漂泊者·衍射(女)"
 VERINA: str = "維里奈"
+SHOREKEEPER: str = "守岸人"
 TAOQI: str = "桃祈"
 DANJIN: str = "丹瑾"
 ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
@@ -38,6 +39,9 @@ resonators = {
     ),
     _(ZhTwEnum.ZHEZHI): ResonatorModel(
         name=_(ZhTwEnum.ZHEZHI), element=_(ZhTwEnum.GLACIO)
+    ),
+    _(ZhTwEnum.YOUHU): ResonatorModel(
+        name=_(ZhTwEnum.YOUHU), element=_(ZhTwEnum.GLACIO)
     ),
     _(ZhTwEnum.CHIXIA): ResonatorModel(
         name=_(ZhTwEnum.CHIXIA), element=_(ZhTwEnum.FUSION)
@@ -82,6 +86,9 @@ resonators = {
     ),
     _(ZhTwEnum.VERINA): ResonatorModel(
         name=_(ZhTwEnum.VERINA), element=_(ZhTwEnum.SPECTRO)
+    ),
+    _(ZhTwEnum.SHOREKEEPER): ResonatorModel(
+        name=_(ZhTwEnum.SHOREKEEPER), element=_(ZhTwEnum.SPECTRO)
     ),
     _(ZhTwEnum.TAOQI): ResonatorModel(
         name=_(ZhTwEnum.TAOQI), element=_(ZhTwEnum.HAVOC)

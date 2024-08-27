@@ -580,11 +580,16 @@ class CalculatedResonator:
         stat_bonus_crit_rate = get_number(
             self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_RATE]
         )
-        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE.value] = (
+        crit_rate = (
             self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_RATE.value]
             + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_RATE.value]
             + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_RATE.value]
             + stat_bonus_crit_rate
+        )
+        if crit_rate >= get_number("1.0"):
+            crit_rate = get_number("1.0")
+        self._new_row[CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE.value] = (
+            crit_rate
         )
 
         # CRIT DMG

@@ -395,6 +395,8 @@ class Damage:
         )
         bonus_crit_rate = buffs.bonus_crit_rate
         result_crit_rate = resonator_crit_rate + bonus_crit_rate
+        if result_crit_rate >= get_number("1.0"):
+            result_crit_rate = get_number("1.0")
         calculated_row.result_crit_rate = result_crit_rate
 
         # CRIT DMG
