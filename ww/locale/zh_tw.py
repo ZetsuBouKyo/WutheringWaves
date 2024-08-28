@@ -3,6 +3,7 @@ from enum import Enum
 
 class ZhTwEnum(str, Enum):
     ID: str = "ID"
+    DEFAULT_ID: str = "預設ID"
 
     RESONATOR_1: str = "共鳴者1"
     RESONATOR_2: str = "共鳴者2"
@@ -110,7 +111,7 @@ class ZhTwEnum(str, Enum):
     CONFIRM_SAVE: str = "確定要存檔?"
     CONFIRM_LOAD: str = "確定要讀檔?"
 
-    TEMPLATE_ID_MUST_NOT_EMPTY: str = "模板ID不該是空值。"
+    ID_MUST_NOT_EMPTY: str = "ID不該是空值。"
     RESONATOR_NAME_MUST_NOT_EMPTY: str = "角色名稱不該是空值。"
     WEAPON_NAME_MUST_NOT_EMPTY: str = "武器名稱不該是空值。"
     PATH_MUST_BE_DIR: str = "路徑該為資料夾。"

@@ -7,10 +7,10 @@ from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
 RESONATOR_DAMAGE_COMPARE_HOME_PATH = "./cache/v1/zh_tw/custom/resonator_damage_compare"
 
 
-def get_resonator_damage_compare_home_path(id: str) -> Optional[Path]:
+def get_resonator_damage_compare_fpath(id: str) -> Optional[Path]:
     if not id:
         return None
-    return Path(RESONATOR_DAMAGE_COMPARE_HOME_PATH) / id
+    return Path(RESONATOR_DAMAGE_COMPARE_HOME_PATH) / f"{id}.json"
 
 
 def get_resonator_damage_compare_ids(
@@ -26,11 +26,8 @@ def save_resonator_damage_compare(data: ResonatorDamageCompareModel):
     if not id:
         return
 
-    home_path = get_resonator_damage_compare_home_path(id)
-    os.makedirs(home_path, exist_ok=True)
-
-    fname = f"{id}.json"
-    fpath = home_path / fname
+    fpath = get_resonator_damage_compare_fpath(id)
+    os.makedirs(fpath.parent, exist_ok=True)
 
     with fpath.open(mode="w", encoding="utf-8") as fp:
         data = data.model_dump_json(indent=4)

@@ -1,8 +1,19 @@
 from decimal import InvalidOperation
 
-from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
+from PySide2.QtWidgets import (
+    QHBoxLayout,
+    QLabel,
+    QMessageBox,
+    QPushButton,
+    QVBoxLayout,
+    QWidget,
+)
 
 from ww.calc.damage import Damage
+from ww.crud.resonator_damage_compare import (
+    get_resonator_damage_compare_fpath,
+    save_resonator_damage_compare,
+)
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
@@ -26,13 +37,13 @@ class QResonatorDamageCompare(QWidget):
         self.q_id_combobox.setFixedHeight(40)
         self.q_id_combobox.setFixedWidth(600)
         self.q_new_btn = QPushButton(_(ZhTwEnum.NEW))
-        # self.q_new_btn.clicked.connect(self.calculate)
+        # self.q_new_btn.clicked.connect(self.new)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
-        # self.q_load_btn.clicked.connect(self.calculate)
+        # self.q_load_btn.clicked.connect(self.load)
         self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
-        # self.q_delete_btn.clicked.connect(self.calculate)
+        # self.q_delete_btn.clicked.connect(self.delete)
         self.q_btns_layout_1.addWidget(self.q_id_label)
         self.q_btns_layout_1.addWidget(self.q_id_combobox)
         self.q_btns_layout_1.addStretch()
@@ -67,8 +78,27 @@ class QResonatorDamageCompare(QWidget):
 
     def save(self):
         id = self.q_id_combobox.currentText()
+        if id == "":
+            QMessageBox.warning(
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.ID_MUST_NOT_EMPTY)
+            )
+            return
+
+        fpath = get_resonator_damage_compare_fpath(id)
+        if fpath.exists():
+            confirmation = QMessageBox.question(
+                self,
+                _(ZhTwEnum.FILE_EXISTS),
+                f"{_(ZhTwEnum.FILE_OVERWRITE_OR_NOT)}'{id}'?",
+                QMessageBox.Yes | QMessageBox.No,
+            )
+            if confirmation == QMessageBox.No:
+                return
+
         data = self.q_damage_compare_table.get_dict_data()
-        model = ResonatorDamageCompareModel(id=id, data=data)
+        data_model = ResonatorDamageCompareModel(id=id, data=data)
+
+        save_resonator_damage_compare(data_model)
 
     def calculate(self):
         data = []

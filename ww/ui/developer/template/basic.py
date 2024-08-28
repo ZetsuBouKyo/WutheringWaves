@@ -215,13 +215,13 @@ class QTemplateBasicTab(QWidget):
 
         # Template ID
         self.q_template_id_layout = QHBoxLayout()
-        self.q_template_id_label = QLabel("模板ID")
+        self.q_template_id_label = QLabel(_(ZhTwEnum.ID))
         self.q_template_id_label.setFixedWidth(150)
         self.q_template_ids = QAutoCompleteComboBox(getOptions=get_template_ids)
         self.q_template_ids.setFixedWidth(combobox_width)
         self.q_template_ids.setFixedHeight(height)
         self.q_btns_layout = QHBoxLayout()
-        self.q_get_template_id_btn = QPushButton("預設模板ID")
+        self.q_get_template_id_btn = QPushButton(_(ZhTwEnum.DEFAULT_ID))
         self.q_get_template_id_btn.clicked.connect(self.create_template_id)
         self.q_get_template_id_btn.setFixedHeight(height)
 

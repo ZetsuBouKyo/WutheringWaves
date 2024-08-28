@@ -142,7 +142,7 @@ class QTemplateTabs(QWidget):
         template = self.get_template()
         if template.id == "":
             QMessageBox.warning(
-                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.TEMPLATE_ID_MUST_NOT_EMPTY)
+                self, _(ZhTwEnum.WARNING), _(ZhTwEnum.ID_MUST_NOT_EMPTY)
             )
             return
         template_fname = f"{template.id}.json"
