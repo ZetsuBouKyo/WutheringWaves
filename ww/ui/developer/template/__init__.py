@@ -11,6 +11,7 @@ from PySide2.QtWidgets import (
 
 from ww.crud.template import (
     TEMPLATE_HOME_PATH,
+    delete_template,
     get_template,
     get_template_path,
     save_template,
@@ -212,7 +213,7 @@ class QTemplateTabs(QWidget):
             QMessageBox.warning(
                 self,
                 _(ZhTwEnum.WARNING),
-                _(ZhTwEnum.TO_SELECT_TEMPLATE_ID_TO_DELETE),
+                _(ZhTwEnum.TO_SELECT_ID_TO_DELETE),
             )
             return
 
@@ -221,13 +222,11 @@ class QTemplateTabs(QWidget):
         confirmation = QMessageBox.question(
             self,
             _(ZhTwEnum.DELETE),
-            f"{_(ZhTwEnum.CONFIRM_DELETE_TEMPLATE)} '{template_id}'?",
+            f"{_(ZhTwEnum.CONFIRM_DELETE_FILE)} '{template_id}'?",
             QMessageBox.Yes | QMessageBox.No,
         )
         if confirmation == QMessageBox.No:
             return
 
-        template_path = get_template_path(template_id)
-        if not template_path.is_dir() and template_path.exists():
-            template_path.unlink()
+        if delete_template(template_id):
             self.q_template_basic_tab.reset_template_id()

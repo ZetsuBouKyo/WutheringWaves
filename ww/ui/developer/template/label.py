@@ -94,10 +94,6 @@ class QTemplateLabelTable(QDraggableTableWidget):
     def set_cell(self, row: int, col: int, value: str):
         set_item(self, row, col, value)
 
-    def reset_data(self):
-        self.setRowCount(0)
-        self.setRowCount(1)
-
 
 class QTemplateLabelTab(QWidget):
     def __init__(self):

@@ -105,9 +105,9 @@ class ZhTwEnum(str, Enum):
     LOAD_SELECTED_TEMPLATE_ID: str = "讀取選取的模板ID"
     DELETE_SELECTED_TEMPLATE_ID: str = "刪除選取的模板ID"
     TO_SELECT_TEMPLATE_ID: str = "請選擇要讀取的模板ID。"
-    TO_SELECT_TEMPLATE_ID_TO_DELETE: str = "請選擇要刪除的模板ID。"
+    TO_SELECT_ID_TO_DELETE: str = "請選擇要刪除的ID。"
 
-    CONFIRM_DELETE_TEMPLATE: str = "確定要刪除模板"
+    CONFIRM_DELETE_FILE: str = "確定要刪除檔案"
     CONFIRM_SAVE: str = "確定要存檔?"
     CONFIRM_LOAD: str = "確定要讀檔?"
 

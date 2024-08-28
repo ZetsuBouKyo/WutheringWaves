@@ -11,7 +11,10 @@ from PySide2.QtWidgets import (
 
 from ww.calc.damage import Damage
 from ww.crud.resonator_damage_compare import (
+    delete_resonator_damage_compare,
+    get_resonator_damage_compare,
     get_resonator_damage_compare_fpath,
+    get_resonator_damage_compare_ids,
     save_resonator_damage_compare,
 )
 from ww.locale import ZhTwEnum, _
@@ -33,17 +36,19 @@ class QResonatorDamageCompare(QWidget):
         # Button 1
         self.q_btns_layout_1 = QHBoxLayout()
         self.q_id_label = QLabel(_(ZhTwEnum.ID))
-        self.q_id_combobox = QAutoCompleteComboBox()
+        self.q_id_combobox = QAutoCompleteComboBox(
+            getOptions=get_resonator_damage_compare_ids
+        )
         self.q_id_combobox.setFixedHeight(40)
         self.q_id_combobox.setFixedWidth(600)
         self.q_new_btn = QPushButton(_(ZhTwEnum.NEW))
-        # self.q_new_btn.clicked.connect(self.new)
+        self.q_new_btn.clicked.connect(self.new)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
-        # self.q_load_btn.clicked.connect(self.load)
+        self.q_load_btn.clicked.connect(self.load)
         self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
-        # self.q_delete_btn.clicked.connect(self.delete)
+        self.q_delete_btn.clicked.connect(self.delete)
         self.q_btns_layout_1.addWidget(self.q_id_label)
         self.q_btns_layout_1.addWidget(self.q_id_combobox)
         self.q_btns_layout_1.addStretch()
@@ -76,6 +81,11 @@ class QResonatorDamageCompare(QWidget):
         self.layout.addWidget(self.q_damage_compare_uneditable_table)
         self.setLayout(self.layout)
 
+    def new(self):
+        self.q_id_combobox.setCurrentText("")
+        self.q_damage_compare_table.reset_data()
+        self.q_damage_compare_uneditable_table.reset_data()
+
     def save(self):
         id = self.q_id_combobox.currentText()
         if id == "":
@@ -99,6 +109,40 @@ class QResonatorDamageCompare(QWidget):
         data_model = ResonatorDamageCompareModel(id=id, data=data)
 
         save_resonator_damage_compare(data_model)
+
+    def load(self):
+        id = self.q_id_combobox.currentText()
+        if not id:
+            return
+
+        data_model = get_resonator_damage_compare(id)
+        if data_model is None:
+            return
+
+        self.q_damage_compare_table.load_df_dict(data_model.data)
+
+    def delete(self):
+        id = self.q_id_combobox.currentText()
+
+        if not id:
+            QMessageBox.warning(
+                self,
+                _(ZhTwEnum.WARNING),
+                _(ZhTwEnum.TO_SELECT_ID_TO_DELETE),
+            )
+            return
+
+        confirmation = QMessageBox.question(
+            self,
+            _(ZhTwEnum.DELETE),
+            f"{_(ZhTwEnum.CONFIRM_DELETE_FILE)} '{id}'?",
+            QMessageBox.Yes | QMessageBox.No,
+        )
+        if confirmation == QMessageBox.No:
+            return
+
+        if delete_resonator_damage_compare(id):
+            self.new()
 
     def calculate(self):
         data = []
@@ -163,6 +207,8 @@ class QResonatorDamageCompare(QWidget):
 
                     calculated_row = {
                         QResonatorDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonater_id,
+                        QResonatorDamageCompareUneditableTableEnum.TEMPLATE_ID.value: template_id,
+                        QResonatorDamageCompareUneditableTableEnum.LABEL.value: label,
                         QResonatorDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
                         QResonatorDamageCompareUneditableTableEnum.DAMAGE.value: damage,
                         QResonatorDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
@@ -181,6 +227,8 @@ class QResonatorDamageCompare(QWidget):
                 except InvalidOperation:
                     calculated_row = {
                         QResonatorDamageCompareUneditableTableEnum.RESONATOR_ID.value: "",
+                        QResonatorDamageCompareUneditableTableEnum.TEMPLATE_ID.value: "",
+                        QResonatorDamageCompareUneditableTableEnum.LABEL.value: "",
                         QResonatorDamageCompareUneditableTableEnum.MONSTER_ID.value: "",
                         QResonatorDamageCompareUneditableTableEnum.DAMAGE.value: "",
                         QResonatorDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: "",
@@ -195,8 +243,8 @@ class QResonatorDamageCompare(QWidget):
                         QResonatorDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: "",
                     }
                 data.append(calculated_row)
-
-        self.q_damage_compare_uneditable_table.load_dict(data)
+        if len(data) > 0:
+            self.q_damage_compare_uneditable_table.load_dict(data)
 
     def export_images(self):
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()

@@ -43,11 +43,11 @@ class QTeamDamageCompareTable(QDraggableTableWidget):
         super().__init__(rows, columns, data=data, column_names=self.column_names)
 
     def _init_column_width(self):
-        self.setColumnWidth(0, 600)
-        self.setColumnWidth(1, 600)
-        self.setColumnWidth(2, 600)
-        self.setColumnWidth(3, 350)
-        self.setColumnWidth(4, 1000)
+        self.setColumnWidth(0, 300)
+        self.setColumnWidth(1, 300)
+        self.setColumnWidth(2, 300)
+        self.setColumnWidth(3, 200)
+        self.setColumnWidth(4, 500)
 
     def set_cell(self, row: int, col: int, value: str):
         if self.column_names[col] == QTeamDamageCompareTableEnum.RESONATOR_ID_1.value:

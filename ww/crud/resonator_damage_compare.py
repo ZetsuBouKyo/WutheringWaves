@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 from typing import List, Optional
@@ -21,6 +22,15 @@ def get_resonator_damage_compare_ids(
     return names
 
 
+def get_resonator_damage_compare(id: str) -> Optional[ResonatorDamageCompareModel]:
+    fpath = get_resonator_damage_compare_fpath(id)
+    if not fpath.exists():
+        return
+    with fpath.open(mode="r", encoding="utf-8") as fp:
+        data = json.load(fp)
+    return ResonatorDamageCompareModel(**data)
+
+
 def save_resonator_damage_compare(data: ResonatorDamageCompareModel):
     id = data.id
     if not id:
@@ -32,3 +42,11 @@ def save_resonator_damage_compare(data: ResonatorDamageCompareModel):
     with fpath.open(mode="w", encoding="utf-8") as fp:
         data = data.model_dump_json(indent=4)
         fp.write(data)
+
+
+def delete_resonator_damage_compare(id: str) -> bool:
+    fpath = get_resonator_damage_compare_fpath(id)
+    if not fpath.is_dir() and fpath.exists():
+        fpath.unlink()
+        return True
+    return False

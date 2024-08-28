@@ -27,10 +27,10 @@ def get_template_output_home_path(template_id: str) -> Optional[Path]:
 
 
 def get_template(
-    tempalte_id: str, template_home_path: str = TEMPLATE_HOME_PATH
+    template_id: str, template_home_path: str = TEMPLATE_HOME_PATH
 ) -> Optional[TemplateModel]:
     template_path = get_template_path(
-        tempalte_id, template_home_path=template_home_path
+        template_id, template_home_path=template_home_path
     )
     if template_path is None or template_path.is_dir() or not template_path.exists():
         return None
@@ -46,24 +46,36 @@ def get_template_ids(template_home_path: str = TEMPLATE_HOME_PATH) -> List[str]:
 
 
 def get_template_label_names(
-    tempalte_id: str, template_home_path: str = TEMPLATE_HOME_PATH
+    template_id: str, template_home_path: str = TEMPLATE_HOME_PATH
 ) -> List[str]:
-    template = get_template(tempalte_id, template_home_path=template_home_path)
+    template = get_template(template_id, template_home_path=template_home_path)
     return template.get_label_names()
 
 
 def save_template(
-    tempalte_id: str,
-    tempalte: TemplateModel,
+    template_id: str,
+    template: TemplateModel,
     template_home_path: str = TEMPLATE_HOME_PATH,
 ):
     template_home_path = Path(template_home_path)
     os.makedirs(template_home_path, exist_ok=True)
 
     template_path = get_template_path(
-        tempalte_id, template_home_path=template_home_path
+        template_id, template_home_path=template_home_path
     )
 
     with template_path.open(mode="w", encoding="utf-8") as fp:
-        data = tempalte.model_dump_json(indent=4)
+        data = template.model_dump_json(indent=4)
         fp.write(data)
+
+
+def delete_template(
+    template_id: str, template_home_path: str = TEMPLATE_HOME_PATH
+) -> bool:
+    template_path = get_template_path(
+        template_id, template_home_path=template_home_path
+    )
+    if not template_path.is_dir() and template_path.exists():
+        template_path.unlink()
+        return True
+    return False

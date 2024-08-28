@@ -114,3 +114,9 @@ class QResonatorDamageCompareUneditableTable(QUneditableDataFrameTable):
         column_names = [e.value for e in QResonatorDamageCompareUneditableTableEnum]
         self.df = get_empty_df(column_names)
         super().__init__(self.df)
+
+    def reset_data(self):
+        self.setRowCount(0)
+        self.setRowCount(1)
+        self.data = self.get_empty_data()
+        self._init_cells()

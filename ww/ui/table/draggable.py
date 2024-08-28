@@ -306,6 +306,16 @@ class QDraggableTableWidget(QBaseTableWidget):
 
         self.load_list(new_data)
 
+    def load_df_dict(self, data: Dict[str, List[str]]):
+        new_data = []
+        rows = len(data.get(self.column_names[0], []))
+        for row in range(rows):
+            row_data = ["" for _ in range(self.columnCount())]
+            for i, column_name in enumerate(self.column_names):
+                row_data[i] = data[column_name][row]
+            new_data.append(row_data)
+        self.load_list(new_data)
+
     def reset_data(self):
         data = self.get_empty_data()
         self.load_list(data)

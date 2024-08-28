@@ -668,7 +668,11 @@ class Damage:
         damage_distribution = TemplateDamageDistributionModel()
         if not resonator_name_to_id:
             return damage_distribution
+
         template = get_template(template_id)
+        if not template:
+            return damage_distribution
+
         damage_distribution.duration_1 = template.duration_1
         damage_distribution.duration_2 = template.duration_2
 
