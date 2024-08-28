@@ -19,6 +19,12 @@ class QTemplateDamageDistributionUneditableTable(QUneditableTable):
         for _, col_index in self.column_names_table.items():
             self.setColumnWidth(col_index, 200)
 
+    def reset_data(self):
+        self.setRowCount(0)
+        self.setRowCount(3)
+        self.data = self.get_empty_data(row_count=3)
+        self._init_cells()
+
 
 class QTemplateDamageDistributionTab(QWidget):
     def __init__(self, parent):
@@ -108,3 +114,6 @@ class QTemplateDamageDistributionTab(QWidget):
             data.append(row)
 
         self.q_table.load_list(data)
+
+    def reset_data(self):
+        self.q_table.reset_data()

@@ -236,3 +236,8 @@ class QTemplateExportTab(QWidget):
         self.export_damage_distribution()
 
         self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
+
+    def reset_data(self):
+        self.q_output_method_height_line.setText("")
+        self.q_output_method_label_combobox.setCurrentText("")
+        self.q_damage_distribution_combobox.setCurrentText("")

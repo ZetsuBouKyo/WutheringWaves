@@ -790,6 +790,13 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         dialog.setLayout(layout)
         dialog.exec_()
 
+    def reset_data(self):
+        self.setRowCount(0)
+        self.setRowCount(1)
+        self.data = self.get_empty_data()
+        self.ouput_methods = [TemplateRowModel()]
+        self._init_cells()
+
 
 class QTemplateOutputMethodTab(QWidget):
 
@@ -827,3 +834,6 @@ class QTemplateOutputMethodTab(QWidget):
 
     def get_rows(self) -> List[TemplateRowModel]:
         return self.q_output_method_table.get_output_methods()
+
+    def reset_data(self):
+        self.q_output_method_table.reset_data()

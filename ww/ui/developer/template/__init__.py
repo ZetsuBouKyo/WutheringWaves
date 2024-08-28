@@ -131,6 +131,10 @@ class QTemplateTabs(QWidget):
 
     def new(self):
         self.q_template_basic_tab.reset_data()
+        self.q_template_label_tab.reset_data()
+        self.q_template_output_method_tab.reset_data()
+        self.q_template_damage_distribution.reset_data()
+        self.q_template_export.reset_data()
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))

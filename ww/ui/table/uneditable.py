@@ -79,6 +79,9 @@ class QUneditableTable(QTableWidget):
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
 
+    def get_empty_data(self, row_count: int = 1) -> List[List[str]]:
+        return [["" for _ in range(len(self.column_names))] for _ in range(row_count)]
+
 
 class QUneditableDataFrameTable(QUneditableTable):
     def __init__(self, df: pd.DataFrame):

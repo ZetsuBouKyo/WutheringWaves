@@ -94,6 +94,10 @@ class QTemplateLabelTable(QDraggableTableWidget):
     def set_cell(self, row: int, col: int, value: str):
         set_item(self, row, col, value)
 
+    def reset_data(self):
+        self.setRowCount(0)
+        self.setRowCount(1)
+
 
 class QTemplateLabelTab(QWidget):
     def __init__(self):
@@ -112,3 +116,6 @@ class QTemplateLabelTab(QWidget):
 
     def get_label_names(self) -> List[str]:
         return self.q_label_table.get_label_names()
+
+    def reset_data(self):
+        self.q_label_table.reset_data()
