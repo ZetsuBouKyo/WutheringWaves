@@ -10,25 +10,26 @@ from ww.ui.table.cell.combobox import (
 )
 from ww.utils.pd import get_empty_df, safe_get_df
 
-DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/zh_tw/custom/compare"
-DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
+RESONATOR_DAMAGE_COMPARE_1_TABLE_HOME_PATH = (
+    "./cache/v1/zh_tw/custom/resonator_damage_compare"
+)
+RESONATOR_DAMAGE_COMPARE_1_TABLE_CACHE_FNAME = "default.tsv"
 
 
-class QDamageCompareTableEnum(str, Enum):
+class QResonatorDamageCompareTableEnum(str, Enum):
     RESONATOR_ID_1: str = _(ZhTwEnum.RESONATOR_ID_1)
-    RESONATOR_ID_2: str = _(ZhTwEnum.RESONATOR_ID_2)
-    RESONATOR_ID_3: str = _(ZhTwEnum.RESONATOR_ID_3)
     MONSTER_ID: str = _(ZhTwEnum.MONSTER_ID)
     TEMPLATE_ID: str = _(ZhTwEnum.TEMPLATE_ID)
 
 
-class QDamageCompareTable(QDraggableTableWidget):
+class QResonatorDamageCompareTable(QDraggableTableWidget):
+
     def __init__(
         self,
-        fname: str = DAMAGE_COMPARE_TABLE_CACHE_FNAME,
+        fname: str = RESONATOR_DAMAGE_COMPARE_1_TABLE_CACHE_FNAME,
     ):
-        _path = Path(DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
-        self.column_names = [e.value for e in QDamageCompareTableEnum]
+        _path = Path(RESONATOR_DAMAGE_COMPARE_1_TABLE_HOME_PATH) / fname
+        self.column_names = [e.value for e in QResonatorDamageCompareTableEnum]
 
         if _path is not None:
             self.df = safe_get_df(_path, self.column_names)
@@ -49,19 +50,22 @@ class QDamageCompareTable(QDraggableTableWidget):
         self.setColumnWidth(4, 1000)
 
     def set_cell(self, row: int, col: int, value: str):
-        if self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_1.value:
+        if (
+            self.column_names[col]
+            == QResonatorDamageCompareTableEnum.RESONATOR_ID_1.value
+        ):
             set_resonator_primary_key_combobox(self, row, col, value)
-        elif self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_2.value:
-            set_resonator_primary_key_combobox(self, row, col, value)
-        elif self.column_names[col] == QDamageCompareTableEnum.RESONATOR_ID_3.value:
-            set_resonator_primary_key_combobox(self, row, col, value)
-        elif self.column_names[col] == QDamageCompareTableEnum.MONSTER_ID.value:
+        elif (
+            self.column_names[col] == QResonatorDamageCompareTableEnum.MONSTER_ID.value
+        ):
             set_monster_primary_key_combobox(self, row, col, value)
-        elif self.column_names[col] == QDamageCompareTableEnum.TEMPLATE_ID.value:
+        elif (
+            self.column_names[col] == QResonatorDamageCompareTableEnum.TEMPLATE_ID.value
+        ):
             set_template_primary_key_combobox(self, row, col, value)
 
 
-class QDamageCompareUneditableTableEnum(str, Enum):
+class QResonatorDamageCompareUneditableTableEnum(str, Enum):
     RESONATOR_ID: str = "[角色]代稱"
     # RESONATOR_LEVEL: str = "[角色]等級"
     # RESONATOR_CHAIN: str = "[角色]共鳴鏈"
@@ -84,8 +88,8 @@ class QDamageCompareUneditableTableEnum(str, Enum):
     DAMAGE_DISTRIBUTION_NONE: str = _(ZhTwEnum.DAMAGE_DISTRIBUTION_NONE)
 
 
-class QDamageCompareUneditableTable(QUneditableDataFrameTable):
+class QResonatorDamageCompareUneditableTable(QUneditableDataFrameTable):
     def __init__(self):
-        column_names = [e.value for e in QDamageCompareUneditableTableEnum]
+        column_names = [e.value for e in QResonatorDamageCompareUneditableTableEnum]
         self.df = get_empty_df(column_names)
         super().__init__(self.df)

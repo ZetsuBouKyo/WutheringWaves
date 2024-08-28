@@ -130,6 +130,10 @@ class ZhTwEnum(str, Enum):
     TAB_MONSTER: str = "怪物"
     TAB_BUFF: str = "增益"
 
+    TAB_SIMPLE_DAMAGE: str = "簡易傷害"
+    TAB_RESONATOR_DAMAGE_COMPARE: str = "角色傷害比較"
+    TAB_TEAM_DAMAGE_COMPARE: str = "隊伍傷害比較"
+
     TAB_ECHO_SONATA: str = "合鳴"
 
     TAB_STAT: str = "屬性"

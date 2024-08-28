@@ -6,20 +6,20 @@ from ww.calc.damage import Damage
 from ww.html.template import export_damage_distribution_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
-from ww.ui.calc.compare.table import (
-    QDamageCompareTable,
-    QDamageCompareUneditableTable,
-    QDamageCompareUneditableTableEnum,
+from ww.ui.calc.team_compare.table import (
+    QTeamDamageCompareTable,
+    QTeamDamageCompareUneditableTable,
+    QTeamDamageCompareUneditableTableEnum,
 )
 
 
-class QDamageCompare(QWidget):
+class QTeamDamageCompare(QWidget):
     def __init__(self):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        self.q_damage_compare_table = QDamageCompareTable()
-        self.q_damage_compare_uneditable_table = QDamageCompareUneditableTable()
+        self.q_damage_compare_table = QTeamDamageCompareTable()
+        self.q_damage_compare_uneditable_table = QTeamDamageCompareUneditableTable()
 
         self.q_calculated_label = QLabel("計算結果")
 
@@ -111,37 +111,37 @@ class QDamageCompare(QWidget):
                     )
 
                     calculated_row = {
-                        QDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonater_id,
-                        QDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
-                        QDamageCompareUneditableTableEnum.DAMAGE.value: damage,
-                        QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
-                        QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: damage_crit,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: basic,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: heavy,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: skill,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: liberation,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: intro,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: outro,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: echo,
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: none,
+                        QTeamDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonater_id,
+                        QTeamDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE.value: damage,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: damage_crit,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: basic,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: heavy,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: skill,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: liberation,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: intro,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: outro,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: echo,
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: none,
                     }
 
                     # print(calculated_row)
                 except InvalidOperation:
                     calculated_row = {
-                        QDamageCompareUneditableTableEnum.RESONATOR_ID.value: "",
-                        QDamageCompareUneditableTableEnum.MONSTER_ID.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: "",
-                        QDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: "",
+                        QTeamDamageCompareUneditableTableEnum.RESONATOR_ID.value: "",
+                        QTeamDamageCompareUneditableTableEnum.MONSTER_ID.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_CRIT.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_BASIC.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_HEAVY.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_SKILL.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_LIBERATION.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_INTRO.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_OUTRO.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_ECHO.value: "",
+                        QTeamDamageCompareUneditableTableEnum.DAMAGE_DISTRIBUTION_NONE.value: "",
                     }
                 data.append(calculated_row)
 
