@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import List
+from typing import List, Tuple
 
 from jinja2 import Template
 
@@ -20,8 +20,7 @@ MAX_DAMAGE = 1000000
 
 def export_compare_resonator_damage_as_png(
     id: str,
-    resonator_names: List[str],
-    damage_distributions: List[List[str, TemplateDamageDistributionModel]],
+    damage_distributions: List[Tuple[str, TemplateDamageDistributionModel]],
     max_damage: int = MAX_DAMAGE,
     height: int = 2000,
 ):
@@ -41,7 +40,6 @@ def export_compare_resonator_damage_as_png(
     html_str = template.render(
         damage_distributions=damage_distributions,
         resonators=resonators,
-        resonator_names=resonator_names,
         ZhTwEnum=ZhTwEnum,
         get_element_class_name=get_element_class_name,
         get_percentage_str=get_percentage_str,
@@ -51,7 +49,7 @@ def export_compare_resonator_damage_as_png(
         _=_,
     )
 
-    name = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
+    name = f"{_(ZhTwEnum.DAMAGE_COMPARE)}"
 
     fname = f"{name}.png"
     export_to(home_path, fname, html_str, height=height)

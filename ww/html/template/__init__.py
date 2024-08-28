@@ -4,8 +4,12 @@ from ww.html.template.output_method import (
     export_html_template_output_method_model_as_png,
 )
 from ww.html.template.resonator import export_html_template_resonator_model_as_png
+from ww.html.template.resonator_damage_compare import (
+    export_compare_resonator_damage_as_png,
+)
 
 __all__ = [
+    "export_compare_resonator_damage_as_png",
     "export_damage_distribution_as_png",
     "export_echo_as_png",
     "export_html_template_output_method_model_as_png",

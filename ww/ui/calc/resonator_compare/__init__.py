@@ -17,6 +17,7 @@ from ww.crud.resonator_damage_compare import (
     get_resonator_damage_compare_ids,
     save_resonator_damage_compare,
 )
+from ww.html.template import export_compare_resonator_damage_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
@@ -247,23 +248,25 @@ class QResonatorDamageCompare(QWidget):
             self.q_damage_compare_uneditable_table.load_dict(data)
 
     def export_images(self):
+        id = self.q_id_combobox.currentText()
+        if not id:
+            return
+
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()
-        damage_distributions = []
-        for (
-            resonator_id_1,
-            resonator_id_2,
-            resonator_id_3,
-            monster_id,
-            template_id,
-        ) in damage_compare_table_data:
+        results = []
+        for resonator_id_1, monster_id, template_id, label in damage_compare_table_data:
+            labels = [label]
 
             damage = Damage(monster_id=monster_id)
-            damage_distribution = damage.get_damage_distribution(
+            damage_distributions = damage.get_damage_distributions_with_labels(
                 template_id,
                 resonator_id_1,
-                resonator_id_2,
-                resonator_id_3,
+                "",
+                "",
                 monster_id=monster_id,
+                labels=labels,
             )
-            damage_distributions.append(damage_distribution)
-        # export_damage_distribution_as_png("test", damage_distributions)
+            for label_name, damage_distribution in damage_distributions.items():
+                results.append((label_name, damage_distribution))
+
+        export_compare_resonator_damage_as_png(id, results)

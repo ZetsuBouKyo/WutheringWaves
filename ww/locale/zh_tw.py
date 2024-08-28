@@ -96,6 +96,7 @@ class ZhTwEnum(str, Enum):
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
     DAMAGE_DISTRIBUTION: str = "傷害占比"
+    DAMAGE_COMPARE: str = "傷害比較"
     OUTPUT_METHOD: str = "輸出手法"
     TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT: str = "輸出手法圖片高度。"
 

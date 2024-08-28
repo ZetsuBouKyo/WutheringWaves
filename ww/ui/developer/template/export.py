@@ -215,7 +215,7 @@ class QTemplateExportTab(QWidget):
             labels = [label]
 
         damage = Damage(monster_id=template.monster_id)
-        damage_distributions = damage.extract_damage_distribution_from_rows_with_labels(
+        damage_distributions = damage.extract_damage_distributions_from_rows_with_labels(
             test_resonators,
             template.id,
             template.monster_id,
