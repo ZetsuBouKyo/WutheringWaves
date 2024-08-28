@@ -36,12 +36,19 @@ class QDraggableTableWidget(QBaseTableWidget):
     ):
         super().__init__(rows, columns)
 
+        assert len(column_names) == len(
+            set(column_names)
+        ), "Duplicate column name detected."
+
         self.data = data
         self.column_id_name = column_id_name
         self.column_names = column_names
-        self.column_names_table = {
-            self.column_names[i]: i for i in range(len(self.column_names))
-        }
+        self.column_names_table = {}
+        self.column_ids_table = {}
+        for i in range(len(self.column_names)):
+            column_name = self.column_names[i]
+            self.column_names_table[column_name] = i
+            self.column_ids_table[i] = column_name
 
         self.setDragEnabled(True)
         self.setAcceptDrops(True)
@@ -261,11 +268,47 @@ class QDraggableTableWidget(QBaseTableWidget):
             data.append(r)
         return data
 
-    def get_raw_data(self, row_count: int = 1) -> List[List[str]]:
+    def get_dict_data(self) -> Dict[str, List[str]]:
+        data = {}
+        for row in range(self.rowCount()):
+            for col in range(self.columnCount()):
+                cell = self.get_cell(row, col)
+                column_name = self.get_column_name(col)
+                if data.get(column_name, None) is None:
+                    data[column_name] = []
+                data[column_name].append(cell)
+        return data
+
+    def get_empty_data(self, row_count: int = 1) -> List[List[str]]:
         return [["" for _ in range(len(self.column_names))] for _ in range(row_count)]
 
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
+
+    def get_column_name(self, col: int) -> Optional[str]:
+        return self.column_ids_table.get(col, None)
+
+    def load_list(self, data: List[List[str]]):
+        self.data = data
+
+        rows = len(self.data)
+        columns = len(self.data[0])
+        self.setRowCount(rows)
+        self.setColumnCount(columns)
+
+        self._init_cells()
+
+    def load_dict(self, data: List[Dict[str, str]]):
+        new_data = []
+        for row in data:
+            r = [row.get(column_name, "") for column_name in self.column_names]
+            new_data.append(r)
+
+        self.load_list(new_data)
+
+    def reset(self):
+        data = self.get_empty_data()
+        self.load_list(data)
 
 
 class QDraggableDataFrameTableWidget(QDraggableTableWidget):

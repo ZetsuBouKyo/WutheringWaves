@@ -5,6 +5,7 @@ from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWi
 from ww.calc.damage import Damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
+from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
 from ww.ui.calc.resonator_compare.table import (
     QResonatorDamageCompareTable,
     QResonatorDamageCompareUneditableTable,
@@ -27,7 +28,7 @@ class QResonatorDamageCompare(QWidget):
         self.q_new_btn = QPushButton(_(ZhTwEnum.NEW))
         # self.q_new_btn.clicked.connect(self.calculate)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
-        # self.q_save_btn.clicked.connect(self.calculate)
+        self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
         # self.q_load_btn.clicked.connect(self.calculate)
         self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
@@ -64,24 +65,18 @@ class QResonatorDamageCompare(QWidget):
         self.layout.addWidget(self.q_damage_compare_uneditable_table)
         self.setLayout(self.layout)
 
+    def save(self):
+        id = self.q_id_combobox.currentText()
+        data = self.q_damage_compare_table.get_dict_data()
+        model = ResonatorDamageCompareModel(id=id, data=data)
+
     def calculate(self):
         data = []
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()
-        for (
-            resonator_id_1,
-            resonator_id_2,
-            resonator_id_3,
-            monster_id,
-            template_id,
-        ) in damage_compare_table_data:
-
+        for resonator_id_1, monster_id, template_id, label in damage_compare_table_data:
             damage = Damage(monster_id=monster_id)
             damage_distribution = damage.get_damage_distribution(
-                template_id,
-                resonator_id_1,
-                resonator_id_2,
-                resonator_id_3,
-                monster_id=monster_id,
+                template_id, resonator_id_1, "", "", monster_id=monster_id
             )
 
             for (

@@ -45,6 +45,13 @@ def get_template_ids(template_home_path: str = TEMPLATE_HOME_PATH) -> List[str]:
     return names
 
 
+def get_template_label_names(
+    tempalte_id: str, template_home_path: str = TEMPLATE_HOME_PATH
+) -> List[str]:
+    template = get_template(tempalte_id, template_home_path=template_home_path)
+    return template.get_label_names()
+
+
 def save_template(
     tempalte_id: str,
     tempalte: TemplateModel,

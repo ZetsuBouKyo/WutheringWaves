@@ -528,30 +528,6 @@ class Damage:
                 calculated_rows.append(calculated_row)
         return calculated_rows
 
-    def get_damage_distribution(
-        self,
-        template_id: str,
-        r_id_1: str,
-        r_id_2: str,
-        r_id_3: str,
-        monster_id: Optional[str] = None,
-        duration_1: str = "",
-        duration_2: str = "",
-    ) -> TemplateDamageDistributionModel:
-        rows = self.get_calculated_rows(template_id, r_id_1, r_id_2, r_id_3, monster_id)
-
-        r_ids = [r_id_1, r_id_2, r_id_3]
-        resonators_name2id = self.get_resonator_name_to_id(r_ids)
-
-        return self.extract_damage_distribution_from_rows(
-            resonators_name2id,
-            template_id,
-            monster_id,
-            rows,
-            duration_1=duration_1,
-            duration_2=duration_2,
-        )
-
     def extract_damage_distribution_from_rows_with_labels(
         self,
         resonator_name_to_id: Dict[str, str],
@@ -661,6 +637,25 @@ class Damage:
                 damage_distributions[label].damage_crit += damage_crit
         return damage_distributions
 
+    def get_damage_distribution_with_labels(
+        self,
+        template_id: str,
+        r_id_1: str,
+        r_id_2: str,
+        r_id_3: str,
+        monster_id: Optional[str] = None,
+        rows: List[CalculatedTemplateRowModel] = [],
+        labels: Optional[List[str]] = None,
+    ) -> Dict[str, TemplateDamageDistributionModel]:
+        rows = self.get_calculated_rows(template_id, r_id_1, r_id_2, r_id_3, monster_id)
+
+        r_ids = [r_id_1, r_id_2, r_id_3]
+        resonators_name2id = self.get_resonator_name_to_id(r_ids)
+
+        return self.extract_damage_distribution_from_rows_with_labels(
+            resonators_name2id, template_id, monster_id, rows, labels=labels
+        )
+
     def extract_damage_distribution_from_rows(
         self,
         resonator_name_to_id: Dict[str, str],
@@ -729,3 +724,27 @@ class Damage:
             damage_distribution.damage_no_crit += damage_no_crit
             damage_distribution.damage_crit += damage_crit
         return damage_distribution
+
+    def get_damage_distribution(
+        self,
+        template_id: str,
+        r_id_1: str,
+        r_id_2: str,
+        r_id_3: str,
+        monster_id: Optional[str] = None,
+        duration_1: str = "",
+        duration_2: str = "",
+    ) -> TemplateDamageDistributionModel:
+        rows = self.get_calculated_rows(template_id, r_id_1, r_id_2, r_id_3, monster_id)
+
+        r_ids = [r_id_1, r_id_2, r_id_3]
+        resonators_name2id = self.get_resonator_name_to_id(r_ids)
+
+        return self.extract_damage_distribution_from_rows(
+            resonators_name2id,
+            template_id,
+            monster_id,
+            rows,
+            duration_1=duration_1,
+            duration_2=duration_2,
+        )

@@ -177,3 +177,6 @@ class TemplateModel(BaseModel):
             if label.name == label_name:
                 return label
         return None
+
+    def get_label_names(cls) -> List[str]:
+        return [label.name for label in cls.labels]

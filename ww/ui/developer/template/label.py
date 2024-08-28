@@ -54,7 +54,7 @@ class QTemplateLabelTable(QDraggableTableWidget):
 
     def load(self, labels: List[TemplateLabelModel]):
         if len(labels) == 0:
-            self.data = self.get_raw_data()
+            self.data = self.get_empty_data()
         else:
             self.data = []
             for label in labels:

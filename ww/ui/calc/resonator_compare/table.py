@@ -1,9 +1,11 @@
 from enum import Enum
 from pathlib import Path
 
+from ww.crud.template import get_template_label_names
 from ww.locale import ZhTwEnum, _
 from ww.ui.table import QDraggableTableWidget, QUneditableDataFrameTable
 from ww.ui.table.cell.combobox import (
+    set_combobox,
     set_monster_primary_key_combobox,
     set_resonator_primary_key_combobox,
     set_template_primary_key_combobox,
@@ -20,6 +22,7 @@ class QResonatorDamageCompareTableEnum(str, Enum):
     RESONATOR_ID_1: str = _(ZhTwEnum.RESONATOR_ID_1)
     MONSTER_ID: str = _(ZhTwEnum.MONSTER_ID)
     TEMPLATE_ID: str = _(ZhTwEnum.TEMPLATE_ID)
+    LABEL: str = _(ZhTwEnum.LABEL)
 
 
 class QResonatorDamageCompareTable(QDraggableTableWidget):
@@ -43,11 +46,25 @@ class QResonatorDamageCompareTable(QDraggableTableWidget):
         super().__init__(rows, columns, data=data, column_names=self.column_names)
 
     def _init_column_width(self):
-        self.setColumnWidth(0, 600)
-        self.setColumnWidth(1, 600)
+        self.setColumnWidth(0, 400)
+        self.setColumnWidth(1, 400)
         self.setColumnWidth(2, 600)
-        self.setColumnWidth(3, 350)
-        self.setColumnWidth(4, 1000)
+        self.setColumnWidth(3, 150)
+
+    def get_label_names(self):
+        row = self.get_selected_row()
+        if row is None:
+            return []
+
+        col_template_id = self.get_column_id(
+            QResonatorDamageCompareTableEnum.TEMPLATE_ID.value
+        )
+
+        template_id = self.get_cell(row, col_template_id)
+        if not template_id:
+            return []
+
+        return get_template_label_names(template_id)
 
     def set_cell(self, row: int, col: int, value: str):
         if (
@@ -63,6 +80,8 @@ class QResonatorDamageCompareTable(QDraggableTableWidget):
             self.column_names[col] == QResonatorDamageCompareTableEnum.TEMPLATE_ID.value
         ):
             set_template_primary_key_combobox(self, row, col, value)
+        elif self.column_names[col] == QResonatorDamageCompareTableEnum.LABEL.value:
+            set_combobox(self, row, col, value, [], getOptions=self.get_label_names)
 
 
 class QResonatorDamageCompareUneditableTableEnum(str, Enum):
@@ -73,6 +92,8 @@ class QResonatorDamageCompareUneditableTableEnum(str, Enum):
     # WEAPON_LEVEL: str = "[武器]等級"
     # WEAPON_RANK: str = "[武器]諧振"
     # WEAPON_NAME: str = "[武器]名稱"
+    TEMPLATE_ID: str = _(ZhTwEnum.TEMPLATE_ID)
+    LABEL: str = _(ZhTwEnum.LABEL)
     MONSTER_ID: str = "[怪物]名稱"
     DAMAGE: str = _(ZhTwEnum.RESULT_DAMAGE)
     DAMAGE_NO_CRIT: str = _(ZhTwEnum.RESULT_DAMAGE_NO_CRIT)
