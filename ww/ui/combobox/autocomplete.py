@@ -1,3 +1,5 @@
+from copy import deepcopy
+
 from PySide2.QtCore import QStringListModel, Qt
 from PySide2.QtWidgets import QComboBox, QCompleter
 
@@ -47,24 +49,19 @@ class QAutoCompleteComboBox(QComboBox):
             return self.scrollWidget.wheelEvent(*args, **kwargs)
 
     def showPopup(self):
+        text = deepcopy(self.currentText())
         if self.getOptions is not None:
-            text = self.currentText()
 
             new_options = self.getOptions()
-            if "" not in new_options:
-                new_options = [""] + new_options
-            new_options_to_add = []
+
+            self.clear()
             for option in new_options:
-                if option not in self._option:
-                    new_options_to_add.append(option)
-            for option in new_options_to_add:
-                self._option.append(option)
                 self.addItem(option, option)
 
-            self.setCurrentText(text)
+        # for i in range(self.count()):
+        #     text = self.itemData(i)
+        #     self.setItemData(i, text, Qt.ToolTipRole)
 
-        for i in range(self.count()):
-            text = self.itemData(i)
-            self.setItemData(i, text, Qt.ToolTipRole)
+        self.setCurrentText(text)
 
         super().showPopup()
