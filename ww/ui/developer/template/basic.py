@@ -67,6 +67,12 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
 
         self._init_cells()
 
+    def reset_data(self):
+        self.setRowCount(0)
+        self.setRowCount(3)
+        self.data = self.get_empty_data(row_count=3)
+        self._init_cells()
+
     def get_column_id(self, col_name: str) -> int:
         return self.column_names_table[col_name]
 
@@ -418,3 +424,14 @@ class QTemplateBasicTab(QWidget):
 
         # Table
         self.q_resonator_table.load(template.resonators)
+
+    def reset_data(self):
+        self.q_template_ids.setCurrentText("")
+        self.q_test_resonator_1_combobox.setCurrentText("")
+        self.q_test_resonator_2_combobox.setCurrentText("")
+        self.q_test_resonator_3_combobox.setCurrentText("")
+        self.q_test_monster_id_combobox.setCurrentText("")
+        self.q_duration_1_line.setText("")
+        self.q_duration_2_line.setText("")
+        self.q_description.setPlainText("")
+        self.q_resonator_table.reset_data()

@@ -306,7 +306,7 @@ class QDraggableTableWidget(QBaseTableWidget):
 
         self.load_list(new_data)
 
-    def reset(self):
+    def reset_data(self):
         data = self.get_empty_data()
         self.load_list(data)
 

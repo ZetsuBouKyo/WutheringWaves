@@ -41,3 +41,6 @@ class QBaseTableWidget(QTableWidget):
 
     def get_data(self):
         return [self.get_row(row) for row in range(self.rowCount())]
+
+    def get_empty_data(self, row_count: int = 1) -> List[List[str]]:
+        return [["" for _ in range(self.columnCount())] for _ in range(row_count)]

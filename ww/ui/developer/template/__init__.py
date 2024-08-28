@@ -40,6 +40,8 @@ class QTemplateTabs(QWidget):
 
         self.q_btns_layout = QHBoxLayout()
 
+        self.q_new_btn = QPushButton(_(ZhTwEnum.NEW))
+        self.q_new_btn.clicked.connect(self.new)
         self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
         self.q_save_btn.clicked.connect(self.save)
         self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
@@ -50,6 +52,7 @@ class QTemplateTabs(QWidget):
         self.q_delete_btn.clicked.connect(self.delete)
 
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_new_btn)
         self.q_btns_layout.addWidget(self.q_save_btn)
         self.q_btns_layout.addWidget(self.q_load_btn)
         self.q_btns_layout.addWidget(self.q_delete_btn)
@@ -125,6 +128,9 @@ class QTemplateTabs(QWidget):
         )
 
         return template
+
+    def new(self):
+        self.q_template_basic_tab.reset_data()
 
     def save(self):
         self.q_progress_bar.set(0.0, _(ZhTwEnum.SAVING))
