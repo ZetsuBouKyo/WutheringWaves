@@ -21,7 +21,7 @@ class QTeamDamageCompare(QWidget):
         self.q_damage_compare_table = QTeamDamageCompareTable()
         self.q_damage_compare_uneditable_table = QTeamDamageCompareUneditableTable()
 
-        self.q_calculated_label = QLabel("計算結果")
+        self.q_calculated_label = QLabel(_(ZhTwEnum.CALCULATED_RESULTS))
 
         self.q_btns_layout = QHBoxLayout()
         self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))

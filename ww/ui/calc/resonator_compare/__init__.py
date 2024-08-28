@@ -3,7 +3,6 @@ from decimal import InvalidOperation
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ww.calc.damage import Damage
-from ww.html.template import export_damage_distribution_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.ui.calc.resonator_compare.table import (
@@ -11,6 +10,7 @@ from ww.ui.calc.resonator_compare.table import (
     QResonatorDamageCompareUneditableTable,
     QResonatorDamageCompareUneditableTableEnum,
 )
+from ww.ui.combobox import QAutoCompleteComboBox
 
 
 class QResonatorDamageCompare(QWidget):
@@ -18,23 +18,47 @@ class QResonatorDamageCompare(QWidget):
         super().__init__()
         self.layout = QVBoxLayout()
 
-        self.q_damage_compare_table = QResonatorDamageCompareTable()
-        self.q_damage_compare_uneditable_table = (
-            QResonatorDamageCompareUneditableTable()
-        )
+        # Button 1
+        self.q_btns_layout_1 = QHBoxLayout()
+        self.q_id_label = QLabel(_(ZhTwEnum.ID))
+        self.q_id_combobox = QAutoCompleteComboBox()
+        self.q_id_combobox.setFixedHeight(40)
+        self.q_id_combobox.setFixedWidth(600)
+        self.q_new_btn = QPushButton(_(ZhTwEnum.NEW))
+        # self.q_new_btn.clicked.connect(self.calculate)
+        self.q_save_btn = QPushButton(_(ZhTwEnum.SAVE))
+        # self.q_save_btn.clicked.connect(self.calculate)
+        self.q_load_btn = QPushButton(_(ZhTwEnum.LOAD))
+        # self.q_load_btn.clicked.connect(self.calculate)
+        self.q_delete_btn = QPushButton(_(ZhTwEnum.DELETE))
+        # self.q_delete_btn.clicked.connect(self.calculate)
+        self.q_btns_layout_1.addWidget(self.q_id_label)
+        self.q_btns_layout_1.addWidget(self.q_id_combobox)
+        self.q_btns_layout_1.addStretch()
+        self.q_btns_layout_1.addWidget(self.q_new_btn)
+        self.q_btns_layout_1.addWidget(self.q_save_btn)
+        self.q_btns_layout_1.addWidget(self.q_load_btn)
+        self.q_btns_layout_1.addWidget(self.q_delete_btn)
 
-        self.q_calculated_label = QLabel("計算結果")
-
-        self.q_btns_layout = QHBoxLayout()
+        # Button 2
+        self.q_btns_layout_2 = QHBoxLayout()
         self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
         self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_export_image_btn = QPushButton(_(ZhTwEnum.EXPORT_IMAGES))
         self.q_export_image_btn.clicked.connect(self.export_images)
-        self.q_btns_layout.addStretch()
-        self.q_btns_layout.addWidget(self.q_export_image_btn)
-        self.q_btns_layout.addWidget(self.q_calculate_btn)
+        self.q_btns_layout_2.addStretch()
+        self.q_btns_layout_2.addWidget(self.q_calculate_btn)
+        self.q_btns_layout_2.addWidget(self.q_export_image_btn)
 
-        self.layout.addLayout(self.q_btns_layout)
+        # Tables
+        self.q_damage_compare_table = QResonatorDamageCompareTable()
+        self.q_calculated_label = QLabel(_(ZhTwEnum.CALCULATED_RESULTS))
+        self.q_damage_compare_uneditable_table = (
+            QResonatorDamageCompareUneditableTable()
+        )
+
+        self.layout.addLayout(self.q_btns_layout_1)
+        self.layout.addLayout(self.q_btns_layout_2)
         self.layout.addWidget(self.q_damage_compare_table)
         self.layout.addWidget(self.q_calculated_label)
         self.layout.addWidget(self.q_damage_compare_uneditable_table)

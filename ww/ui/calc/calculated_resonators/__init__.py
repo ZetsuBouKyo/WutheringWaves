@@ -1,5 +1,6 @@
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
+from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoTsvColumnEnum
 from ww.model.resonator import CalculatedResonatorTsvColumnEnum
 from ww.tables.echo import EchoListTable
@@ -55,7 +56,7 @@ class QCalculatedResonators(QWidget):
 
         self.q_calculated_resonators_table = QCalculatedResonatorsTable()
 
-        self.q_calculated_label = QLabel("計算結果")
+        self.q_calculated_label = QLabel(_(ZhTwEnum.CALCULATED_RESULTS))
 
         self.q_btns_layout = QHBoxLayout()
         self.q_reload_btn = QPushButton("重新整理")

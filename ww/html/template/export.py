@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import numpy as np
 from html2image import Html2Image
@@ -9,8 +9,6 @@ from PIL import Image
 from ww.locale import ZhTwEnum, _
 
 TEMPLATE_PNG_HOME_PATH = "./cache/v1/zh_tw/output/png/template"
-TEMPLATE_DAMAGE_DISTRIBUTION_HOME_PATH = "./cache/v1/zh_tw/output/damage_distribution"
-TEMPLATE_DAMAGE_DISTRIBUTION_FNAME = "damage_distribution_raw.png"
 
 
 def _get_margin_top(data) -> Optional[int]:
@@ -83,4 +81,9 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
 
 def export_to_template(template_id: str, fname: str, html_str: str, height: int):
     png_home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
+    export_html_as_png(png_home_path, fname, html_str, height)
+
+
+def export_to(home: Union[str, Path], fname: str, html_str: str, height: int):
+    png_home_path = Path(home)
     export_html_as_png(png_home_path, fname, html_str, height)

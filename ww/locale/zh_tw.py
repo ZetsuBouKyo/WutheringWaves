@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class ZhTwEnum(str, Enum):
+    ID: str = "ID"
 
     RESONATOR_1: str = "共鳴者1"
     RESONATOR_2: str = "共鳴者2"
@@ -71,6 +72,7 @@ class ZhTwEnum(str, Enum):
     INITIALIZE: str = "初始化"
     INITIALIZING: str = "初始化..."
     INITIALIZED: str = "初始化完成。"
+    NEW: str = "新增"
 
     CALCULATE: str = "計算"
     COMMENT: str = "註解"
@@ -83,6 +85,8 @@ class ZhTwEnum(str, Enum):
     EXPORT_RESONATOR_IMAGES: str = "輸出共鳴者圖片"
     EXPORT_OUTPUT_METHOD_IMAGES: str = "輸出手法圖片"
     LABEL: str = "標籤"
+
+    CALCULATED_RESULTS: str = "計算結果"
 
     FILE: str = "檔案"
     FILE_EXISTS: str = "檔案已存在"

@@ -1,42 +1,45 @@
 import os
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 
 from jinja2 import Template
 
 from ww.data.resonator import resonators
-from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
+from ww.html.template.export import export_to
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
-TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH = "./html/template/damage_distribution.jinja2"
+RESONATOR_DAMAGE_COMPARE_HTML_PATH = "./html/template/resonator_damage_compare.jinja2"
+RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH = (
+    "./cache/v1/zh_tw/output/png/compare_resonator_damage"
+)
 MAX_DAMAGE = 1000000
 
 
-def export_damage_distribution_as_png(
+def export_compare_resonator_damage_as_png(
+    id: str,
     resonator_names: List[str],
-    damage_distribution: TemplateDamageDistributionModel,
+    damage_distributions: List[List[str, TemplateDamageDistributionModel]],
     max_damage: int = MAX_DAMAGE,
-    suffix: Optional[str] = None,
+    height: int = 2000,
 ):
-    template_id = damage_distribution.template_id
-    if not template_id:
+    if len(damage_distributions) == 0:
         return
 
-    html_fpath = Path(TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH)
+    html_fpath = Path(RESONATOR_DAMAGE_COMPARE_HTML_PATH)
     if not html_fpath.exists():
         return
 
-    home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
+    home_path = Path(RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH) / id
     os.makedirs(home_path, exist_ok=True)
 
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
     html_str = template.render(
-        damage_distributions=[damage_distribution],
+        damage_distributions=damage_distributions,
         resonators=resonators,
         resonator_names=resonator_names,
         ZhTwEnum=ZhTwEnum,
@@ -49,8 +52,6 @@ def export_damage_distribution_as_png(
     )
 
     name = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
-    if suffix:
-        name = f"{name}-{suffix}"
 
-    png_fname = f"{name}.png"
-    export_to_template(template_id, png_fname, html_str, height=320)
+    fname = f"{name}.png"
+    export_to(home_path, fname, html_str, height=height)
