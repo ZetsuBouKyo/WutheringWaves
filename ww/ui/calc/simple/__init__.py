@@ -110,6 +110,8 @@ class QDamageSimple(QWidget):
             q_buff = self.init_input(q_left_layout, label_name)
             self.q_buffs[e.value] = q_buff
 
+        q_left_layout.addStretch()
+
         q_left.setLayout(q_left_layout)
 
         q_left_scrollable = ScrollableWidget(q_left)
@@ -365,6 +367,7 @@ class QDamageSimple(QWidget):
         q_result_labels = QWidget()
         self.sub_right_layout = QVBoxLayout()
         self.set_results(self.sub_right_layout, results)
+        self.sub_right_layout.addStretch()
         q_result_labels.setLayout(self.sub_right_layout)
 
         parent_layout.addWidget(ScrollableWidget(q_result_labels))
