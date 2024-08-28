@@ -158,7 +158,7 @@ class QResonatorDamageCompare(QWidget):
                 resonator_damage_distribution
             ) in damage_distribution.resonators.values():
                 try:
-                    resonater_id = resonator_damage_distribution.resonater_id
+                    resonator_id = resonator_damage_distribution.resonator_id
                     damage = f"{resonator_damage_distribution.damage:,.2f}"
                     damage_no_crit = (
                         f"{resonator_damage_distribution.damage_no_crit:,.2f}"
@@ -207,7 +207,7 @@ class QResonatorDamageCompare(QWidget):
                     )
 
                     calculated_row = {
-                        QResonatorDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonater_id,
+                        QResonatorDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonator_id,
                         QResonatorDamageCompareUneditableTableEnum.TEMPLATE_ID.value: template_id,
                         QResonatorDamageCompareUneditableTableEnum.LABEL.value: label,
                         QResonatorDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,

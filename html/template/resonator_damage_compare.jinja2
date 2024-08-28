@@ -1,46 +1,48 @@
 <div class="container">
   <div class="template">
     <div class="barh">
-      {% for damage_distribution in damage_distributions %}
-      <div class="rows {{'rows-margin-bottom' if loop.index < damage_distributions|length}}">
-        {% if damage_distribution.template_id %}
-        <div class="title">{{damage_distribution.template_id}}</div>
-        {% endif %}
-        {% if damage_distribution.duration_1 and damage_distribution.duration_2 %}
-        <div class="dps">DPS: {{to_number_string(damage_distribution.damage / damage_distribution.get_duration_2())}} ~
-          {{to_number_string(damage_distribution.damage / damage_distribution.get_duration_1())}}
-          ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
+      <div class="rows">
+        {% for result in damage_distributions %}
+        {% set label = result[0] %}
+        {% set damage_distribution = result[1] %}
+        {% for resonator in damage_distribution.resonators.values() %}
+        {% set resonator_name = resonator.resonator_name %}
+        <div class="resonator-id">
+          <div class="resonator-icon">
+          </div>
+          <div class="resonator-damage-container">
+            <div class="damage-value-out">
+              {{resonator.resonator_id}}
+            </div>
+          </div>
         </div>
-        {% endif %}
-        {% for resonator_name in resonator_names %}
         <div class="row">
           <div class="resonator-icon">
             <img src="{{get_resonator_icon_fpath(resonator_name)}}" />
           </div>
           <div class="resonator-damage-container">
             {% set element = get_element_class_name(resonators.get(resonator_name, None).element) %}
-            {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage %}
-            {% set in_out = 0.3 %}
+            {% set percentage = resonator.damage / max_damage %}
+            {% set in_out = 0.5 %}
             {% set black_elements = ['aero', 'spectro'] %}
             <div class="resonator-damage bg-{{element}}"
               style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
               {% if percentage >= in_out %}
               <div
                 class="damage-value-in {{'damage-value-in-black' if element in black_elements else 'damage-value-in-white'}}">
-                {{resonator_name}}
-                {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+                {{to_number_string(resonator.damage)}}
               </div>
               {% endif %}
             </div>
-            {% if percentage < in_out %} <div class="damage-value-out">{{resonator_name}}
-              {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+            {% if percentage < in_out %} <div class="damage-value-out">
+              {{to_number_string(resonator.damage)}}
           </div>
           {% endif %}
         </div>
       </div>
       {% endfor %}
+      {% endfor %}
     </div>
-    {% endfor %}
   </div>
   <div class="comment"></div>
 </div>
@@ -99,6 +101,13 @@
     margin-bottom: 24px;
   }
 
+  div.resonator-id {
+    display: flex;
+    flex-direction: row;
+    height: 24px;
+    align-items: center;
+  }
+
   div.row {
     display: flex;
     flex-direction: row;
@@ -108,6 +117,7 @@
 
   div.resonator-icon {
     display: flex;
+    width: 48px;
     height: 48px;
     margin-right: 8px;
   }

@@ -62,7 +62,7 @@ class QTeamDamageCompare(QWidget):
                 resonator_damage_distribution
             ) in damage_distribution.resonators.values():
                 try:
-                    resonater_id = resonator_damage_distribution.resonater_id
+                    resonator_id = resonator_damage_distribution.resonator_id
                     damage = f"{resonator_damage_distribution.damage:,.2f}"
                     damage_no_crit = (
                         f"{resonator_damage_distribution.damage_no_crit:,.2f}"
@@ -111,7 +111,7 @@ class QTeamDamageCompare(QWidget):
                     )
 
                     calculated_row = {
-                        QTeamDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonater_id,
+                        QTeamDamageCompareUneditableTableEnum.RESONATOR_ID.value: resonator_id,
                         QTeamDamageCompareUneditableTableEnum.MONSTER_ID.value: monster_id,
                         QTeamDamageCompareUneditableTableEnum.DAMAGE.value: damage,
                         QTeamDamageCompareUneditableTableEnum.DAMAGE_NO_CRIT.value: damage_no_crit,

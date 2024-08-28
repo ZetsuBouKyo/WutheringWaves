@@ -583,7 +583,7 @@ class Damage:
                     damage_distributions[label].resonators[resonator_name] = (
                         TemplateResonatorDamageDistributionModel(
                             resonator_name=resonator_name,
-                            resonater_id=resonator_id,
+                            resonator_id=resonator_id,
                         )
                     )
 
@@ -692,7 +692,7 @@ class Damage:
                 damage_distribution.resonators[resonator_name] = (
                     TemplateResonatorDamageDistributionModel(
                         resonator_name=resonator_name,
-                        resonater_id=resonator_id,
+                        resonator_id=resonator_id,
                     )
                 )
 

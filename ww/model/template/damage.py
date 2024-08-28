@@ -24,7 +24,7 @@ def get_damage_string_with_percentage(
 
 class TemplateResonatorDamageDistributionModel(BaseModel):
     resonator_name: str = ""
-    resonater_id: str = ""
+    resonator_id: str = ""
 
     basic: Decimal = Decimal("0.0")
     heavy: Decimal = Decimal("0.0")
