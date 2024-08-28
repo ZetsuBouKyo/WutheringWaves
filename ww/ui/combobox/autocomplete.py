@@ -59,8 +59,12 @@ class QAutoCompleteComboBox(QComboBox):
                     new_options_to_add.append(option)
             for option in new_options_to_add:
                 self._option.append(option)
-                self.addItem(option)
+                self.addItem(option, option)
 
             self.setCurrentText(text)
+
+        for i in range(self.count()):
+            text = self.itemData(i)
+            self.setItemData(i, text, Qt.ToolTipRole)
 
         super().showPopup()
