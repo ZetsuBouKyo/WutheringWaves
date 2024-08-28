@@ -11,7 +11,7 @@ from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
-TEMPLATE_DAMAGE_DISTRIBUTIONS_HTML_PATH = "./html/template/damage_distributions.jinja2"
+TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH = "./html/template/damage_distribution.jinja2"
 MAX_DAMAGE = 1000000
 
 
@@ -28,7 +28,7 @@ def export_damage_distribution_as_png(
     home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
     os.makedirs(home_path, exist_ok=True)
 
-    html_fpath = Path(TEMPLATE_DAMAGE_DISTRIBUTIONS_HTML_PATH)
+    html_fpath = Path(TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH)
     if not html_fpath.exists():
         return
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
