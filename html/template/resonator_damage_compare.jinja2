@@ -14,11 +14,12 @@
           <div class="resonator-damage-container">
             {% if label %}
             <div class="resonator-id">
-              {{resonator.resonator_id}} | {{damage_distribution.template_id}} ({{label}})
+              {{resonator.resonator_id}} | {{damage_distribution.template_id}} ({{label}}) |
+              {{damage_distribution.monster_id}}
             </div>
             {% else %}
             <div class="resonator-id">
-              {{resonator.resonator_id}} | {{damage_distribution.template_id}}
+              {{resonator.resonator_id}} | {{damage_distribution.template_id}} | {{damage_distribution.monster_id}}
             </div>
             {% endif %}
             <div class="resonator-damage-barh">

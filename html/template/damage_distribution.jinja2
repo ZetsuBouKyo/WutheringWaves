@@ -4,7 +4,7 @@
       {% for damage_distribution in damage_distributions %}
       <div class="rows {{'rows-margin-bottom' if loop.index < damage_distributions|length}}">
         {% if damage_distribution.template_id %}
-        <div class="title">{{damage_distribution.template_id}}</div>
+        <div class="title">{{damage_distribution.template_id}} | {{damage_distribution.monster_id}}</div>
         {% endif %}
         {% if damage_distribution.duration_1 and damage_distribution.duration_2 %}
         <div class="dps">DPS: {{to_number_string(damage_distribution.damage / damage_distribution.get_duration_2())}} ~

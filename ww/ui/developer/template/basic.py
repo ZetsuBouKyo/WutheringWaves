@@ -397,10 +397,6 @@ class QTemplateBasicTab(QWidget):
         if not id:
             return
 
-        monster_id = self.get_monster_id()
-        if monster_id:
-            id += f"-{monster_id}"
-
         self.q_template_ids.setCurrentText(id)
 
     def reset_template_id(self) -> str:
