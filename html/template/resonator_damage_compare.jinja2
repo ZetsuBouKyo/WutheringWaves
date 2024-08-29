@@ -14,11 +14,11 @@
           <div class="resonator-damage-container">
             {% if label %}
             <div class="resonator-id">
-              {{resonator.resonator_id}} | {{label}}
+              {{resonator.resonator_id}} | {{damage_distribution.template_id}} ({{label}})
             </div>
             {% else %}
             <div class="resonator-id">
-              {{resonator.resonator_id}}
+              {{resonator.resonator_id}} | {{damage_distribution.template_id}}
             </div>
             {% endif %}
             <div class="resonator-damage-barh">
@@ -106,7 +106,7 @@
   div.row {
     display: flex;
     flex-direction: row;
-    height: 52px;
+    height: 72px;
     align-items: center;
   }
 

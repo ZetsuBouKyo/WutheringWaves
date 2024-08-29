@@ -46,7 +46,7 @@ class QResonatorDamageCompareTable(QDraggableTableWidget):
         super().__init__(rows, columns, data=data, column_names=self.column_names)
 
     def _init_column_width(self):
-        self.setColumnWidth(0, 400)
+        self.setColumnWidth(0, 600)
         self.setColumnWidth(1, 400)
         self.setColumnWidth(2, 600)
         self.setColumnWidth(3, 150)

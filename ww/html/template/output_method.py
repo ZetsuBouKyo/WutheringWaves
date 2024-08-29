@@ -1,10 +1,12 @@
+import os
 from copy import deepcopy
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from jinja2 import Template
 
-from ww.html.template.export import export_to_template
+from ww.crud.template import get_template
+from ww.html.template.export import export_to, export_to_template
 from ww.html.template.resonator import get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import (
@@ -51,7 +53,7 @@ action_icons = {
 }
 
 
-def get_html_template_output_method_model(
+def get_html_template_output_methods(
     rows: List[TemplateRowModel],
     labels: Optional[List[str]] = None,
 ) -> Dict[str, List[TemplateHtmlOutputMethodModel]]:
@@ -109,7 +111,7 @@ def get_html_template_output_method_model(
     return output_methods
 
 
-def export_html_template_output_method_model_as_png(
+def export_html_template_output_methods_as_png(
     template_id: str,
     rows: List[TemplateRowModel],
     height: int = 2000,
@@ -124,7 +126,7 @@ def export_html_template_output_method_model_as_png(
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
-    output_methods = get_html_template_output_method_model(rows, labels=labels)
+    output_methods = get_html_template_output_methods(rows, labels=labels)
 
     right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
     for fname_suffix, rows in output_methods.items():
@@ -140,3 +142,41 @@ def export_html_template_output_method_model_as_png(
             png_fname = f"{_(ZhTwEnum.OUTPUT_METHOD)}-{fname_suffix}.png"
 
         export_to_template(template_id, png_fname, html_str, height)
+
+
+def export_html_template_output_methods_as_png_by_template_id(
+    template_id: str,
+    home_path: Union[str, Path],
+    height: int = 2000,
+    labels: Optional[List[str]] = None,
+):
+    if not template_id:
+        return
+
+    template = get_template(template_id)
+    rows = template.rows
+
+    html_fpath = Path(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
+    if not html_fpath.exists():
+        return
+    with html_fpath.open(mode="r", encoding="utf-8") as fp:
+        html_template = Template(fp.read())
+
+    output_methods = get_html_template_output_methods(rows, labels=labels)
+
+    right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
+    for fname_suffix, rows in output_methods.items():
+        html_str = html_template.render(
+            output_methods=rows,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+            right_arrow_src=right_arrow_src,
+        )
+
+        png_fname = f"{template_id}-{_(ZhTwEnum.OUTPUT_METHOD)}.png"
+        if fname_suffix:
+            png_fname = f"{template_id}-{_(ZhTwEnum.OUTPUT_METHOD)}-{fname_suffix}.png"
+
+        home_path = Path(home_path)
+        os.makedirs(home_path, exist_ok=True)
+        export_to(home_path, png_fname, html_str, height)

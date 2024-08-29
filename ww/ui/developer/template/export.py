@@ -14,7 +14,7 @@ from ww.calc.damage import Damage
 from ww.html.template import (
     export_damage_distribution_as_png,
     export_echo_as_png,
-    export_html_template_output_method_model_as_png,
+    export_html_template_output_methods_as_png,
     export_html_template_resonator_model_as_png,
 )
 from ww.locale import ZhTwEnum, _
@@ -181,11 +181,11 @@ class QTemplateExportTab(QWidget):
         if output_methods_height:
             try:
                 output_methods_height = int(output_methods_height)
-                export_html_template_output_method_model_as_png(
+                export_html_template_output_methods_as_png(
                     template.id, template.rows, output_methods_height, labels=labels
                 )
             except ValueError:
-                export_html_template_output_method_model_as_png(
+                export_html_template_output_methods_as_png(
                     template.id, template.rows, labels=labels
                 )
         if is_progress:
@@ -215,12 +215,14 @@ class QTemplateExportTab(QWidget):
             labels = [label]
 
         damage = Damage(monster_id=template.monster_id)
-        damage_distributions = damage.extract_damage_distributions_from_rows_with_labels(
-            test_resonators,
-            template.id,
-            template.monster_id,
-            calculated_rows,
-            labels=labels,
+        damage_distributions = (
+            damage.extract_damage_distributions_from_rows_with_labels(
+                test_resonators,
+                template.id,
+                template.monster_id,
+                calculated_rows,
+                labels=labels,
+            )
         )
         for label_name, damage_distribution in damage_distributions.items():
             export_damage_distribution_as_png(

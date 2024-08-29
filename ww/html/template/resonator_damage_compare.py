@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from jinja2 import Template
 
@@ -18,7 +18,15 @@ RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH = (
 MAX_DAMAGE = 1000000
 
 
-def export_compare_resonator_damage_as_png(
+def get_export_resonator_damage_compare_home_path(
+    id: str, home_path: str = RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH
+) -> Optional[Path]:
+    if not id:
+        return None
+    return Path(home_path) / id
+
+
+def export_resonator_damage_compare_as_png(
     id: str,
     damage_distributions: List[Tuple[str, TemplateDamageDistributionModel]],
     max_damage: int = MAX_DAMAGE,
@@ -31,7 +39,7 @@ def export_compare_resonator_damage_as_png(
     if not html_fpath.exists():
         return
 
-    home_path = Path(RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH) / id
+    home_path = get_export_resonator_damage_compare_home_path(id)
     os.makedirs(home_path, exist_ok=True)
 
     with html_fpath.open(mode="r", encoding="utf-8") as fp:

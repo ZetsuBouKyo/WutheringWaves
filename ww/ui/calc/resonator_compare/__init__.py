@@ -17,7 +17,13 @@ from ww.crud.resonator_damage_compare import (
     get_resonator_damage_compare_ids,
     save_resonator_damage_compare,
 )
-from ww.html.template import export_compare_resonator_damage_as_png
+from ww.html.template import (
+    export_html_template_output_methods_as_png_by_template_id,
+    export_resonator_damage_compare_as_png,
+)
+from ww.html.template.resonator_damage_compare import (
+    get_export_resonator_damage_compare_home_path,
+)
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
@@ -254,6 +260,7 @@ class QResonatorDamageCompare(QWidget):
 
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()
         results = []
+        templates = set()
         for resonator_id_1, monster_id, template_id, label in damage_compare_table_data:
             labels = [label]
 
@@ -269,4 +276,12 @@ class QResonatorDamageCompare(QWidget):
             for label_name, damage_distribution in damage_distributions.items():
                 results.append((label_name, damage_distribution))
 
-        export_compare_resonator_damage_as_png(id, results)
+            templates.add((template_id, label))
+
+        export_resonator_damage_compare_as_png(id, results)
+
+        export_home_path = get_export_resonator_damage_compare_home_path(id)
+        for template_id, label in templates:
+            export_html_template_output_methods_as_png_by_template_id(
+                template_id, export_home_path, labels=[label]
+            )

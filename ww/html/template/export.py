@@ -41,7 +41,7 @@ def crop_image(data):
     return data[:img_bottom]
 
 
-def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
+def export_html_as_png(home_path: Path, png_fname: str, html_str: str, height: int):
     os.makedirs(home_path, exist_ok=True)
 
     h2png = Html2Image(
@@ -56,10 +56,10 @@ def export_html_as_png(home_path: Path, fname: str, html_str: str, height: int):
     )
     h2png.screenshot(
         html_str=html_str,
-        save_as=fname,
+        save_as=png_fname,
     )
 
-    fpath = home_path / fname
+    fpath = home_path / png_fname
     if not fpath.exists():
         return
 
@@ -84,6 +84,6 @@ def export_to_template(template_id: str, fname: str, html_str: str, height: int)
     export_html_as_png(png_home_path, fname, html_str, height)
 
 
-def export_to(home: Union[str, Path], fname: str, html_str: str, height: int):
+def export_to(home: Union[str, Path], png_fname: str, html_str: str, height: int):
     png_home_path = Path(home)
-    export_html_as_png(png_home_path, fname, html_str, height)
+    export_html_as_png(png_home_path, png_fname, html_str, height)
