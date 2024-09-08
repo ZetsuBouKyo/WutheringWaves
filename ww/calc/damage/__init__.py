@@ -1,7 +1,6 @@
 from copy import deepcopy
 from typing import Dict, List, Optional
 
-from ww.calc.damage.tsv import get_tsv_damage, get_tsv_row_damage
 from ww.crud.template import get_template
 from ww.model import Number, SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
@@ -30,11 +29,6 @@ from ww.tables.resonator import (
     ResonatorsTable,
 )
 from ww.utils.number import get_number, get_string
-
-__all__ = [
-    "get_tsv_damage",
-    "get_tsv_row_damage",
-]
 
 
 def get_buffs(row: TemplateRowModel) -> TemplateRowBuffModel:
@@ -160,9 +154,11 @@ class Damage:
 
         manual_bonus_type = get_string(row.skill_bonus_type)
 
-        resonator_level = get_number(
-            self._resonators_table.search(resonator_id, ResonatorTsvColumnEnum.LEVEL)
+        resonator_level_str: str = self._resonators_table.search(
+            resonator_id, ResonatorTsvColumnEnum.LEVEL
         )
+        resonator_level_str = resonator_level_str.replace("+", "")
+        resonator_level = get_number(resonator_level_str)
 
         # Buffs
         buffs = get_buffs(row)

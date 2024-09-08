@@ -1,7 +1,5 @@
 from typer import Argument, Option, Typer
 
-from ww.calc.damage import get_tsv_damage
-
 app = Typer(name="template")
 
 
@@ -12,8 +10,7 @@ def damage(
     r_id_1: str = Option(default=None, help="Resonator ID 1"),
     r_id_2: str = Option(default=None, help="Resonator ID 2"),
     r_id_3: str = Option(default=None, help="Resonator ID 3"),
-):
-    get_tsv_damage(template_id, monster_name, r_id_1, r_id_2, r_id_3)
+): ...
 
 
 @app.command()
