@@ -566,6 +566,14 @@ class Damage:
                         damage_distributions[label].duration_1 = template.duration_1
                         damage_distributions[label].duration_2 = template.duration_2
 
+                    if (
+                        label == ""
+                        and not damage_distributions[label].duration_1
+                        and not damage_distributions[label].duration_2
+                    ):
+                        damage_distributions[label].duration_1 = template.duration_1
+                        damage_distributions[label].duration_2 = template.duration_2
+
                 resonator_name = row.resonator_name
                 resonator = damage_distributions[label].resonators.get(
                     resonator_name, None
