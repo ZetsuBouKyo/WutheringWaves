@@ -154,6 +154,8 @@ def export_html_template_output_methods_as_png_by_template_id(
         return
 
     template = get_template(template_id)
+    if not template:
+        return
     rows = template.rows
 
     html_fpath = Path(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
