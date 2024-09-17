@@ -1,21 +1,51 @@
 from pathlib import Path
 
 from html2image import Html2Image
+from jinja2 import Template
 from PIL import Image
 from typer import Typer
 
 from ww.commands.custom.resonators import app as resonators
 from ww.commands.custom.template import app as template
 from ww.commands.custom.tests import app as tests
+from ww.html.template.export import export_html_as_png
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
 CACHE_HOME_PATH = "./cache/v1/zh_tw/output/png"
 
+TABLE_HTML_PATH = "./html/table.jinja2"
+
 app = Typer(name="custom")
 app.add_typer(resonators)
 app.add_typer(template)
 app.add_typer(tests)
+
+
+@app.command()
+def tsv_to_png(src: str, dest: str, fname: str, height: int):
+    df = get_df(src)
+
+    column_names = list(df.columns)
+    columns = {}
+    for column_name in column_names:
+        if column_name.startswith("Unnamed: "):
+            columns[column_name] = ""
+    df.rename(columns=columns, inplace=True)
+
+    table_html = df.to_html(index=False)
+
+    html_fpath = Path(TABLE_HTML_PATH)
+    if not html_fpath.exists():
+        return
+    with html_fpath.open(mode="r", encoding="utf-8") as fp:
+        html_template = Template(fp.read())
+
+    html_str = html_template.render(table_html=table_html)
+    html_str = html_str.replace('<table border="1" class="dataframe">', "<table>")
+    html_str = html_str.replace('<tr style="text-align: right;">', "<tr>")
+
+    export_html_as_png(Path(dest), fname, html_str, height)
 
 
 @app.command()
