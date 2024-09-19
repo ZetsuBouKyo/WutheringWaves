@@ -49,6 +49,48 @@ def tsv_to_png(src: str, dest: str, fname: str, height: int):
 
 
 @app.command()
+def tsv_to_gamer(src: str, dest: str, fname: str):
+    df = get_df(src)
+
+    column_names = list(df.columns)
+    columns = {}
+    for column_name in column_names:
+        if column_name.startswith("Unnamed: "):
+            columns[column_name] = ""
+    df.rename(columns=columns, inplace=True)
+
+    table_html = df.to_html(index=False)
+
+    patterns = [
+        ('<table border="1" class="dataframe">', "<table>"),
+        ('<tr style="text-align: right;">', "<tr>"),
+        ("<table>", "[table width=98% cellspacing=1 cellpadding=1 border=1]"),
+        ("</table>", "[/table]"),
+        ("<tbody>", ""),
+        ("</tbody>", ""),
+        ("<thead>", ""),
+        ("</thead>", ""),
+        ("<th>", "[td]"),
+        ("</th>", "[/td]"),
+        ("<tr>", "[tr]"),
+        ("</tr>", "[/tr]"),
+        ("<td>", "[td]"),
+        ("</td>", "[/td]"),
+    ]
+    for pattern in patterns:
+        table_html = table_html.replace(pattern[0], pattern[1])
+
+    dest = Path(dest)
+    if not dest.is_dir():
+        return
+
+    fpath = dest / fname
+
+    with fpath.open(mode="w", encoding="utf-8") as fp:
+        fp.write(table_html)
+
+
+@app.command()
 def df_to_html(src: str, dest: str):
     df = get_df(src)
     html = df.to_html()
