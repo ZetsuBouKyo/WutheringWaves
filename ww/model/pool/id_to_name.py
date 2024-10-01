@@ -38,6 +38,7 @@ resonators = {
         id="1502", star=None, name="漂泊者·衍射", permanent=None
     ),
     "1503": GachaResonatorModel(id="1503", star=5, name="維里奈", permanent=True),
+    "1505": GachaResonatorModel(id="1505", star=5, name="守岸人", permanent=True),
     "1601": GachaResonatorModel(id="1601", star=4, name="桃祈", permanent=True),
     "1602": GachaResonatorModel(id="1602", star=4, name="丹瑾", permanent=True),
     "1604": GachaResonatorModel(
@@ -159,5 +160,23 @@ weapons = {
     ),
     "21050026": GachaWeaponModel(
         id="21050026", star=5, name="瓊枝冰綃", permanent=False
+    ),
+    "21010084": GachaWeaponModel(
+        id="21010084", star=4, name="凋亡頻移", permanent=False
+    ),
+    "21020084": GachaWeaponModel(
+        id="21020084", star=4, name="永續坍縮", permanent=False
+    ),
+    "21030084": GachaWeaponModel(
+        id="21030084", star=4, name="悖論噴流", permanent=False
+    ),
+    "21040084": GachaWeaponModel(
+        id="21040084", star=4, name="塵雲旋臂", permanent=False
+    ),
+    "21050084": GachaWeaponModel(
+        id="21050084", star=4, name="核熔星盤", permanent=False
+    ),
+    "21050036": GachaWeaponModel(
+        id="21050036", star=5, name="星序協響", permanent=False
     ),
 }
