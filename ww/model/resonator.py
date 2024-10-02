@@ -341,7 +341,7 @@ class CalculatedResonatorModel(BaseModel):
     echo_healing_bonus: str = ""
 
 
-class ResonatorModel(BaseModel):
+class BaseResonatorModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     name: str = ""

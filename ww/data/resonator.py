@@ -1,5 +1,5 @@
 from ww.locale import ZhTwEnum, _
-from ww.model.resonator import ResonatorModel
+from ww.model.resonator import BaseResonatorModel
 
 SANHUA: str = "散華"
 BAIZHI: str = "白芷"
@@ -28,78 +28,82 @@ ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
 ROVER_HAVOC_MALE: str = "漂泊者·湮滅(男)"
 
 resonators = {
-    _(ZhTwEnum.SANHUA): ResonatorModel(
+    _(ZhTwEnum.SANHUA): BaseResonatorModel(
         name=_(ZhTwEnum.SANHUA), element=_(ZhTwEnum.GLACIO)
     ),
-    _(ZhTwEnum.BAIZHI): ResonatorModel(
+    _(ZhTwEnum.BAIZHI): BaseResonatorModel(
         name=_(ZhTwEnum.BAIZHI), element=_(ZhTwEnum.GLACIO)
     ),
-    _(ZhTwEnum.LINGYANG): ResonatorModel(
+    _(ZhTwEnum.LINGYANG): BaseResonatorModel(
         name=_(ZhTwEnum.LINGYANG), element=_(ZhTwEnum.GLACIO)
     ),
-    _(ZhTwEnum.ZHEZHI): ResonatorModel(
+    _(ZhTwEnum.ZHEZHI): BaseResonatorModel(
         name=_(ZhTwEnum.ZHEZHI), element=_(ZhTwEnum.GLACIO)
     ),
-    _(ZhTwEnum.YOUHU): ResonatorModel(
+    _(ZhTwEnum.YOUHU): BaseResonatorModel(
         name=_(ZhTwEnum.YOUHU), element=_(ZhTwEnum.GLACIO)
     ),
-    _(ZhTwEnum.CHIXIA): ResonatorModel(
+    _(ZhTwEnum.CHIXIA): BaseResonatorModel(
         name=_(ZhTwEnum.CHIXIA), element=_(ZhTwEnum.FUSION)
     ),
-    _(ZhTwEnum.ENCORE): ResonatorModel(
+    _(ZhTwEnum.ENCORE): BaseResonatorModel(
         name=_(ZhTwEnum.ENCORE), element=_(ZhTwEnum.FUSION)
     ),
-    _(ZhTwEnum.MORTEFI): ResonatorModel(
+    _(ZhTwEnum.MORTEFI): BaseResonatorModel(
         name=_(ZhTwEnum.MORTEFI), element=_(ZhTwEnum.FUSION)
     ),
-    _(ZhTwEnum.CHANGLI): ResonatorModel(
+    _(ZhTwEnum.CHANGLI): BaseResonatorModel(
         name=_(ZhTwEnum.CHANGLI), element=_(ZhTwEnum.FUSION)
     ),
-    _(ZhTwEnum.CALCHARO): ResonatorModel(
+    _(ZhTwEnum.CALCHARO): BaseResonatorModel(
         name=_(ZhTwEnum.CALCHARO), element=_(ZhTwEnum.ELECTRO)
     ),
-    _(ZhTwEnum.YINLIN): ResonatorModel(
+    _(ZhTwEnum.YINLIN): BaseResonatorModel(
         name=_(ZhTwEnum.YINLIN), element=_(ZhTwEnum.ELECTRO)
     ),
-    _(ZhTwEnum.YUANWU): ResonatorModel(
+    _(ZhTwEnum.YUANWU): BaseResonatorModel(
         name=_(ZhTwEnum.YUANWU), element=_(ZhTwEnum.ELECTRO)
     ),
-    _(ZhTwEnum.JINHSI): ResonatorModel(
+    _(ZhTwEnum.JINHSI): BaseResonatorModel(
         name=_(ZhTwEnum.JINHSI), element=_(ZhTwEnum.SPECTRO)
     ),
-    _(ZhTwEnum.XIANGLIYAO): ResonatorModel(
+    _(ZhTwEnum.XIANGLIYAO): BaseResonatorModel(
         name=_(ZhTwEnum.XIANGLIYAO), element=_(ZhTwEnum.ELECTRO)
     ),
-    _(ZhTwEnum.YANGYANG): ResonatorModel(
+    _(ZhTwEnum.YANGYANG): BaseResonatorModel(
         name=_(ZhTwEnum.YANGYANG), element=_(ZhTwEnum.AERO)
     ),
-    _(ZhTwEnum.AALTO): ResonatorModel(name=_(ZhTwEnum.AALTO), element=_(ZhTwEnum.AERO)),
-    _(ZhTwEnum.JIYAN): ResonatorModel(name=_(ZhTwEnum.JIYAN), element=_(ZhTwEnum.AERO)),
-    _(ZhTwEnum.JIANXIN): ResonatorModel(
+    _(ZhTwEnum.AALTO): BaseResonatorModel(
+        name=_(ZhTwEnum.AALTO), element=_(ZhTwEnum.AERO)
+    ),
+    _(ZhTwEnum.JIYAN): BaseResonatorModel(
+        name=_(ZhTwEnum.JIYAN), element=_(ZhTwEnum.AERO)
+    ),
+    _(ZhTwEnum.JIANXIN): BaseResonatorModel(
         name=_(ZhTwEnum.JIANXIN), element=_(ZhTwEnum.AERO)
     ),
-    _(ZhTwEnum.ROVER_SPECTRO_MALE): ResonatorModel(
+    _(ZhTwEnum.ROVER_SPECTRO_MALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_SPECTRO_MALE), element=_(ZhTwEnum.SPECTRO)
     ),
-    _(ZhTwEnum.ROVER_SPECTRO_FEMALE): ResonatorModel(
+    _(ZhTwEnum.ROVER_SPECTRO_FEMALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_SPECTRO_FEMALE), element=_(ZhTwEnum.SPECTRO)
     ),
-    _(ZhTwEnum.VERINA): ResonatorModel(
+    _(ZhTwEnum.VERINA): BaseResonatorModel(
         name=_(ZhTwEnum.VERINA), element=_(ZhTwEnum.SPECTRO)
     ),
-    _(ZhTwEnum.SHOREKEEPER): ResonatorModel(
+    _(ZhTwEnum.SHOREKEEPER): BaseResonatorModel(
         name=_(ZhTwEnum.SHOREKEEPER), element=_(ZhTwEnum.SPECTRO)
     ),
-    _(ZhTwEnum.TAOQI): ResonatorModel(
+    _(ZhTwEnum.TAOQI): BaseResonatorModel(
         name=_(ZhTwEnum.TAOQI), element=_(ZhTwEnum.HAVOC)
     ),
-    _(ZhTwEnum.DANJIN): ResonatorModel(
+    _(ZhTwEnum.DANJIN): BaseResonatorModel(
         name=_(ZhTwEnum.DANJIN), element=_(ZhTwEnum.HAVOC)
     ),
-    _(ZhTwEnum.ROVER_HAVOC_FEMALE): ResonatorModel(
+    _(ZhTwEnum.ROVER_HAVOC_FEMALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_FEMALE), element=_(ZhTwEnum.HAVOC)
     ),
-    _(ZhTwEnum.ROVER_HAVOC_MALE): ResonatorModel(
+    _(ZhTwEnum.ROVER_HAVOC_MALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_MALE), element=_(ZhTwEnum.HAVOC)
     ),
 }
