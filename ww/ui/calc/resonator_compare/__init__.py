@@ -164,6 +164,8 @@ class QResonatorDamageCompare(QWidget):
                 monster_id=monster_id,
                 labels=[label],
             )
+            if not damage_distributions:
+                continue
 
             damage_distribution = damage_distributions[label]
             for (
