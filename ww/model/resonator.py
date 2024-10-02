@@ -208,9 +208,13 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     # Echo
     ECHO_1: str = _(ZhTwEnum.RESONATOR_ECHO_1)
     ECHO_SONATA_1: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_1)
+    ECHO_2: str = _(ZhTwEnum.RESONATOR_ECHO_2)
     ECHO_SONATA_2: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_2)
+    ECHO_3: str = _(ZhTwEnum.RESONATOR_ECHO_3)
     ECHO_SONATA_3: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_3)
+    ECHO_4: str = _(ZhTwEnum.RESONATOR_ECHO_4)
     ECHO_SONATA_4: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_4)
+    ECHO_5: str = _(ZhTwEnum.RESONATOR_ECHO_5)
     ECHO_SONATA_5: str = _(ZhTwEnum.RESONATOR_ECHO_SONATA_5)
 
     ECHO_HP: str = _(ZhTwEnum.RESONATOR_ECHO_HP)
@@ -304,6 +308,10 @@ class CalculatedResonatorModel(BaseModel):
 
     # echo
     echo_1: str = ""
+    echo_2: str = ""
+    echo_3: str = ""
+    echo_4: str = ""
+    echo_5: str = ""
     echo_sonata_1: str = ""
     echo_sonata_2: str = ""
     echo_sonata_3: str = ""

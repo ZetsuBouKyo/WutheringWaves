@@ -247,8 +247,11 @@ class CalculatedResonator:
         echo_sonata = self.echo_table.search(
             echo_id, ResonatorEchoTsvColumnEnum.ECHO_SONATA
         )
-        if index == 1:
-            self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_1.value] = echo_name
+        echo_n = getattr(CalculatedResonatorTsvColumnEnum, f"ECHO_{index}", None)
+        if echo_n is not None:
+            self._new_row[echo_n.value] = echo_name
+
+        # Sonata
         echo_enum = getattr(
             CalculatedResonatorTsvColumnEnum, f"ECHO_SONATA_{index}", None
         )
