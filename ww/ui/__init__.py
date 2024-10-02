@@ -24,7 +24,7 @@ from ww.ui.gacha import QGachaTabs
 from ww.ui.home import QHomeTab
 from ww.ui.resource import QResourceTab
 
-ICON_PATH = "./cache/v1/zh_tw/icon.webp"
+ICON_PATH = "./cache/v1/icon.webp"
 
 
 class MainWindow(QMainWindow):
