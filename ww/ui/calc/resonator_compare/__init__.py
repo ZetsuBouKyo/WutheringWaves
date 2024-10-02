@@ -156,10 +156,16 @@ class QResonatorDamageCompare(QWidget):
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()
         for resonator_id_1, monster_id, template_id, label in damage_compare_table_data:
             damage = Damage(monster_id=monster_id)
-            damage_distribution = damage.get_damage_distribution(
-                template_id, resonator_id_1, "", "", monster_id=monster_id
+            damage_distributions = damage.get_damage_distributions_with_labels(
+                template_id,
+                resonator_id_1,
+                "",
+                "",
+                monster_id=monster_id,
+                labels=[label],
             )
 
+            damage_distribution = damage_distributions[label]
             for (
                 resonator_damage_distribution
             ) in damage_distribution.resonators.values():
