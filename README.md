@@ -8,7 +8,7 @@ Damage calculator for Wuthering Waves, analysis of gacha pool records, resource 
 
 ```bash
 poetry install
-pyinstaller.exe -y .\app.spec
+python .\cli.py build --version=<version>
 ```
 
 ## Development
