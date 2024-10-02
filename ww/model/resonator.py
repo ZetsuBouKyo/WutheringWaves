@@ -1,8 +1,13 @@
+from decimal import Decimal
 from enum import Enum
+from typing import Union
 
 from pydantic import BaseModel, ConfigDict
 
 from ww.locale import ZhTwEnum, _
+from ww.model.element import ElementEnum
+from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
+from ww.utils.number import get_number
 
 ResonatorID = str
 ResonatorName = str
@@ -242,6 +247,120 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     ECHO_SPECTRO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_SPECTRO_DMG_BONUS)
     ECHO_HAVOC_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_HAVOC_DMG_BONUS)
     ECHO_HEALING_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_HEALING_BONUS)
+
+
+class ToCalculateResonatorModel(BaseModel):
+    normal_attack_lv: str = ""
+    resonance_skill_lv: str = ""
+    resonance_liberation_lv: str = ""
+    forte_circuit_lv: str = ""
+    intro_skill_lv: str = ""
+    outro_skill_lv: str = ""
+
+    level: str = ""
+
+    def get_level(cls) -> Decimal:
+        level = cls.level
+        level = level.replace("+", "")
+        return get_number(level)
+
+    calculated_hp_p: str = ""
+    resonator_hp: str = ""
+    echo_hp: str = ""
+
+    def get_calculated_hp_p(cls) -> Decimal:
+        return get_number(cls.calculated_hp_p)
+
+    def get_resonator_hp(cls) -> Decimal:
+        return get_number(cls.resonator_hp)
+
+    def get_echo_hp(cls) -> Decimal:
+        return get_number(cls.echo_hp)
+
+    calculated_atk_p: str = ""
+    resonator_atk: str = ""
+    weapon_atk: str = ""
+    echo_atk: str = ""
+
+    def get_calculated_atk_p(cls) -> Decimal:
+        return get_number(cls.calculated_atk_p)
+
+    def get_resonator_atk(cls) -> Decimal:
+        return get_number(cls.resonator_atk)
+
+    def get_weapon_atk(cls) -> Decimal:
+        return get_number(cls.weapon_atk)
+
+    def get_echo_atk(cls) -> Decimal:
+        return get_number(cls.echo_atk)
+
+    calculated_def_p: str = ""
+    resonator_def: str = ""
+    echo_def: str = ""
+
+    def get_calculated_def_p(cls) -> Decimal:
+        return get_number(cls.calculated_def_p)
+
+    def get_resonator_def(cls) -> Decimal:
+        return get_number(cls.resonator_def)
+
+    def get_echo_def(cls) -> Decimal:
+        return get_number(cls.echo_def)
+
+    resonator_crit_rate: str = ""
+    resonator_crit_dmg: str = ""
+
+    def get_resonator_crit_rate(cls) -> Decimal:
+        return get_number(cls.resonator_crit_rate)
+
+    def get_resonator_crit_dmg(cls) -> Decimal:
+        return get_number(cls.resonator_crit_dmg)
+
+    calculated_physical_bonus: str = ""
+    calculated_glacio_bonus: str = ""
+    calculated_fusion_bonus: str = ""
+    calculated_electro_bonus: str = ""
+    calculated_aero_bonus: str = ""
+    calculated_spectro_bonus: str = ""
+    calculated_havoc_bonus: str = ""
+
+    def get_calculated_element_bonus(cls, element: Union[str, ElementEnum]) -> Decimal:
+        value = ""
+        if element == ElementEnum.PHYSICAL.value:
+            value = cls.calculated_physical_bonus
+        elif element == ElementEnum.GLACIO.value:
+            value = cls.calculated_glacio_bonus
+        elif element == ElementEnum.FUSION.value:
+            value = cls.calculated_fusion_bonus
+        elif element == ElementEnum.ELECTRO.value:
+            value = cls.calculated_electro_bonus
+        elif element == ElementEnum.AERO.value:
+            value = cls.calculated_aero_bonus
+        elif element == ElementEnum.SPECTRO.value:
+            value = cls.calculated_spectro_bonus
+        elif element == ElementEnum.HAVOC.value:
+            value = cls.calculated_havoc_bonus
+        return get_number(value)
+
+    calculated_basic_bonus: str = ""
+    calculated_heavy_bonus: str = ""
+    calculated_resonance_skill_bonus: str = ""
+    calculated_resonance_liberation_bonus: str = ""
+
+    def get_calculated_skill_bonus(
+        cls, bonus_type: Union[str, ResonatorSkillBonusTypeEnum]
+    ) -> Decimal:
+        value = ""
+        if bonus_type == ResonatorSkillBonusTypeEnum.BASIC.value:
+            value = cls.calculated_basic_bonus
+        elif bonus_type == ResonatorSkillBonusTypeEnum.HEAVY.value:
+            value = cls.calculated_heavy_bonus
+        elif bonus_type == ResonatorSkillBonusTypeEnum.RESONANCE_SKILL.value:
+            value = cls.calculated_resonance_skill_bonus
+        elif bonus_type == ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value:
+            value = cls.calculated_resonance_liberation_bonus
+
+        return get_number(value)
 
 
 class CalculatedResonatorModel(BaseModel):

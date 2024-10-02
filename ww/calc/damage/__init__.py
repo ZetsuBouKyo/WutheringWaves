@@ -5,14 +5,19 @@ from ww.crud.template import get_template
 from ww.model import Number, SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.echo import EchoSkillTsvColumnEnum
+from ww.model.element import ElementEnum
 from ww.model.monsters import MonsterTsvColumnEnum
 from ww.model.resonator import (
     CALCULATED_RESONATORS_DMG_BONUS_PREFIX,
     CALCULATED_RESONATORS_DMG_BONUS_SUFFIX,
     CalculatedResonatorTsvColumnEnum,
     ResonatorTsvColumnEnum,
+    ToCalculateResonatorModel,
 )
-from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
+from ww.model.resonator_skill import (
+    ResonatorSkillBonusTypeEnum,
+    ResonatorSkillTsvColumnEnum,
+)
 from ww.model.template import (
     CalculatedTemplateRowModel,
     TemplateDamageDistributionModel,
@@ -141,11 +146,161 @@ class Damage:
         return table
 
     def get_calculated_row(
-        self, resonator_id: str, row: TemplateRowModel
+        self, resonator_id: Optional[str], row: TemplateRowModel
     ) -> Optional[CalculatedTemplateRowModel]:
-
         if resonator_id is None:
             return
+
+        resonator_level_str: str = self._resonators_table.search(
+            resonator_id, ResonatorTsvColumnEnum.LEVEL
+        )
+
+        resonator = ToCalculateResonatorModel()
+        resonator.level = resonator_level_str
+
+        # Resonator Skill Level
+        resonator.normal_attack_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.NORMAL_ATTACK_LV.value
+            )
+        )
+        resonator.resonance_skill_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.RESONANCE_SKILL_LV.value
+            )
+        )
+        resonator.resonance_liberation_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV.value
+            )
+        )
+        resonator.forte_circuit_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV.value
+            )
+        )
+        resonator.intro_skill_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.INTRO_SKILL_LV.value
+            )
+        )
+        resonator.outro_skill_lv = str(
+            self._resonators_table.search(
+                resonator_id, ResonatorTsvColumnEnum.INTRO_SKILL_LV.value
+            )
+        )
+
+        # HP Percentage
+        resonator.calculated_hp_p = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P
+        )
+
+        # HP
+        resonator.resonator_hp = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.HP
+        )
+
+        # Additional HP
+        resonator.echo_hp = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_HP
+        )
+
+        # ATK Percentage
+        resonator.calculated_atk_p = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P
+        )
+
+        # ATK
+        resonator.resonator_atk = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.ATTACK
+        )
+        resonator.weapon_atk = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.WEAPON_ATK
+        )
+
+        # Additional ATK
+        resonator.echo_atk = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_ATK
+        )
+
+        # DEF Percentage
+        resonator.calculated_def_p = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P
+        )
+
+        # DEF
+        resonator.resonator_def = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.DEFENSE
+        )
+
+        # Additional DEF
+        resonator.echo_def = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_DEF
+        )
+
+        # CRIT Rate
+        resonator.resonator_crit_rate = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE
+        )
+
+        # CRIT DMG
+        resonator.resonator_crit_dmg = self._calculated_resonators_table.search(
+            resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG
+        )
+
+        # BONUS
+        resonator.calculated_physical_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.PHYSICAL.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_glacio_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.GLACIO.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_fusion_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.FUSION.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_electro_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.ELECTRO.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_aero_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.AERO.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_spectro_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.SPECTRO.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_havoc_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ElementEnum.HAVOC.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+
+        resonator.calculated_basic_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.BASIC.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_heavy_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.HEAVY.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_resonance_skill_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.RESONANCE_SKILL.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+        resonator.calculated_resonance_liberation_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
+
+        return self.get_calculated_row_with_resonator(resonator, row)
+
+    def get_calculated_row_with_resonator(
+        self, resonator: ToCalculateResonatorModel, row: TemplateRowModel
+    ) -> Optional[CalculatedTemplateRowModel]:
+
         resonator_name = row.resonator_name
 
         calculated_row = CalculatedTemplateRowModel()
@@ -154,11 +309,7 @@ class Damage:
 
         manual_bonus_type = get_string(row.skill_bonus_type)
 
-        resonator_level_str: str = self._resonators_table.search(
-            resonator_id, ResonatorTsvColumnEnum.LEVEL
-        )
-        resonator_level_str = resonator_level_str.replace("+", "")
-        resonator_level = get_number(resonator_level_str)
+        resonator_level = resonator.get_level()
 
         # Buffs
         buffs = get_buffs(row)
@@ -167,18 +318,14 @@ class Damage:
         template_row_skill_id = row.skill_id
 
         # Resonator Skill Level
-        resonator_skills = [
-            ResonatorTsvColumnEnum.NORMAL_ATTACK_LV,
-            ResonatorTsvColumnEnum.RESONANCE_SKILL_LV,
-            ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV,
-            ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV,
-            ResonatorTsvColumnEnum.INTRO_SKILL_LV,
-            ResonatorTsvColumnEnum.OUTRO_SKILL_LV,
-        ]
-        resonator_skill_levels = {}
-        for s in resonator_skills:
-            lv = self._resonators_table.search(resonator_id, s.value)
-            resonator_skill_levels[s.value] = str(lv)
+        resonator_skill_levels = {
+            ResonatorTsvColumnEnum.NORMAL_ATTACK_LV.value: resonator.normal_attack_lv,
+            ResonatorTsvColumnEnum.RESONANCE_SKILL_LV.value: resonator.resonance_skill_lv,
+            ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV.value: resonator.resonance_liberation_lv,
+            ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV.value: resonator.forte_circuit_lv,
+            ResonatorTsvColumnEnum.INTRO_SKILL_LV.value: resonator.intro_skill_lv,
+            ResonatorTsvColumnEnum.OUTRO_SKILL_LV.value: resonator.outro_skill_lv,
+        }
 
         # Resonator Skill
         resonator_skill_table = ResonatorSkillTable(resonator_name)
@@ -292,103 +439,59 @@ class Damage:
         calculated_row.monster_res = monster_res
 
         # HP Percentage
-        calculated_hp_p = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_HP_P
-            )
-        )
+        calculated_hp_p = resonator.get_calculated_hp_p()
         bonus_hp_p = buffs.bonus_hp_p
         result_hp_p = calculated_hp_p + bonus_hp_p
         calculated_row.result_hp_p = result_hp_p
 
         # HP
-        resonator_hp = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.HP
-            )
-        )
+        resonator_hp = resonator.get_resonator_hp()
         result_hp = resonator_hp
         calculated_row.result_hp = result_hp
 
         # Additional HP
-        echo_hp = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_HP
-            )
-        )
+        echo_hp = resonator.get_echo_hp()
         bonus_hp = buffs.bonus_hp
         result_hp_addition = echo_hp + bonus_hp
         calculated_row.result_hp_addition = result_hp_addition
 
         # ATK Percentage
-        calculated_atk_p = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_ATK_P
-            )
-        )
+        calculated_atk_p = resonator.get_calculated_atk_p()
         bonus_atk_p = buffs.bonus_atk_p
         result_atk_p = calculated_atk_p + bonus_atk_p
         calculated_row.result_atk_p = result_atk_p
 
         # ATK
-        resonator_atk = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.ATTACK
-            )
-        )
-        weapon_atk = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.WEAPON_ATK
-            )
-        )
+        resonator_atk = resonator.get_resonator_atk()
+        weapon_atk = resonator.get_weapon_atk()
         result_atk = resonator_atk + weapon_atk
         calculated_row.result_atk = result_atk
 
         # Additional ATK
-        echo_atk = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_ATK
-            )
-        )
+        echo_atk = resonator.get_echo_atk()
         bonus_atk = buffs.bonus_atk
         result_atk_addition = echo_atk + bonus_atk
         calculated_row.result_atk_addition = result_atk_addition
 
         # DEF Percentage
-        calculated_def_p = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_DEF_P
-            )
-        )
+        calculated_def_p = resonator.get_calculated_def_p()
         bonus_def_p = buffs.bonus_def_p
         result_def_p = calculated_def_p + bonus_def_p
         calculated_row.result_def_p = result_def_p
 
         # DEF
-        resonator_def = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.DEFENSE
-            )
-        )
+        resonator_def = resonator.get_resonator_def()
         result_def = resonator_def
         calculated_row.result_def = result_def
 
         # Additional DEF
-        echo_def = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.ECHO_DEF
-            )
-        )
+        echo_def = resonator.get_echo_def()
         bonus_def = buffs.bonus_def
         result_def_addition = echo_def + bonus_def
         calculated_row.result_def_addition = result_def_addition
 
         # CRIT Rate
-        resonator_crit_rate = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE
-            )
-        )
+        resonator_crit_rate = resonator.get_resonator_crit_rate()
         bonus_crit_rate = buffs.bonus_crit_rate
         result_crit_rate = resonator_crit_rate + bonus_crit_rate
         if result_crit_rate >= get_number("1.0"):
@@ -396,29 +499,14 @@ class Damage:
         calculated_row.result_crit_rate = result_crit_rate
 
         # CRIT DMG
-        resonator_crit_dmg = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG
-            )
-        )
+        resonator_crit_dmg = resonator.get_resonator_crit_dmg()
         bonus_crit_dmg = buffs.bonus_crit_dmg
         result_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
         calculated_row.result_crit_dmg = result_crit_dmg
 
         # BONUS
-        calculated_element_bonus_key_name = f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{element}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}"
-        calculated_element_bonus = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, calculated_element_bonus_key_name
-            )
-        )
-
-        calculated_skill_bonus_key_name = f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{bonus_type}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}"
-        calculated_skill_bonus = get_number(
-            self._calculated_resonators_table.search(
-                resonator_id, calculated_skill_bonus_key_name
-            )
-        )
+        calculated_element_bonus = resonator.get_calculated_element_bonus(element)
+        calculated_skill_bonus = resonator.get_calculated_skill_bonus(bonus_type)
 
         template_bonus = buffs.bonus_addition
         result_bonus = (
@@ -474,15 +562,6 @@ class Damage:
             * region_def
             * region_bonus_reduce_res
         )
-        # print(
-        #     region_base_attr,
-        #     region_skill_dmg,
-        #     region_bonus_magnifier,
-        #     region_bonus_amplifier,
-        #     region_bonus,
-        #     region_def,
-        #     region_bonus_reduce_res,
-        # )
 
         dmg_crit = dmg_no_crit * region_crit_dmg
         dmg_avg = dmg_no_crit * region_crit
