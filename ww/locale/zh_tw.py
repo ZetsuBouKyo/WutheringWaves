@@ -13,6 +13,8 @@ class ZhTwEnum(str, Enum):
     RESONATOR_ID_2: str = "共鳴者ID 2"
     RESONATOR_ID_3: str = "共鳴者ID 3"
 
+    RESONANCE_CHAIN: str = "共鳴鏈"
+
     RESONATOR_NAME: str = "[角色]名稱"
     RESONATOR_CHAIN: str = "[角色]共鳴鏈"
     RESONATOR_WEAPON_NAME: str = "[武器]名稱"
@@ -46,6 +48,8 @@ class ZhTwEnum(str, Enum):
 
     NAME: str = "名稱"
     CHARACTER: str = "角色"
+    CHARACTER_NAME: str = "角色名稱"
+    CHARACTER_LEVEL: str = "角色等級"
     DESCRIPTION: str = "描述"
     INFORMATION: str = "基本資料"
     RESONATOR: str = "共鳴者"
@@ -147,6 +151,7 @@ class ZhTwEnum(str, Enum):
     TAB_SIMPLE_DAMAGE: str = "簡易傷害"
     TAB_RESONATOR_DAMAGE_COMPARE: str = "角色傷害比較"
     TAB_TEAM_DAMAGE_COMPARE: str = "隊伍傷害比較"
+    TAB_SIMULATED_DAMAGE: str = "模擬傷害"
 
     TAB_ECHO_SONATA: str = "合鳴"
 
@@ -202,6 +207,9 @@ class ZhTwEnum(str, Enum):
     IGNORE_DEF: str = "忽視防禦"
     REDUCE_RES: str = "抗性降低"
 
+    WEAPON_NAME: str = "武器名稱"
+    WEAPON_LEVEL: str = "武器等級"
+    WEAPON_TUNE: str = "武器諧振"
     WEAPON_SUB_STAT: str = "副屬性"
     WEAPON_PASSIVE_STAT: str = "固有屬性"
     WEAPON_ATK_P_INCREASE: str = "攻擊提升"
