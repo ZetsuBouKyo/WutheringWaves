@@ -239,12 +239,12 @@ class Damage:
         )
 
         # CRIT Rate
-        resonator.resonator_crit_rate = self._calculated_resonators_table.search(
+        resonator.calculated_crit_rate = self._calculated_resonators_table.search(
             resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_RATE
         )
 
         # CRIT DMG
-        resonator.resonator_crit_dmg = self._calculated_resonators_table.search(
+        resonator.calculated_crit_dmg = self._calculated_resonators_table.search(
             resonator_id, CalculatedResonatorTsvColumnEnum.CALCULATED_CRIT_DMG
         )
 
@@ -491,17 +491,17 @@ class Damage:
         calculated_row.result_def_addition = result_def_addition
 
         # CRIT Rate
-        resonator_crit_rate = resonator.get_resonator_crit_rate()
+        calculated_crit_rate = resonator.get_calculated_crit_rate()
         bonus_crit_rate = buffs.bonus_crit_rate
-        result_crit_rate = resonator_crit_rate + bonus_crit_rate
+        result_crit_rate = calculated_crit_rate + bonus_crit_rate
         if result_crit_rate >= get_number("1.0"):
             result_crit_rate = get_number("1.0")
         calculated_row.result_crit_rate = result_crit_rate
 
         # CRIT DMG
-        resonator_crit_dmg = resonator.get_resonator_crit_dmg()
+        calculated_crit_dmg = resonator.get_calculated_crit_dmg()
         bonus_crit_dmg = buffs.bonus_crit_dmg
-        result_crit_dmg = resonator_crit_dmg + bonus_crit_dmg
+        result_crit_dmg = calculated_crit_dmg + bonus_crit_dmg
         calculated_row.result_crit_dmg = result_crit_dmg
 
         # BONUS

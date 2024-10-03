@@ -307,14 +307,14 @@ class ToCalculateResonatorModel(BaseModel):
     def get_echo_def(cls) -> Decimal:
         return get_number(cls.echo_def)
 
-    resonator_crit_rate: str = ""
-    resonator_crit_dmg: str = ""
+    calculated_crit_rate: str = ""
+    calculated_crit_dmg: str = ""
 
-    def get_resonator_crit_rate(cls) -> Decimal:
-        return get_number(cls.resonator_crit_rate)
+    def get_calculated_crit_rate(cls) -> Decimal:
+        return get_number(cls.calculated_crit_rate)
 
-    def get_resonator_crit_dmg(cls) -> Decimal:
-        return get_number(cls.resonator_crit_dmg)
+    def get_calculated_crit_dmg(cls) -> Decimal:
+        return get_number(cls.calculated_crit_dmg)
 
     calculated_physical_bonus: str = ""
     calculated_glacio_bonus: str = ""
@@ -465,3 +465,32 @@ class BaseResonatorModel(BaseModel):
 
     name: str = ""
     element: str = ""
+
+
+class SimulatedResonatorModel(BaseModel):
+    name: str = ""
+    level: str = ""
+
+    weapon_name: str = ""
+    weapon_level: str = ""
+    weapon_tune: str = ""
+
+    normal_attack_lv: str = ""
+    resonance_skill_lv: str = ""
+    resonance_liberation_lv: str = ""
+    forte_circuit_lv: str = ""
+    intro_skill_lv: str = ""
+
+    stat_bonus_hp_p: str = ""
+    stat_bonus_atk_p: str = ""
+    stat_bonus_def_p: str = ""
+    stat_bonus_crit_rate: str = ""
+    stat_bonus_crit_dmg: str = ""
+
+    stat_bonus_glacio_dmg_bonus: str = ""
+    stat_bonus_fusion_dmg_bonus: str = ""
+    stat_bonus_electro_dmg_bonus: str = ""
+    stat_bonus_aero_dmg_bonus: str = ""
+    stat_bonus_spectro_dmg_bonus: str = ""
+    stat_bonus_havoc_dmg_bonus: str = ""
+    stat_bonus_healing_bonus: str = ""
