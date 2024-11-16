@@ -35,6 +35,13 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     echo: Decimal = Decimal("0.0")
     none: Decimal = Decimal("0.0")
 
+    normal_attack: Decimal = Decimal("0.0")
+    resonance_skill: Decimal = Decimal("0.0")
+    resonance_liberation: Decimal = Decimal("0.0")
+    intro_skill: Decimal = Decimal("0.0")
+    forte_circuit: Decimal = Decimal("0.0")
+    outro_skill: Decimal = Decimal("0.0")
+
     damage: Decimal = Decimal("0.0")
     damage_no_crit: Decimal = Decimal("0.0")
     damage_crit: Decimal = Decimal("0.0")

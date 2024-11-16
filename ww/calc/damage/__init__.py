@@ -17,6 +17,7 @@ from ww.model.resonator import (
 from ww.model.resonator_skill import (
     ResonatorSkillBonusTypeEnum,
     ResonatorSkillTsvColumnEnum,
+    ResonatorSkillTypeEnum,
 )
 from ww.model.template import (
     CalculatedTemplateRowModel,
@@ -670,10 +671,11 @@ class Damage:
                         )
                     )
 
-                skill_type_bonus = row.result_bonus_type
                 damage = get_number(row.damage)
                 damage_no_crit = get_number(row.damage_no_crit)
                 damage_crit = get_number(row.damage_crit)
+
+                skill_type_bonus = row.result_bonus_type
                 if skill_type_bonus == SkillBonusTypeEnum.BASIC.value:
                     damage_distributions[label].resonators[
                         resonator_name
@@ -706,6 +708,37 @@ class Damage:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].none += damage
+
+                resonator_skill_type = row.resonator_skill_type
+                if resonator_skill_type == ResonatorSkillTypeEnum.NORMAL_ATTACK.value:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].normal_attack += damage
+                elif (
+                    resonator_skill_type == ResonatorSkillTypeEnum.RESONANCE_SKILL.value
+                ):
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].resonance_skill += damage
+                elif (
+                    resonator_skill_type
+                    == ResonatorSkillTypeEnum.RESONANCE_LIBERATION.value
+                ):
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].resonance_liberation += damage
+                elif resonator_skill_type == ResonatorSkillTypeEnum.INTRO_SKILL.value:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].intro_skill += damage
+                elif resonator_skill_type == ResonatorSkillTypeEnum.OUTRO_SKILL.value:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].outro_skill += damage
+                elif resonator_skill_type == ResonatorSkillTypeEnum.FORTE_CIRCUIT.value:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].forte_circuit += damage
 
                 damage_distributions[label].resonators[resonator_name].damage += damage
                 damage_distributions[label].resonators[

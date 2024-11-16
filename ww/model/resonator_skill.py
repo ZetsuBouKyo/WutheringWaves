@@ -12,10 +12,10 @@ class SkillBaseAttrEnum(str, Enum):
 class ResonatorSkillTypeEnum(str, Enum):
     NORMAL_ATTACK: str = _(ZhTwEnum.NORMAL_ATTACK)
     RESONANCE_SKILL: str = _(ZhTwEnum.RESONANCE_SKILL)
+    FORTE_CIRCUIT: str = _(ZhTwEnum.FORTE_CIRCUIT)
     RESONANCE_LIBERATION: str = _(ZhTwEnum.RESONANCE_LIBERATION)
     INTRO_SKILL: str = _(ZhTwEnum.INTRO_SKILL)
     OUTRO_SKILL: str = _(ZhTwEnum.OUTRO_SKILL)
-    FORTE_CIRCUIT: str = _(ZhTwEnum.FORTE_CIRCUIT)
 
 
 class ResonatorSkillBonusTypeEnum(str, Enum):

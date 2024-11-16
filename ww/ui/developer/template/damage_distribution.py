@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import List
 
 from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
@@ -5,7 +6,12 @@ from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 from ww.calc.damage import Damage
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.template import CalculatedTemplateRowModel, TemplateModel
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
+from ww.model.template import (
+    CalculatedTemplateRowModel,
+    TemplateDamageDistributionModel,
+    TemplateModel,
+)
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.output_method import QTemplateTabOutputMethodTable
 from ww.ui.table import QUneditableTable
@@ -26,6 +32,35 @@ class QTemplateDamageDistributionUneditableTable(QUneditableTable):
         self._init_cells()
 
 
+def get_row(
+    resonator_name: str,
+    damage_distribution: TemplateDamageDistributionModel,
+    enum_class: Enum,
+) -> List[str]:
+    column_length = len(enum_class) + 2
+    row = ["" for _ in range(column_length)]
+    resonator = damage_distribution.resonators.get(resonator_name, None)
+    if resonator is None:
+        return row
+
+    resonator_total_damage = resonator.damage
+    row[0] = resonator_name
+    for i, e in enumerate(enum_class):
+        resonator_damage_str = resonator.get_damage_string_with_percentage(
+            e.name.lower()
+        )
+        row[i + 1] = resonator_damage_str
+
+    damage_total_resonators = damage_distribution.damage
+    resonator_total_damage_percentage = resonator_total_damage / damage_total_resonators
+    resonator_total_damage_str = (
+        f"{resonator_total_damage:,.2f} ({resonator_total_damage_percentage:.2%})"
+    )
+    row[-1] = resonator_total_damage_str
+
+    return row
+
+
 class QTemplateDamageDistributionTab(QWidget):
     def __init__(self, parent):
         super().__init__()
@@ -40,18 +75,31 @@ class QTemplateDamageDistributionTab(QWidget):
         self.q_btns_layout.addStretch()
         self.q_btns_layout.addWidget(self.q_analyze_btn)
 
-        self.column_names = (
+        self.skill_type_column_names = (
             [_(ZhTwEnum.NAME)]
             + [e.value for e in SkillBonusTypeEnum]
             + [_(ZhTwEnum.TOTAL_DAMAGE)]
         )
-        self.q_table = QTemplateDamageDistributionUneditableTable(
-            [["" for _ in range(len(self.column_names))] for _ in range(3)],
-            self.column_names,
+
+        self.q_skill_type_table = QTemplateDamageDistributionUneditableTable(
+            [["" for _ in range(len(self.skill_type_column_names))] for _ in range(3)],
+            self.skill_type_column_names,
+        )
+
+        self.skill_column_names = (
+            [_(ZhTwEnum.NAME)]
+            + [e.value for e in ResonatorSkillTypeEnum]
+            + [_(ZhTwEnum.TOTAL_DAMAGE)]
+        )
+
+        self.q_skill_table = QTemplateDamageDistributionUneditableTable(
+            [["" for _ in range(len(self.skill_column_names))] for _ in range(3)],
+            self.skill_column_names,
         )
 
         self.layout.addLayout(self.q_btns_layout)
-        self.layout.addWidget(self.q_table)
+        self.layout.addWidget(self.q_skill_type_table)
+        self.layout.addWidget(self.q_skill_table)
 
         self.setLayout(self.layout)
 
@@ -89,31 +137,23 @@ class QTemplateDamageDistributionTab(QWidget):
 
         # Create table data
 
-        data = []
-        damage_total_resonators = damage_distribution.damage
+        skill_type_data = []
+        skill_data = []
+
         for resonator_name in test_resonator_names:
-            row = ["" for _ in range(len(self.column_names))]
-            resonator = damage_distribution.resonators.get(resonator_name, None)
-            if resonator is None:
-                data.append(row)
-                continue
-
-            resonator_total_damage = resonator.damage
-            row[0] = resonator_name
-            for i, e in enumerate(SkillBonusTypeEnum):
-                resonator_damage_str = resonator.get_damage_string_with_percentage(
-                    e.name.lower()
-                )
-                row[i + 1] = resonator_damage_str
-
-            resonator_total_damage_percentage = (
-                resonator_total_damage / damage_total_resonators
+            skill_type_row = get_row(
+                resonator_name, damage_distribution, SkillBonusTypeEnum
             )
-            resonator_total_damage_str = f"{resonator_total_damage:,.2f} ({resonator_total_damage_percentage:.2%})"
-            row[-1] = resonator_total_damage_str
-            data.append(row)
+            skill_type_data.append(skill_type_row)
 
-        self.q_table.load_list(data)
+            skill_row = get_row(
+                resonator_name, damage_distribution, ResonatorSkillTypeEnum
+            )
+            skill_data.append(skill_row)
+
+        self.q_skill_type_table.load_list(skill_type_data)
+        self.q_skill_table.load_list(skill_data)
 
     def reset_data(self):
-        self.q_table.reset_data()
+        self.q_skill_type_table.reset_data()
+        self.q_skill_table.reset_data()
