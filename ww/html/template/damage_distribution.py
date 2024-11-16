@@ -1,10 +1,12 @@
 import os
+from decimal import Decimal
 from pathlib import Path
 from typing import List, Optional
 
 from jinja2 import Template
 
 from ww.data.resonator import resonators
+from ww.html.template.damage import get_max_damage
 from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
@@ -12,13 +14,21 @@ from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
 TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH = "./html/template/damage_distribution.jinja2"
-MAX_DAMAGE = 1000000
+
+
+def _get_resonator_damages(
+    damage_distribution: TemplateDamageDistributionModel,
+) -> List[Decimal]:
+    damages = []
+    for _, resonator in damage_distribution.resonators.items():
+        damages.append(resonator.damage)
+    return damages
 
 
 def export_damage_distribution_as_png(
     resonator_names: List[str],
     damage_distribution: TemplateDamageDistributionModel,
-    max_damage: int = MAX_DAMAGE,
+    max_damage: Optional[int] = None,
     suffix: Optional[str] = None,
 ):
     template_id = damage_distribution.template_id
@@ -34,6 +44,9 @@ def export_damage_distribution_as_png(
 
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
+
+    if max_damage is None:
+        max_damage = get_max_damage(_get_resonator_damages(damage_distribution))
 
     html_str = template.render(
         damage_distributions=[damage_distribution],

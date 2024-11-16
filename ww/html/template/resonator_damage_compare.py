@@ -1,10 +1,12 @@
 import os
+from decimal import Decimal
 from pathlib import Path
 from typing import List, Optional, Tuple
 
 from jinja2 import Template
 
 from ww.data.resonator import resonators
+from ww.html.template.damage import get_max_damage
 from ww.html.template.export import export_to
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
@@ -15,7 +17,17 @@ RESONATOR_DAMAGE_COMPARE_HTML_PATH = "./html/template/resonator_damage_compare.j
 RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH = (
     "./cache/v1/zh_tw/output/png/compare_resonator_damage"
 )
-MAX_DAMAGE = 1000000
+MAX_DAMAGE = 1500000
+
+
+def _get_damages(
+    damage_distributions: List[Tuple[str, TemplateDamageDistributionModel]],
+) -> List[Decimal]:
+    damages = []
+    for _, damage_distribution in damage_distributions:
+        for _, resonator in damage_distribution.resonators.items():
+            damages.append(resonator.damage)
+    return damages
 
 
 def get_export_resonator_damage_compare_home_path(
@@ -29,7 +41,7 @@ def get_export_resonator_damage_compare_home_path(
 def export_resonator_damage_compare_as_png(
     id: str,
     damage_distributions: List[Tuple[str, TemplateDamageDistributionModel]],
-    max_damage: int = MAX_DAMAGE,
+    max_damage: Optional[int] = None,
     height: int = 2000,
 ):
     if len(damage_distributions) == 0:
@@ -44,6 +56,9 @@ def export_resonator_damage_compare_as_png(
 
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
+
+    if max_damage is None:
+        max_damage = get_max_damage(_get_damages(damage_distributions))
 
     html_str = template.render(
         damage_distributions=damage_distributions,
