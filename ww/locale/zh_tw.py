@@ -303,6 +303,7 @@ class ZhTwEnum(str, Enum):
     POOL_NAME_MUST_NOT_EMPTY: str = "喚取池子名稱不該是空值。"
     POOL_NAME_NOT_LEGAL: str = "喚取池子名稱錯誤。"
 
+    WUTHERING_WAVES_INFORMATION_SAVED: str = "存檔完成。"
     WUTHERING_WAVES_DEBUG_FILE_NOT_FOUND: str = "請選擇 'debug.log' 檔案。"
     WUTHERING_WAVES_DEBUG_FILE_SHOULD_BE_COPIED: str = (
         "建議將 'debug.log' 複製到其他資料夾再進行分析。"

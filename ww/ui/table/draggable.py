@@ -500,7 +500,14 @@ class QDraggableTsvTableWidget(QWidget):
             self._event_save_after()
 
         self._lock = False
-        self._progress_bar.set(100.0, _(ZhTwEnum.SAVED))
+
+        QMessageBox.information(
+            self,
+            _(ZhTwEnum.INFO),
+            _(ZhTwEnum.WUTHERING_WAVES_INFORMATION_SAVED),
+        )
+
+        self._progress_bar.set(100, _(ZhTwEnum.SAVED))
 
     def load(self, *args, is_confirmation: bool = True):
         """Load the data from the specified TSV path."""
