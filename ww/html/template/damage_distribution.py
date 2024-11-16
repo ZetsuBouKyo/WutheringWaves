@@ -13,7 +13,9 @@ from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
-TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH = "./html/template/damage_distribution.jinja2"
+TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH = (
+    "./html/template/team_damage_distribution.jinja2"
+)
 
 
 def _get_resonator_damages(
@@ -25,7 +27,7 @@ def _get_resonator_damages(
     return damages
 
 
-def export_skill_bonus_type_damage_distribution_as_png(
+def export_team_damage_distribution_as_png(
     resonator_names: List[str],
     damage_distribution: TemplateDamageDistributionModel,
     max_damage: Optional[int] = None,
@@ -35,7 +37,7 @@ def export_skill_bonus_type_damage_distribution_as_png(
     if not template_id:
         return
 
-    html_fpath = Path(TEMPLATE_DAMAGE_DISTRIBUTION_HTML_PATH)
+    html_fpath = Path(TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH)
     if not html_fpath.exists():
         return
 
