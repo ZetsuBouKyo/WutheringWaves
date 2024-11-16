@@ -25,7 +25,7 @@ def _get_resonator_damages(
     return damages
 
 
-def export_damage_distribution_as_png(
+def export_skill_bonus_type_damage_distribution_as_png(
     resonator_names: List[str],
     damage_distribution: TemplateDamageDistributionModel,
     max_damage: Optional[int] = None,

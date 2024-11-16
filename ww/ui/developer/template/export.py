@@ -12,10 +12,10 @@ from PySide2.QtWidgets import (
 
 from ww.calc.damage import Damage
 from ww.html.template import (
-    export_damage_distribution_as_png,
     export_echo_as_png,
     export_html_template_output_methods_as_png,
     export_html_template_resonator_model_as_png,
+    export_skill_bonus_type_damage_distribution_as_png,
 )
 from ww.locale import ZhTwEnum, _
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
@@ -225,7 +225,7 @@ class QTemplateExportTab(QWidget):
             )
         )
         for label_name, damage_distribution in damage_distributions.items():
-            export_damage_distribution_as_png(
+            export_skill_bonus_type_damage_distribution_as_png(
                 test_resonators.keys(), damage_distribution, suffix=label_name
             )
 

@@ -1,4 +1,6 @@
-from ww.html.template.damage_distribution import export_damage_distribution_as_png
+from ww.html.template.damage_distribution import (
+    export_skill_bonus_type_damage_distribution_as_png,
+)
 from ww.html.template.echo import export_echo_as_png
 from ww.html.template.output_method import (
     export_html_template_output_methods_as_png,
@@ -10,7 +12,7 @@ from ww.html.template.resonator_damage_compare import (
 )
 
 __all__ = [
-    "export_damage_distribution_as_png",
+    "export_skill_bonus_type_damage_distribution_as_png",
     "export_echo_as_png",
     "export_html_template_output_methods_as_png_by_template_id",
     "export_html_template_output_methods_as_png",

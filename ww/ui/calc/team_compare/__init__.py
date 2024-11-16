@@ -3,7 +3,7 @@ from decimal import InvalidOperation
 from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
 from ww.calc.damage import Damage
-from ww.html.template import export_damage_distribution_as_png
+from ww.html.template import export_skill_bonus_type_damage_distribution_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.ui.calc.team_compare.table import (
@@ -167,4 +167,4 @@ class QTeamDamageCompare(QWidget):
                 monster_id=monster_id,
             )
             damage_distributions.append(damage_distribution)
-        # export_damage_distribution_as_png("test", damage_distributions)
+        # export_skill_bonus_type_damage_distribution_as_png("test", damage_distributions)
