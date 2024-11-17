@@ -15,6 +15,7 @@ from ww.html.template import (
     export_echo_as_png,
     export_html_template_output_methods_as_png,
     export_html_template_resonator_model_as_png,
+    export_resonator_skill_bonus_type_damage_distribution_as_png,
     export_team_damage_distribution_as_png,
 )
 from ww.locale import ZhTwEnum, _
@@ -228,6 +229,10 @@ class QTemplateExportTab(QWidget):
             export_team_damage_distribution_as_png(
                 test_resonators.keys(), damage_distribution, suffix=label_name
             )
+            for resonator_name in damage_distribution.resonators.keys():
+                export_resonator_skill_bonus_type_damage_distribution_as_png(
+                    resonator_name, damage_distribution, suffix=label_name
+                )
 
         if is_progress:
             self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))

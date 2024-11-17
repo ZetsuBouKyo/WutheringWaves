@@ -10,11 +10,16 @@ from ww.html.template.damage import get_max_damage
 from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
 TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH = (
     "./html/template/team_damage_distribution.jinja2"
+)
+
+TEMPLATE_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION_HTML_PATH = (
+    "./html/template/resonator_skill_bonus_type_damage_distribution.jinja2"
 )
 
 
@@ -25,6 +30,61 @@ def _get_resonator_damages(
     for _, resonator in damage_distribution.resonators.items():
         damages.append(resonator.damage)
     return damages
+
+
+def export_resonator_skill_bonus_type_damage_distribution_as_png(
+    resonator_name: str,
+    damage_distribution: TemplateDamageDistributionModel,
+    max_damage: Optional[int] = None,
+    suffix: Optional[str] = None,
+):
+    template_id = damage_distribution.template_id
+    if not template_id:
+        return
+
+    html_fpath = Path(TEMPLATE_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION_HTML_PATH)
+    if not html_fpath.exists():
+        return
+
+    home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
+    os.makedirs(home_path, exist_ok=True)
+
+    with html_fpath.open(mode="r", encoding="utf-8") as fp:
+        template = Template(fp.read())
+
+    resonator_damage_distribution = damage_distribution.resonators.get(
+        resonator_name, None
+    )
+    if resonator_damage_distribution is None:
+        return
+    dmgs = [resonator_damage_distribution.damage]
+    if max_damage is None:
+        max_damage = get_max_damage(dmgs)
+
+    html_str = template.render(
+        damage_distribution=damage_distribution,
+        resonator_damage_distribution=resonator_damage_distribution,
+        resonators=resonators,
+        resonator_name=resonator_name,
+        SkillBonusTypeEnum=SkillBonusTypeEnum,
+        ZhTwEnum=ZhTwEnum,
+        get_element_class_name=get_element_class_name,
+        get_percentage_str=get_percentage_str,
+        get_resonator_icon_fpath=get_resonator_icon_fpath,
+        to_number_string=to_number_string,
+        base_damage=resonator_damage_distribution.damage,
+        max_damage=max_damage,
+        _=_,
+    )
+
+    name = (
+        f"{resonator_name}{_(ZhTwEnum.RESONATOR_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION)}"
+    )
+    if suffix:
+        name = f"{name}-{suffix}"
+
+    png_fname = f"{name}.png"
+    export_to_template(template_id, png_fname, html_str, height=800)
 
 
 def export_team_damage_distribution_as_png(
@@ -63,9 +123,9 @@ def export_team_damage_distribution_as_png(
         _=_,
     )
 
-    name = f"{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
+    name = f"{_(ZhTwEnum.TEAM)}{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
     if suffix:
         name = f"{name}-{suffix}"
 
     png_fname = f"{name}.png"
-    export_to_template(template_id, png_fname, html_str, height=320)
+    export_to_template(template_id, png_fname, html_str, height=500)
