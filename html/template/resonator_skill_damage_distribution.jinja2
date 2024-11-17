@@ -12,26 +12,26 @@
             <div class="monster-id">{{_(ZhTwEnum.MONSTER_ID)}}: {{damage_distribution.monster_id}}</div>
           </div>
         </div>
-        {% for skill_bonus_type in SkillBonusTypeEnum %}
+        {% for e in skill_enum %}
         <div class="row">
           <div class="resonator-damage-container">
             {% set element = get_element_class_name(resonators.get(resonator_name, None).element) %}
-            {% set damage = resonator_damage_distribution.get_damage(skill_bonus_type.name.lower()) %}
+            {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
             {% set percentage = damage / base_damage %}
-            {% set in_out = 0.3 %}
+            {% set in_out = 0.4 %}
             {% set black_elements = ['aero', 'spectro'] %}
             <div class="resonator-damage bg-{{element}}" style="width: {{get_percentage_str(damage, base_damage)}};">
               {% if percentage >= in_out %}
               <div
                 class="damage-value-in {{'damage-value-in-black' if element in black_elements else 'damage-value-in-white'}}">
-                {{skill_bonus_type.value}}
-                {{resonator_damage_distribution.get_damage_string_with_percentage(skill_bonus_type.name.lower())}}
+                {{e.value}}
+                {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
               </div>
               {% endif %}
             </div>
             {% if percentage < in_out %} <div class="damage-value-out">
-              {{skill_bonus_type.value}}
-              {{resonator_damage_distribution.get_damage_string_with_percentage(skill_bonus_type.name.lower())}}
+              {{e.value}}
+              {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
           </div>
           {% endif %}
         </div>

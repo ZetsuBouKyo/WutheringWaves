@@ -15,10 +15,12 @@ from ww.html.template import (
     export_echo_as_png,
     export_html_template_output_methods_as_png,
     export_html_template_resonator_model_as_png,
-    export_resonator_skill_bonus_type_damage_distribution_as_png,
+    export_resonator_skill_damage_distribution_as_png,
     export_team_damage_distribution_as_png,
 )
 from ww.locale import ZhTwEnum, _
+from ww.model.buff import SkillBonusTypeEnum
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import CalculatedTemplateRowModel, TemplateModel
 from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.developer.template.basic import QTemplateBasicTab
@@ -230,8 +232,17 @@ class QTemplateExportTab(QWidget):
                 test_resonators.keys(), damage_distribution, suffix=label_name
             )
             for resonator_name in damage_distribution.resonators.keys():
-                export_resonator_skill_bonus_type_damage_distribution_as_png(
-                    resonator_name, damage_distribution, suffix=label_name
+                export_resonator_skill_damage_distribution_as_png(
+                    resonator_name,
+                    damage_distribution,
+                    SkillBonusTypeEnum,
+                    suffix=_(ZhTwEnum.RESONATOR_SKILL_BONUS_TYPE),
+                )
+                export_resonator_skill_damage_distribution_as_png(
+                    resonator_name,
+                    damage_distribution,
+                    ResonatorSkillTypeEnum,
+                    suffix=_(ZhTwEnum.SKILL),
                 )
 
         if is_progress:

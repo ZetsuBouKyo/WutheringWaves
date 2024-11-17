@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from jinja2 import Template
 
@@ -11,6 +11,7 @@ from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils.number import get_percentage_str, to_number_string
 
@@ -18,8 +19,8 @@ TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH = (
     "./html/template/team_damage_distribution.jinja2"
 )
 
-TEMPLATE_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION_HTML_PATH = (
-    "./html/template/resonator_skill_bonus_type_damage_distribution.jinja2"
+TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH = (
+    "./html/template/resonator_skill_damage_distribution.jinja2"
 )
 
 
@@ -32,9 +33,10 @@ def _get_resonator_damages(
     return damages
 
 
-def export_resonator_skill_bonus_type_damage_distribution_as_png(
+def export_resonator_skill_damage_distribution_as_png(
     resonator_name: str,
     damage_distribution: TemplateDamageDistributionModel,
+    skill_enum: Union[SkillBonusTypeEnum, ResonatorSkillTypeEnum],
     max_damage: Optional[int] = None,
     suffix: Optional[str] = None,
 ):
@@ -42,7 +44,7 @@ def export_resonator_skill_bonus_type_damage_distribution_as_png(
     if not template_id:
         return
 
-    html_fpath = Path(TEMPLATE_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION_HTML_PATH)
+    html_fpath = Path(TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH)
     if not html_fpath.exists():
         return
 
@@ -57,7 +59,12 @@ def export_resonator_skill_bonus_type_damage_distribution_as_png(
     )
     if resonator_damage_distribution is None:
         return
-    dmgs = [resonator_damage_distribution.damage]
+
+    base_damage = Decimal("0.0")
+    for e in skill_enum:
+        base_damage += resonator_damage_distribution.get_damage(e.name.lower())
+
+    dmgs = [base_damage]
     if max_damage is None:
         max_damage = get_max_damage(dmgs)
 
@@ -66,20 +73,18 @@ def export_resonator_skill_bonus_type_damage_distribution_as_png(
         resonator_damage_distribution=resonator_damage_distribution,
         resonators=resonators,
         resonator_name=resonator_name,
-        SkillBonusTypeEnum=SkillBonusTypeEnum,
+        skill_enum=skill_enum,
         ZhTwEnum=ZhTwEnum,
         get_element_class_name=get_element_class_name,
         get_percentage_str=get_percentage_str,
         get_resonator_icon_fpath=get_resonator_icon_fpath,
         to_number_string=to_number_string,
-        base_damage=resonator_damage_distribution.damage,
+        base_damage=base_damage,
         max_damage=max_damage,
         _=_,
     )
 
-    name = (
-        f"{resonator_name}{_(ZhTwEnum.RESONATOR_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION)}"
-    )
+    name = f"{resonator_name}{_(ZhTwEnum.DAMAGE_DISTRIBUTION)}"
     if suffix:
         name = f"{name}-{suffix}"
 

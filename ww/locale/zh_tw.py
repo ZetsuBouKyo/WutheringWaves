@@ -108,7 +108,7 @@ class ZhTwEnum(str, Enum):
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
-    RESONATOR_SKILL_BONUS_TYPE_DAMAGE_DISTRIBUTION: str = "技能加成傷害占比"
+    RESONATOR_SKILL_BONUS_TYPE: str = "技能加成"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"
     OUTPUT_METHOD: str = "輸出手法"
