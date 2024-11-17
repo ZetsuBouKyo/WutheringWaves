@@ -136,4 +136,4 @@ def export_html_template_resonator_model_as_png(template_id: str, resonator_id: 
     )
     png_fname = f"{resonator_id}.png"
 
-    export_to_template(template_id, png_fname, html_str, 276)
+    export_to_template(template_id, png_fname, html_str, 400)

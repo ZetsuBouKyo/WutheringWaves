@@ -51,7 +51,7 @@ def export_html_as_png(home_path: Path, png_fname: str, html_str: str, height: i
             "--force-device-scale-factor=2",
         ],
         output_path=str(home_path),
-        size=(1920, height),  # (pixel, pixel)
+        size=(1328, height),  # (pixel, pixel)
         disable_logging=True,
     )
     h2png.screenshot(

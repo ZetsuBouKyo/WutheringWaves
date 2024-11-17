@@ -3,24 +3,18 @@
     <div class="cell-row">
       <img src="{{resonator.resonator_src}}" />
     </div>
-    <div class="cell-row">
-      <div class="resonator-name">{{resonator.name}}</div>
-    </div>
-    <div class="cell-row">
+    <div class="cell-row cell-row-padding">
+      <div class="resonator-info">{{resonator.name}}</div>
       <img class="element" src="{{resonator.element_src}}" />
+      <div class="resonator-info">{{resonator.element}}</div>
     </div>
-    <div class="cell-row">
-      <div class="resonator-sub-info">
-        <div class="resonator-top {{resonator.element_class_name}}">{{resonator.element}}</div>
-        <div class="resonator-bottom">{{_(ZhTwEnum.CHAIN)}} {{resonator.chain}}</div>
-      </div>
+    <div class="cell-row cell-row-padding">
+      <div class="resonator-info">{{_(ZhTwEnum.CHAIN)}} {{resonator.chain}}</div>
     </div>
-    <div class="cell-row">
-      <div class="resonator-sub-info margin-left">
-        <div class="resonator-top">{{resonator.weapon_name}}</div>
-        <div class="resonator-bottom">
-          LV{{resonator.weapon_level}}&nbsp;&nbsp;{{_(ZhTwEnum.TUNE)}} {{resonator.weapon_rank}}
-        </div>
+    <div class="cell-row cell-row-padding">
+      <div class="resonator-info">{{resonator.weapon_name}}</div>
+      <div class="resonator-info">
+        LV{{resonator.weapon_level}}&nbsp;&nbsp;{{_(ZhTwEnum.TUNE)}} {{resonator.weapon_rank}}
       </div>
     </div>
   </div>
@@ -181,16 +175,28 @@
 <style>
   body {
     color: rgb(240, 240, 240);
-    width: 1900px;
+    width: 1280px;
   }
+
   div.cell-row {
     display: flex;
     align-self: center;
+    border-radius: 8px;
+    border: 2px rgb(100, 100, 100) solid;
+    margin-right: 10px;
+    height: 48px;
   }
+
+  div.cell-row-padding {
+    padding: 0px 8px;
+  }
+
   div.table {
     display: flex;
     margin-top: 12px;
+    font-size: 20px;
   }
+
   div.resonator-title {
     color: rgb(240, 240, 240);
     display: flex;
@@ -198,27 +204,18 @@
     align-items: flex-start;
     height: 48px;
   }
-  div.resonator-name {
+
+  div.resonator-info {
     display: flex;
     align-self: center;
-    font-size: 34px;
-    margin-left: 10px;
+    font-size: 26px;
   }
-  div.resonator-sub-info {
-    display: flex;
-    flex-direction: column;
-  }
-  div.resonator-top {
-    font-size: 16px;
-  }
-  div.resonator-bottom {
-    font-size: 12px;
-    align-self: flex-end;
-  }
+
   img {
     height: 48px;
     object-fit: contain;
   }
+
   div.container {
     background-color: rgb(8, 12, 20);
     border-radius: 8px;
@@ -229,39 +226,50 @@
     padding: 12px;
     width: 1280px;
   }
+
   .margin-left {
     margin-left: 12px;
   }
+
   .margin-right {
     margin-right: 12px;
   }
+
   table {
     border-radius: 8px;
-    border-color: rgb(240, 240, 240);
-    border: 2px solid;
+    border: 2px rgb(100, 100, 100) solid;
     width: 244px;
   }
+
   td {
-    padding: 0px 12px;
+    padding: 0px 4px;
+    font-size: 18px;
   }
+
   .element {
-    height: 42px;
+    height: 48px;
   }
+
   .glacio {
     color: rgb(72, 172, 252);
   }
+
   .fusion {
     color: rgb(248, 116, 76);
   }
+
   .electro {
     color: rgb(184, 108, 252);
   }
+
   .aero {
     color: rgb(88, 252, 180);
   }
+
   .spectro {
     color: rgb(255, 228, 108);
   }
+
   .havoc {
     color: rgb(208, 140, 180);
   }

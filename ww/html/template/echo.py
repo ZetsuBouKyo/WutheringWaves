@@ -32,4 +32,4 @@ def export_echo_as_png(template_id: str, resonator_id: str):
     )
 
     fname = f"{_(resonator_id)} {_(ZhTwEnum.ECHO)}.png"
-    export_to_template(template_id, fname, html_str, height=276)
+    export_to_template(template_id, fname, html_str, height=400)
