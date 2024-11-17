@@ -57,8 +57,10 @@ def export_resonator_damage_compare_as_png(
     with html_fpath.open(mode="r", encoding="utf-8") as fp:
         template = Template(fp.read())
 
+    dmgs = _get_damages(damage_distributions)
     if max_damage is None:
-        max_damage = get_max_damage(_get_damages(damage_distributions))
+        max_damage = get_max_damage(dmgs)
+    base_damage = max(dmgs)
 
     html_str = template.render(
         damage_distributions=damage_distributions,
@@ -68,6 +70,7 @@ def export_resonator_damage_compare_as_png(
         get_percentage_str=get_percentage_str,
         get_resonator_icon_fpath=get_resonator_icon_fpath,
         to_number_string=to_number_string,
+        base_damage=base_damage,
         max_damage=max_damage,
         _=_,
     )

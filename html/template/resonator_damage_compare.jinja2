@@ -12,16 +12,17 @@
             <img src="{{get_resonator_icon_fpath(resonator_name)}}" />
           </div>
           <div class="resonator-damage-container">
-            {% if label %}
-            <div class="resonator-id">
-              {{resonator.resonator_id}} | {{damage_distribution.template_id}} ({{label}}) |
-              {{damage_distribution.monster_id}}
+            <div class="title">
+              <div class="resonator-id">{{resonator.resonator_id}}</div>
+              {% if label %}
+              <div class="template-info">
+                {{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}} ({{label}})
+              </div>
+              {% else %}
+              <div class="template-info">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+              {% endif %}
+              <div class="template-info">{{_(ZhTwEnum.MONSTER_ID)}}: {{damage_distribution.monster_id}}</div>
             </div>
-            {% else %}
-            <div class="resonator-id">
-              {{resonator.resonator_id}} | {{damage_distribution.template_id}} | {{damage_distribution.monster_id}}
-            </div>
-            {% endif %}
             <div class="resonator-damage-barh">
               {% set element = get_element_class_name(resonators.get(resonator_name, None).element) %}
               {% set percentage = resonator.damage / max_damage %}
@@ -32,7 +33,7 @@
                 {% if percentage >= in_out %}
                 <div
                   class="damage-value-in {{'damage-value-in-black' if element in black_elements else 'damage-value-in-white'}}">
-                  {{to_number_string(resonator.damage)}}
+                  {{to_number_string(resonator.damage)}} ({{get_percentage_str(resonator.damage,base_damage)}})
                 </div>
                 {% endif %}
               </div>
@@ -73,16 +74,13 @@
     flex-direction: column;
   }
 
-  div.title {
-    margin-bottom: 8px;
-    display: flex;
-    color: rgb(240, 240, 240);
-  }
+
 
   div.dps {
     margin-bottom: 8px;
     display: flex;
     color: rgb(240, 240, 240);
+    font-size: 20px;
   }
 
   div.comment {
@@ -107,14 +105,13 @@
   div.row {
     display: flex;
     flex-direction: row;
-    height: 72px;
+    height: 100px;
     align-items: center;
   }
 
   div.resonator-icon {
     display: flex;
-    width: 48px;
-    height: 48px;
+    height: 64px;
     margin-right: 8px;
   }
 
@@ -132,11 +129,24 @@
     align-items: center;
   }
 
+  div.title {
+    display: flex;
+    flex-direction: column;
+    align-self: baseline;
+    font-size: 20px;
+    margin-left: 8px;
+  }
+
   div.resonator-id {
     display: flex;
     color: rgb(240, 240, 240);
-    align-self: baseline;
+
+  }
+
+  div.template-info {
+    display: flex;
     font-size: 12px;
+    color: rgb(140, 140, 140);
   }
 
   div.resonator-damage-barh {
@@ -145,6 +155,9 @@
     width: 100%;
     height: 100%;
     align-items: center;
+    font-size: 20px;
+    margin-top: 2px;
+    margin-bottom: 8px;
   }
 
   div.resonator-damage {
@@ -152,7 +165,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 60%;
+    height: 100%;
   }
 
   div.damage-value-in {
