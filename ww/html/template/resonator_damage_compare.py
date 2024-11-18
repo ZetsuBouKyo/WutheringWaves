@@ -42,7 +42,7 @@ def export_resonator_damage_compare_as_png(
     id: str,
     damage_distributions: List[Tuple[str, TemplateDamageDistributionModel]],
     max_damage: Optional[int] = None,
-    height: int = 2000,
+    height: int = 3000,
 ):
     if len(damage_distributions) == 0:
         return
