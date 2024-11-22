@@ -118,6 +118,7 @@ class TemplateRowModel(BaseModel):
     action: str = ""
     skill_id: str = ""
     skill_bonus_type: str = ""
+    hit: str = "1"
     buffs: List[TemplateBuffTableRowModel] = []
     resonating_spin_concerto_regen: str = ""
     accumulated_resonating_spin_concerto_regen: str = ""

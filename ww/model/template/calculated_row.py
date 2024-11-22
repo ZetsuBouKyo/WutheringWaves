@@ -72,6 +72,7 @@ class CalculatedTemplateRowModel(BaseModel):
     result_bonus_type: Optional[SkillBonusTypeEnum] = None
     result_skill_base_attribute: Optional[SkillBaseAttrEnum] = None
     result_skill_dmg: Optional[Decimal] = None
+    result_skill_hit: Optional[Decimal] = Decimal("1")
 
     result_hp: Optional[Decimal] = None
     result_hp_addition: Optional[Decimal] = None

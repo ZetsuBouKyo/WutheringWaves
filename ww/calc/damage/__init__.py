@@ -554,8 +554,13 @@ class Damage:
             result_crit_dmg * result_crit_rate + get_number("1.0") - result_crit_rate
         )
 
+        # Hit
+        hit = get_number(row.hit)
+        calculated_row.result_skill_hit = hit
+
         dmg_no_crit = (
-            region_base_attr
+            hit
+            * region_base_attr
             * region_skill_dmg
             * region_bonus_magnifier
             * region_bonus_amplifier

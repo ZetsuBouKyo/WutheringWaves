@@ -208,6 +208,7 @@ class ZhTwEnum(str, Enum):
     SKILL_DMG_ADDITION: str = "招式倍率"
     IGNORE_DEF: str = "忽視防禦"
     REDUCE_RES: str = "抗性降低"
+    HIT: str = "段數"
 
     WEAPON_NAME: str = "武器名稱"
     WEAPON_LEVEL: str = "武器等級"

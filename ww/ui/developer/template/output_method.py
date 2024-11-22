@@ -302,6 +302,10 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             row, col_skill_bonus_type
         )
 
+        # Hit
+        col_hit = self.get_column_id(TemplateColumnEnum.HIT.value)
+        self.ouput_methods[row].hit = self.get_cell(row, col_hit)
+
         # Concerto regen
         col_resonating_spin_concerto_regen = self.get_column_id(
             TemplateColumnEnum.RESONATING_SPIN_CONCERTO_REGEN.value
@@ -405,6 +409,8 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             set_skill_bonus_type_combobox(
                 self, row, col, self.ouput_methods[row].skill_bonus_type
             )
+        elif self.column_names[col] == TemplateColumnEnum.HIT.value:
+            set_item(self, row, col, self.ouput_methods[row].hit)
         elif (
             self.column_names[col] == TemplateColumnEnum.DAMAGE.value
             or self.column_names[col] == TemplateColumnEnum.DAMAGE_NO_CRIT.value
