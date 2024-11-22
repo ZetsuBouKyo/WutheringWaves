@@ -6,8 +6,10 @@ TEMPLATE_BONUS = "[額外]"  # TODO: remove
 
 
 class TemplateRowBuffTypeEnum(str, Enum):
+    SKILL_DMG_ADDITION: str = _(ZhTwEnum.SKILL_DMG_ADDITION)
     MAGNIFIER: str = _(ZhTwEnum.MAGNIFIER)
     AMPLIFIER: str = _(ZhTwEnum.AMPLIFIER)
+    ADDITION: str = _(ZhTwEnum.ADDITION)
     HP_P: str = _(ZhTwEnum.HP_P)
     HP: str = _(ZhTwEnum.HP)
     ATK_P: str = _(ZhTwEnum.ATK_P)
@@ -16,8 +18,6 @@ class TemplateRowBuffTypeEnum(str, Enum):
     DEF: str = _(ZhTwEnum.DEF)
     CRIT_RATE: str = _(ZhTwEnum.CRIT_RATE)
     CRIT_DMG: str = _(ZhTwEnum.CRIT_DMG)
-    ADDITION: str = _(ZhTwEnum.ADDITION)
-    SKILL_DMG_ADDITION: str = _(ZhTwEnum.SKILL_DMG_ADDITION)
     IGNORE_DEF: str = _(ZhTwEnum.IGNORE_DEF)
     REDUCE_RES: str = _(ZhTwEnum.REDUCE_RES)
 
@@ -72,8 +72,12 @@ class TemplateColumnEnum(str, Enum):
     RESULT_CRIT_DMG: str = _(ZhTwEnum.RESULT_CRIT_DMG)
     RESULT_BONUS: str = _(ZhTwEnum.RESULT_BONUS)
 
+    BONUS_SKILL_DMG_ADDITION: str = (
+        f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.SKILL_DMG_ADDITION.value}"
+    )
     BONUS_MAGNIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.MAGNIFIER.value}"
     BONUS_AMPLIFIER: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.AMPLIFIER.value}"
+    BONUS_ADDITION: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ADDITION.value}"
     BONUS_HP_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP_P.value}"
     BONUS_HP: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.HP.value}"
     BONUS_ATK_P: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ATK_P.value}"
@@ -82,10 +86,6 @@ class TemplateColumnEnum(str, Enum):
     BONUS_DEF: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.DEF.value}"
     BONUS_CRIT_RATE: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.CRIT_RATE.value}"
     BONUS_CRIT_DMG: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.CRIT_DMG.value}"
-    BONUS_ADDITION: str = f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.ADDITION.value}"
-    BONUS_SKILL_DMG_ADDITION: str = (
-        f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.SKILL_DMG_ADDITION.value}"
-    )
     BONUS_IGNORE_DEF: str = (
         f"{TEMPLATE_BONUS}{TemplateRowBuffTypeEnum.IGNORE_DEF.value}"
     )
