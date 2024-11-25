@@ -4,7 +4,7 @@ from typing import Dict, Optional
 from pydantic import BaseModel
 
 from ww.model.resonator import ResonatorName
-from ww.utils.number import get_number
+from ww.utils.number import get_number, to_number_string
 
 
 def get_damage_string_with_percentage(
@@ -80,3 +80,31 @@ class TemplateDamageDistributionModel(BaseModel):
 
     def get_duration_2(cls) -> Decimal:
         return get_number(cls.duration_2)
+
+    def get_min_dps(cls) -> Optional[Decimal]:
+        if not cls.damage or not cls.duration_1 or not cls.duration_2:
+            return None
+        durations = [cls.get_duration_1(), cls.get_duration_2()]
+        duration = max(durations)
+        if duration >= Decimal(0.0):
+            return cls.damage / duration
+
+    def get_min_dps_string(cls) -> Optional[str]:
+        m = cls.get_min_dps()
+        if m is None:
+            return None
+        return to_number_string(m)
+
+    def get_max_dps(cls) -> Optional[Decimal]:
+        if not cls.damage or not cls.duration_1 or not cls.duration_2:
+            return None
+        durations = [cls.get_duration_1(), cls.get_duration_2()]
+        duration = min(durations)
+        if duration >= Decimal(0.0):
+            return cls.damage / duration
+
+    def get_max_dps_string(cls) -> Optional[str]:
+        m = cls.get_max_dps()
+        if m is None:
+            return None
+        return to_number_string(m)

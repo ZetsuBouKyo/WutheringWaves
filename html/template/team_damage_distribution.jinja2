@@ -6,9 +6,9 @@
         {% if damage_distribution.template_id %}
         <div class="title">{{damage_distribution.template_id}} | {{damage_distribution.monster_id}}</div>
         {% endif %}
-        {% if damage_distribution.duration_1 and damage_distribution.duration_2 %}
-        <div class="dps">DPS: {{to_number_string(damage_distribution.damage / damage_distribution.get_duration_2())}} ~
-          {{to_number_string(damage_distribution.damage / damage_distribution.get_duration_1())}}
+        {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
+        <div class="dps">
+          DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
           ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
         </div>
         {% endif %}
