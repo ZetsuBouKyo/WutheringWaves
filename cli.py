@@ -6,6 +6,7 @@ import PyInstaller.__main__
 import tomli
 from typer import Option, Typer
 
+from ww.commands.analyze import app as analyze
 from ww.commands.crawl import app as crawl
 from ww.commands.custom import app as custom
 from ww.commands.resonator import app as resonator
@@ -17,6 +18,7 @@ The CLI for ZetsuBou
 
 app = Typer(rich_markup_mode="rich", help=_help)
 
+app.add_typer(analyze)
 app.add_typer(crawl)
 app.add_typer(custom)
 app.add_typer(resonator)
