@@ -91,6 +91,7 @@ class ZhTwEnum(str, Enum):
     CALCULATE: str = "計算"
     COMMENT: str = "註解"
     DELETE: str = "刪除"
+    ADD_BUFFS: str = "增加增益"
     DELETE_BUFFS: str = "刪除增益"
     EXPORT_IMAGE_HEIGHT = "輸出圖片高度"
     EXPORT_IMAGES: str = "輸出圖片"

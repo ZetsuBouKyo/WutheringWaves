@@ -537,6 +537,53 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
         dialog.done(1)
 
+    def add_rows_buffs(
+        self,
+        rows: List[int],
+        dialog: QDialog,
+        table: QDraggableTableWidget,
+    ):
+        # Convert List[str] to Dict[str, TemplateBuffTableRowModel]
+        new_buffs_data = table.get_data()
+        new_buffs = {}
+        for d in new_buffs_data:
+            buff = TemplateBuffTableRowModel(
+                name=d[0], type=d[1], value=d[2], stack=d[3], duration=d[4]
+            )
+            new_buffs[d[0]] = buff
+
+        for row in rows:
+            col = self.get_column_id(TemplateColumnEnum.BONUS_BUFF.value)
+            btn: QDataPushButton = self.cellWidget(row, col)
+            if not btn:
+                continue
+
+            old_buffs = self.ouput_methods[row].buffs
+            old_buff_names = set()
+
+            # Update the buffs
+            for i in range(len(old_buffs)):
+                buff_name = self.ouput_methods[row].buffs[i].name
+                old_buff_names.add(buff_name)
+                new_buff = new_buffs.get(buff_name, None)
+                if new_buff is None:
+                    continue
+                self.ouput_methods[row].buffs[i] = deepcopy(new_buff)
+
+            # Add the buffs
+            for buff_name, new_buff in new_buffs.items():
+                if not new_buff:
+                    continue
+                self.ouput_methods[row].buffs.append(deepcopy(new_buff))
+
+            updated_buffs = self.ouput_methods[row].buffs
+            btn.set_data(updated_buffs)
+
+            # Update following cells
+            self.update_row_buffs(row, updated_buffs)
+
+        dialog.done(1)
+
     def set_row_labels(
         self,
         row: int,
@@ -729,7 +776,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
         layout = QVBoxLayout()
 
         dialog = QDialog(self)
-        dialog.setWindowTitle("Wuthering Waves Template Buff")
+        dialog.setWindowTitle("Wuthering Waves Comment")
         dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
         dialog.setGeometry(x0, y0, width, height)
 
@@ -811,11 +858,14 @@ class QTemplateOutputMethodTab(QWidget):
         self.layout = QVBoxLayout()
 
         self.q_btns_layout = QHBoxLayout()
-        self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
-        self.q_calculate_btn.clicked.connect(self.calculate)
+        self.q_add_buffs_btn = QPushButton(_(ZhTwEnum.ADD_BUFFS))
+        self.q_add_buffs_btn.clicked.connect(self.add_buffs)
         self.q_delete_buffs_btn = QPushButton(_(ZhTwEnum.DELETE_BUFFS))
         self.q_delete_buffs_btn.clicked.connect(self.delete_buffs)
+        self.q_calculate_btn = QPushButton(_(ZhTwEnum.CALCULATE))
+        self.q_calculate_btn.clicked.connect(self.calculate)
         self.q_btns_layout.addStretch()
+        self.q_btns_layout.addWidget(self.q_add_buffs_btn)
         self.q_btns_layout.addWidget(self.q_delete_buffs_btn)
         self.q_btns_layout.addWidget(self.q_calculate_btn)
 
@@ -828,6 +878,52 @@ class QTemplateOutputMethodTab(QWidget):
 
     def calculate(self):
         self.q_output_method_table.calculate()
+
+    def add_buffs(self):
+        rows = self.q_output_method_table.get_selected_rows()
+        if len(rows) == 0:
+            return
+
+        buffs = self.q_output_method_table.get_default_buffs()
+
+        width = 1200
+        height = 600
+        center = QDesktopWidget().availableGeometry().center()
+        x0 = center.x() - width // 2
+        y0 = center.y() - height // 2
+
+        layout = QVBoxLayout()
+
+        dialog = QDialog(self)
+        dialog.setWindowTitle("Wuthering Waves Template Buff")
+        dialog.setWindowFlags(dialog.windowFlags() & ~Qt.WindowContextHelpButtonHint)
+        dialog.setGeometry(x0, y0, width, height)
+
+        data = [["", "", "", "", ""]]
+
+        column_names = [e.value for e in TemplateBuffTableColumnEnum]
+        table = QTemplateTabOutputMethodBuffTable(
+            len(data),
+            len(column_names),
+            data=data,
+            column_names=column_names,
+            buffs=buffs,
+        )
+
+        btns_layout = QHBoxLayout()
+        ok_btn = QDataPushButton("OK")
+        ok_btn.clicked.connect(
+            partial(self.q_output_method_table.add_rows_buffs, rows, dialog, table)
+        )
+        ok_btn.setFixedHeight(40)
+        btns_layout.addStretch()
+        btns_layout.addWidget(ok_btn)
+
+        layout.addWidget(table)
+        layout.addLayout(btns_layout)
+
+        dialog.setLayout(layout)
+        dialog.exec_()
 
     def delete_buffs(self):
         self.q_output_method_table.delete_buffs()
