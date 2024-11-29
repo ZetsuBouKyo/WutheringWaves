@@ -55,9 +55,10 @@ class QAutoCompleteComboBox(QComboBox):
             new_options = self.getOptions()
 
             self.clear()
-            for i, option in enumerate(new_options):
-                self.addItem(option, option)
-                self.setItemData(i, option, Qt.ToolTipRole)
+            if new_options is not None:
+                for i, option in enumerate(new_options):
+                    self.addItem(option, option)
+                    self.setItemData(i, option, Qt.ToolTipRole)
 
         self.setCurrentText(text)
 
