@@ -213,7 +213,7 @@ class QTemplateExportTab(QWidget):
         # Label
         label = self.q_damage_distribution_combobox.currentText()
         if label.strip() == "":
-            labels = None
+            labels = [""]
         else:
             labels = [label]
 

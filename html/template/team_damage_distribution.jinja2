@@ -1,0 +1,195 @@
+<div class="container">
+  <div class="template">
+    <div class="barh">
+      {% for damage_distribution in damage_distributions %}
+      <div class="rows {{'rows-margin-bottom' if loop.index < damage_distributions|length}}">
+        {% if damage_distribution.template_id %}
+        <div class="title">{{damage_distribution.template_id}} | {{damage_distribution.monster_id}}</div>
+        {% endif %}
+        {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
+        <div class="dps">
+          DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
+          ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
+        </div>
+        {% endif %}
+        {% for resonator_name in resonator_names %}
+        <div class="row">
+          <div class="resonator-icon">
+            <img src="{{get_resonator_icon_fpath(resonator_name)}}" />
+          </div>
+          <div class="resonator-damage-container">
+            {% set element = get_element_class_name(resonators.get(resonator_name, None).element) %}
+            {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage %}
+            {% set in_out = 0.3 %}
+            {% set black_elements = ['aero', 'spectro'] %}
+            <div class="resonator-damage bg-{{element}}"
+              style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
+              {% if percentage >= in_out %}
+              <div
+                class="damage-value-in {{'damage-value-in-black' if element in black_elements else 'damage-value-in-white'}}">
+                {{resonator_name}}
+                {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+              </div>
+              {% endif %}
+            </div>
+            {% if percentage < in_out %} <div class="damage-value-out">{{resonator_name}}
+              {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+  <div class="comment"></div>
+</div>
+</div>
+
+<style>
+  body {
+    color: rgb(240, 240, 240);
+    width: 1900px;
+  }
+
+  div.container {
+    width: 1280px;
+    background-color: rgb(8, 12, 20);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    color: rgb(16, 24, 40);
+    border: 4px solid;
+  }
+
+  div.template {
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.title {
+    margin-bottom: 8px;
+    display: flex;
+    color: rgb(240, 240, 240);
+    font-size: 24px;
+  }
+
+  div.dps {
+    margin-bottom: 8px;
+    display: flex;
+    color: rgb(240, 240, 240);
+    font-size: 20px;
+  }
+
+  div.comment {
+    display: flex;
+  }
+
+  div.barh {
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0px;
+  }
+
+  div.rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  div.rows-margin-bottom {
+    margin-bottom: 24px;
+  }
+
+  div.row {
+    display: flex;
+    flex-direction: row;
+    height: 68px;
+    align-items: center;
+  }
+
+  div.resonator-icon {
+    display: flex;
+    height: 64px;
+    margin-right: 8px;
+  }
+
+  img.resonator-icon {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  div.resonator-damage-container {
+    display: flex;
+    flex-direction: row;
+    border-left: 2px solid rgb(240, 240, 240);
+    width: 960px;
+    height: 100%;
+    align-items: center;
+    font-size: 24px;
+  }
+
+  div.resonator-damage {
+    border-radius: 0px 8px 8px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 80%;
+  }
+
+  div.damage-value-in {
+    margin-left: auto;
+    margin-right: 8px;
+    display: flex;
+  }
+
+  div.damage-value-out {
+    margin-left: 8px;
+    display: flex;
+    color: rgb(240, 240, 240);
+  }
+
+  .margin-left {
+    margin-left: 12px;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .margin-right {
+    margin-right: 12px;
+  }
+
+  .damage-value-in-black {
+    color: rgb(24, 24, 24);
+  }
+
+  .damage-value-in-white {
+    color: rgb(240, 240, 240);
+  }
+
+  .bg-glacio {
+    background-color: rgb(72, 172, 252);
+  }
+
+  .bg-fusion {
+    background-color: rgb(248, 116, 76);
+  }
+
+  .bg-electro {
+    background-color: rgb(184, 108, 252);
+  }
+
+  .bg-aero {
+    background-color: rgb(88, 252, 180);
+  }
+
+  .bg-spectro {
+    background-color: rgb(255, 228, 108);
+  }
+
+  .bg-havoc {
+    background-color: rgb(208, 140, 180);
+  }
+</style>
