@@ -1,5 +1,4 @@
 from enum import Enum
-from pathlib import Path
 
 from ww.crud.template import get_template_label_names
 from ww.locale import ZhTwEnum, _
@@ -10,7 +9,7 @@ from ww.ui.table.cell.combobox import (
     set_resonator_primary_key_combobox,
     set_template_primary_key_combobox,
 )
-from ww.utils.pd import get_empty_df, safe_get_df
+from ww.utils.pd import get_empty_df
 
 
 class QResonatorDamageCompareTableEnum(str, Enum):

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Any, Optional
 
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QColor
@@ -19,8 +19,13 @@ def set_item(
 
 
 def set_uneditable_cell(
-    table: QTableWidget, row: int, col: int, value: str
+    table: QTableWidget, row: int, col: int, value: Any
 ) -> QTableWidgetItem:
+    if value is None:
+        value = ""
+    elif type(value) is not str:
+        value = str(value)
+
     item_color = QColor(*UNEDITABLE_CELL_COLOR)
     item = QTableWidgetItem(value)
     item.setBackgroundColor(item_color)
