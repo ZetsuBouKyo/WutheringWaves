@@ -1,10 +1,11 @@
+from collections import OrderedDict
 from decimal import Decimal
 from typing import Dict, Optional
 
 from pydantic import BaseModel
 
 from ww.model.resonator import ResonatorName
-from ww.utils.number import get_number, to_number_string
+from ww.utils.number import get_number, to_number_string, to_percentage_str
 
 
 def get_damage_string_with_percentage(
@@ -66,7 +67,9 @@ class TemplateDamageDistributionModel(BaseModel):
     damage_no_crit: Decimal = Decimal("0.0")
     damage_crit: Decimal = Decimal("0.0")
 
-    resonators: Dict[ResonatorName, TemplateResonatorDamageDistributionModel] = {}
+    resonators: Dict[ResonatorName, TemplateResonatorDamageDistributionModel] = (
+        OrderedDict()
+    )
 
     def get_damage_string_with_percentage(cls, resonator_name: str) -> str:
         resonator = cls.resonators.get(resonator_name, None)
@@ -108,3 +111,17 @@ class TemplateDamageDistributionModel(BaseModel):
         if m is None:
             return None
         return to_number_string(m)
+
+    def get_resonator_max_dps_percentage_string(cls, resonator_name: str) -> str:
+        resonator = cls.resonators.get(resonator_name, None)
+        if resonator is None or not cls.damage:
+            return ""
+        return to_percentage_str(resonator.damage / cls.damage)
+
+    def get_resonator_max_dps(cls, resonator_name: str) -> Optional[Decimal]:
+        resonator = cls.resonators.get(resonator_name, None)
+        if resonator is None or not cls.damage:
+            return None
+        max_dps = cls.get_max_dps()
+        dps = max_dps * resonator.damage / cls.damage
+        return dps

@@ -17,7 +17,7 @@ from ww.crud.team_damage_compare import (
     get_team_damage_compare_ids,
     save_team_damage_compare,
 )
-from ww.html.template import export_team_damage_distribution_as_png
+from ww.html.template import export_team_damage_compare_as_png
 from ww.locale import ZhTwEnum, _
 from ww.model.damage_compare import DamageCompareModel
 from ww.ui.calc.team_compare.table import (
@@ -217,15 +217,22 @@ class QTeamDamageCompare(QWidget):
         damage_compare_table_data = self.q_damage_compare_table.get_current_data()
         results = []
         templates = set()
-        for resonator_id_1, monster_id, template_id, label in damage_compare_table_data:
+        for (
+            resonator_id_1,
+            resonator_id_2,
+            resonator_id_3,
+            monster_id,
+            template_id,
+            label,
+        ) in damage_compare_table_data:
             labels = [label]
 
             damage = Damage(monster_id=monster_id)
             damage_distributions = damage.get_damage_distributions_with_labels(
                 template_id,
                 resonator_id_1,
-                "",
-                "",
+                resonator_id_2,
+                resonator_id_3,
                 monster_id=monster_id,
                 labels=labels,
             )
@@ -234,10 +241,4 @@ class QTeamDamageCompare(QWidget):
 
             templates.add((template_id, label))
 
-        # export_resonator_damage_compare_as_png(id, results)
-
-        # export_home_path = get_export_resonator_damage_compare_home_path(id)
-        # for template_id, label in templates:
-        #     export_html_template_output_methods_as_png_by_template_id(
-        #         template_id, export_home_path, labels=[label]
-        #     )
+        export_team_damage_compare_as_png(id, results)

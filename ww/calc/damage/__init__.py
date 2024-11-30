@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from copy import deepcopy
 from typing import Dict, List, Optional
 
@@ -131,7 +132,7 @@ class Damage:
         self._monster_def = get_number(defense)
 
     def get_resonator_name_to_id(self, resonator_ids: str = []) -> Dict[str, str]:
-        table = {}
+        table = OrderedDict()
 
         for resonator_id in resonator_ids:
             if not resonator_id:
@@ -142,7 +143,7 @@ class Damage:
             if resonator_name is None:
                 continue
             if table.get(resonator_name, None) is not None:
-                return {}
+                return OrderedDict()
             table[resonator_name] = resonator_id
         return table
 
@@ -633,6 +634,7 @@ class Damage:
             for label in _labels:
                 if labels is not None and label not in labels:
                     continue
+
                 if damage_distributions.get(label, None) is None:
                     damage_distributions[label] = TemplateDamageDistributionModel()
 
@@ -659,22 +661,20 @@ class Damage:
                         damage_distributions[label].duration_1 = template.duration_1
                         damage_distributions[label].duration_2 = template.duration_2
 
-                resonator_name = row.resonator_name
-                resonator = damage_distributions[label].resonators.get(
-                    resonator_name, None
-                )
-                if resonator is None:
-                    resonator_id = resonator_name_to_id.get(resonator_name, None)
-                    if resonator_id is None:
-                        continue
-                    damage_distributions[label].template_id = template_id
-                    damage_distributions[label].monster_id = monster_id
-                    damage_distributions[label].resonators[resonator_name] = (
-                        TemplateResonatorDamageDistributionModel(
-                            resonator_name=resonator_name,
-                            resonator_id=resonator_id,
+                    for resonator_name in resonator_name_to_id.keys():
+                        resonator_id = resonator_name_to_id.get(resonator_name, None)
+                        if resonator_id is None:
+                            continue
+                        damage_distributions[label].template_id = template_id
+                        damage_distributions[label].monster_id = monster_id
+                        damage_distributions[label].resonators[resonator_name] = (
+                            TemplateResonatorDamageDistributionModel(
+                                resonator_name=resonator_name,
+                                resonator_id=resonator_id,
+                            )
                         )
-                    )
+
+                resonator_name = row.resonator_name
 
                 damage = get_number(row.damage)
                 damage_no_crit = get_number(row.damage_no_crit)
