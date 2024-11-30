@@ -10,9 +10,6 @@ from ww.ui.table.cell.combobox import (
 )
 from ww.utils.pd import get_empty_df, safe_get_df
 
-TEAM_DAMAGE_COMPARE_TABLE_HOME_PATH = "./cache/v1/zh_tw/custom/team_damage_compare"
-TEAM_DAMAGE_COMPARE_TABLE_CACHE_FNAME = "default.tsv"
-
 
 class QTeamDamageCompareTableEnum(str, Enum):
     RESONATOR_ID_1: str = _(ZhTwEnum.RESONATOR_ID_1)
@@ -24,17 +21,11 @@ class QTeamDamageCompareTableEnum(str, Enum):
 
 class QTeamDamageCompareTable(QDraggableTableWidget):
 
-    def __init__(
-        self,
-        fname: str = TEAM_DAMAGE_COMPARE_TABLE_CACHE_FNAME,
-    ):
-        _path = Path(TEAM_DAMAGE_COMPARE_TABLE_HOME_PATH) / fname
+    def __init__(self):
+
         self.column_names = [e.value for e in QTeamDamageCompareTableEnum]
 
-        if _path is not None:
-            self.df = safe_get_df(_path, self.column_names)
-        else:
-            self.df = get_empty_df(self.column_names)
+        self.df = get_empty_df(self.column_names)
 
         data = self.df.values.tolist()
         rows = len(data)

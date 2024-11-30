@@ -26,7 +26,7 @@ from ww.html.template.resonator_damage_compare import (
 )
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.resonator_damage_compare import ResonatorDamageCompareModel
+from ww.model.damage_compare import DamageCompareModel
 from ww.ui.calc.resonator_compare.table import (
     QResonatorDamageCompareTable,
     QResonatorDamageCompareUneditableTable,
@@ -113,7 +113,7 @@ class QResonatorDamageCompare(QWidget):
                 return
 
         data = self.q_damage_compare_table.get_dict_data()
-        data_model = ResonatorDamageCompareModel(id=id, data=data)
+        data_model = DamageCompareModel(id=id, data=data)
 
         save_resonator_damage_compare(data_model)
 

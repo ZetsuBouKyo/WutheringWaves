@@ -12,11 +12,6 @@ from ww.ui.table.cell.combobox import (
 )
 from ww.utils.pd import get_empty_df, safe_get_df
 
-RESONATOR_DAMAGE_COMPARE_1_TABLE_HOME_PATH = (
-    "./cache/v1/zh_tw/custom/resonator_damage_compare"
-)
-RESONATOR_DAMAGE_COMPARE_1_TABLE_CACHE_FNAME = "default.tsv"
-
 
 class QResonatorDamageCompareTableEnum(str, Enum):
     RESONATOR_ID_1: str = _(ZhTwEnum.RESONATOR_ID_1)
@@ -27,17 +22,10 @@ class QResonatorDamageCompareTableEnum(str, Enum):
 
 class QResonatorDamageCompareTable(QDraggableTableWidget):
 
-    def __init__(
-        self,
-        fname: str = RESONATOR_DAMAGE_COMPARE_1_TABLE_CACHE_FNAME,
-    ):
-        _path = Path(RESONATOR_DAMAGE_COMPARE_1_TABLE_HOME_PATH) / fname
+    def __init__(self):
         self.column_names = [e.value for e in QResonatorDamageCompareTableEnum]
 
-        if _path is not None:
-            self.df = safe_get_df(_path, self.column_names)
-        else:
-            self.df = get_empty_df(self.column_names)
+        self.df = get_empty_df(self.column_names)
 
         data = self.df.values.tolist()
         rows = len(data)
