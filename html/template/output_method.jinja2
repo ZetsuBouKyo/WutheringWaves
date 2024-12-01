@@ -1,4 +1,9 @@
 <div class="container">
+  {% if template_id %}
+  <div class="rows margin-bottom template-id">
+    {{template_id}}
+  </div>
+  {% endif %}
   {% for output_method in output_methods %}
   <div class="rows {{'margin-bottom' if loop.index < output_methods|length}}">
     <div class="left-row">
@@ -36,6 +41,12 @@
   body {
     color: rgb(240, 240, 240);
     width: 1900px;
+  }
+
+  div.template-id {
+    font-size: 24px;
+    color: rgb(240, 240, 240);
+    margin-bottom: 24px;
   }
 
   div.resonator-icon {

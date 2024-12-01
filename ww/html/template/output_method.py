@@ -131,6 +131,7 @@ def export_html_template_output_methods_as_png(
     right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
     for fname_suffix, rows in output_methods.items():
         html_str = template.render(
+            template_id=template_id,
             output_methods=rows,
             ZhTwEnum=ZhTwEnum,
             _=_,
@@ -169,6 +170,7 @@ def export_html_template_output_methods_as_png_by_template_id(
     right_arrow_src = get_local_file_url(RIGHT_ARROW_ICON_FPATH)
     for fname_suffix, rows in output_methods.items():
         html_str = html_template.render(
+            template_id=template_id,
             output_methods=rows,
             ZhTwEnum=ZhTwEnum,
             _=_,
