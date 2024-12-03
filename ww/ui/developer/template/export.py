@@ -12,6 +12,7 @@ from PySide2.QtWidgets import (
 
 from ww.calc.damage import Damage
 from ww.html.template import (
+    export_detailed_calculation_as_png,
     export_echo_as_png,
     export_html_template_output_methods_as_png,
     export_html_template_resonator_model_as_png,
@@ -79,6 +80,9 @@ class QTemplateExportTab(QWidget):
         # Damage distribution
         self.init_damage_distribution(self.layout)
 
+        # Detailed calculation
+        self.init_detailed_calculation(self.layout)
+
         self.layout.addStretch()
         self.setLayout(self.layout)
 
@@ -145,6 +149,44 @@ class QTemplateExportTab(QWidget):
         parent_layout.addLayout(layout)
 
         self.q_damage_distribution_combobox = suffix_combobox
+
+    def init_detailed_calculation(self, parent_layout: QVBoxLayout):
+        layout = QHBoxLayout()
+        btn = QPushButton(_(ZhTwEnum.EXPORT_DETAILED_CALCULATION))
+        btn.clicked.connect(self.export_detailed_calculation)
+        btn.setFixedWidth(self._btn_width)
+        btn.setFixedHeight(self._btn_height)
+
+        # row
+        row_1_label_1 = QLabel(_(ZhTwEnum.NO))
+        row_1_label_1.setFixedWidth(30)
+        row_1_label_1.setFixedHeight(40)
+        row_1_line = QLineEdit("")
+        row_1_line.setFixedWidth(100)
+        row_1_line.setFixedHeight(40)
+
+        row_2_label_1 = QLabel(_(ZhTwEnum.TO))
+        row_2_label_1.setFixedWidth(30)
+        row_2_label_1.setFixedHeight(40)
+        row_2_line = QLineEdit("")
+        row_2_line.setFixedWidth(100)
+        row_2_line.setFixedHeight(40)
+        row_2_label_2 = QLabel(_(ZhTwEnum.ROW))
+        row_2_label_2.setFixedWidth(30)
+        row_2_label_2.setFixedHeight(40)
+
+        layout.addWidget(btn)
+        layout.addWidget(row_1_label_1)
+        layout.addWidget(row_1_line)
+        layout.addWidget(row_2_label_1)
+        layout.addWidget(row_2_line)
+        layout.addWidget(row_2_label_2)
+        layout.addStretch()
+
+        parent_layout.addLayout(layout)
+
+        self.q_detailed_calculation_row_1 = row_1_line
+        self.q_detailed_calculation_row_2 = row_2_line
 
     def export_resonator_images(self, is_progress: bool = False):
         template: TemplateModel = self._parent.get_template()
@@ -247,6 +289,41 @@ class QTemplateExportTab(QWidget):
 
         if is_progress:
             self._parent.q_progress_bar.set_message(_(ZhTwEnum.IMAGE_EXPORT_SUCCESSFUL))
+
+    def export_detailed_calculation(self):
+        row_1 = self.q_detailed_calculation_row_1.text()
+        row_2 = self.q_detailed_calculation_row_2.text()
+
+        if not row_1.isdigit() or not row_2.isdigit():
+            return
+
+        row_1 = int(row_1)
+        row_2 = int(row_2)
+
+        if row_1 > row_2 or row_1 < 1:
+            return
+
+        # Resonators
+        test_resonators: Dict[str, str] = (
+            self.q_template_basic_tab.get_test_resonators()
+        )
+        test_resonator_ids = list(test_resonators.values())
+        resonator_ids = ["", "", ""]
+        for i in range(len(test_resonators)):
+            resonator_ids[i] = test_resonator_ids[i]
+
+        template: TemplateModel = self._parent.get_template()
+        damage = Damage(monster_id=template.monster_id)
+
+        calculated_rows = damage.get_calculated_rows(
+            template.id,
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
+            template.monster_id,
+            is_default=True,
+        )
+        export_detailed_calculation_as_png(template.id, calculated_rows, row_1, row_2)
 
     def export_all_images(self):
         self.export_resonator_images()

@@ -308,13 +308,24 @@ class Damage:
         calculated_row = CalculatedTemplateRowModel()
         calculated_row.labels = row.labels
         calculated_row.resonator_name = resonator_name
+        calculated_row.hits = row.hit
+        calculated_row.real_dmg_crit = row.real_dmg_crit
+        calculated_row.real_dmg_no_crit = row.real_dmg_no_crit
 
         manual_bonus_type = get_string(row.skill_bonus_type)
 
         resonator_level = resonator.get_level()
 
+        # Action
+        calculated_row.action = row.action
+
+        # Time
+        calculated_row.time_start = row.time_start
+        calculated_row.time_end = row.time_end
+
         # Buffs
         buffs = get_buffs(row)
+        calculated_row.buffs = row.buffs
 
         # Skill
         template_row_skill_id = row.skill_id
@@ -515,8 +526,6 @@ class Damage:
             calculated_element_bonus + calculated_skill_bonus + template_bonus
         )
 
-        calculated_row.result_bonus = result_bonus
-
         # Other Bonus
         bonus_magnifier = buffs.bonus_magnifier
         bonus_amplifier = buffs.bonus_amplifier
@@ -541,15 +550,29 @@ class Damage:
             return
 
         region_skill_dmg = skill_dmg + bonus_skill_dmg_addition
+        calculated_row.resonator_skill_dmg = skill_dmg
+        calculated_row.resonator_skill_dmg_addition = bonus_skill_dmg_addition
+
         region_bonus_magnifier = get_number("1.0") + bonus_magnifier
+        calculated_row.result_magnifier = bonus_magnifier
+
         region_bonus_amplifier = get_number("1.0") + bonus_amplifier
+        calculated_row.result_amplifier = bonus_amplifier
+
         region_bonus = get_number("1.0") + result_bonus
+        calculated_row.result_bonus = result_bonus
+
         region_def = (get_number("800.0") + get_number("8.0") * resonator_level) / (
             get_number("800.0")
             + get_number("8.0") * resonator_level
             + monster_def * (1 - bonus_ignore_def)
         )
+        calculated_row.resonator_level = resonator_level
+        calculated_row.result_ignore_def = bonus_ignore_def
+
         region_bonus_reduce_res = get_number("1.0") + bonus_reduce_res - monster_res
+        calculated_row.result_reduce_res = bonus_reduce_res
+
         region_crit_dmg = result_crit_dmg
         region_crit = (
             result_crit_dmg * result_crit_rate + get_number("1.0") - result_crit_rate
@@ -579,6 +602,28 @@ class Damage:
 
         return calculated_row
 
+    def get_default_row(self, row: TemplateRowModel) -> CalculatedTemplateRowModel:
+        resonator_name = row.resonator_name
+
+        calculated_row = CalculatedTemplateRowModel()
+        calculated_row.labels = row.labels
+        calculated_row.resonator_name = resonator_name
+        calculated_row.hits = row.hit
+        calculated_row.real_dmg_crit = row.real_dmg_crit
+        calculated_row.real_dmg_no_crit = row.real_dmg_no_crit
+
+        # Action
+        calculated_row.action = row.action
+
+        # Time
+        calculated_row.time_start = row.time_start
+        calculated_row.time_end = row.time_end
+
+        # Buffs
+        calculated_row.buffs = row.buffs
+
+        return calculated_row
+
     def get_calculated_rows(
         self,
         template_id: str,
@@ -586,6 +631,7 @@ class Damage:
         r_id_2: str,
         r_id_3: str,
         monster_id: Optional[str] = None,
+        is_default: bool = False,
     ) -> List[CalculatedTemplateRowModel]:
         self.init()
         if monster_id is not None:
@@ -608,6 +654,10 @@ class Damage:
             calculated_row = self.get_calculated_row(resonator_id, row)
             if calculated_row is not None:
                 calculated_rows.append(calculated_row)
+            elif is_default:
+                calculated_row = self.get_default_row(row)
+                calculated_rows.append(calculated_row)
+
         return calculated_rows
 
     def extract_damage_distributions_from_rows_with_labels(

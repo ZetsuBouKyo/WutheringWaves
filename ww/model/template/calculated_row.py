@@ -9,6 +9,7 @@ from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.element import ElementEnum
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
+from ww.model.template.buff_table import TemplateBuffTableRowModel
 
 
 class CalculatedTemplateColumnEnum(str, Enum):
@@ -53,12 +54,15 @@ class CalculatedTemplateRowModel(BaseModel):
     resonator_name: str = ""
     skill_id: str = ""
 
+    resonator_level: Optional[ElementEnum] = None
+
     resonator_skill_level: str = ""
     resonator_skill_element: Optional[ElementEnum] = None
     resonator_skill_base_attr: Optional[SkillBaseAttrEnum] = None
     resonator_skill_type: Optional[ResonatorSkillTypeEnum] = None
     resonator_skill_type_bonus: Optional[SkillBonusTypeEnum] = None
     resonator_skill_dmg: Optional[Decimal] = None
+    resonator_skill_dmg_addition: Optional[Decimal] = None
 
     echo_element: Optional[ElementEnum] = None
     echo_skill_base_attr: Optional[SkillBaseAttrEnum] = None
@@ -83,13 +87,27 @@ class CalculatedTemplateRowModel(BaseModel):
     result_def: Optional[Decimal] = None
     result_def_addition: Optional[Decimal] = None
     result_def_p: Optional[Decimal] = None
+
     result_crit_rate: Optional[Decimal] = None
     result_crit_dmg: Optional[Decimal] = None
+
+    result_magnifier: Optional[Decimal] = None
+    result_amplifier: Optional[Decimal] = None
     result_bonus: Optional[Decimal] = None
+    result_ignore_def: Optional[Decimal] = None
+    result_reduce_res: Optional[Decimal] = None
 
     monster_level: Optional[Decimal] = None
     monster_def: Optional[Decimal] = None
     monster_res: Optional[Decimal] = None
+
+    hits: str = ""
+    real_dmg_no_crit: str = ""
+    real_dmg_crit: str = ""
+    action: str = ""
+    time_start: str = ""
+    time_end: str = ""
+    buffs: List[TemplateBuffTableRowModel] = []
 
     # @field_validator(
     #     "resonator_skill_element", "echo_element", "result_element", mode="before"

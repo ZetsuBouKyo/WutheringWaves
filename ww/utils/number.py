@@ -29,7 +29,19 @@ def get_number(n: Optional[Number]) -> Decimal:
 
 
 def to_number_string(n) -> str:
+    if not n:
+        return ""
+    if type(n) is str:
+        n = Decimal(n)
     return f"{n:,.2f}"
+
+
+def to_trimmed_number_string(n) -> str:
+    if not n:
+        return ""
+    if type(n) is str:
+        n = Decimal(n)
+    return np.format_float_positional(n, 6, trim="-")
 
 
 def get_string(n: Optional[str]) -> Optional[str]:

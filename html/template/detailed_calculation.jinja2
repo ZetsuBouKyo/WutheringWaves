@@ -1,0 +1,309 @@
+<div class="container">
+  {% if template_id %}
+  <div class="rows margin-bottom template-id">
+    {{template_id}}
+  </div>
+  {% endif %}
+  <div class="rows">
+    {% for row in rows %}
+    {% if row.resonator_name %}
+    <div class="row margin-bottom">
+      <div class="resonator-icon">
+        <img class="resonator-icon" src="{{get_resonator_icon_fpath(row.resonator_name)}}" />
+      </div>
+      <div class="row-text">
+        {{row.resonator_name}}
+      </div>
+      <div class="row-text row-text-w100">
+        {{_(ZhTwEnum.NO)}}{{i_0_indexed + loop.index}}{{_(ZhTwEnum.ROW)}}
+      </div>
+
+      {% if row.action %}
+      <div class="row-text">
+        {{row.action}}
+      </div>
+      {% else %}
+      <div class="row-text"></div>
+      {% endif %}
+
+      {% if row.skill_id %}
+      <div class="row-text row-text-w400">
+        {{row.skill_id}}
+      </div>
+      {% else %}
+      <div class="row-text row-text-w400"></div>
+      {% endif %}
+
+      {% if row.resonator_skill_type_bonus %}
+      <div class="row-text row-text-w150">
+        {{row.resonator_skill_type_bonus}}
+      </div>
+      {% else %}
+      <div class="row-text row-text-w150"></div>
+      {% endif %}
+
+      {% if row.hits %}
+      <div class="row-text row-text-w100">
+        {{row.hits}}{{_(ZhTwEnum.HIT)}}
+      </div>
+      {% else %}
+      <div class="row-text row-text-w100"></div>
+      {% endif %}
+    </div>
+    {% if row.real_dmg_no_crit or row.real_dmg_crit or row.damage_no_crit or row.damage_crit %}
+    <div class="row margin-bottom">
+      <table>
+        <tr>
+          <td class="row-text-w150">{{_(ZhTwEnum.REAL_DMG_NO_CRIT)}}</td>
+          <td class="row-text-w150">{{to_number_string(row.real_dmg_no_crit)}}</td>
+          <td class="row-text-w150 tr-border-left">{{_(ZhTwEnum.CALCULATED_DMG_NO_CRIT)}}</td>
+          <td class="row-text-w150">{{to_number_string(row.damage_no_crit)}}</td>
+          <td class="row-text-w150 tr-border-left"> {{_(ZhTwEnum.REAL_DMG_CRIT)}}</td>
+          <td class="row-text-w150">{{to_number_string(row.real_dmg_crit)}}</td>
+          <td class="row-text-w150 tr-border-left">{{_(ZhTwEnum.CALCULATED_DMG_CRIT)}}</td>
+          <td class="row-text-w150">{{to_number_string(row.damage_crit)}}</td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+    {% if row.buffs|length > 0 %}
+    <div class="row margin-bottom">
+      <table>
+        <tr>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.BUFF_NAME)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.BUFF_TYPE)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.BUFF_VALUE)}}</td>
+        </tr>
+        {% for buff in row.buffs %}
+        <tr>
+          <td>{{buff.name}}</td>
+          <td>{{buff.type}}</td>
+          <td>{{buff.value}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+    {% if row.skill_id %}
+    <div class="row margin-bottom row-block">
+      <table>
+        <tr>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_BASE_ATTR)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_SKILL_DMG)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_MAGNIFIER)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_AMPLIFIER)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_BONUS)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_CRIT)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_DEF)}}</td>
+          <td class="tr-border-bottom">{{_(ZhTwEnum.REGION_RES)}}</td>
+        </tr>
+        <tr>
+          <td>{% if row.result_skill_base_attribute==SkillBaseAttrEnum.ATK.value %}
+            [{{to_trimmed_number_string(row.result_atk)}} × (1 + {{to_trimmed_number_string(row.result_atk_p)}}) +
+            {{to_trimmed_number_string(row.result_atk_addition)}}]
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.DEF.value %}
+            [{{to_trimmed_number_string(row.result_def)}} × (1 + {{to_trimmed_number_string(row.result_def_p)}}) +
+            {{to_trimmed_number_string(row.result_def_addition)}}]
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.HP.value %}
+            [{{to_trimmed_number_string(row.result_hp)}} × (1 + {{to_trimmed_number_string(row.result_hp_p)}}) +
+            {{to_trimmed_number_string(row.result_hp_addition)}}]
+            {% endif %}</td>
+          <td>
+            ×
+            {% if row.resonator_skill_dmg_addition %}
+            ({{to_trimmed_number_string(row.resonator_skill_dmg)}} +
+            {{to_trimmed_number_string(row.resonator_skill_dmg_addition)}})
+            {% else %}
+            {{to_trimmed_number_string(row.resonator_skill_dmg)}}
+            {% endif %}
+          </td>
+          <td>
+            ×
+            {% if row.result_magnifier %}
+            (1 + {{to_trimmed_number_string(row.result_magnifier)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+          <td>
+            ×
+            {% if row.result_amplifier %}
+            (1 + {{to_trimmed_number_string(row.result_amplifier)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+          <td>
+            ×
+            {% if row.result_bonus %}
+            (1 + {{to_trimmed_number_string(row.result_bonus)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+          <td>
+            ×
+            {{to_trimmed_number_string(row.result_crit_dmg)}}
+          </td>
+          <td>
+            ×
+            <div class="frac">
+              <span>800 + 8 × {{to_trimmed_number_string(row.resonator_level)}}</span>
+              <span class="symbol">/</span>
+              <span class="bottom">800 + 8 × {{to_trimmed_number_string(row.resonator_level)}} + [792 + (8 ×
+                {{to_trimmed_number_string(row.monster_level)}})]
+                {% if row.result_ignore_def %}
+                × (1 - {{to_trimmed_number_string(row.result_ignore_def)}})
+                {% endif %}
+              </span>
+            </div>
+          </td>
+          <td>
+            ×
+            {% if row.result_reduce_res %}
+            (1 - {{to_trimmed_number_string(row.monster_res)}} + {{to_trimmed_number_string(row.result_reduce_res)}})
+            {% else %}
+            (1 - {{to_trimmed_number_string(row.monster_res)}})
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+  body {
+    color: rgb(240, 240, 240);
+    width: 1900px;
+  }
+
+  table {
+    border-radius: 8px;
+    border: 2px rgb(100, 100, 100) solid;
+    width: 100%;
+    color: rgb(160, 160, 160);
+  }
+
+  td {
+    padding: 0px 16px;
+  }
+
+  .tr-border-left {
+    border-left: 2px rgb(40, 40, 40) solid;
+  }
+
+  .tr-border-bottom {
+    border-bottom: 2px rgb(40, 40, 40) solid;
+  }
+
+  .frac {
+    display: inline-block;
+    position: relative;
+    vertical-align: middle;
+    letter-spacing: 0.001em;
+    text-align: center;
+  }
+
+  .frac>span {
+    display: block;
+    padding: 0.1em;
+  }
+
+  .frac span.bottom {
+    border-top: thin solid rgb(240, 240, 240);
+  }
+
+  .frac span.symbol {
+    display: none;
+  }
+
+  div.template-id {
+    font-size: 24px;
+    color: rgb(240, 240, 240);
+    margin-bottom: 24px;
+  }
+
+  div.resonator-icon {
+    display: flex;
+    height: 48px;
+    object-fit: contain;
+    padding: 4px;
+  }
+
+  img.resonator-icon {
+    height: 100%;
+    object-fit: contain;
+  }
+
+  div.container {
+    width: 1280px;
+    background-color: rgb(8, 12, 20);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    color: rgb(16, 24, 40);
+    border: 4px solid;
+  }
+
+  .rows {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .row-block {
+    display: block;
+    color: rgb(240, 240, 240);
+  }
+
+  .row-text {
+    display: flex;
+    width: 200px;
+    font-size: 24px;
+    color: rgb(240, 240, 240);
+    align-self: center;
+    justify-content: center;
+  }
+
+  div.row-text:after {
+    content: ' ';
+    display: inline-block;
+  }
+
+  .row-text-w100 {
+    width: 100px;
+  }
+
+  .row-text-w150 {
+    width: 150px;
+  }
+
+  .row-text-w400 {
+    width: 400px;
+  }
+
+  .row-text-fs16 {
+    font-size: 16px;
+  }
+
+  .margin-left {
+    margin-left: 12px;
+  }
+
+  .margin-bottom {
+    margin-bottom: 8px;
+  }
+
+  .margin-right {
+    margin-right: 12px;
+  }
+</style>
