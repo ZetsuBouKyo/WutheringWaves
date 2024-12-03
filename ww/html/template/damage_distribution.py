@@ -68,6 +68,9 @@ def export_resonator_skill_damage_distribution_as_png(
     if max_damage is None:
         max_damage = get_max_damage(dmgs)
 
+    if base_damage == Decimal("0.0"):
+        return
+
     html_str = template.render(
         damage_distribution=damage_distribution,
         resonator_damage_distribution=resonator_damage_distribution,
