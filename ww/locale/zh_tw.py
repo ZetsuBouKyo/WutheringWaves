@@ -519,5 +519,6 @@ class ZhTwEnum(str, Enum):
     DANJIN: str = "丹瑾"
     CAMELLYA: str = "椿"
     ROCCIA: str = "洛可可"
+    CARLOTTA: str = "珂萊塔"
     ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
     ROVER_HAVOC_MALE: str = "漂泊者·湮滅(男)"

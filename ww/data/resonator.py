@@ -106,6 +106,9 @@ resonators = {
     _(ZhTwEnum.ROCCIA): BaseResonatorModel(
         name=_(ZhTwEnum.ROCCIA), element=_(ZhTwEnum.HAVOC)
     ),
+    _(ZhTwEnum.CARLOTTA): BaseResonatorModel(
+        name=_(ZhTwEnum.CARLOTTA), element=_(ZhTwEnum.GLACIO)
+    ),
     _(ZhTwEnum.ROVER_HAVOC_FEMALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_FEMALE), element=_(ZhTwEnum.HAVOC)
     ),
