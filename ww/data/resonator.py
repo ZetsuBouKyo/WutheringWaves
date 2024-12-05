@@ -103,6 +103,9 @@ resonators = {
     _(ZhTwEnum.CAMELLYA): BaseResonatorModel(
         name=_(ZhTwEnum.CAMELLYA), element=_(ZhTwEnum.HAVOC)
     ),
+    _(ZhTwEnum.ROCCIA): BaseResonatorModel(
+        name=_(ZhTwEnum.ROCCIA), element=_(ZhTwEnum.HAVOC)
+    ),
     _(ZhTwEnum.ROVER_HAVOC_FEMALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_FEMALE), element=_(ZhTwEnum.HAVOC)
     ),
