@@ -3,8 +3,6 @@ from decimal import Decimal
 from pathlib import Path
 from typing import List, Optional, Union
 
-from jinja2 import Template
-
 from ww.data.resonator import resonators
 from ww.html.template.damage import get_max_damage
 from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
@@ -13,6 +11,7 @@ from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import TemplateDamageDistributionModel
+from ww.utils import get_jinja2_template
 from ww.utils.number import get_percentage_str, to_number_string
 
 TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH = (
@@ -44,15 +43,12 @@ def export_resonator_skill_damage_distribution_as_png(
     if not template_id:
         return
 
-    html_fpath = Path(TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH)
-    if not html_fpath.exists():
-        return
+    template = get_jinja2_template(
+        TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH
+    )
 
     home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
     os.makedirs(home_path, exist_ok=True)
-
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        template = Template(fp.read())
 
     resonator_damage_distribution = damage_distribution.resonators.get(
         resonator_name, None
@@ -105,15 +101,10 @@ def export_team_damage_distribution_as_png(
     if not template_id:
         return
 
-    html_fpath = Path(TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH)
-    if not html_fpath.exists():
-        return
-
     home_path = Path(TEMPLATE_PNG_HOME_PATH) / template_id
     os.makedirs(home_path, exist_ok=True)
 
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        template = Template(fp.read())
+    template = get_jinja2_template(TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH)
 
     if max_damage is None:
         max_damage = get_max_damage(_get_resonator_damages(damage_distribution))

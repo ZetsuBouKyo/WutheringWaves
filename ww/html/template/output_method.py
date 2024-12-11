@@ -3,8 +3,6 @@ from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
-from jinja2 import Template
-
 from ww.crud.template import get_template
 from ww.html.template.export import export_to, export_to_template
 from ww.html.template.resonator import get_resonator_icon_fpath
@@ -15,7 +13,7 @@ from ww.model.template import (
     TemplateRowActionEnum,
     TemplateRowModel,
 )
-from ww.utils import get_local_file_url
+from ww.utils import get_jinja2_template, get_local_file_url
 
 TEMPLATE_OUTPUT_METHOD_HTML_PATH = "./html/template/output_method.jinja2"
 
@@ -120,11 +118,7 @@ def export_html_template_output_methods_as_png(
     if not template_id or len(rows) == 0:
         return
 
-    html_fpath = Path(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
-    if not html_fpath.exists():
-        return
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        template = Template(fp.read())
+    template = get_jinja2_template(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
 
     output_methods = get_html_template_output_methods(rows, labels=labels)
 
@@ -159,11 +153,7 @@ def export_html_template_output_methods_as_png_by_template_id(
         return
     rows = template.rows
 
-    html_fpath = Path(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
-    if not html_fpath.exists():
-        return
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        html_template = Template(fp.read())
+    html_template = get_jinja2_template(TEMPLATE_OUTPUT_METHOD_HTML_PATH)
 
     output_methods = get_html_template_output_methods(rows, labels=labels)
 

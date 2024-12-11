@@ -1,14 +1,12 @@
 from pathlib import Path
 from typing import Optional
 
-from jinja2 import Template
-
 from ww.data.resonator import resonators
 from ww.html.template.export import export_to_template
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
-from ww.utils import get_local_file_url
+from ww.utils import get_jinja2_template, get_local_file_url
 from ww.utils.number import to_percentage_str
 
 ELEMENT_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/element/icon"
@@ -125,11 +123,7 @@ def export_html_template_resonator_model_as_png(template_id: str, resonator_id: 
     if resonator is None:
         return
 
-    html_fpath = Path(TEMPLATE_RESONATOR_HTML_PATH)
-    if not html_fpath.exists():
-        return
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        template = Template(fp.read())
+    template = get_jinja2_template(TEMPLATE_RESONATOR_HTML_PATH)
 
     html_str = template.render(
         resonator=resonator, to_percentage_str=to_percentage_str, ZhTwEnum=ZhTwEnum, _=_

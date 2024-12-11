@@ -3,14 +3,13 @@ from decimal import Decimal
 from pathlib import Path
 from typing import List, Optional, Tuple
 
-from jinja2 import Template
-
 from ww.data.resonator import resonators
 from ww.html.template.damage import get_max_damage
 from ww.html.template.export import export_to
 from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
+from ww.utils import get_jinja2_template
 from ww.utils.number import get_percentage_str, to_number_string
 
 TEAM_DAMAGE_COMPARE_HTML_PATH = "./html/template/team_damage_compare.jinja2"
@@ -43,9 +42,7 @@ def export_team_damage_compare_as_png(
     if len(damage_distributions) == 0:
         return
 
-    html_fpath = Path(TEAM_DAMAGE_COMPARE_HTML_PATH)
-    if not html_fpath.exists():
-        return
+    template = get_jinja2_template(TEAM_DAMAGE_COMPARE_HTML_PATH)
 
     damage_distributions = sorted(
         damage_distributions, key=lambda d: d[1].get_max_dps(), reverse=True
@@ -53,9 +50,6 @@ def export_team_damage_compare_as_png(
 
     home_path = get_export_team_damage_compare_home_path(id)
     os.makedirs(home_path, exist_ok=True)
-
-    with html_fpath.open(mode="r", encoding="utf-8") as fp:
-        template = Template(fp.read())
 
     all_dps = _get_all_dps(damage_distributions)
     if max_dps is None:
