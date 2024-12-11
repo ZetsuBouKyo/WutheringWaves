@@ -1,7 +1,7 @@
 site_name: Wuthering Waves Guide
 site_description: A Wuthering Waves Guide.
-site_dir: build/html/site
-docs_dir: build/html/docs
+site_dir: site
+docs_dir: docs
 repo_url: https://github.com/ZetsuBouKyo/WutheringWaves
 repo_name: ZetsuBouKyo/WutheringWaves
 copyright: Copyright (c) 2024-present ZetsuBouKyo and other contributors
@@ -68,11 +68,6 @@ markdown_extensions:
       repo: ZetsuBou
   - pymdownx.mark
   - pymdownx.snippets
-  - pymdownx.superfences:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_code_format ""
   - pymdownx.tabbed:
       alternate_style: true
   - pymdownx.tilde

@@ -1,3 +1,4 @@
+import hashlib
 from pathlib import Path
 from typing import Union
 
@@ -24,3 +25,7 @@ def get_jinja2_template(path: str) -> Template:
         template = Template(fp.read())
 
     return template
+
+
+def get_md5(s: str, digit: int = 8):
+    return hashlib.md5(s.encode("utf-8")).hexdigest()[:digit]

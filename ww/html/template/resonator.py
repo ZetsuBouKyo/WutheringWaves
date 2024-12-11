@@ -42,6 +42,10 @@ def get_resonator_icon_fpath(resonator_name: str) -> Optional[str]:
     return None
 
 
+def get_resonator_icon_url(resonator_name: str) -> str:
+    return f"/assets/resonator/icon/{resonator_name}.png"
+
+
 def get_html_template_resonator_model(
     resonator_id: str,
 ) -> Optional[TemplateHtmlResonatorModel]:

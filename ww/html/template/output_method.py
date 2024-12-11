@@ -5,7 +5,7 @@ from typing import Dict, List, Optional, Union
 
 from ww.crud.template import get_template
 from ww.html.template.export import export_to, export_to_template
-from ww.html.template.resonator import get_resonator_icon_fpath
+from ww.html.template.resonator import get_resonator_icon_fpath, get_resonator_icon_url
 from ww.locale import ZhTwEnum, _
 from ww.model.template import (
     TemplateHtmlOutputMethodActionModel,
@@ -29,7 +29,7 @@ T_ICON_FPATH = "./assets/actions/t.svg"
 
 RIGHT_ARROW_ICON_FPATH = "./assets/actions/right_arrow.svg"
 
-action_icons = {
+_action_icons_file = {
     TemplateRowActionEnum.ATTACK.value: get_local_file_url(LEFT_CLICK_ICON_FPATH),
     TemplateRowActionEnum.ATTACK_N.value: get_local_file_url(LEFT_CLICK_ICON_FPATH),
     TemplateRowActionEnum.AIR_ATTACK.value: get_local_file_url(LEFT_CLICK_ICON_FPATH),
@@ -51,10 +51,40 @@ action_icons = {
 }
 
 
+def get_asset(s: str) -> str:
+    return s[1:]
+
+
+_action_icons_asset = {
+    TemplateRowActionEnum.ATTACK.value: get_asset(LEFT_CLICK_ICON_FPATH),
+    TemplateRowActionEnum.ATTACK_N.value: get_asset(LEFT_CLICK_ICON_FPATH),
+    TemplateRowActionEnum.AIR_ATTACK.value: get_asset(LEFT_CLICK_ICON_FPATH),
+    TemplateRowActionEnum.HEAVY_ATTACK.value: get_asset(HOLD_LEFT_CLICK_ICON_FPATH),
+    TemplateRowActionEnum.AIR_HEAVY_ATTACK.value: get_asset(HOLD_LEFT_CLICK_ICON_FPATH),
+    TemplateRowActionEnum.RESONANCE_SKILL.value: get_asset(E_ICON_FPATH),
+    TemplateRowActionEnum.RESONANCE_LIBERATION.value: get_asset(R_ICON_FPATH),
+    TemplateRowActionEnum.ECHO.value: get_asset(Q_ICON_FPATH),
+    TemplateRowActionEnum.OUTRO.value: get_asset(NUM_ICON_FPATH),
+    TemplateRowActionEnum.SWITCH.value: get_asset(NUM_ICON_FPATH),
+    TemplateRowActionEnum.SWITCH_AIR.value: get_asset(NUM_ICON_FPATH),
+    TemplateRowActionEnum.GRAPPLE.value: get_asset(T_ICON_FPATH),
+    TemplateRowActionEnum.DODGE.value: get_asset(SHIFT_ICON_FPATH),
+    TemplateRowActionEnum.JUMP.value: get_asset(SPACE_ICON_FPATH),
+}
+
+
 def get_html_template_output_methods(
     rows: List[TemplateRowModel],
     labels: Optional[List[str]] = None,
+    is_docs: bool = False,
 ) -> Dict[str, List[TemplateHtmlOutputMethodModel]]:
+    if is_docs:
+        action_icons = _action_icons_asset
+        get_resonator_src = get_resonator_icon_url
+    else:
+        action_icons = _action_icons_file
+        get_resonator_src = get_resonator_icon_fpath
+
     output_methods: Dict[str, List[TemplateHtmlOutputMethodModel]] = {}
     current_output_methods: Dict[str, TemplateHtmlOutputMethodModel] = {}
     for row in rows:
@@ -77,7 +107,7 @@ def get_html_template_output_methods(
                 output_methods[label] = []
             if current_output_methods.get(label, None) is None:
                 resonator_name = row.resonator_name
-                resonator_src = get_resonator_icon_fpath(resonator_name)
+                resonator_src = get_resonator_src(resonator_name)
 
                 current_output_methods[label] = TemplateHtmlOutputMethodModel()
                 current_output_methods[label].resonator_name = resonator_name
@@ -87,7 +117,7 @@ def get_html_template_output_methods(
                     output_methods[label].append(current_output_methods[label])
 
                     resonator_name = row.resonator_name
-                    resonator_src = get_resonator_icon_fpath(resonator_name)
+                    resonator_src = get_resonator_src(resonator_name)
 
                     current_output_methods[label] = TemplateHtmlOutputMethodModel()
                     current_output_methods[label].resonator_name = resonator_name

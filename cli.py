@@ -1,9 +1,11 @@
+import json
 import os
 import shutil
 from pathlib import Path
 
 import PyInstaller.__main__
 import tomli
+import yaml
 from typer import Option, Typer
 
 from ww.commands.analyze import app as analyze
@@ -11,6 +13,7 @@ from ww.commands.crawl import app as crawl
 from ww.commands.custom import app as custom
 from ww.commands.resonator import app as resonator
 from ww.commands.weapon import app as weapon
+from ww.docs.export import Docs
 
 _help = """
 The CLI for ZetsuBou
@@ -101,7 +104,20 @@ def build(version: str = Option(get_version())):
 
 @app.command()
 def docs(version: str = Option(get_version())):
-    shutil.copytree("html/docs", "build/html/docs", dirs_exist_ok=True)
+    docs = Docs()
+    docs.export()
+    # shutil.copytree("html/docs", "build/html/docs", dirs_exist_ok=True)
+
+
+@app.command()
+def print_docs_settings(version: str = Option(get_version())):
+    with open("mkdocs.yml", encoding="utf-8") as stream:
+        try:
+            settings = yaml.safe_load(stream)
+            settings_str = json.dumps(settings, indent=4, ensure_ascii=False)
+            print(settings_str)
+        except yaml.YAMLError as exc:
+            print(exc)
 
 
 if __name__ == "__main__":
