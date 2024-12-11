@@ -99,5 +99,10 @@ def build(version: str = Option(get_version())):
     shutil.make_archive(zip_2_fpath, "zip", version_2_path)
 
 
+@app.command()
+def docs(version: str = Option(get_version())):
+    shutil.copytree("html/docs", "build/html/docs", dirs_exist_ok=True)
+
+
 if __name__ == "__main__":
     app()

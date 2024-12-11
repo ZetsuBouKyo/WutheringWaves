@@ -1,0 +1,94 @@
+site_name: Wuthering Waves Guide
+site_description: A Wuthering Waves Guide.
+site_dir: build/html/site
+docs_dir: build/html/docs
+repo_url: https://github.com/ZetsuBouKyo/WutheringWaves
+repo_name: ZetsuBouKyo/WutheringWaves
+copyright: Copyright (c) 2024-present ZetsuBouKyo and other contributors
+
+theme:
+  name: material
+  favicon: assets/favicon.ico
+  font: false
+  features:
+    - content.action.edit
+    - content.action.view
+    - content.code.copy
+    - navigation.footer
+    - navigation.tabs
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - i18n:
+      docs_structure: suffix
+      fallback_to_default: true
+      reconfigure_material: true
+      reconfigure_search: true
+      languages:
+        - name: English
+          locale: en
+          build: true
+          site_name: "Wuthering Waves Guide"
+          nav_translations:
+            首頁: Home
+        - name: 繁體中文
+          locale: zh-TW
+          build: true
+          site_name: "鳴潮攻略"
+          default: true
+
+  - git-revision-date-localized
+  - minify:
+      minify_html: true
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink:
+      repo_url_shorthand: true
+      user: ZetsuBouKyo
+      repo: ZetsuBou
+  - pymdownx.mark
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format ""
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tilde
+  - tables
+  - toc:
+      permalink: true
+  - md_in_html
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ZetsuBouKyo/WutheringWaves
+    - icon: fontawesome/brands/twitch
+      link: https://www.twitch.tv/zetsuboukyo
+    - icon: fontawesome/solid/house
+      link: /
+
+nav:
+  - 首頁: index.md
