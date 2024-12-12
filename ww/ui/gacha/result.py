@@ -15,7 +15,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.docs import get_gacha_file_html
-from ww.crud.resonator import get_resonator_icon_path
+from ww.crud.resonator import get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.model.pool.id_to_name import GachaResonatorModel
@@ -88,7 +88,7 @@ class QGachaResults(QWidget):
 
             if not isinstance(result, GachaResonatorModel):
                 continue
-            icon_path = get_resonator_icon_path(result.name)
+            icon_path = get_resonator_icon_fpath(result.name)
             icon = QGachaIcon(result.number, result.name, icon_path)
             self.flow_layout.addWidget(icon)
 

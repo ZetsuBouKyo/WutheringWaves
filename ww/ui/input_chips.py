@@ -17,7 +17,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.crud.docs import get_gacha_file_html
-from ww.crud.resonator import get_resonator_icon_path
+from ww.crud.resonator import get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.pool import GachaPoolTypeEnum
 from ww.model.pool.id_to_name import GachaResonatorModel

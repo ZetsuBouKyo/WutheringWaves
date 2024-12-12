@@ -13,6 +13,9 @@ from ww.tables.resonator import (
     ResonatorStatTable,
 )
 
+ELEMENT_ICON_HOME_PATH = "./assets/element/icon"
+RESONATOR_ICON_HOME_PATH = "./assets/resonator/icon"
+
 
 def get_resonator_names() -> List[str]:
     home_path = Path(RESONATOR_HOME_PATH)
@@ -80,10 +83,7 @@ def get_resonator_inherent_skills() -> List[str]:
     return ["0", "1"]
 
 
-RESONATOR_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/resonator/icon"
-
-
-def get_resonator_icon_path(resonator_name: str) -> Optional[str]:
+def get_resonator_icon_fpath(resonator_name: str) -> Optional[str]:
     path = Path(RESONATOR_ICON_HOME_PATH) / f"{resonator_name}.png"
     if path.is_dir() or not path.exists():
         return

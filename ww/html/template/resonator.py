@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Optional
 
+from ww.crud.resonator import ELEMENT_ICON_HOME_PATH, RESONATOR_ICON_HOME_PATH
 from ww.data.resonator import resonators
 from ww.html.template.export import export_to_template
 from ww.locale import ZhTwEnum, _
@@ -8,10 +9,6 @@ from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.utils import get_jinja2_template, get_local_file_url
 from ww.utils.number import to_percentage_str
-
-ELEMENT_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/element/icon"
-RESONATOR_ICON_HOME_PATH = "./cache/v1/zh_tw/assets/resonator/icon"
-
 
 TEMPLATE_RESONATOR_HTML_PATH = "./html/template/resonator.jinja2"
 
