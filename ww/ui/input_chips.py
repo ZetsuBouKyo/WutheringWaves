@@ -1,29 +1,9 @@
 from copy import deepcopy
-from decimal import Decimal
-from typing import Dict, List, Optional
+from typing import List
 
-from PySide2.QtCore import QSize
-from PySide2.QtGui import QFont, QIcon
-from PySide2.QtWidgets import (
-    QCheckBox,
-    QHBoxLayout,
-    QLabel,
-    QLineEdit,
-    QMessageBox,
-    QPushButton,
-    QTabWidget,
-    QVBoxLayout,
-    QWidget,
-)
+from PySide2.QtWidgets import QHBoxLayout, QLabel, QPushButton, QVBoxLayout, QWidget
 
-from ww.crud.docs import get_gacha_file_html
-from ww.crud.resonator import get_resonator_icon_fpath
-from ww.locale import ZhTwEnum, _
-from ww.model.pool import GachaPoolTypeEnum
-from ww.model.pool.id_to_name import GachaResonatorModel
 from ww.ui.combobox import QAutoCompleteComboBox
-from ww.ui.docs import get_docs
-from ww.ui.gacha.pool import PoolModel
 from ww.ui.layout import FlowLayout, clear_layout
 from ww.ui.widget import ScrollableWidget
 
