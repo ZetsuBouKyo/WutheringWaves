@@ -1,0 +1,87 @@
+div.wuwa-resonator-icon {
+  height: 48px !important;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid rgb(240, 240, 240);
+  padding: 4px;
+}
+
+img.wuwa-resonator-icon {
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+}
+
+div.wuwa-container {
+  background-color: rgb(8, 12, 20);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  color: rgb(16, 24, 40);
+  border: 4px solid;
+  box-sizing: content-box;
+}
+
+.wuwa-rows {
+  display: flex;
+  flex-direction: row;
+}
+
+.wuwa-left-row {
+  display: flex;
+  flex-direction: row;
+  margin-right: 8px;
+}
+
+.wuwa-right-row {
+  display: flex;
+  flex-direction: column;
+}
+
+.wuwa-actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wuwa-action {
+  height: 60px;
+  margin-right: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.wuwa-action-text {
+  font-size: 0.8rem;
+  color: rgb(240, 240, 240);
+}
+
+.wuwa-action-icon {
+  height: 32px !important;
+  margin-left: 8px;
+  object-fit: contain;
+}
+
+.wuwa-action-next {
+  height: 32px !important;
+  margin-left: 12px;
+  margin-right: 4px;
+  object-fit: contain;
+}
+
+.wuwa-comments {
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wuwa-comment {
+  margin-top: 8px;
+  display: flex;
+  color: rgb(220, 220, 240);
+}
+
+.wuwa-margin-bottom {
+  margin-bottom: 8px;
+}
