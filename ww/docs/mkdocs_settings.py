@@ -14,10 +14,11 @@ class MkdocsSettings:
             yaml.dump(
                 self._mkdocs_settings,
                 fp,
+                allow_unicode=True,
                 default_flow_style=False,
                 encoding="utf-8",
                 indent=2,
-                allow_unicode=True,
+                sort_keys=False,
             )
 
     def update_resonator_outline(self):
