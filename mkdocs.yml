@@ -85,5 +85,9 @@ extra:
     - icon: fontawesome/solid/house
       link: /
 
+extra_css:
+  - assets/css/custom.css
+  - assets/css/wuwa.css
+
 nav:
   - 首頁: index.md

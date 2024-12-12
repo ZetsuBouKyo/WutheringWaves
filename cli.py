@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import subprocess
 from pathlib import Path
 
 import PyInstaller.__main__
@@ -103,10 +104,33 @@ def build(version: str = Option(get_version())):
 
 
 @app.command()
-def docs(version: str = Option(get_version())):
+def docs(
+    version: str = Option(get_version()),
+    config_file: str = Option("./build/html/mkdocs.yml"),
+):
+    # Copy the assets
+    assets_path = "build/html/docs/assets"
+    os.makedirs(assets_path, exist_ok=True)
+    shutil.copytree("assets", assets_path, dirs_exist_ok=True)
+
     docs = Docs()
     docs.export()
     # shutil.copytree("html/docs", "build/html/docs", dirs_exist_ok=True)
+
+    try:
+        # Build the mkdocs command
+        command = ["mkdocs", "build", "--config-file", config_file]
+
+        # Run the command
+        result = subprocess.run(command, check=True, capture_output=True, text=True)
+
+        # Print the output
+        print("MkDocs Build Output:")
+        print(result.stdout)
+
+    except subprocess.CalledProcessError as e:
+        print("Error during MkDocs build:")
+        print(e.stderr)
 
 
 @app.command()
