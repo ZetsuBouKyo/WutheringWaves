@@ -13,13 +13,10 @@ from ww.crud.template import (
     TEMPLATE_HOME_PATH,
     delete_template,
     get_template,
-    get_template_path,
     save_template,
 )
 from ww.locale import ZhTwEnum, _
-from ww.model.echo import EchoTsvColumnEnum
 from ww.model.template import TemplateModel, TemplateRowModel
-from ww.tables.echo import EchoListTable
 from ww.ui.developer.template.basic import QTemplateBasicTab
 from ww.ui.developer.template.damage_distribution import QTemplateDamageDistributionTab
 from ww.ui.developer.template.export import QTemplateExportTab
@@ -27,11 +24,6 @@ from ww.ui.developer.template.help import QTemplateHelpTab
 from ww.ui.developer.template.label import QTemplateLabelTab
 from ww.ui.developer.template.output_method import QTemplateOutputMethodTab
 from ww.ui.progress_bar import QHProgressBar
-
-echo_list_table = EchoListTable()
-echo_list = [
-    row[EchoTsvColumnEnum.PRIMARY_KEY] for _, row in echo_list_table.df.iterrows()
-]
 
 
 class QTemplateTabs(QWidget):
