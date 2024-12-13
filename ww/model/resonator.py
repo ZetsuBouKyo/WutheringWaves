@@ -74,8 +74,6 @@ class ResonatorTsvColumnEnum(str, Enum):
 
 
 class ResonatorTsvModel(BaseModel):
-    model_config = ConfigDict(use_enum_values=True)
-
     id: str = "角色代稱"
     prefix: str = "字首"
     suffix: str = "字尾"
