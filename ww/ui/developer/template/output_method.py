@@ -934,8 +934,5 @@ class QTemplateOutputMethodTab(QWidget):
     def get_rows(self) -> List[TemplateRowModel]:
         return self.q_output_method_table.get_output_methods()
 
-    def get_rows(self) -> List[TemplateRowModel]:
-        return self.q_output_method_table.get_output_methods()
-
     def reset_data(self):
         self.q_output_method_table.reset_data()
