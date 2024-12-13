@@ -1,0 +1,30 @@
+{
+    "cost_4": {
+        "hp_p": 0.33,
+        "atk": 150,
+        "atk_p": 0.33,
+        "def_p": 0.418,
+        "crit_rate": 0.22,
+        "crit_dmg": 0.44,
+        "healing": 0.264
+    },
+    "cost_3": {
+        "hp_p": 0.3,
+        "atk": 100,
+        "atk_p": 0.3,
+        "def_p": 0.38,
+        "glacio": 0.3,
+        "fusion": 0.3,
+        "electro": 0.3,
+        "aero": 0.3,
+        "spectro": 0.3,
+        "havoc": 0.3,
+        "energy_regen": 0.32
+    },
+    "cost_1": {
+        "hp": 2280,
+        "hp_p": 0.228,
+        "atk_p": 0.18,
+        "def_p": 0.18
+    }
+}
