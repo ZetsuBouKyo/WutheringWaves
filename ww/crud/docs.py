@@ -3,9 +3,9 @@ from typing import Optional
 
 import mistune
 
-DOCS_HOME_PATH = "./docs/home.md"
+DOCS_HOME_PATH = "./docs/app/home.md"
 
-DOCS_GACHA_FILE_PATH = "./docs/gacha/file.md"
+DOCS_GACHA_FILE_PATH = "./docs/app/gacha/file.md"
 
 
 def _get_html(fpath: str) -> Optional[str]:
