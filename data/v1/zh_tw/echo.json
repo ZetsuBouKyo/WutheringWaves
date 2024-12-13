@@ -1,59 +1,73 @@
 [
     {
         "name": "異構武裝",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": []
     },
     {
         "name": "角",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["浮星祛暗"]
     },
     {
         "name": "鳴鐘之龜",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["隱世回光", "輕雲出月"]
     },
     {
         "name": "無妄者",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["沉日劫明"]
     },
     {
         "name": "無歸的謬誤",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["隱世回光"]
     },
     {
         "name": "燎照之騎",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["熔山裂谷"]
     },
     {
         "name": "雲閃之鱗",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["徹空冥雷"]
     },
     {
         "name": "朔雷之鱗",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["徹空冥雷"]
     },
     {
         "name": "聚械機偶",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["不絕餘音"]
     },
     {
         "name": "輝螢軍勢",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["凝夜白霜"]
     },
     {
         "name": "無冠者",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["沉日劫明"]
     },
     {
         "name": "哀聲鷙",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["浮星祛暗"]
     },
     {
         "name": "無常凶鷺",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["輕雲出月"]
     },
     {
         "name": "飛廉之猩",
-        "cost": "4"
+        "cost": "4",
+        "sonatas": ["嘯谷長風"]
     },
     {
         "name": "遊鱗機樞",
