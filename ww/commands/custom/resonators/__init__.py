@@ -6,7 +6,7 @@ from PIL import Image
 from typer import Argument, Option, Typer
 
 from ww.model.resonator import ResonatorTsvColumnEnum
-from ww.tables.calculated_resonators import calc as _calc
+from ww.calc.calculated_resonators import calc as _calc
 from ww.tables.resonator import (
     CALCULATED_RESONATOR_PATH,
     CalculatedResonatorsTable,

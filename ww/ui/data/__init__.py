@@ -15,7 +15,7 @@ from PySide2.QtWidgets import (
     QWidget,
 )
 
-from ww.tables.calculated_resonators import calc
+from ww.calc.calculated_resonators import calc
 from ww.tables.echo import ECHOES_PATH
 from ww.tables.resonator import RESONATORS_PATH
 from ww.ui.data.echoes import QEchoesTable

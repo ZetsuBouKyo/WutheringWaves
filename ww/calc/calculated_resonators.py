@@ -21,7 +21,6 @@ from ww.tables.resonator import (
 from ww.tables.weapon import WeaponRankTable, WeaponStatTable
 from ww.utils.number import get_number
 from ww.utils.pd import get_df
-from ww.utils.table import print_transpose_table
 
 RESONATOR_HOME_PATH = f"./data/v1/zh_tw/{_(ZhTwEnum.CHARACTER)}"
 
