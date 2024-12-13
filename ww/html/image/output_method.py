@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union
 
 from ww.crud.template import get_template
-from ww.html.template.export import export_to, export_to_template
-from ww.html.template.resonator import get_resonator_icon_fpath, get_resonator_icon_url
+from ww.html.image.export import export_to, export_to_template
+from ww.html.image.resonator import get_resonator_icon_fpath, get_resonator_icon_url
 from ww.locale import ZhTwEnum, _
 from ww.model.template import (
     TemplateHtmlOutputMethodActionModel,
@@ -15,7 +15,7 @@ from ww.model.template import (
 )
 from ww.utils import get_jinja2_template, get_local_file_url
 
-TEMPLATE_OUTPUT_METHOD_HTML_PATH = "./html/template/output_method.jinja2"
+TEMPLATE_OUTPUT_METHOD_HTML_PATH = "./html/image/output_method.jinja2"
 
 E_ICON_FPATH = "./assets/actions/e.svg"
 HOLD_LEFT_CLICK_ICON_FPATH = "./assets/actions/hold_left_click.svg"

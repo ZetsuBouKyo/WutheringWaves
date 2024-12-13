@@ -5,7 +5,7 @@ import yaml
 
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
-from ww.html.template.output_method import (
+from ww.html.image.output_method import (
     RIGHT_ARROW_ICON_FPATH,
     get_asset,
     get_html_template_output_methods,

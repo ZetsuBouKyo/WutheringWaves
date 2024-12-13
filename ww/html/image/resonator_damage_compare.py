@@ -4,15 +4,15 @@ from pathlib import Path
 from typing import List, Optional, Tuple
 
 from ww.data.resonator import resonators
-from ww.html.template.damage import get_max_damage
-from ww.html.template.export import export_to
-from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
+from ww.html.image.damage import get_max_damage
+from ww.html.image.export import export_to
+from ww.html.image.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateDamageDistributionModel
 from ww.utils import get_jinja2_template
 from ww.utils.number import get_percentage_str, to_number_string
 
-RESONATOR_DAMAGE_COMPARE_HTML_PATH = "./html/template/resonator_damage_compare.jinja2"
+RESONATOR_DAMAGE_COMPARE_HTML_PATH = "./html/image/resonator_damage_compare.jinja2"
 RESONATOR_DAMAGE_COMPARE_PNG_HOME_PATH = (
     "./cache/v1/zh_tw/output/png/compare_resonator_damage"
 )

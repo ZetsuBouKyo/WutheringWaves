@@ -4,9 +4,9 @@ from pathlib import Path
 from typing import List, Optional, Union
 
 from ww.data.resonator import resonators
-from ww.html.template.damage import get_max_damage
-from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
-from ww.html.template.resonator import get_element_class_name, get_resonator_icon_fpath
+from ww.html.image.damage import get_max_damage
+from ww.html.image.export import TEMPLATE_PNG_HOME_PATH, export_to_template
+from ww.html.image.resonator import get_element_class_name, get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
@@ -15,11 +15,11 @@ from ww.utils import get_jinja2_template
 from ww.utils.number import get_percentage_str, to_number_string
 
 TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH = (
-    "./html/template/team_damage_distribution.jinja2"
+    "./html/image/team_damage_distribution.jinja2"
 )
 
 TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH = (
-    "./html/template/resonator_skill_damage_distribution.jinja2"
+    "./html/image/resonator_skill_damage_distribution.jinja2"
 )
 
 

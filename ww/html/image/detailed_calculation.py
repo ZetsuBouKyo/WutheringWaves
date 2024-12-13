@@ -2,15 +2,15 @@ import os
 from pathlib import Path
 from typing import List
 
-from ww.html.template.export import TEMPLATE_PNG_HOME_PATH, export_to_template
-from ww.html.template.resonator import get_resonator_icon_fpath
+from ww.html.image.export import TEMPLATE_PNG_HOME_PATH, export_to_template
+from ww.html.image.resonator import get_resonator_icon_fpath
 from ww.locale import ZhTwEnum, _
 from ww.model import SkillBaseAttrEnum
 from ww.model.template import CalculatedTemplateRowModel
 from ww.utils import get_jinja2_template
 from ww.utils.number import to_number_string, to_trimmed_number_string
 
-TEMPLATE_DETAILED_CALCULATION_HTML_PATH = "./html/template/detailed_calculation.jinja2"
+TEMPLATE_DETAILED_CALCULATION_HTML_PATH = "./html/image/detailed_calculation.jinja2"
 
 
 def export_detailed_calculation_as_png(

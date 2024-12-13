@@ -17,11 +17,11 @@ from ww.crud.team_damage_compare import (
     get_team_damage_compare_ids,
     save_team_damage_compare,
 )
-from ww.html.template import (
+from ww.html.image import (
     export_html_template_output_methods_as_png_by_template_id,
     export_team_damage_compare_as_png,
 )
-from ww.html.template.team_damage_compare import (
+from ww.html.image.team_damage_compare import (
     get_export_team_damage_compare_home_path,
 )
 from ww.locale import ZhTwEnum, _

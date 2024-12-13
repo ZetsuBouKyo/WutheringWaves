@@ -11,7 +11,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.calc.damage import Damage
-from ww.html.template import (
+from ww.html.image import (
     export_detailed_calculation_as_png,
     export_echo_as_png,
     export_html_template_output_methods_as_png,

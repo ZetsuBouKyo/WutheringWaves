@@ -3,14 +3,14 @@ from typing import Optional
 
 from ww.crud.resonator import ELEMENT_ICON_HOME_PATH, RESONATOR_ICON_HOME_PATH
 from ww.data.resonator import resonators
-from ww.html.template.export import export_to_template
+from ww.html.image.export import export_to_template
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
 from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
 from ww.utils import get_jinja2_template, get_local_file_url
 from ww.utils.number import to_percentage_str
 
-TEMPLATE_RESONATOR_HTML_PATH = "./html/template/resonator.jinja2"
+TEMPLATE_RESONATOR_HTML_PATH = "./html/image/resonator.jinja2"
 
 
 def get_element_icon_fpath(element: str) -> Optional[str]:

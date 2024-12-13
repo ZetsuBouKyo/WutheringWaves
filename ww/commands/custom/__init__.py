@@ -8,13 +8,13 @@ from typer import Typer
 from ww.commands.custom.resonators import app as resonators
 from ww.commands.custom.template import app as template
 from ww.commands.custom.tests import app as tests
-from ww.html.template.export import export_html_as_png
+from ww.html.image.export import export_html_as_png
 from ww.utils.pd import get_df
 from ww.utils.table import print_table, print_transpose_table
 
 CACHE_HOME_PATH = "./cache/v1/zh_tw/output/png"
 
-TABLE_HTML_PATH = "./html/table.jinja2"
+TABLE_HTML_PATH = "./html/image/table.jinja2"
 
 app = Typer(name="custom")
 app.add_typer(resonators)
