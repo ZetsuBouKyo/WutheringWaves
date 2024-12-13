@@ -1,0 +1,8 @@
+{
+    "no": "1106",
+    "name": "釉瑚",
+    "element": "冷凝",
+    "rank": 4,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}

@@ -1,0 +1,8 @@
+{
+    "no": "1502",
+    "name": "漂泊者·衍射(女)",
+    "element": "衍射",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "spectro": "0.12" }
+}

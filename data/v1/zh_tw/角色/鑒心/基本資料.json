@@ -1,0 +1,8 @@
+{
+    "no": "1405",
+    "name": "鑒心",
+    "element": "氣動",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}

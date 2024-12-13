@@ -1,0 +1,8 @@
+{
+    "no": "1503",
+    "name": "維里奈",
+    "element": "衍射",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "healing": "0.12" }
+}

@@ -1,0 +1,8 @@
+{
+    "no": "1605",
+    "name": "漂泊者·湮滅(男)",
+    "element": "湮滅",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "havoc": "0.12" }
+}

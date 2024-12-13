@@ -1,0 +1,8 @@
+{
+    "no": "1105",
+    "name": "折枝",
+    "element": "冷凝",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}

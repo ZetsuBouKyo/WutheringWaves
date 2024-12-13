@@ -1,0 +1,8 @@
+{
+    "no": "1601",
+    "name": "桃祈",
+    "element": "湮滅",
+    "rank": 4,
+    "is_permanent": true,
+    "stat_bonus": { "def_p": "0.152", "havoc": "0.12" }
+}

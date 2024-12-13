@@ -1,8 +1,8 @@
 {
-    "no": "1301",
-    "name": "卡卡羅",
+    "no": "1305",
+    "name": "相里要",
     "element": "導電",
     "rank": 5,
-    "is_permanent": true,
+    "is_permanent": false,
     "stat_bonus": { "atk_p": "0.12", "crit_dmg": "0.16" }
 }

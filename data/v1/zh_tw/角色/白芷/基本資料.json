@@ -1,0 +1,8 @@
+{
+    "no": "1103",
+    "name": "白芷",
+    "element": "冷凝",
+    "rank": 4,
+    "is_permanent": true,
+    "stat_bonus": { "hp_p": "0.12", "healing": "0.12" }
+}

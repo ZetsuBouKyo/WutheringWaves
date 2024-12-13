@@ -1,0 +1,8 @@
+{
+    "no": "1203",
+    "name": "安可",
+    "element": "熱熔",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "fusion": "0.12" }
+}

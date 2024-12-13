@@ -1,0 +1,8 @@
+{
+    "no": "1505",
+    "name": "守岸人",
+    "element": "衍射",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "hp_p": "0.12", "healing": "0.12" }
+}

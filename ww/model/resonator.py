@@ -1,6 +1,6 @@
 from decimal import Decimal
 from enum import Enum
-from typing import Union
+from typing import Optional, Union
 
 from pydantic import BaseModel, ConfigDict
 
@@ -457,7 +457,7 @@ class CalculatedResonatorModel(BaseModel):
     echo_havoc_dmg_bonus: str = ""
     echo_healing_bonus: str = ""
 
-
+# deprecated
 class BaseResonatorModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
@@ -492,3 +492,36 @@ class SimulatedResonatorModel(BaseModel):
     stat_bonus_spectro_dmg_bonus: str = ""
     stat_bonus_havoc_dmg_bonus: str = ""
     stat_bonus_healing_bonus: str = ""
+
+
+class ResonatorStatBonusModel(BaseModel):
+    hp_p: str = ""
+    atk_p: str = ""
+    def_p: str = ""
+    crit_rate: str = ""
+    crit_dmg: str = ""
+
+    glacio: str = ""
+    fusion: str = ""
+    electro: str = ""
+    aero: str = ""
+    spectro: str = ""
+    havoc: str = ""
+    healing: str = ""
+
+    resonance_skill: str = ""
+    basic_attack: str = ""
+    heavy_attack: str = ""
+    resonance_liberation: str = ""
+
+
+class ResonatorBasicInformationModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    no: str = ""
+    name: str = ""
+    element: ElementEnum = ""
+    rank: Optional[int] = None
+    is_permanent: Optional[bool] = None
+
+    stat_bonus: ResonatorStatBonusModel = ResonatorStatBonusModel()

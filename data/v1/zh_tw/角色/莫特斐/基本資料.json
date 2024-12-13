@@ -1,0 +1,8 @@
+{
+    "no": "1204",
+    "name": "莫特斐",
+    "element": "熱熔",
+    "rank": 4,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "fusion": "0.12" }
+}
