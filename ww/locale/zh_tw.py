@@ -52,6 +52,7 @@ class ZhTwEnum(str, Enum):
     CHARACTER_LEVEL: str = "角色等級"
     DESCRIPTION: str = "描述"
     INFORMATION: str = "基本資料"
+    SKILL_INFORMATION: str = "技能文本"
     RESONATOR: str = "共鳴者"
     TEAM: str = "隊伍"
     SKILL: str = "技能"
