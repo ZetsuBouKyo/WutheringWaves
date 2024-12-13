@@ -109,9 +109,15 @@ def docs(
     config_file: str = Option("./build/html/mkdocs.yml"),
 ):
     # Copy the assets
-    assets_path = "build/html/docs/assets"
-    os.makedirs(assets_path, exist_ok=True)
-    shutil.copytree("assets", assets_path, dirs_exist_ok=True)
+    assets_src_path = "./assets"
+    assets_dest_path = "./build/html/docs/assets"
+    os.makedirs(assets_dest_path, exist_ok=True)
+    shutil.copytree(assets_src_path, assets_dest_path, dirs_exist_ok=True)
+
+    # Copy the docs
+    docs_src_path = "./docs/html"
+    docs_dest_path = "./build/html/docs"
+    shutil.copytree(docs_src_path, docs_dest_path, dirs_exist_ok=True)
 
     docs = Docs()
     docs.export()
