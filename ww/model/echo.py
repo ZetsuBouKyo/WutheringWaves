@@ -1,4 +1,7 @@
 from enum import Enum
+from typing import List, Optional
+
+from pydantic import BaseModel, ConfigDict
 
 
 class EchoTsvColumnEnum(str, Enum):
@@ -65,3 +68,11 @@ class ResonatorEchoTsvColumnEnum(str, Enum):
     SUB_BASIC_ATTACK_DMG_BONUS = "[副]普攻傷害加成"
     SUB_HEAVY_ATTACK_DMG_BONUS = "[副]重擊傷害加成"
     SUB_RESONANCE_LIBERATION_DMG_BONUS = "[副]共鳴解放傷害加成"
+
+
+class EchoModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    name: str = ""
+    cost: Optional[int] = None
+    sonatas: List[EchoSonataEnum] = []

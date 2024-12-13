@@ -1,8 +1,11 @@
+import json
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, List, Optional
 
 from ww.model.echo import (
+    EchoModel,
     EchoSkillTsvColumnEnum,
+    EchoSonataEnum,
     EchoTsvColumnEnum,
     ResonatorEchoTsvColumnEnum,
 )
@@ -17,6 +20,8 @@ ECHOES_LIST_PATH = "./data/v1/zh_tw/echo_list.tsv"
 ECHO_SKILL_PATH = "./data/v1/zh_tw/echo_skills.tsv"
 ECHO_SKILL_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_skill_descriptions.json"
 ECHO_SONATA_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_sonata_descriptions.json"
+
+ECHO_FPATH = "./data/v1/zh_tw/echo.json"
 
 
 def get_echo_list_fpath() -> Path:
@@ -33,6 +38,37 @@ def get_echo_skill_descriptions_fpath() -> Path:
 
 def get_echo_sonata_descriptions_fpath() -> Path:
     return Path(ECHO_SONATA_DESCRIPTIONS_PATH)
+
+
+class EchoTable:
+    def __init__(self, fpath: str = ECHO_FPATH):
+        _fpath = Path(fpath)
+        if _fpath.exists():
+            with _fpath.open(mode="r", encoding="utf-8") as fp:
+                data = json.load(fp)
+        else:
+            data = []
+
+        self.data: List[EchoModel] = []
+        for i in range(len(data)):
+            echo = EchoModel(**data[i])
+            self.data.append(echo)
+
+    def get_names(self) -> List[str]:
+        return [d.name for d in self.data]
+
+    def has_44111(self, sonata: EchoSonataEnum) -> bool:
+        if type(sonata) is EchoSonataEnum:
+            sonata = sonata.value
+
+        c = 0
+        for echo in self.data:
+            if echo.cost == 4 and sonata in echo.sonatas:
+                c += 1
+
+        if c > 1:
+            return True
+        return False
 
 
 class EchoesTable:

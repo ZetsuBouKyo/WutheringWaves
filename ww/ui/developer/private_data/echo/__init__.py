@@ -13,5 +13,5 @@ class QPrivateDataEchoTabs(QTabWidget):
         self.q_echo_list = QPrivateDataEchoListTab()
         self.q_echo_skill = QPrivateDataEchoSkillTab()
 
-        self.addTab(self.q_echo_list, _(ZhTwEnum.TAB_ECHO_LIST))
+        # self.addTab(self.q_echo_list, _(ZhTwEnum.TAB_ECHO_LIST))
         self.addTab(self.q_echo_skill, _(ZhTwEnum.TAB_ECHO_SKILL))
