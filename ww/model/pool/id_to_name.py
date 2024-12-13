@@ -18,6 +18,7 @@ resonators = {
     "1103": GachaResonatorModel(id="1103", star=4, name="白芷", permanent=True),
     "1104": GachaResonatorModel(id="1104", star=5, name="凌陽", permanent=True),
     "1105": GachaResonatorModel(id="1105", star=5, name="折枝", permanent=False),
+    "1106": GachaResonatorModel(id="1106", star=4, name="釉瑚", permanent=True),
     "1202": GachaResonatorModel(id="1202", star=4, name="熾霞", permanent=True),
     "1203": GachaResonatorModel(id="1203", star=5, name="安可", permanent=True),
     "1204": GachaResonatorModel(id="1204", star=4, name="莫特斐", permanent=True),
@@ -38,9 +39,11 @@ resonators = {
         id="1502", star=None, name="漂泊者·衍射", permanent=None
     ),
     "1503": GachaResonatorModel(id="1503", star=5, name="維里奈", permanent=True),
+    "1504": GachaResonatorModel(id="1504", star=4, name="燈燈", permanent=True),
     "1505": GachaResonatorModel(id="1505", star=5, name="守岸人", permanent=True),
     "1601": GachaResonatorModel(id="1601", star=4, name="桃祈", permanent=True),
     "1602": GachaResonatorModel(id="1602", star=4, name="丹瑾", permanent=True),
+    "1603": GachaResonatorModel(id="1603", star=5, name="椿", permanent=False),
     "1604": GachaResonatorModel(
         id="1604", star=None, name="漂泊者·湮滅", permanent=None
     ),
@@ -79,6 +82,7 @@ weapons = {
     "21020012": "原初迅刀·鳴雨",
     "21020013": "暗夜迅刀·黑閃",
     "21020023": "源能迅刀·測貳",
+    "21020026": GachaWeaponModel(id="21020026", star=5, name="裁春", permanent=False),
     "21020043": "遠行者迅刀·旅跡",
     "21020053": "戍關迅刀·鎮海",
     "21020024": GachaWeaponModel(
