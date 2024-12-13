@@ -74,6 +74,8 @@ class ZhTwEnum(str, Enum):
     SPECTRO: str = "衍射"
     HAVOC: str = "湮滅"
 
+    BLANK: str = "空白"
+    SIMULATION: str = "模擬"
     DESCRIPTION_BTN: str = "新增描述"
     ANALYZE: str = "分析"
     CALCULATING: str = "計算中..."
@@ -523,3 +525,19 @@ class ZhTwEnum(str, Enum):
     CARLOTTA: str = "珂萊塔"
     ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
     ROVER_HAVOC_MALE: str = "漂泊者·湮滅(男)"
+
+    ECHO_AFFIX_CRIT_RATE: str = "暴"
+    ECHO_AFFIX_CRIT_DMG: str = "暴傷"
+    ECHO_AFFIX_ELEM: str = "屬"
+    ECHO_AFFIX_ATK: str = "攻"
+
+    ECHO_43311_CRIT_RATE_2_ELEM: str = "43311-暴-2屬"
+    ECHO_43311_CRIT_RATE_1_ELEM_1_ATK: str = "43311-暴-1屬1攻"
+    ECHO_43311_CRIT_RATE_2_ATK: str = "43311-暴-2攻"
+    ECHO_43311_CRIT_DMG_2_ELEM: str = "43311-暴傷-2屬"
+    ECHO_43311_CRIT_DMG_1_ELEM_1_ATK: str = "43311-暴傷-1屬1攻"
+    ECHO_43311_CRIT_DMG_2_ATK: str = "43311-暴傷-2攻"
+
+    ECHO_44111_2_CRIT_RATE: str = "44111-2暴"
+    ECHO_44111_1_CRIT_RATE_1_CRIT_DMG: str = "44111-1暴1暴傷"
+    ECHO_44111_2_CRIT_DMG: str = "44111-2暴傷"

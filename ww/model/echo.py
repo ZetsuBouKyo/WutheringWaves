@@ -1,3 +1,4 @@
+from decimal import Decimal
 from enum import Enum
 from typing import List, Optional
 
@@ -52,7 +53,19 @@ class ResonatorEchoTsvColumnEnum(str, Enum):
     MAIN_AERO_DMG_BONUS: str = "[主]氣動加成"
     MAIN_SPECTRO_DMG_BONUS: str = "[主]衍射加成"
     MAIN_HAVOC_DMG_BONUS: str = "[主]湮滅加成"
-    MAIN_HEALING_BONUS: str = "[主]治療效果加成百分比"
+    MAIN_HEALING_BONUS: str = "[主]治療加成"
+
+    def get_main_dmg_bonus(cls, element: str) -> str:
+        bonus = f"[主]{element}加成"
+        assert bonus in [
+            cls.MAIN_GLACIO_DMG_BONUS.value,
+            cls.MAIN_FUSION_DMG_BONUS.value,
+            cls.MAIN_ELECTRO_DMG_BONUS.value,
+            cls.MAIN_AERO_DMG_BONUS.value,
+            cls.MAIN_SPECTRO_DMG_BONUS.value,
+            cls.MAIN_HAVOC_DMG_BONUS.value,
+        ]
+        return bonus
 
     SUB_HP: str = "[副]生命"
     SUB_HP_P: str = "[副]生命百分比"
@@ -76,3 +89,49 @@ class EchoModel(BaseModel):
     name: str = ""
     cost: Optional[int] = None
     sonatas: List[EchoSonataEnum] = []
+
+
+class EchoMainAffixModel(BaseModel):
+    hp: Decimal = Decimal(0.0)
+    hp_p: Decimal = Decimal(0.0)
+    atk: Decimal = Decimal(0.0)
+    atk_p: Decimal = Decimal(0.0)
+    def_p: Decimal = Decimal(0.0)
+
+    crit_rate: Decimal = Decimal(0.0)
+    crit_dmg: Decimal = Decimal(0.0)
+
+    glacio: Decimal = Decimal(0.0)
+    fusion: Decimal = Decimal(0.0)
+    electro: Decimal = Decimal(0.0)
+    aero: Decimal = Decimal(0.0)
+    spectro: Decimal = Decimal(0.0)
+    havoc: Decimal = Decimal(0.0)
+
+    healing: Decimal = Decimal(0.0)
+    energy_regen: Decimal = Decimal(0.0)
+
+
+class EchoMainAffixesModel(BaseModel):
+    cost_4: EchoMainAffixModel = EchoMainAffixModel()
+    cost_3: EchoMainAffixModel = EchoMainAffixModel()
+    cost_1: EchoMainAffixModel = EchoMainAffixModel()
+
+
+class EchoSubAffixesModel(BaseModel):
+    hp: List[Decimal] = []
+    hp_p: List[Decimal] = []
+    atk: List[Decimal] = []
+    atk_p: List[Decimal] = []
+    def_: List[Decimal] = []
+    def_p: List[Decimal] = []
+
+    crit_rate: List[Decimal] = []
+    crit_dmg: List[Decimal] = []
+
+    resonance_skill: List[Decimal] = []
+    basic_attack: List[Decimal] = []
+    heavy_attack: List[Decimal] = []
+    resonance_liberation: List[Decimal] = []
+
+    energy_regen: List[Decimal] = []

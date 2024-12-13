@@ -3,9 +3,11 @@ from pathlib import Path
 from typing import Any, List, Optional
 
 from ww.model.echo import (
+    EchoMainAffixesModel,
     EchoModel,
     EchoSkillTsvColumnEnum,
     EchoSonataEnum,
+    EchoSubAffixesModel,
     EchoTsvColumnEnum,
     ResonatorEchoTsvColumnEnum,
 )
@@ -22,6 +24,8 @@ ECHO_SKILL_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_skill_descriptions.json"
 ECHO_SONATA_DESCRIPTIONS_PATH = "./data/v1/zh_tw/echo_sonata_descriptions.json"
 
 ECHO_FPATH = "./data/v1/zh_tw/echo.json"
+ECHO_MAIN_AFFIXES_FPATH = "./data/v1/zh_tw/echo_main_affixes.json"
+ECHO_SUB_AFFIXES_FPATH = "./data/v1/zh_tw/echo_sub_affixes.json"
 
 
 def get_echo_list_fpath() -> Path:
@@ -104,3 +108,28 @@ class EchoSkillTable:
 
     def search(self, id: str, col: EchoSkillTsvColumnEnum) -> Optional[Any]:
         return search(self.df, id, col, EchoSkillTsvColumnEnum.PRIMARY_KEY.value)
+
+
+class EchoMainAffixesTable:
+
+    def __init__(self, fpath: str = ECHO_MAIN_AFFIXES_FPATH):
+        _fpath = Path(fpath)
+        with _fpath.open(mode="r", encoding="utf-8") as fp:
+            data = json.load(fp)
+
+        self.data = EchoMainAffixesModel(**data)
+
+    def get_main_affixes(self) -> EchoMainAffixesModel:
+        return self.data
+
+
+class EchoSubAffixesTable:
+
+    def __init__(self, fpath: str = ECHO_SUB_AFFIXES_FPATH):
+        _fpath = Path(fpath)
+        with _fpath.open(mode="r", encoding="utf-8") as fp:
+            data = json.load(fp)
+        self.data = EchoSubAffixesModel(**data)
+
+    def get_sub_affixes(self) -> EchoSubAffixesModel:
+        return self.data

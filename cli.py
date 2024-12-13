@@ -150,5 +150,13 @@ def print_docs_settings(version: str = Option(get_version())):
             print(exc)
 
 
+@app.command()
+def tmp():
+    from ww.tables.echo import EchoMainAffixesTable
+
+    table = EchoMainAffixesTable()
+    print(table.data)
+
+
 if __name__ == "__main__":
     app()
