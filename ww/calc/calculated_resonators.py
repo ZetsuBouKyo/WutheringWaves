@@ -621,32 +621,58 @@ class CalculatedResonator:
         )
 
         # Resonance Skill DMG Bonus
+        stat_bonus_resonance_skill_bonus = get_number(
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_SKILL_BONUS.value]
+        )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_SKILL_DMG_BONUS.value
-        ] = self._new_row[
-            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
-        ]
+        ] = (
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            ]
+            + stat_bonus_resonance_skill_bonus
+        )
 
         # Basic Attack DMG Bonus
+        stat_bonus_basic_attack_bonus = get_number(
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_BASIC_ATTACK_BONUS.value]
+        )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value
-        ] = self._new_row[
-            CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
-        ]
+        ] = (
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
+            ]
+            + stat_bonus_basic_attack_bonus
+        )
 
         # Heavy Attack DMG Bonus
+        stat_bonus_heavy_attack_bonus = get_number(
+            self._old_row[ResonatorTsvColumnEnum.STAT_BONUS_HEAVY_ATTACK_BONUS.value]
+        )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value
-        ] = self._new_row[
-            CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
-        ]
+        ] = (
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            ]
+            + stat_bonus_heavy_attack_bonus
+        )
 
         # Resonance Liberation DMG Bonus
+        stat_bonus_resonance_liberation_bonus = get_number(
+            self._old_row[
+                ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_LIBERATION_BONUS.value
+            ]
+        )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value
-        ] = self._new_row[
-            CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
-        ]
+        ] = (
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
+            ]
+            + stat_bonus_resonance_liberation_bonus
+        )
 
         # Glacio DMG Bonus
         stat_bonus_glacio_dmg_bonus = get_number(

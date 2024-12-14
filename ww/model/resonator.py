@@ -55,6 +55,11 @@ class ResonatorTsvColumnEnum(str, Enum):
     STAT_BONUS_HAVOC_DMG_BONUS: str = "湮滅加成"
     STAT_BONUS_HEALING_BONUS: str = "治療效果加成"
 
+    STAT_BONUS_RESONANCE_SKILL_BONUS: str = "共鳴技能加成"
+    STAT_BONUS_BASIC_ATTACK_BONUS: str = "普攻加成"
+    STAT_BONUS_HEAVY_ATTACK_BONUS: str = "重擊加成"
+    STAT_BONUS_RESONANCE_LIBERATION_BONUS: str = "共鳴解放加成"
+
     INHERENT_SKILL_1: str = "固有一階"
     INHERENT_SKILL_2: str = "固有二階"
 
@@ -107,6 +112,11 @@ class ResonatorTsvModel(BaseModel):
     stat_bonus_spectro_dmg_bonus: str = "衍射加成"
     stat_bonus_havoc_dmg_bonus: str = "湮滅加成"
     stat_bonus_healing_bonus: str = "治療效果加成"
+
+    stat_bonus_resonance_skill_bonus: str = "共鳴技能加成"
+    stat_bonus_basic_attack_bonus: str = "普攻加成"
+    stat_bonus_heavy_attack_bonus: str = "重擊加成"
+    stat_bonus_resonance_liberation_bonus: str = "共鳴解放加成"
 
     inherent_skill_1: str = "固有一階"
     inherent_skill_2: str = "固有二階"
