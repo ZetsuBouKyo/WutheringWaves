@@ -1,251 +1,181 @@
-from decimal import Decimal
+from typing import List
 
 import pandas as pd
 
-from ww.model.echo import ResonatorEchoTsvColumnEnum
+from ww.calc.calculated_resonators import (
+    get_calculated_resonators_df_by_resonators_table,
+)
+from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
+from ww.locale import ZhTwEnum, _
+from ww.model.resonator import (
+    ResonatorInformationModel,
+    ResonatorStatTsvColumnEnum,
+    ResonatorTsvColumnEnum,
+)
 from ww.model.template import TemplateModel
-from ww.tables.echo import EchoesTable, EchoMainAffixesTable, EchoSubAffixesTable
-from ww.utils.pd import get_empty_df
+from ww.model.weapon import WeaponStatEnum
+from ww.tables.echo import EchoTable
+from ww.tables.resonator import (
+    CalculatedResonatorsTable,
+    ResonatorsTable,
+    get_resonator_information,
+)
+from ww.tables.weapon import WeaponStatTable
 
 
-class SimulatedResonator:
+def get_df_by_resonators(
+    resonators: List[dict], column_names: List[str]
+) -> pd.DataFrame:
+    data = {name: [] for name in column_names}
+    for resonator in resonators:
+        for column_name in column_names:
+            data[column_name].append(resonator[column_name])
 
-    def __init__(self, resonator_name: str, template: TemplateModel):
-        echo_main_affixes_table = EchoMainAffixesTable()
-        echo_sub_affixes_table = EchoSubAffixesTable()
+    df = pd.DataFrame(data, columns=column_names)
+    return df
 
-        self.echo_main_affixes = echo_main_affixes_table.get_main_affixes()
-        self.echo_sub_affixes = echo_sub_affixes_table.get_sub_affixes()
 
-        self.echoes_table_column_names = [e.value for e in ResonatorEchoTsvColumnEnum]
-        self.echoes_table = EchoesTable()
-        self.echoes_table.df = get_empty_df(self.echoes_table_column_names)
+class SimulatedResonators:
 
-    def get_empty_echo(self, prefix: str, suffix: str, sonata: str):
-        echo = {name: "" for name in self.echoes_table_column_names}
-        echo[ResonatorEchoTsvColumnEnum.PREFIX.value] = prefix
-        echo[ResonatorEchoTsvColumnEnum.SUFFIX.value] = suffix
-        echo[ResonatorEchoTsvColumnEnum.ECHO_SONATA.value] = sonata
+    def __init__(
+        self,
+        resonator_name: str,
+        template: TemplateModel,
+        echo_table: EchoTable = EchoTable,
+        weapon_stat_table: WeaponStatTable = WeaponStatTable,
+        simulated_echoes: SimulatedEchoes = SimulatedEchoes,
+    ):
+        self.resonator_name = resonator_name
+        self.template = template
 
-    def get_echo_4c(self, prefix: str, main_affix: str, sonata: str, no: int):
-        cost = "4"
-        echo = self.get_empty_echo(
-            prefix, f"{sonata}-{cost}c-{main_affix}-{no}", sonata
+        self.echo_table = echo_table()
+        self.weapon_stat_table = weapon_stat_table
+        self.simulated_echoes = simulated_echoes()
+
+        self.resonators_table_column_names = [e.value for e in ResonatorTsvColumnEnum]
+
+    def get_empty_resonator(
+        self, resonator_name: str, chain: int, weapon_name: str, weapon_tune: int
+    ) -> dict:
+        resonator = {name: "" for name in self.resonators_table_column_names}
+        resonator[ResonatorTsvColumnEnum.NAME.value] = resonator_name
+        resonator[ResonatorTsvColumnEnum.RESONANCE_CHAIN.value] = chain
+        resonator[ResonatorTsvColumnEnum.WEAPON_NAME.value] = weapon_name
+        resonator[ResonatorTsvColumnEnum.WEAPON_RANK.value] = weapon_tune
+
+        resonator[ResonatorTsvColumnEnum.LEVEL.value] = "90"
+        resonator[ResonatorTsvColumnEnum.WEAPON_LEVEL.value] = "90"
+
+        resonator[ResonatorTsvColumnEnum.MAX_STA.value] = "240"
+
+        resonator[ResonatorTsvColumnEnum.NORMAL_ATTACK_LV.value] = "10"
+        resonator[ResonatorTsvColumnEnum.RESONANCE_SKILL_LV.value] = "10"
+        resonator[ResonatorTsvColumnEnum.RESONANCE_LIBERATION_LV.value] = "10"
+        resonator[ResonatorTsvColumnEnum.FORTE_CIRCUIT_LV.value] = "10"
+        resonator[ResonatorTsvColumnEnum.INTRO_SKILL_LV.value] = "10"
+        resonator[ResonatorTsvColumnEnum.OUTRO_SKILL_LV.value] = "1"
+
+        resonator[ResonatorTsvColumnEnum.INHERENT_SKILL_1.value] = "1"
+        resonator[ResonatorTsvColumnEnum.INHERENT_SKILL_2.value] = "1"
+
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_PHYSICAL_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_GLACIO_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_FUSION_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_ELECTRO_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_SPECTRO_DMG_RES.value] = "0.00%"
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_RES.value] = "0.00%"
+
+        return resonator
+
+    def is_weapon_crit_rate(self, weapon_name: str) -> bool:
+        weapon_level = "90"
+        weapon_stat_table: WeaponStatTable = self.weapon_stat_table(weapon_name)
+        weapon_crit_rate = weapon_stat_table.search(
+            weapon_level, WeaponStatEnum.CRIT_RATE
         )
-        echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ATK.value] = (
-            self.echo_main_affixes.cost_4.atk
+
+        if weapon_crit_rate:
+            return True
+        return False
+
+    def update_resonator_by_resonator_information(
+        self, resonator: dict, resonator_information: ResonatorInformationModel
+    ): ...
+
+    def get_resonator_with_theory_1(
+        self,
+        resonator_name: str,
+        chain: int,
+        weapon_name: str,
+        weapon_tune: int,
+    ) -> dict:
+        prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+        resonator = self.get_empty_resonator(
+            resonator_name, chain, weapon_name, weapon_tune
         )
-        return echo
+        resonator[ResonatorTsvColumnEnum.ID.value] = resonator_name
 
-    def get_echo_4c_crit_rate(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "暴", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_CRIT_RATE.value] = (
-            self.echo_main_affixes.cost_4.crit_rate
+        resonator_information = get_resonator_information(resonator_name)
+        resonator_element = resonator_information.element
+
+        resonator_sonatas = self.template.get_sonatas(resonator_name)
+        if self.is_weapon_crit_rate(weapon_name):
+            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_DMG)
+        else:
+            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_RATE)
+
+        resonator_base_attr = self.template.get_base_attr(resonator_name)
+        if resonator_base_attr == ResonatorStatTsvColumnEnum.HP.value:
+            main_affix_1c = _(ZhTwEnum.ABBR_HP)
+        elif resonator_base_attr == ResonatorStatTsvColumnEnum.ATK.value:
+            main_affix_1c = _(ZhTwEnum.ABBR_ATK)
+        elif resonator_base_attr == ResonatorStatTsvColumnEnum.DEF.value:
+            main_affix_1c = _(ZhTwEnum.ABBR_DEF)
+
+        resonator[ResonatorTsvColumnEnum.ECHO_1.value] = get_simulated_echo_id(
+            4, prefix, main_affix_4c, resonator_sonatas[0], 1
         )
-        return echo
-
-    def get_echo_4c_crit_dmg(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "暴傷", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_CRIT_DMG.value] = (
-            self.echo_main_affixes.cost_4.crit_dmg
+        resonator[ResonatorTsvColumnEnum.ECHO_2.value] = get_simulated_echo_id(
+            3, prefix, resonator_element, resonator_sonatas[1], 1
         )
-        return echo
-
-    def get_echo_4c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "生", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
-            self.echo_main_affixes.cost_4.hp_p
+        resonator[ResonatorTsvColumnEnum.ECHO_3.value] = get_simulated_echo_id(
+            3, prefix, resonator_element, resonator_sonatas[2], 2
         )
-        return echo
-
-    def get_echo_4c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "攻", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
-            self.echo_main_affixes.cost_4.atk_p
+        resonator[ResonatorTsvColumnEnum.ECHO_4.value] = get_simulated_echo_id(
+            1, prefix, main_affix_1c, resonator_sonatas[3], 1
         )
-        return echo
-
-    def get_echo_4c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "防", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
-            self.echo_main_affixes.cost_4.def_p
+        resonator[ResonatorTsvColumnEnum.ECHO_5.value] = get_simulated_echo_id(
+            1, prefix, main_affix_1c, resonator_sonatas[4], 2
         )
-        return echo
 
-    def get_echo_4c_healing(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, "治", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_HEALING_BONUS.value] = (
-            self.echo_main_affixes.cost_4.healing
+        return resonator
+
+    def get_resonator_table_with_theory_1(self) -> ResonatorsTable:
+        resonators = []
+        for resonator in self.template.resonators:
+            resonator_name = resonator.resonator_name
+            resonator_chain = int(resonator.resonator_chain)
+            weapon_name = resonator.resonator_weapon_name
+            weapon_tune = int(resonator.resonator_weapon_rank)
+
+            resonator_dict = self.get_resonator_with_theory_1(
+                resonator_name, resonator_chain, weapon_name, weapon_tune
+            )
+            resonators.append(resonator_dict)
+
+        df = get_df_by_resonators(resonators, self.resonators_table_column_names)
+        table = ResonatorsTable()
+        table.df = df
+
+        return table
+
+    def get_calculated_resonator_table_with_theory_1(self) -> CalculatedResonatorsTable:
+        resonators_table = self.get_resonator_table_with_theory_1()
+        echoes_table = self.simulated_echoes.get_theory_1_table()
+        df = get_calculated_resonators_df_by_resonators_table(
+            resonators_table, echoes_table=echoes_table
         )
-        return echo
-
-    def get_echo_3c(self, prefix: str, main_affix: str, sonata: str, no: int):
-        cost = "3"
-        echo = self.get_empty_echo(
-            prefix, f"{sonata}-{cost}c-{main_affix}-{no}", sonata
-        )
-        echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ATK.value] = (
-            self.echo_main_affixes.cost_3.atk
-        )
-        return echo
-
-    def get_echo_3c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, "生", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
-            self.echo_main_affixes.cost_3.hp_p
-        )
-        return echo
-
-    def get_echo_3c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, "攻", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
-            self.echo_main_affixes.cost_3.atk_p
-        )
-        return echo
-
-    def get_echo_3c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, "防", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
-            self.echo_main_affixes.cost_3.def_p
-        )
-        return echo
-
-    def get_echo_3c_elem(self, prefix: str, element: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, element, sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.get_main_dmg_bonus(element)] = (
-            self.echo_main_affixes.cost_3.glacio
-        )
-        return echo
-
-    def get_echo_3c_energy_regen(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, "共效", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ENERGY_REGEN.value] = (
-            self.echo_main_affixes.cost_3.energy_regen
-        )
-        return echo
-
-    def get_echo_1c(self, prefix: str, main_affix: str, sonata: str, no: int):
-        cost = "1"
-        echo = self.get_empty_echo(
-            prefix, f"{sonata}-{cost}c-{main_affix}-{no}", sonata
-        )
-        echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
-        echo[ResonatorEchoTsvColumnEnum.MAIN_HP.value] = (
-            self.echo_main_affixes.cost_1.hp
-        )
-        return echo
-
-    def get_echo_1c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, "生", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
-            self.echo_main_affixes.cost_1.hp_p
-        )
-        return echo
-
-    def get_echo_1c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, "攻", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
-            self.echo_main_affixes.cost_1.atk_p
-        )
-        return echo
-
-    def get_echo_1c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, "防", sonata, no)
-        echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
-            self.echo_main_affixes.cost_1.def_p
-        )
-        return echo
-
-    def get_base_echoes(self, prefix: str, sonata: str):
-        echoes = []
-
-        echo_4c_crit_rate_1 = self.get_echo_4c_crit_rate(prefix, sonata, 1)
-        echoes.append(echo_4c_crit_rate_1)
-
-        echo_4c_crit_rate_2 = self.get_echo_4c_crit_rate(prefix, sonata, 2)
-        echoes.append(echo_4c_crit_rate_2)
-
-        echo_4c_crit_dmg_1 = self.get_echo_4c_crit_dmg(prefix, sonata, 1)
-        echoes.append(echo_4c_crit_dmg_1)
-
-        echo_4c_crit_dmg_2 = self.get_echo_4c_crit_dmg(prefix, sonata, 2)
-        echoes.append(echo_4c_crit_dmg_2)
-
-        echo_4c_hp_p_1 = self.get_echo_4c_hp_p(prefix, sonata, 1)
-        echoes.append(echo_4c_hp_p_1)
-
-        echo_4c_hp_p_2 = self.get_echo_4c_hp_p(prefix, sonata, 2)
-        echoes.append(echo_4c_hp_p_2)
-
-        echo_4c_atk_p_1 = self.get_echo_4c_hp_p(prefix, sonata, 1)
-        echoes.append(echo_4c_atk_p_1)
-
-        echo_4c_atk_p_2 = self.get_echo_4c_hp_p(prefix, sonata, 2)
-        echoes.append(echo_4c_atk_p_2)
-
-        echo_4c_def_p_1 = self.get_echo_4c_def_p(prefix, sonata, 1)
-        echoes.append(echo_4c_def_p_1)
-
-        echo_4c_def_p_2 = self.get_echo_4c_def_p(prefix, sonata, 2)
-        echoes.append(echo_4c_def_p_2)
-
-        echo_4c_healing_1 = self.get_echo_4c_healing(prefix, sonata, 1)
-        echoes.append(echo_4c_healing_1)
-
-        echo_4c_healing_2 = self.get_echo_4c_healing(prefix, sonata, 2)
-        echoes.append(echo_4c_healing_2)
-
-        echo_3c_hp_p_1 = self.get_echo_3c_hp_p(prefix, sonata, 1)
-        echoes.append(echo_3c_hp_p_1)
-
-        echo_3c_hp_p_2 = self.get_echo_3c_hp_p(prefix, sonata, 2)
-        echoes.append(echo_3c_hp_p_2)
-
-        echo_3c_atk_p_1 = self.get_echo_3c_atk_p(prefix, sonata, 1)
-        echoes.append(echo_3c_atk_p_1)
-
-        echo_3c_atk_p_2 = self.get_echo_3c_atk_p(prefix, sonata, 2)
-        echoes.append(echo_3c_atk_p_2)
-
-        echo_3c_def_p_1 = self.get_echo_3c_def_p(prefix, sonata, 1)
-        echoes.append(echo_3c_def_p_1)
-
-        echo_3c_def_p_2 = self.get_echo_3c_def_p(prefix, sonata, 2)
-        echoes.append(echo_3c_def_p_2)
-
-        echo_3c_energy_regen_1 = self.get_echo_3c_energy_regen(prefix, sonata, 1)
-        echoes.append(echo_3c_energy_regen_1)
-
-        echo_3c_energy_regen_2 = self.get_echo_3c_energy_regen(prefix, sonata, 2)
-        echoes.append(echo_3c_energy_regen_2)
-
-        elements = ["冷凝", "熱熔", "導電", "氣動", "衍射", "湮滅"]
-        for element in elements:
-            for i in range(1, 3):
-                echo_3c_elem = self.get_echo_3c_elem(prefix, element, sonata, i)
-                echoes.append(echo_3c_elem)
-
-        echo_1c_hp_p_1 = self.get_echo_1c_hp_p(prefix, sonata, 1)
-        echoes.append(echo_1c_hp_p_1)
-
-        echo_1c_hp_p_2 = self.get_echo_1c_hp_p(prefix, sonata, 2)
-        echoes.append(echo_1c_hp_p_2)
-
-        echo_1c_atk_p_1 = self.get_echo_1c_atk_p(prefix, sonata, 1)
-        echoes.append(echo_1c_atk_p_1)
-
-        echo_1c_atk_p_2 = self.get_echo_1c_atk_p(prefix, sonata, 2)
-        echoes.append(echo_1c_atk_p_2)
-
-        echo_1c_def_p_1 = self.get_echo_1c_def_p(prefix, sonata, 1)
-        echoes.append(echo_1c_def_p_1)
-
-        echo_1c_def_p_2 = self.get_echo_1c_def_p(prefix, sonata, 2)
-        echoes.append(echo_1c_def_p_2)
-
-        return echoes
-
-    def get(self):
-        pd.DataFrame({"column_name": []})
+        table = CalculatedResonatorsTable()
+        table.df = df
+        return table

@@ -61,16 +61,23 @@ class EchoTable:
     def get_names(self) -> List[str]:
         return [d.name for d in self.data]
 
-    def has_44111(self, sonata: EchoSonataEnum) -> bool:
-        if type(sonata) is EchoSonataEnum:
-            sonata = sonata.value
+    def has_44111(self, sonatas: List[EchoSonataEnum]) -> bool:
+        for i in range(len(sonatas)):
+            if type(sonatas[i]) is EchoSonataEnum:
+                sonatas[i] = sonatas[i].value
 
-        c = 0
+        echoes_4c: List[EchoModel] = []
         for echo in self.data:
-            if echo.cost == 4 and sonata in echo.sonatas:
-                c += 1
+            if echo.cost == 4:
+                echoes_4c.append(echo)
 
-        if c > 1:
+        used_echo_names = set()
+        for sonata in sonatas:
+            for echo in echoes_4c:
+                if sonata in echo.sonatas:
+                    used_echo_names.add(echo.name)
+
+        if len(used_echo_names) > 1:
             return True
         return False
 

@@ -55,18 +55,6 @@ class ResonatorEchoTsvColumnEnum(str, Enum):
     MAIN_HAVOC_DMG_BONUS: str = "[主]湮滅加成"
     MAIN_HEALING_BONUS: str = "[主]治療加成"
 
-    def get_main_dmg_bonus(cls, element: str) -> str:
-        bonus = f"[主]{element}加成"
-        assert bonus in [
-            cls.MAIN_GLACIO_DMG_BONUS.value,
-            cls.MAIN_FUSION_DMG_BONUS.value,
-            cls.MAIN_ELECTRO_DMG_BONUS.value,
-            cls.MAIN_AERO_DMG_BONUS.value,
-            cls.MAIN_SPECTRO_DMG_BONUS.value,
-            cls.MAIN_HAVOC_DMG_BONUS.value,
-        ]
-        return bonus
-
     SUB_HP: str = "[副]生命"
     SUB_HP_P: str = "[副]生命百分比"
     SUB_ATK: str = "[副]攻擊"
@@ -81,6 +69,21 @@ class ResonatorEchoTsvColumnEnum(str, Enum):
     SUB_BASIC_ATTACK_DMG_BONUS = "[副]普攻傷害加成"
     SUB_HEAVY_ATTACK_DMG_BONUS = "[副]重擊傷害加成"
     SUB_RESONANCE_LIBERATION_DMG_BONUS = "[副]共鳴解放傷害加成"
+
+
+def get_resonator_echo_main_dmg_bonus(
+    element: str, e: ResonatorEchoTsvColumnEnum = ResonatorEchoTsvColumnEnum
+) -> str:
+    bonus = f"[主]{element}加成"
+    assert bonus in [
+        e.MAIN_GLACIO_DMG_BONUS.value,
+        e.MAIN_FUSION_DMG_BONUS.value,
+        e.MAIN_ELECTRO_DMG_BONUS.value,
+        e.MAIN_AERO_DMG_BONUS.value,
+        e.MAIN_SPECTRO_DMG_BONUS.value,
+        e.MAIN_HAVOC_DMG_BONUS.value,
+    ]
+    return bonus
 
 
 class EchoModel(BaseModel):

@@ -3,8 +3,11 @@ from typing import List, Optional
 
 import pandas as pd
 
-from ww.model.resonator import ResonatorTsvColumnEnum
-from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
+from ww.model.resonator import ResonatorStatTsvColumnEnum, ResonatorTsvColumnEnum
+from ww.model.resonator_skill import (
+    ResonatorSkillBonusTypeEnum,
+    ResonatorSkillTsvColumnEnum,
+)
 from ww.tables.echo import EchoSkillTable, EchoSkillTsvColumnEnum
 from ww.tables.resonator import (
     RESONATOR_HOME_PATH,
@@ -81,6 +84,23 @@ def get_resonator_chains() -> List[str]:
 
 def get_resonator_inherent_skills() -> List[str]:
     return ["0", "1"]
+
+
+def get_resonator_base_attrs() -> List[str]:
+    return [
+        ResonatorStatTsvColumnEnum.HP.value,
+        ResonatorStatTsvColumnEnum.ATK.value,
+        ResonatorStatTsvColumnEnum.DEF.value,
+    ]
+
+
+def get_resonator_skill_bonus() -> List[str]:
+    return [
+        ResonatorSkillBonusTypeEnum.RESONANCE_SKILL.value,
+        ResonatorSkillBonusTypeEnum.BASIC.value,
+        ResonatorSkillBonusTypeEnum.HEAVY.value,
+        ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value,
+    ]
 
 
 def get_resonator_icon_fpath(resonator_name: str) -> Optional[str]:

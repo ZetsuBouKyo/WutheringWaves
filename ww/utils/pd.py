@@ -20,11 +20,17 @@ def get_empty_df(column_names: List[str]) -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
-def save_tsv(
-    fpath: Union[str, Path],
-    data: List[List[str]],
-    columns: List[str],
-):
+def save_df(fpath: Union[str, Path], df: pd.DataFrame, columns: List[str]):
+    if type(fpath) is str:
+        fpath = Path(fpath)
+    os.makedirs(fpath.parent, exist_ok=True)
+
+    _data = df.values.tolist()
+
+    save_tsv(fpath, _data, columns)
+
+
+def save_tsv(fpath: Union[str, Path], data: List[List[str]], columns: List[str]):
     if type(fpath) is str:
         fpath = Path(fpath)
     os.makedirs(fpath.parent, exist_ok=True)

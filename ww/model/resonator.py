@@ -457,6 +457,7 @@ class CalculatedResonatorModel(BaseModel):
     echo_havoc_dmg_bonus: str = ""
     echo_healing_bonus: str = ""
 
+
 # deprecated
 class BaseResonatorModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
@@ -515,7 +516,7 @@ class ResonatorStatBonusModel(BaseModel):
     resonance_liberation: str = ""
 
 
-class ResonatorBasicInformationModel(BaseModel):
+class ResonatorInformationModel(BaseModel):
     model_config = ConfigDict(use_enum_values=True)
 
     no: str = ""

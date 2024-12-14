@@ -152,10 +152,20 @@ def print_docs_settings(version: str = Option(get_version())):
 
 @app.command()
 def tmp():
-    from ww.tables.echo import EchoMainAffixesTable
+    from ww.calc.simulated_resonators import SimulatedResonators
+    from ww.crud.template import get_template
+    from ww.utils.pd import save_df
 
-    table = EchoMainAffixesTable()
-    print(table.data)
+    template_id = "[理論]+1凌陽+1擎淵怒濤,+0折枝+1奇幻變奏,+0維里奈+1奇幻變奏"
+    template = get_template(template_id)
+
+    resonator_name = "凌陽"
+    weapon_name = "擎淵怒濤"
+
+    s = SimulatedResonators(resonator_name, template)
+    out = s.get_calculated_resonator_table_with_theory_1()
+    df = out.df
+    save_df("tmp.tsv", df, out.column_names)
 
 
 if __name__ == "__main__":

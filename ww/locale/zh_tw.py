@@ -21,6 +21,8 @@ class ZhTwEnum(str, Enum):
     RESONATOR_WEAPON_RANK: str = "[武器]諧振"
     RESONATOR_INHERENT_SKILL_1: bool = "[角色]固有技能1"
     RESONATOR_INHERENT_SKILL_2: bool = "[角色]固有技能2"
+    RESONATOR_BASE_ATTR: str = "[角色]基礎屬性"
+    RESONATOR_SKILL_BONUS: str = "[角色]技能屬性"
     RESONATOR_ECHO_1: str = "[聲骸]名稱1"
     RESONATOR_ECHO_2: str = "[聲骸]名稱2"
     RESONATOR_ECHO_3: str = "[聲骸]名稱3"
@@ -526,10 +528,22 @@ class ZhTwEnum(str, Enum):
     ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
     ROVER_HAVOC_MALE: str = "漂泊者·湮滅(男)"
 
-    ECHO_AFFIX_CRIT_RATE: str = "暴"
-    ECHO_AFFIX_CRIT_DMG: str = "暴傷"
-    ECHO_AFFIX_ELEM: str = "屬"
-    ECHO_AFFIX_ATK: str = "攻"
+    ABBR_HP: str = "生"
+    ABBR_ATK: str = "攻"
+    ABBR_DEF: str = "防"
+
+    ABBR_CRIT_RATE: str = "暴"
+    ABBR_CRIT_DMG: str = "暴傷"
+    ABBR_ENERGY_REGEN: str = "共效"
+
+    ABBR_RESONANCE_SKILL: str = "共技"
+    ABBR_BASIC_ATTACK: str = "普"
+    ABBR_HEAVY_ATTACK: str = "重"
+    ABBR_RESONANCE_LIBERATION: str = "共解"
+    ABBR_HEALING: str = "治"
+
+    ECHOES_THEORY_1: str = "理論1"
+    ECHOES_HALF_BUILT: str = "小畢業"
 
     ECHO_43311_CRIT_RATE_2_ELEM: str = "43311-暴-2屬"
     ECHO_43311_CRIT_RATE_1_ELEM_1_ATK: str = "43311-暴-1屬1攻"

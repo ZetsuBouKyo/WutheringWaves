@@ -28,9 +28,11 @@ from ww.ui.table.cell import set_item
 from ww.ui.table.cell.combobox import (
     set_echo_name_combobox,
     set_echo_sonata_combobox,
+    set_resonator_base_attr_combobox,
     set_resonator_chain_combobox,
     set_resonator_inherent_skill_combobox,
     set_resonator_name_combobox,
+    set_resonator_skill_bonus_combobox,
     set_weapon_name_combobox,
     set_weapon_rank_combobox,
 )
@@ -113,6 +115,14 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
                     elif cell == "0":
                         resonator.resonator_inherent_skill_2 = False
                 elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_BASE_ATTR.value
+                ):
+                    resonator.resonator_base_attr = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_SKILL_BONUS.value
+                ):
+                    resonator.resonator_skill_bonus = cell
+                elif col == self.get_column_id(
                     TemplateResonatorTableColumnEnum.RESONATOR_ECHO_1.value
                 ):
                     resonator.resonator_echo_1 = cell
@@ -171,6 +181,16 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
             == TemplateResonatorTableColumnEnum.RESONATOR_INHERENT_SKILL_2.value
         ):
             set_resonator_inherent_skill_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_BASE_ATTR.value
+        ):
+            set_resonator_base_attr_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_SKILL_BONUS.value
+        ):
+            set_resonator_skill_bonus_combobox(self, row, col, value)
         elif (
             self.column_names[col]
             == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_1.value
@@ -314,7 +334,7 @@ class QTemplateBasicTab(QWidget):
         self.q_resonator_label = QLabel("共鳴者")
         self.q_resonator_label.setFixedHeight(height)
         self.q_resonator_table = QTemplateTabResonatorTable()
-        self.q_resonator_table.setFixedHeight(180)
+        self.q_resonator_table.setFixedHeight(200)
 
         self.layout.addLayout(self.q_template_id_layout)
         self.layout.addLayout(self.q_test_resonator_1_layout)

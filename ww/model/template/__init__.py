@@ -58,6 +58,8 @@ class TemplateResonatorModel(BaseModel):
     resonator_weapon_rank: str = ""
     resonator_inherent_skill_1: Optional[bool] = None
     resonator_inherent_skill_2: Optional[bool] = None
+    resonator_base_attr: str = ""
+    resonator_skill_bonus: str = ""
     resonator_echo_1: str = ""
     resonator_echo_sonata_1: str = ""
     resonator_echo_sonata_2: str = ""
@@ -84,7 +86,18 @@ class TemplateResonatorModel(BaseModel):
             cls.resonator_weapon_rank,
             resonator_inherent_skill_1,
             resonator_inherent_skill_2,
+            cls.resonator_base_attr,
+            cls.resonator_skill_bonus,
             cls.resonator_echo_1,
+            cls.resonator_echo_sonata_1,
+            cls.resonator_echo_sonata_2,
+            cls.resonator_echo_sonata_3,
+            cls.resonator_echo_sonata_4,
+            cls.resonator_echo_sonata_5,
+        ]
+
+    def get_sonatas(cls) -> List[str]:
+        return [
             cls.resonator_echo_sonata_1,
             cls.resonator_echo_sonata_2,
             cls.resonator_echo_sonata_3,
@@ -181,3 +194,15 @@ class TemplateModel(BaseModel):
 
     def get_label_names(cls) -> List[str]:
         return [label.name for label in cls.labels]
+
+    def get_sonatas(cls, resonator_name: str) -> List[str]:
+        for resonator in cls.resonators:
+            if resonator.resonator_name == resonator_name:
+                return resonator.get_sonatas()
+        return []
+
+    def get_base_attr(cls, resonator_name: str) -> str:
+        for resonator in cls.resonators:
+            if resonator.resonator_name == resonator_name:
+                return resonator.resonator_base_attr
+        return ""
