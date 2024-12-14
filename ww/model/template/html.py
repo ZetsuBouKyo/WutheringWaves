@@ -53,6 +53,9 @@ class TemplateHtmlResonatorModel(BaseModel):
     element_class_name: str = ""
     element_src: str = ""
 
+    def get_element_class_name_with_docs(cls) -> str:
+        return f"wuwa-{cls.element_class_name}"
+
 
 class TemplateHtmlOutputMethodActionModel(BaseModel):
     name: str = ""

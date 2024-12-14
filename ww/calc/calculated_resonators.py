@@ -43,12 +43,12 @@ class CalculatedResonator:
 
         self.echoes_table = EchoesTable()
 
+    def calculate(self):
         self._init()
         self._init_base()
         self._init_calculated()
         self._init_echo()
 
-    def calculate(self):
         self._update_by_resonator()
         self._update_by_weapon_stat()
         self._update_by_weapon_rank()

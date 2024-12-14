@@ -1,17 +1,3 @@
-div.wuwa-resonator-icon {
-  height: 48px !important;
-  object-fit: contain;
-  border-radius: 8px;
-  border: 2px solid rgb(240, 240, 240);
-  padding: 4px;
-}
-
-img.wuwa-resonator-icon {
-  height: 100%;
-  max-width: none;
-  object-fit: contain;
-}
-
 div.wuwa-container {
   background-color: rgb(8, 12, 20);
   padding: 12px;
@@ -21,6 +7,45 @@ div.wuwa-container {
   color: rgb(16, 24, 40);
   border: 4px solid;
   box-sizing: content-box;
+}
+
+.wuwa-glacio {
+  color: rgb(72, 172, 252);
+}
+
+.wuwa-fusion {
+  color: rgb(248, 116, 76);
+}
+
+.wuwa-electro {
+  color: rgb(184, 108, 252);
+}
+
+.wuwa-aero {
+  color: rgb(88, 252, 180);
+}
+
+.wuwa-spectro {
+  color: rgb(255, 228, 108);
+}
+
+.wuwa-havoc {
+  color: rgb(208, 140, 180);
+}
+
+/* Output methods */
+div.wuwa-resonator-output-method-icon {
+  height: 48px !important;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 2px solid rgb(240, 240, 240);
+  padding: 4px;
+}
+
+img.wuwa-resonator-output-method-icon {
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
 }
 
 .wuwa-rows {
@@ -84,4 +109,60 @@ div.wuwa-container {
 
 .wuwa-margin-bottom {
   margin-bottom: 8px;
+}
+
+/* Resonator */
+div.wuwa-resonator-info-title {
+  color: rgb(240, 240, 240);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  height: 48px;
+}
+
+div.wuwa-resonator-info-row-cell {
+  display: flex;
+  align-self: center;
+  border-radius: 8px;
+  border: 2px rgb(100, 100, 100) solid;
+  margin-right: 10px;
+  height: 48px;
+}
+
+div.wuwa-resonator-info-row-cell-padding {
+  padding: 0px 8px;
+}
+
+div.wuwa-resonator-info-table {
+  color: rgb(240, 240, 240);
+  display: flex;
+  margin-top: 12px;
+  font-size: 0.8rem;
+}
+
+div.wuwa-resonator-info {
+  display: flex;
+  align-self: center;
+  font-size: 0.8rem;
+}
+
+img.wuwa-resonator-info-icon {
+  height: 48px;
+  object-fit: contain;
+}
+
+.wuwa-resonator-info-margin-right {
+  margin-right: 12px;
+}
+
+table.wuwa-resonator-info-table {
+  color: rgb(240, 240, 240);
+  border-radius: 8px;
+  border: 2px rgb(100, 100, 100) solid;
+  width: 50%;
+}
+
+td.wuwa-resonator-info-td {
+  padding: 0px 4px;
+  font-size: 0.8rem;
 }

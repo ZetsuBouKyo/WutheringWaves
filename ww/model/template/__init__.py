@@ -30,6 +30,7 @@ from ww.model.template.template_row import (
     TemplateRowBuffTypeEnum,
 )
 from ww.model.template.tsv import TemplateEnum
+from ww.utils import get_md5
 
 __all__ = [
     "TEMPLATE_BONUS",
@@ -185,6 +186,9 @@ class TemplateModel(BaseModel):
 
     resonators: List[TemplateResonatorModel] = []
     rows: List[TemplateRowModel] = []
+
+    def get_md5(cls) -> str:
+        return get_md5(cls.id)
 
     def get_label(cls, label_name: str) -> Optional[TemplateLabelModel]:
         for label in cls.labels:

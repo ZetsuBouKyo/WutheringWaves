@@ -55,7 +55,7 @@ class SimulatedResonators:
         self.resonators_table_column_names = [e.value for e in ResonatorTsvColumnEnum]
 
     def get_empty_resonator(
-        self, resonator_name: str, chain: int, weapon_name: str, weapon_tune: int
+        self, resonator_name: str, chain: str, weapon_name: str, weapon_tune: str
     ) -> dict:
         resonator = {name: "" for name in self.resonators_table_column_names}
         resonator[ResonatorTsvColumnEnum.NAME.value] = resonator_name
@@ -101,14 +101,62 @@ class SimulatedResonators:
 
     def update_resonator_by_resonator_information(
         self, resonator: dict, resonator_information: ResonatorInformationModel
-    ): ...
+    ):
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HP_P.value] = (
+            resonator_information.stat_bonus.hp_p
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_ATK_P.value] = (
+            resonator_information.stat_bonus.atk_p
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_DEF_P.value] = (
+            resonator_information.stat_bonus.def_p
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_RATE.value] = (
+            resonator_information.stat_bonus.crit_rate
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_DMG.value] = (
+            resonator_information.stat_bonus.crit_dmg
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_GLACIO_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.glacio
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_FUSION_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.fusion
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_ELECTRO_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.electro
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.aero
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_SPECTRO_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.spectro
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_BONUS.value] = (
+            resonator_information.stat_bonus.havoc
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HEALING_BONUS.value] = (
+            resonator_information.stat_bonus.healing
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_SKILL_BONUS.value] = (
+            resonator_information.stat_bonus.resonance_skill
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_BASIC_ATTACK_BONUS.value] = (
+            resonator_information.stat_bonus.basic_attack
+        )
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HEAVY_ATTACK_BONUS.value] = (
+            resonator_information.stat_bonus.heavy_attack
+        )
+        resonator[
+            ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_LIBERATION_BONUS.value
+        ] = resonator_information.stat_bonus.resonance_liberation
 
     def get_resonator_with_theory_1(
         self,
         resonator_name: str,
-        chain: int,
+        chain: str,
         weapon_name: str,
-        weapon_tune: int,
+        weapon_tune: str,
     ) -> dict:
         prefix = _(ZhTwEnum.ECHOES_THEORY_1)
         resonator = self.get_empty_resonator(
@@ -118,6 +166,7 @@ class SimulatedResonators:
 
         resonator_information = get_resonator_information(resonator_name)
         resonator_element = resonator_information.element
+        self.update_resonator_by_resonator_information(resonator, resonator_information)
 
         resonator_sonatas = self.template.get_sonatas(resonator_name)
         if self.is_weapon_crit_rate(weapon_name):
@@ -155,9 +204,9 @@ class SimulatedResonators:
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
-            resonator_chain = int(resonator.resonator_chain)
+            resonator_chain = resonator.resonator_chain
             weapon_name = resonator.resonator_weapon_name
-            weapon_tune = int(resonator.resonator_weapon_rank)
+            weapon_tune = resonator.resonator_weapon_rank
 
             resonator_dict = self.get_resonator_with_theory_1(
                 resonator_name, resonator_chain, weapon_name, weapon_tune
@@ -170,7 +219,9 @@ class SimulatedResonators:
 
         return table
 
-    def get_calculated_resonator_table_with_theory_1(self) -> CalculatedResonatorsTable:
+    def get_calculated_resonators_table_with_theory_1(
+        self,
+    ) -> CalculatedResonatorsTable:
         resonators_table = self.get_resonator_table_with_theory_1()
         echoes_table = self.simulated_echoes.get_theory_1_table()
         df = get_calculated_resonators_df_by_resonators_table(

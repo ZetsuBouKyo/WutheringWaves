@@ -6,8 +6,8 @@
   {% for output_method in output_methods %}
   <div class="wuwa-rows {{'wuwa-margin-bottom' if loop.index < output_methods|length}}">
     <div class="wuwa-left-row">
-      <div class="wuwa-resonator-icon">
-        <img class="wuwa-resonator-icon" src="{{output_method.resonator_src}}" />
+      <div class="wuwa-resonator-output-method-icon">
+        <img class="wuwa-resonator-output-method-icon" src="{{output_method.resonator_src}}" />
       </div>
     </div>
     <div class="wuwa-right-row">
@@ -40,4 +40,4 @@
 
 ### 依照聲骸套裝
 
-- 理論1
+- [理論1](/resonator/template/{{template.get_md5()}}/theory_1/index.html)

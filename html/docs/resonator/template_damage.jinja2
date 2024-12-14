@@ -1,0 +1,202 @@
+# {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
+
+{% for resonator in template.resonators %}
+## {{resonator.resonator_name}}
+{% set r = merge_resonator_model(resonator.resonator_name, resonators_table, calculated_resonators_table, is_docs=True)
+%}
+<div class="wuwa-container">
+  <div class="wuwa-resonator-info-title">
+    <div class="wuwa-resonator-info-row-cell">
+      <img class="wuwa-resonator-info-icon" src="{{r.resonator_src}}" />
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{r.name}}</div>
+      <img class="wuwa-resonator-info-icon" src="{{r.element_src}}" />
+      <div class="wuwa-resonator-info">{{r.element}}</div>
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{_(ZhTwEnum.CHAIN)}} {{r.chain}}</div>
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{r.weapon_name}}</div>
+      <div class="wuwa-resonator-info">
+        LV{{r.weapon_level}}&nbsp;&nbsp;{{_(ZhTwEnum.TUNE)}} {{r.weapon_rank}}
+      </div>
+    </div>
+  </div>
+  <div class="wuwa-resonator-info-table">
+    <table class="wuwa-resonator-info-table wuwa-resonator-info-margin-right">
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.LEVEL)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.level}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HP)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.hp}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ATK)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.attack}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.DEF)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.defense}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.CRIT_RATE)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.crit_rate)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.CRIT_DMG)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.crit_dmg)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.energy_regen)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_SKILL_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.resonance_skill_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.BASIC_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.basic_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HEAVY_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.heavy_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_LIBERATION_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.resonance_liberation_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HEALING_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.healing_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.PHYSICAL_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.physical_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.GLACIO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.glacio_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.FUSION_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.fusion_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ELECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.electro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.AERO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.aero_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.SPECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.spectro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HAVOC_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.havoc_dmg_bonus)}}</td>
+      </tr>
+    </table>
+    <table class="wuwa-resonator-info-table">
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.PHYSICAL_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.physical_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.GLACIO_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.glacio_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.FUSION_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.fusion_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ELECTRO_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.electro_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.AERO_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.aero_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.SPECTRO_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.spectro_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HAVOC_DMG_RES)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r.havoc_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.NORMAL_ATTACK_LV)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.normal_attack_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_SKILL_LV)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.resonance_skill_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.FORTE_CIRCUIT_LV)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.forte_circuit_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_LIBERATION_LV)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.resonance_liberation_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.INTRO_SKILL_LV)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.intro_skill_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.INHERENT_SKILL_1)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.inherent_skill_1}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.INHERENT_SKILL_2)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r.inherent_skill_2}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</div>
+{% endfor %}
