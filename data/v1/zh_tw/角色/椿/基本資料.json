@@ -4,5 +4,5 @@
     "element": "湮滅",
     "rank": 5,
     "is_permanent": false,
-    "stat_bonus": { "atk_p": "0.12", "crit_dmg": "0.16" }
+    "stat_bonus": { "atk_p": "0.12", "crit_dmg": "0.16", "havoc": "0.15", "basic_attack": "0.15" }
 }
