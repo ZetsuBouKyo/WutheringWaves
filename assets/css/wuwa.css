@@ -404,4 +404,9 @@ table.wuwa-detailed-damage {
 
 td.wuwa-detailed-damage {
   padding: 0px 16px;
+  vertical-align: middle;
+}
+
+td.wuwa-detailed-damage-h-60 {
+  height: 60px;
 }
