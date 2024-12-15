@@ -25,7 +25,7 @@
     </div>
   </div>
   <div class="wuwa-resonator-info-table">
-    <table class="wuwa-resonator-info-table wuwa-resonator-info-margin-right">
+    <table class="wuwa-resonator-info-table wuwa-margin-right-12">
       <tr>
         <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.LEVEL)}}</td>
         <td class="wuwa-resonator-info-td" align="right">{{r.level}}</td>
@@ -175,6 +175,162 @@
       <tr>
         <td class="wuwa-resonator-info-td">&nbsp;</td>
         <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</div>
+### 聲骸
+{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(resonator.resonator_name) %}
+<div class="wuwa-container">
+  <div class="wuwa-resonator-info-table">
+    <table class="wuwa-resonator-info-table wuwa-margin-right-12">
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HP)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_hp}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HP_P)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_hp_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ATK)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_atk}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ATK_P)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_atk_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.DEF)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_def}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.DEF_P)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_def_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.CRIT_RATE)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_crit_rate)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.CRIT_DMG)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_crit_dmg)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_energy_regen)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_1)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_1}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_SONATA_1)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_sonata_1}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_SONATA_2)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_sonata_2}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_SONATA_3)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_sonata_3}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_SONATA_4)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_sonata_4}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_SONATA_5)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{r_echo.echo_sonata_5}}</td>
+      </tr>
+    </table>
+    <table class="wuwa-resonator-info-table">
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_SKILL_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_resonance_skill_dmg_bonus)}}
+        </td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.BASIC_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_basic_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HEAVY_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_heavy_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.RESONANCE_LIBERATION_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">
+          {{to_percentage_str(r_echo.echo_resonance_liberation_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HEALING_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_healing_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">&nbsp;</td>
+        <td class="wuwa-resonator-info-td" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.GLACIO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_glacio_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.FUSION_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_fusion_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ELECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_electro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.AERO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_aero_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.SPECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_spectro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.HAVOC_DMG_BONUS)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{to_percentage_str(r_echo.echo_havoc_dmg_bonus)}}</td>
       </tr>
       <tr>
         <td class="wuwa-resonator-info-td">&nbsp;</td>

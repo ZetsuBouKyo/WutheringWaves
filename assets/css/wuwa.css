@@ -9,6 +9,10 @@ div.wuwa-container {
   box-sizing: content-box;
 }
 
+.wuwa-margin-right-12 {
+  margin-right: 12px;
+}
+
 .wuwa-glacio {
   color: rgb(72, 172, 252);
 }
@@ -149,10 +153,6 @@ div.wuwa-resonator-info {
 img.wuwa-resonator-info-icon {
   height: 48px;
   object-fit: contain;
-}
-
-.wuwa-resonator-info-margin-right {
-  margin-right: 12px;
 }
 
 table.wuwa-resonator-info-table {
