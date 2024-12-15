@@ -127,6 +127,8 @@ class ZhTwEnum(str, Enum):
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
     RESONATOR_SKILL_BONUS_TYPE: str = "技能加成"
+    DETAILED_DAMAGE: str = "詳細傷害"
+    DAMAGE:str= "傷害"
     DAMAGE_ANALYSIS: str = "傷害分析"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"

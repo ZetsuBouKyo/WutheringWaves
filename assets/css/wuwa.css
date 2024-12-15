@@ -24,6 +24,11 @@ div.wuwa-barh {
   flex-direction: column;
 }
 
+.wuwa-flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
 .wuwa-border-left {
   border-left: 2px solid rgb(240, 240, 240);
 }
@@ -32,16 +37,32 @@ div.wuwa-barh {
   border-right: 2px solid rgb(240, 240, 240);
 }
 
+.wuwa-border-bottom-rgb-40-40-40 {
+  border-bottom: 2px rgb(40, 40, 40) solid;
+}
+
 .wuwa-margin-right-12 {
   margin-right: 12px;
 }
 
-div.wuwa-margin-bottom-24 {
+.wuwa-margin-top-8 {
+  margin-top: 8px;
+}
+
+.wuwa-margin-bottom-8 {
+  margin-bottom: 8px;
+}
+
+.wuwa-margin-bottom-24 {
   margin-bottom: 24px;
 }
 
 .wuwa-black {
   color: rgb(24, 24, 24);
+}
+
+.wuwa-philippine-gray {
+  color: rgb(140, 140, 140);
 }
 
 .wuwa-white {
@@ -318,4 +339,69 @@ div.wuwa-barh-dps {
   display: flex;
   color: rgb(240, 240, 240);
   font-size: 0.8rem;
+}
+
+/* Detailed damage */
+
+.wuwa-detailed-damage-row-text {
+  display: flex;
+  width: 200px;
+  font-size: 0.8rem;
+  color: rgb(240, 240, 240);
+  align-self: center;
+  justify-content: center;
+}
+
+div.wuwa-detailed-damage-row-text:after {
+  content: " ";
+  display: inline-block;
+}
+
+.wuwa-detailed-damage-row-text-w100 {
+  width: 100px;
+}
+
+.wuwa-detailed-damage-row-text-w150 {
+  width: 150px;
+}
+
+.wuwa-detailed-damage-row-text-w400 {
+  width: 400px;
+}
+
+.wuwa-detailed-damage-row-block {
+  display: block;
+  color: rgb(240, 240, 240);
+}
+
+.wuwa-detailed-damage-frac {
+  display: inline-block;
+  position: relative;
+  vertical-align: middle;
+  letter-spacing: 0.001em;
+  text-align: center;
+}
+
+.wuwa-detailed-damage-frac > span {
+  display: block;
+  padding: 0.1em;
+}
+
+.wuwa-detailed-damage-frac span.bottom {
+  border-top: thin solid rgb(240, 240, 240);
+}
+
+.wuwa-detailed-damage-frac span.symbol {
+  display: none;
+}
+
+table.wuwa-detailed-damage {
+  border-radius: 8px;
+  border: 2px rgb(100, 100, 100) solid;
+  width: 100%;
+  color: rgb(160, 160, 160);
+}
+
+td.wuwa-detailed-damage {
+  padding: 0px 16px;
 }

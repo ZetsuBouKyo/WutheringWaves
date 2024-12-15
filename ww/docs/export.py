@@ -24,12 +24,18 @@ from ww.html.image.resonator_damage_compare import (
     _get_damages as get_resonator_damage_compare_damage,
 )
 from ww.locale import ZhTwEnum, _
+from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import TemplateModel, TemplateRowActionEnum
 from ww.utils import get_jinja2_template
-from ww.utils.number import get_percentage_str, to_number_string, to_percentage_str
+from ww.utils.number import (
+    get_percentage_str,
+    to_number_string,
+    to_percentage_str,
+    to_trimmed_number_string,
+)
 
 # mkdocs
 DEFAULT_MKDOCS_FPATH = "./mkdocs.yml"
@@ -122,20 +128,33 @@ class Docs:
         )
         damage_distribution = damage_distributions.get("", None)
 
+        # Detailed damage
+        calculated_rows = damage.get_calculated_rows(
+            resonator_template.id,
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
+            monster_id,
+            is_default=True,
+        )
+
         html_str = template.render(
             template=resonator_template,
             resonators_table=resonators_table,
             calculated_resonators_table=calculated_resonators_table,
             damage_distribution=damage_distribution,
+            calculated_rows=calculated_rows,
             merge_resonator_model=merge_resonator_model,
             get_element_class_name=get_element_class_name,
             get_max_damage=get_max_damage,
             get_percentage_str=get_percentage_str,
             get_resonator_skill_base_damage=get_resonator_skill_base_damage,
             get_team_resonator_damages=get_team_resonator_damages,
-            to_percentage_str=to_percentage_str,
             to_number_string=to_number_string,
+            to_percentage_str=to_percentage_str,
+            to_trimmed_number_string=to_trimmed_number_string,
             ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,
+            SkillBaseAttrEnum=SkillBaseAttrEnum,
             SkillBonusTypeEnum=SkillBonusTypeEnum,
             ZhTwEnum=ZhTwEnum,
             _=_,

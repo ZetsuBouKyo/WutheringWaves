@@ -503,3 +503,212 @@
 </div>
 </div>
 {% endfor %}
+
+## {{_(ZhTwEnum.DETAILED_DAMAGE)}}
+<div class="wuwa-container">
+  <div class="wuwa-flex-col">
+    {% for row in calculated_rows %}
+    {% if row.resonator_name %}
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 {{'wuwa-margin-top-8' if loop.index > 1}}">
+      {% set r = merge_resonator_model(row.resonator_name, resonators_table, calculated_resonators_table, is_docs=True)
+      %}
+      <div class="wuwa-barh-resonator-icon">
+        <img src="{{r.resonator_src}}" />
+      </div>
+      <div class="wuwa-detailed-damage-row-text">
+        {{row.resonator_name}}
+      </div>
+      <div class="wuwa-detailed-damage-row-text wuwa-detailed-damage-row-text-w100">
+        {{_(ZhTwEnum.NO)}}{{loop.index}}{{_(ZhTwEnum.ROW)}}
+      </div>
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
+      {{_(ZhTwEnum.SKILL)}}
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8">
+      <table class="wuwa-detailed-damage">
+        <tr>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.ACTION)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.SKILL)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.BUFF_SKILL_TYPE)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.HITS)}}</td>
+        </tr>
+        <tr>
+          <td class="wuwa-detailed-damage">
+            {% if row.action %}
+            {{row.action}}
+            {% else %}
+            &nbsp;
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            {% if row.skill_id %}
+            {{row.skill_id}}
+            {% else %}
+            &nbsp;
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            {% if row.resonator_skill_type_bonus %}
+            {{row.resonator_skill_type_bonus}}
+            {% else %}
+            &nbsp;
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            {% if row.hits %}
+            {{row.hits}}{{_(ZhTwEnum.HIT)}}
+            {% else %}
+            &nbsp;
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% if row.real_dmg_no_crit or row.real_dmg_crit or row.damage_no_crit or row.damage_crit %}
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
+      {{_(ZhTwEnum.DAMAGE)}}
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8">
+      <table class="wuwa-detailed-damage">
+        <tr>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REAL_DMG_NO_CRIT)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.CALCULATED_DMG_NO_CRIT)}}
+          </td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REAL_DMG_CRIT)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.CALCULATED_DMG_CRIT)}}</td>
+        </tr>
+        <tr>
+          <td class="wuwa-detailed-damage">{{to_number_string(row.real_dmg_no_crit)}}
+          </td>
+          <td class="wuwa-detailed-damage">{{to_number_string(row.damage_no_crit)}}
+          </td>
+          <td class="wuwa-detailed-damage">{{to_number_string(row.real_dmg_crit)}}
+          </td>
+          <td class="wuwa-detailed-damage">{{to_number_string(row.damage_crit)}}</td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+    {% if row.buffs|length > 0 %}
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
+      {{_(ZhTwEnum.BUFF)}}
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8">
+      <table class="wuwa-detailed-damage">
+        <tr>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.BUFF_NAME)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.BUFF_TYPE)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.BUFF_VALUE)}}</td>
+        </tr>
+        {% for buff in row.buffs %}
+        <tr>
+          <td class="wuwa-detailed-damage">{{buff.name}}</td>
+          <td class="wuwa-detailed-damage">{{buff.type}}</td>
+          <td class="wuwa-detailed-damage">{{buff.value}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% endif %}
+    {% if row.skill_id %}
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
+      {{_(ZhTwEnum.CALCULATE)}}
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-detailed-damage-row-block">
+      <table class="wuwa-detailed-damage">
+        <tr>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_BASE_ATTR)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_SKILL_DMG)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_MAGNIFIER)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_AMPLIFIER)}}</td>
+        </tr>
+        <tr>
+          <td class="wuwa-detailed-damage">{% if row.result_skill_base_attribute==SkillBaseAttrEnum.ATK.value %}
+            [{{to_trimmed_number_string(row.result_atk)}} × (1 + {{to_trimmed_number_string(row.result_atk_p)}}) +
+            {{to_trimmed_number_string(row.result_atk_addition)}}]
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.DEF.value %}
+            [{{to_trimmed_number_string(row.result_def)}} × (1 + {{to_trimmed_number_string(row.result_def_p)}}) +
+            {{to_trimmed_number_string(row.result_def_addition)}}]
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.HP.value %}
+            [{{to_trimmed_number_string(row.result_hp)}} × (1 + {{to_trimmed_number_string(row.result_hp_p)}}) +
+            {{to_trimmed_number_string(row.result_hp_addition)}}]
+            {% endif %}</td>
+          <td class="wuwa-detailed-damage">
+            ×
+            {% if row.resonator_skill_dmg_addition %}
+            ({{to_trimmed_number_string(row.resonator_skill_dmg)}} +
+            {{to_trimmed_number_string(row.resonator_skill_dmg_addition)}})
+            {% else %}
+            {{to_trimmed_number_string(row.resonator_skill_dmg)}}
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            ×
+            {% if row.result_magnifier %}
+            (1 + {{to_trimmed_number_string(row.result_magnifier)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            ×
+            {% if row.result_amplifier %}
+            (1 + {{to_trimmed_number_string(row.result_amplifier)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-detailed-damage-row-block">
+      <table class="wuwa-detailed-damage">
+        <tr>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_BONUS)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_CRIT)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_DEF)}}</td>
+          <td class="wuwa-detailed-damage wuwa-border-bottom-rgb-40-40-40">{{_(ZhTwEnum.REGION_RES)}}</td>
+        </tr>
+        <tr>
+          <td class="wuwa-detailed-damage">
+            ×
+            {% if row.result_bonus %}
+            (1 + {{to_trimmed_number_string(row.result_bonus)}})
+            {% else %}
+            1
+            {% endif %}
+          </td>
+          <td class="wuwa-detailed-damage">
+            ×
+            {{to_trimmed_number_string(row.result_crit_dmg)}}
+          </td>
+          <td class="wuwa-detailed-damage">
+            ×
+            <div class="wuwa-detailed-damage-frac">
+              <span>800 + 8 × {{to_trimmed_number_string(row.resonator_level)}}</span>
+              <span class="symbol">/</span>
+              <span class="bottom">800 + 8 × {{to_trimmed_number_string(row.resonator_level)}} + [792 + (8 ×
+                {{to_trimmed_number_string(row.monster_level)}})]
+                {% if row.result_ignore_def %}
+                × (1 - {{to_trimmed_number_string(row.result_ignore_def)}})
+                {% endif %}
+              </span>
+            </div>
+          </td>
+          <td class="wuwa-detailed-damage">
+            ×
+            {% if row.result_reduce_res %}
+            (1 - {{to_trimmed_number_string(row.monster_res)}} + {{to_trimmed_number_string(row.result_reduce_res)}})
+            {% else %}
+            (1 - {{to_trimmed_number_string(row.monster_res)}})
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+    {% endif %}
+    {% endif %}
+    {% endfor %}
+  </div>
+</div>
