@@ -214,3 +214,9 @@ class TemplateModel(BaseModel):
             if resonator.resonator_name == resonator_name:
                 return resonator.resonator_base_attr
         return ""
+
+    def get_echo_1(cls, resonator_name: str) -> str:
+        for resonator in cls.resonators:
+            if resonator.resonator_name == resonator_name:
+                return resonator.resonator_echo_1
+        return ""
