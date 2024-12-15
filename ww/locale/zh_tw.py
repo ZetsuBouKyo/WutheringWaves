@@ -130,6 +130,8 @@ class ZhTwEnum(str, Enum):
     DAMAGE_ANALYSIS: str = "傷害分析"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"
+    SKILL_DAMAGE_DISTRIBUTION: str = "技能傷害占比"
+    SKILL_BONUS_DAMAGE_DISTRIBUTION: str = "技能加成傷害占比"
     OUTPUT_METHOD: str = "輸出手法"
     TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT: str = "輸出手法圖片高度。"
 
@@ -556,3 +558,13 @@ class ZhTwEnum(str, Enum):
     ECHO_44111_2_CRIT_RATE: str = "44111-2暴"
     ECHO_44111_1_CRIT_RATE_1_CRIT_DMG: str = "44111-1暴1暴傷"
     ECHO_44111_2_CRIT_DMG: str = "44111-2暴傷"
+
+    MONSTER_LV_90_RES_10: str = "90等抗性10白板"
+    MONSTER_LV_90_RES_20: str = "90等抗性20白板"
+    MONSTER_LV_90_RES_40: str = "90等抗性40白板"
+    MONSTER_LV_90_RES_60: str = "90等抗性60白板"
+
+    MONSTER_LV_100_RES_10: str = "100等抗性10白板"
+    MONSTER_LV_100_RES_20: str = "100等抗性20白板"
+    MONSTER_LV_100_RES_40: str = "100等抗性40白板"
+    MONSTER_LV_100_RES_60: str = "100等抗性60白板"

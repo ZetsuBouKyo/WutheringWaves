@@ -30,6 +30,7 @@ from ww.model.template.template_row import (
     TemplateRowBuffTypeEnum,
 )
 from ww.model.template.tsv import TemplateEnum
+from ww.tables.resonator import get_resonator_element
 from ww.utils import get_md5
 
 __all__ = [
@@ -158,6 +159,9 @@ class TemplateRowModel(BaseModel):
 
         df = pd.DataFrame(buff_data)
         return df.to_html()
+
+    def get_element(cls):
+        return get_resonator_element(cls.resonator_name)
 
 
 class TemplateLabelModel(BaseModel):

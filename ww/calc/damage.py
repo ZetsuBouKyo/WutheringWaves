@@ -82,6 +82,8 @@ class Damage:
         monster_level: Optional[Number] = None,
         monster_def: Optional[Number] = None,
         monster_res: Optional[Number] = None,
+        resonators_table: Optional[Number] = None,
+        calculated_resonators_table: Optional[Number] = None,
     ):
         if monster_id is not None:
             if (
@@ -95,11 +97,17 @@ class Damage:
         self._monster_def = get_number(monster_def)
         self._monster_res = get_number(monster_res)
 
+        if resonators_table is None:
+            self._resonators_table = ResonatorsTable()
+        else:
+            self._resonators_table = resonators_table
+        if calculated_resonators_table is None:
+            self._calculated_resonators_table = CalculatedResonatorsTable()
+        else:
+            self._calculated_resonators_table = calculated_resonators_table
         self.init()
 
     def init(self):
-        self._resonators_table = ResonatorsTable()
-        self._calculated_resonators_table = CalculatedResonatorsTable()
         self._echo_skill_table = EchoSkillTable()
         self._monsters_table = MonstersTable()
 
@@ -112,6 +120,12 @@ class Damage:
             self._monster_def = get_number(
                 self._monsters_table.search(self._monster_id, MonsterTsvColumnEnum.DEF)
             )
+
+    def set_resonators_table(self, table: ResonatorsTable):
+        self._resonators_table = table
+
+    def set_calculated_resonators_table(self, table: CalculatedResonatorsTable):
+        self._calculated_resonators_table = table
 
     def set_monster_id(self, id: str):
         self._monster_id = id

@@ -1,29 +1,48 @@
 import os
+from decimal import Decimal
 from pathlib import Path
+from typing import Union
 
 import yaml
 
+from ww.calc.damage import Damage
 from ww.calc.simulated_echoes import SimulatedEchoes
 from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
+from ww.html.image.damage import get_max_damage
 from ww.html.image.output_method import (
     RIGHT_ARROW_ICON_FPATH,
     get_asset,
     get_html_template_output_methods,
 )
-from ww.html.image.resonator import merge_resonator_model
+from ww.html.image.resonator import get_element_class_name, merge_resonator_model
+from ww.html.image.resonator_damage_compare import (
+    _get_damages as get_resonator_damage_compare_damage,
+)
 from ww.locale import ZhTwEnum, _
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import TemplateModel, TemplateRowActionEnum
-from ww.utils import get_jinja2_template, get_md5
-from ww.utils.number import to_percentage_str
+from ww.utils import get_jinja2_template
+from ww.utils.number import get_percentage_str, to_number_string, to_percentage_str
 
 # mkdocs
 DEFAULT_MKDOCS_FPATH = "./mkdocs.yml"
 MKDOCS_FPATH = "./build/html/mkdocs.yml"
 
 DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
+
+
+def get_resonator_skill_base_damage(
+    resonator_damage_distribution,
+    skill_enum: Union[SkillBonusTypeEnum, ResonatorSkillTypeEnum],
+) -> Decimal:
+    base_damage = Decimal("0.0")
+    for e in skill_enum:
+        base_damage += resonator_damage_distribution.get_damage(e.name.lower())
+    return base_damage
 
 
 class Docs:
@@ -68,6 +87,12 @@ class Docs:
 
         template = get_jinja2_template(template_damage_fpath)
 
+        monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
+        resonator_ids = [
+            resonator.resonator_name for resonator in resonator_template.resonators
+        ]
+
+        # Simulation
         simulated_echoes = SimulatedEchoes()
         simulated_resonators = SimulatedResonators("", resonator_template)
 
@@ -78,13 +103,36 @@ class Docs:
             simulated_resonators.get_calculated_resonators_table_with_theory_1()
         )
 
+        # Resonator skill damage distribution
+        damage = Damage(
+            monster_id=monster_id,
+            resonators_table=resonators_table,
+            calculated_resonators_table=calculated_resonators_table,
+        )
+
+        damage_distributions = damage.get_damage_distributions_with_labels(
+            resonator_template.id,
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
+            monster_id=monster_id,
+        )
+        damage_distributions = damage_distributions.get("", None)
 
         html_str = template.render(
             template=resonator_template,
             resonators_table=resonators_table,
             calculated_resonators_table=calculated_resonators_table,
+            damage_distributions=damage_distributions,
             merge_resonator_model=merge_resonator_model,
+            get_element_class_name=get_element_class_name,
+            get_max_damage=get_max_damage,
+            get_percentage_str=get_percentage_str,
+            get_resonator_skill_base_damage=get_resonator_skill_base_damage,
             to_percentage_str=to_percentage_str,
+            to_number_string=to_number_string,
+            ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,
+            SkillBonusTypeEnum=SkillBonusTypeEnum,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )

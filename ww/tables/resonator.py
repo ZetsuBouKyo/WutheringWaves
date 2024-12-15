@@ -66,6 +66,11 @@ def get_resonator_information(resonator_name: str) -> ResonatorInformationModel:
     return ResonatorInformationModel(**data)
 
 
+def get_resonator_element(resonator_name: str) -> str:
+    info = get_resonator_information(resonator_name)
+    return info.element
+
+
 class ResonatorStatTable:
     def __init__(self, name):
         _path = get_resonator_stat_fpath(name)
