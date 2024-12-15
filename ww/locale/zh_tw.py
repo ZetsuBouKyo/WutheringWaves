@@ -45,6 +45,8 @@ class ZhTwEnum(str, Enum):
     ECHO_SONATA_4: str = "合鳴4"
     ECHO_SONATA_5: str = "合鳴5"
 
+    TEMPLATE: str = "模板"
+
     MONSTER_ID: str = "怪物ID"
     TEMPLATE_ID: str = "模板ID"
 
@@ -128,7 +130,7 @@ class ZhTwEnum(str, Enum):
 
     RESONATOR_SKILL_BONUS_TYPE: str = "技能加成"
     DETAILED_DAMAGE: str = "詳細傷害"
-    DAMAGE:str= "傷害"
+    DAMAGE: str = "傷害"
     DAMAGE_ANALYSIS: str = "傷害分析"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"

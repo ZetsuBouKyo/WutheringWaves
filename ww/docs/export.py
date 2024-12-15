@@ -158,6 +158,8 @@ class Docs:
             SkillBonusTypeEnum=SkillBonusTypeEnum,
             ZhTwEnum=ZhTwEnum,
             _=_,
+            str=str,
+            Decimal=Decimal,
         )
 
         output_fpath = Path(output_fpath)

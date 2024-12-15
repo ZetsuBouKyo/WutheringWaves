@@ -5,9 +5,7 @@
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
       <div class="wuwa-flex-col">
-        {% if damage_distribution.template_id %}
-        <div class="wuwa-barh-id">{{damage_distribution.template_id}} | {{damage_distribution.monster_id}}</div>
-        {% endif %}
+        <div class="wuwa-barh-id">{{damage_distribution.monster_id}}</div>
         {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
         <div class="wuwa-barh-dps">
           DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
@@ -416,8 +414,6 @@
           </div>
           <div class="wuwa-flex-col">
             <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
-            <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.TEMPLATE_ID)}}:
-              {{damage_distribution.template_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
               {{damage_distribution.monster_id}}</div>
           </div>
@@ -465,8 +461,6 @@
           </div>
           <div class="wuwa-flex-col">
             <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
-            <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.TEMPLATE_ID)}}:
-              {{damage_distribution.template_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
               {{damage_distribution.monster_id}}</div>
           </div>
@@ -605,7 +599,7 @@
         <tr>
           <td class="wuwa-detailed-damage">{{buff.name}}</td>
           <td class="wuwa-detailed-damage">{{buff.type}}</td>
-          <td class="wuwa-detailed-damage">{{buff.value}}</td>
+          <td class="wuwa-detailed-damage">{{str(Decimal(buff.value) * Decimal(buff.stack))}}</td>
         </tr>
         {% endfor %}
       </table>
