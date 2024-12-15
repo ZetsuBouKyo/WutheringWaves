@@ -132,6 +132,7 @@ class ZhTwEnum(str, Enum):
     DAMAGE_COMPARE: str = "傷害比較"
     SKILL_DAMAGE_DISTRIBUTION: str = "技能傷害占比"
     SKILL_BONUS_DAMAGE_DISTRIBUTION: str = "技能加成傷害占比"
+    TEAM_DAMAGE_DISTRIBUTION: str = "隊伍傷害占比"
     OUTPUT_METHOD: str = "輸出手法"
     TOOL_TIP_OUTPUT_METHOD_PNG_HEIGHT: str = "輸出手法圖片高度。"
 

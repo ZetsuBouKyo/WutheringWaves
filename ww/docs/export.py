@@ -11,6 +11,9 @@ from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
 from ww.html.image.damage import get_max_damage
+from ww.html.image.damage_distribution import (
+    _get_resonator_damages as get_team_resonator_damages,
+)
 from ww.html.image.output_method import (
     RIGHT_ARROW_ICON_FPATH,
     get_asset,
@@ -117,18 +120,19 @@ class Docs:
             resonator_ids[2],
             monster_id=monster_id,
         )
-        damage_distributions = damage_distributions.get("", None)
+        damage_distribution = damage_distributions.get("", None)
 
         html_str = template.render(
             template=resonator_template,
             resonators_table=resonators_table,
             calculated_resonators_table=calculated_resonators_table,
-            damage_distributions=damage_distributions,
+            damage_distribution=damage_distribution,
             merge_resonator_model=merge_resonator_model,
             get_element_class_name=get_element_class_name,
             get_max_damage=get_max_damage,
             get_percentage_str=get_percentage_str,
             get_resonator_skill_base_damage=get_resonator_skill_base_damage,
+            get_team_resonator_damages=get_team_resonator_damages,
             to_percentage_str=to_percentage_str,
             to_number_string=to_number_string,
             ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,

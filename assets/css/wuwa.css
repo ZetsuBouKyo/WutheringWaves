@@ -28,6 +28,10 @@ div.wuwa-barh {
   border-left: 2px solid rgb(240, 240, 240);
 }
 
+.wuwa-border-right {
+  border-right: 2px solid rgb(240, 240, 240);
+}
+
 .wuwa-margin-right-12 {
   margin-right: 12px;
 }
@@ -234,16 +238,16 @@ div.wuwa-barh-row {
 
 div.wuwa-barh-resonator-icon {
   display: flex;
-  height: 64px;
-  margin-right: 8px;
+  height: 48px;
+  padding-right: 8px;
 }
 
 div.wuwa-barh-damage-container {
   display: flex;
-  flex-direction: column;
-  border-left: 2px solid rgb(240, 240, 240);
+  flex-direction: row;
   height: 100%;
-  align-items: center;
+  width: 100%;
+  align-items: start;
 }
 
 div.wuwa-barh-title {
@@ -294,6 +298,7 @@ div.wuwa-barh-damage-value-out {
   margin-left: 8px;
   display: flex;
   color: rgb(240, 240, 240);
+  align-self: center;
 }
 
 div.wuwa-barh-id {
@@ -305,5 +310,12 @@ div.wuwa-barh-id {
 div.wuwa-barh-id-gray {
   display: flex;
   color: rgb(140, 140, 140);
+  font-size: 0.8rem;
+}
+
+div.wuwa-barh-dps {
+  margin-bottom: 8px;
+  display: flex;
+  color: rgb(240, 240, 240);
   font-size: 0.8rem;
 }

@@ -1,5 +1,54 @@
 # {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
 
+## {{_(ZhTwEnum.TEAM_DAMAGE_DISTRIBUTION)}}
+<div class="wuwa-container">
+  <div class="wuwa-flex-col">
+    <div class="wuwa-barh">
+      <div class="wuwa-flex-col">
+        {% if damage_distribution.template_id %}
+        <div class="wuwa-barh-id">{{damage_distribution.template_id}} | {{damage_distribution.monster_id}}</div>
+        {% endif %}
+        {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
+        <div class="wuwa-barh-dps">
+          DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
+          ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
+        </div>
+        {% endif %}
+        {% for resonator in template.resonators %}
+        {% set resonator_name = resonator.resonator_name %}
+        {% set r = merge_resonator_model(resonator_name, resonators_table, calculated_resonators_table, is_docs=True) %}
+        <div class="wuwa-barh-row">
+          <div class="wuwa-barh-resonator-icon">
+            <img src="{{r.resonator_src}}" />
+          </div>
+          <div class="wuwa-barh-damage-container">
+            {% set element = get_element_class_name(r.element) %}
+            {% set team_resonator_damages = get_team_resonator_damages(damage_distribution) %}
+            {% set max_damage = get_max_damage(team_resonator_damages) %}
+            {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage %}
+            {% set in_out = 0.3 %}
+            {% set black_elements = ['aero', 'spectro'] %}
+            <div class="wuwa-barh-damage wuwa-bg-{{element}}"
+              style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
+              {% if percentage >= in_out %}
+              <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
+                {{resonator_name}}
+                {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+              </div>
+              {% endif %}
+            </div>
+            {% if percentage < in_out %} <div class="wuwa-barh-damage-value-out">{{resonator_name}}
+              {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
 {% for resonator in template.resonators %}
 ## {{resonator.resonator_name}}
 {% set r = merge_resonator_model(resonator.resonator_name, resonators_table, calculated_resonators_table, is_docs=True)
@@ -356,7 +405,7 @@
   </div>
 </div>
 ### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distributions.resonators[resonator.resonator_name] %}
+{% set resonator_damage_distribution = damage_distribution.resonators[resonator.resonator_name] %}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -368,9 +417,9 @@
           <div class="wuwa-flex-col">
             <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.TEMPLATE_ID)}}:
-              {{damage_distributions.template_id}}</div>
+              {{damage_distribution.template_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
-              {{damage_distributions.monster_id}}</div>
+              {{damage_distribution.monster_id}}</div>
           </div>
         </div>
         {% for e in ResonatorSkillTypeEnum %}
@@ -405,7 +454,7 @@
 </div>
 </div>
 ### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distributions.resonators[resonator.resonator_name] %}
+{% set resonator_damage_distribution = damage_distribution.resonators[resonator.resonator_name] %}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -417,9 +466,9 @@
           <div class="wuwa-flex-col">
             <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.TEMPLATE_ID)}}:
-              {{damage_distributions.template_id}}</div>
+              {{damage_distribution.template_id}}</div>
             <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
-              {{damage_distributions.monster_id}}</div>
+              {{damage_distribution.monster_id}}</div>
           </div>
         </div>
         {% for e in SkillBonusTypeEnum %}
