@@ -152,7 +152,7 @@ def print_docs_settings(version: str = Option(get_version())):
 
 @app.command()
 def tmp():
-    from ww.calc.simulated_resonators import SimulatedResonators
+    from ww.calc.simulated_resonators import Theory1SimulatedResonators
     from ww.crud.template import get_template
     from ww.utils.pd import save_df
 
@@ -162,8 +162,8 @@ def tmp():
     resonator_name = "凌陽"
     weapon_name = "擎淵怒濤"
 
-    s = SimulatedResonators(resonator_name, template)
-    out = s.get_calculated_resonator_table_with_theory_1()
+    s = Theory1SimulatedResonators(resonator_name, template)
+    out = s.get_calculated_resonators_table_for_damage_distribution()
     df = out.df
     save_df("tmp.tsv", df, out.column_names)
 

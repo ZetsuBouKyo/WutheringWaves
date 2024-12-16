@@ -1,5 +1,4 @@
 from decimal import Decimal
-from pathlib import Path
 from statistics import mean
 from typing import List
 
@@ -12,7 +11,7 @@ from ww.model.echo import (
     get_resonator_echo_main_dmg_bonus,
 )
 from ww.tables.echo import EchoesTable, EchoMainAffixesTable, EchoSubAffixesTable
-from ww.utils.pd import get_empty_df, save_tsv
+from ww.utils.pd import get_empty_df
 
 ECHOES_THEORY_1_FPATH = "./data/v1/zh_tw/echoes_theory_1.tsv"
 
@@ -222,39 +221,15 @@ class SimulatedEchoes:
 
         return echoes
 
-    def get_echoes_theory_1(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal(24)
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = Decimal(0.054)
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = Decimal(0.084)
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = Decimal(0.1008)
-            echo[ResonatorEchoTsvColumnEnum.SUB_ENERGY_REGEN.value] = Decimal(0.0192)
-
-            echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = (
-                Decimal(0.016)
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = Decimal(
-                0.016
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = Decimal(
-                0.016
-            )
-            echo[
-                ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
-            ] = Decimal(0.016)
-
-        return echoes
-
-    def get_theory_1(self) -> List[str]:
+    def get_echoes_with_sonatas(self) -> List[str]:
         echoes = []
         for e in EchoSonataEnum:
             sonata = e.value
-            echoes += self.get_echoes_theory_1(_(ZhTwEnum.ECHOES_THEORY_1), sonata)
+            echoes += self.get_echoes(_(ZhTwEnum.ECHOES_THEORY_1), sonata)
         return echoes
 
-    def get_theory_1_df(self) -> pd.DataFrame:
-        echoes = self.get_theory_1()
+    def get_df(self) -> pd.DataFrame:
+        echoes = self.get_echoes_with_sonatas()
 
         data = {name: [] for name in self.echoes_table_column_names}
         for echo in echoes:
@@ -264,11 +239,43 @@ class SimulatedEchoes:
         df = pd.DataFrame(data, columns=self.echoes_table_column_names)
         return df
 
-    def get_theory_1_table(self) -> EchoesTable:
-        df = self.get_theory_1_df()
+    def get_table(self) -> EchoesTable:
+        df = self.get_df()
         table = EchoesTable()
         table.df = df
         return table
+
+    def get_echoes(self, prefix: str, sonata: str):
+        raise NotImplementedError
+
+
+class Theory1SimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
+        echoes = self.get_base_echoes(prefix, sonata)
+        for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal("24")
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = Decimal("0.054")
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = Decimal("0.084")
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = Decimal("0.1008")
+            echo[ResonatorEchoTsvColumnEnum.SUB_ENERGY_REGEN.value] = Decimal("0.0192")
+
+            echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = (
+                Decimal("0.016")
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = Decimal(
+                "0.016"
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = Decimal(
+                "0.016"
+            )
+            echo[
+                ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
+            ] = Decimal("0.016")
+
+        return echoes
 
     def get_echoes_half_built(self, prefix: str, sonata: str):
         echoes = self.get_base_echoes(prefix, sonata)

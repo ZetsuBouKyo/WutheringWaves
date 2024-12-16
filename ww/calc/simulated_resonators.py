@@ -5,7 +5,11 @@ import pandas as pd
 from ww.calc.calculated_resonators import (
     get_calculated_resonators_df_by_resonators_table,
 )
-from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
+from ww.calc.simulated_echoes import (
+    SimulatedEchoes,
+    Theory1SimulatedEchoes,
+    get_simulated_echo_id,
+)
 from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     ResonatorInformationModel,
@@ -21,6 +25,7 @@ from ww.tables.resonator import (
     get_resonator_information,
 )
 from ww.tables.weapon import WeaponStatTable
+from ww.utils.number import get_number
 
 
 def get_df_by_resonators(
@@ -102,56 +107,116 @@ class SimulatedResonators:
     def update_resonator_by_resonator_information(
         self, resonator: dict, resonator_information: ResonatorInformationModel
     ):
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HP_P.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HP_P.value] = get_number(
             resonator_information.stat_bonus.hp_p
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_ATK_P.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_ATK_P.value] = get_number(
             resonator_information.stat_bonus.atk_p
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_DEF_P.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_DEF_P.value] = get_number(
             resonator_information.stat_bonus.def_p
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_RATE.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_RATE.value] = get_number(
             resonator_information.stat_bonus.crit_rate
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_DMG.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_CRIT_DMG.value] = get_number(
             resonator_information.stat_bonus.crit_dmg
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_GLACIO_DMG_BONUS.value] = (
-            resonator_information.stat_bonus.glacio
+            get_number(resonator_information.stat_bonus.glacio)
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_FUSION_DMG_BONUS.value] = (
-            resonator_information.stat_bonus.fusion
+            get_number(resonator_information.stat_bonus.fusion)
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_ELECTRO_DMG_BONUS.value] = (
-            resonator_information.stat_bonus.electro
+            get_number(resonator_information.stat_bonus.electro)
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_BONUS.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_AERO_DMG_BONUS.value] = get_number(
             resonator_information.stat_bonus.aero
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_SPECTRO_DMG_BONUS.value] = (
-            resonator_information.stat_bonus.spectro
+            get_number(resonator_information.stat_bonus.spectro)
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_BONUS.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HAVOC_DMG_BONUS.value] = get_number(
             resonator_information.stat_bonus.havoc
         )
-        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HEALING_BONUS.value] = (
+        resonator[ResonatorTsvColumnEnum.STAT_BONUS_HEALING_BONUS.value] = get_number(
             resonator_information.stat_bonus.healing
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_SKILL_BONUS.value] = (
-            resonator_information.stat_bonus.resonance_skill
+            get_number(resonator_information.stat_bonus.resonance_skill)
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_BASIC_ATTACK_BONUS.value] = (
-            resonator_information.stat_bonus.basic_attack
+            get_number(resonator_information.stat_bonus.basic_attack)
         )
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_HEAVY_ATTACK_BONUS.value] = (
-            resonator_information.stat_bonus.heavy_attack
+            get_number(resonator_information.stat_bonus.heavy_attack)
         )
         resonator[
             ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_LIBERATION_BONUS.value
-        ] = resonator_information.stat_bonus.resonance_liberation
+        ] = get_number(resonator_information.stat_bonus.resonance_liberation)
 
-    def get_resonator_with_theory_1(
+    def get_resonators_table_for_damage_distribution(self) -> ResonatorsTable:
+        resonators = []
+        for resonator in self.template.resonators:
+            resonator_name = resonator.resonator_name
+            resonator_chain = resonator.resonator_chain
+            weapon_name = resonator.resonator_weapon_name
+            weapon_tune = resonator.resonator_weapon_rank
+
+            resonator_dict = self.get_resonator(
+                resonator_name, resonator_chain, weapon_name, weapon_tune
+            )
+            resonators.append(resonator_dict)
+
+        df = get_df_by_resonators(resonators, self.resonators_table_column_names)
+        table = ResonatorsTable()
+        table.df = df
+
+        return table
+
+    def get_calculated_resonators_table_for_damage_distribution(
+        self,
+    ) -> CalculatedResonatorsTable:
+        resonators_table = self.get_resonators_table_for_damage_distribution()
+        echoes_table = self.simulated_echoes.get_table()
+        df = get_calculated_resonators_df_by_resonators_table(
+            resonators_table, echoes_table=echoes_table
+        )
+
+        table = CalculatedResonatorsTable()
+        table.df = df
+        return table
+
+    def get_resonator(
+        self,
+        resonator_name: str,
+        chain: str,
+        weapon_name: str,
+        weapon_tune: str,
+    ) -> dict:
+        raise NotImplementedError
+
+
+class Theory1SimulatedResonators(SimulatedResonators):
+
+    def __init__(
+        self,
+        resonator_name: str,
+        template: TemplateModel,
+        echo_table: EchoTable = EchoTable,
+        weapon_stat_table: WeaponStatTable = WeaponStatTable,
+        simulated_echoes: Theory1SimulatedEchoes = Theory1SimulatedEchoes,
+    ):
+        super().__init__(
+            resonator_name,
+            template,
+            echo_table=echo_table,
+            weapon_stat_table=weapon_stat_table,
+            simulated_echoes=simulated_echoes,
+        )
+
+    def get_resonator(
         self,
         resonator_name: str,
         chain: str,
@@ -199,34 +264,3 @@ class SimulatedResonators:
         )
 
         return resonator
-
-    def get_resonator_table_with_theory_1(self) -> ResonatorsTable:
-        resonators = []
-        for resonator in self.template.resonators:
-            resonator_name = resonator.resonator_name
-            resonator_chain = resonator.resonator_chain
-            weapon_name = resonator.resonator_weapon_name
-            weapon_tune = resonator.resonator_weapon_rank
-
-            resonator_dict = self.get_resonator_with_theory_1(
-                resonator_name, resonator_chain, weapon_name, weapon_tune
-            )
-            resonators.append(resonator_dict)
-
-        df = get_df_by_resonators(resonators, self.resonators_table_column_names)
-        table = ResonatorsTable()
-        table.df = df
-
-        return table
-
-    def get_calculated_resonators_table_with_theory_1(
-        self,
-    ) -> CalculatedResonatorsTable:
-        resonators_table = self.get_resonator_table_with_theory_1()
-        echoes_table = self.simulated_echoes.get_theory_1_table()
-        df = get_calculated_resonators_df_by_resonators_table(
-            resonators_table, echoes_table=echoes_table
-        )
-        table = CalculatedResonatorsTable()
-        table.df = df
-        return table

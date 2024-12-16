@@ -6,8 +6,8 @@ from typing import Union
 import yaml
 
 from ww.calc.damage import Damage
-from ww.calc.simulated_echoes import SimulatedEchoes
-from ww.calc.simulated_resonators import SimulatedResonators
+from ww.calc.simulated_echoes import Theory1SimulatedEchoes
+from ww.calc.simulated_resonators import Theory1SimulatedResonators
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
 from ww.html.image.damage import get_max_damage
@@ -102,14 +102,16 @@ class Docs:
         ]
 
         # Simulation
-        simulated_echoes = SimulatedEchoes()
-        simulated_resonators = SimulatedResonators("", resonator_template)
+        simulated_echoes = Theory1SimulatedEchoes()
+        simulated_resonators = Theory1SimulatedResonators("", resonator_template)
 
         # Tables
-        echoes_table = simulated_echoes.get_theory_1_table()
-        resonators_table = simulated_resonators.get_resonator_table_with_theory_1()
+        echoes_table = simulated_echoes.get_table()
+        resonators_table = (
+            simulated_resonators.get_resonators_table_for_damage_distribution()
+        )
         calculated_resonators_table = (
-            simulated_resonators.get_calculated_resonators_table_with_theory_1()
+            simulated_resonators.get_calculated_resonators_table_for_damage_distribution()
         )
 
         # Resonator skill damage distribution
