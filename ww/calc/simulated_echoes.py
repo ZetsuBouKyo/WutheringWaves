@@ -17,14 +17,15 @@ ECHOES_THEORY_1_FPATH = "./data/v1/zh_tw/echoes_theory_1.tsv"
 
 
 def get_simulated_echo_id(
-    cost: int, prefix: str, main_affix: str, sonata: str, no: int
-):
+    cost: str, prefix: str, main_affix: str, sonata: str, no: str
+) -> str:
     return f"{prefix} {sonata} {cost}c {main_affix} {no}"
 
 
 class SimulatedEchoes:
 
-    def __init__(self, echoes_theory_1_fpath: str = ECHOES_THEORY_1_FPATH):
+    def __init__(self, prefix: str, echoes_theory_1_fpath: str = ECHOES_THEORY_1_FPATH):
+        self.prefix = prefix
         self.echoes_theory_1_fpath = echoes_theory_1_fpath
 
         echo_main_affixes_table = EchoMainAffixesTable()
@@ -225,7 +226,7 @@ class SimulatedEchoes:
         echoes = []
         for e in EchoSonataEnum:
             sonata = e.value
-            echoes += self.get_echoes(_(ZhTwEnum.ECHOES_THEORY_1), sonata)
+            echoes += self.get_echoes(self.prefix, sonata)
         return echoes
 
     def get_df(self) -> pd.DataFrame:

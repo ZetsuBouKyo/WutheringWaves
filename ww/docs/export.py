@@ -117,7 +117,7 @@ class Docs:
             simulated_resonators.get_resonators_table_for_damage_distribution()
         )
         calculated_resonators_table = (
-            simulated_resonators.get_calculated_resonators_table_for_damage_distribution()
+            simulated_resonators.get_calculated_resonators_table(resonators_table)
         )
 
         # Resonator skill damage distribution
@@ -179,11 +179,16 @@ class Docs:
         self, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1.md"
+        output_fpath = (
+            f"./build/html/docs/resonator/template/{md5}/theory_1/damage_analysis.md"
+        )
 
         # Simulation
-        simulated_echoes = Theory1SimulatedEchoes()
-        simulated_resonators = Theory1SimulatedResonators("", resonator_template)
+        prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+        simulated_echoes = Theory1SimulatedEchoes(prefix)
+        simulated_resonators = Theory1SimulatedResonators(
+            prefix, "", resonator_template
+        )
 
         self.export_resonator_template_damage(
             resonator_template, output_fpath, simulated_echoes, simulated_resonators
@@ -193,11 +198,14 @@ class Docs:
         self, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/damage_analysis.md"
 
         # Simulation
-        simulated_echoes = HalfBuiltAtkSimulatedEchoes()
-        simulated_resonators = HalfBuiltAtkSimulatedResonators("", resonator_template)
+        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
+        simulated_echoes = HalfBuiltAtkSimulatedEchoes(prefix)
+        simulated_resonators = HalfBuiltAtkSimulatedResonators(
+            prefix, "", resonator_template
+        )
 
         self.export_resonator_template_damage(
             resonator_template, output_fpath, simulated_echoes, simulated_resonators

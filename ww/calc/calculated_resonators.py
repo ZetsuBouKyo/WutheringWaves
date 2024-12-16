@@ -15,6 +15,7 @@ from ww.model.weapon import WeaponRankEnum, WeaponStatEnum
 from ww.tables.echo import EchoesTable
 from ww.tables.resonator import (
     CALCULATED_RESONATOR_PATH,
+    CalculatedResonatorsTable,
     ResonatorsTable,
     ResonatorStatTable,
 )
@@ -871,6 +872,21 @@ def get_calculated_resonators_df_by_resonators_table(
 
     calculated_resonators_df = pd.DataFrame(calculated_resonators_dict)
     return calculated_resonators_df
+
+
+def get_calculated_resonators_table_by_resonators_table(
+    resonators_table: ResonatorsTable, echoes_table: Optional[EchoesTable] = None
+) -> CalculatedResonatorsTable:
+    if echoes_table is None:
+        echoes_table = EchoesTable()
+
+    df = get_calculated_resonators_df_by_resonators_table(
+        resonators_table, echoes_table=echoes_table
+    )
+
+    table = CalculatedResonatorsTable()
+    table.df = df
+    return table
 
 
 def get_calculated_resonators_df() -> pd.DataFrame:
