@@ -551,7 +551,7 @@ class ZhTwEnum(str, Enum):
     ABBR_HEALING: str = "治"
 
     ECHOES_THEORY_1: str = "理論1"
-    ECHOES_HALF_BUILT: str = "小畢業"
+    ECHOES_HALF_BUILT_ATK: str = "小畢業[攻]"
 
     ECHO_43311_CRIT_RATE_2_ELEM: str = "43311-暴-2屬"
     ECHO_43311_CRIT_RATE_1_ELEM_1_ATK: str = "43311-暴-1屬1攻"

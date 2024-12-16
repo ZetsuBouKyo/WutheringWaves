@@ -277,13 +277,24 @@ class Theory1SimulatedEchoes(SimulatedEchoes):
 
         return echoes
 
-    def get_echoes_half_built(self, prefix: str, sonata: str):
+
+class HalfBuiltAtkSimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
         echoes = self.get_base_echoes(prefix, sonata)
         for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
+                self.echo_sub_affixes.atk
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
             echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
                 self.echo_sub_affixes.crit_rate
             )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = (
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
                 self.echo_sub_affixes.crit_dmg
             )
 

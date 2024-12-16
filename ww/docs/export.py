@@ -6,8 +6,16 @@ from typing import Union
 import yaml
 
 from ww.calc.damage import Damage
-from ww.calc.simulated_echoes import Theory1SimulatedEchoes
-from ww.calc.simulated_resonators import Theory1SimulatedResonators
+from ww.calc.simulated_echoes import (
+    HalfBuiltAtkSimulatedEchoes,
+    SimulatedEchoes,
+    Theory1SimulatedEchoes,
+)
+from ww.calc.simulated_resonators import (
+    HalfBuiltAtkSimulatedResonators,
+    SimulatedResonators,
+    Theory1SimulatedResonators,
+)
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
 from ww.html.image.damage import get_max_damage
@@ -87,12 +95,14 @@ class Docs:
         self.export_resonator_templates()
         self.export_resonator_outline()
 
-    def export_resonator_template_damage_by_theory_1(
-        self, resonator_template: TemplateModel
+    def export_resonator_template_damage(
+        self,
+        resonator_template: TemplateModel,
+        output_fpath: str,
+        simulated_echoes: SimulatedEchoes,
+        simulated_resonators: SimulatedResonators,
     ):
-        md5 = resonator_template.get_md5()
         template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1.md"
 
         template = get_jinja2_template(template_damage_fpath)
 
@@ -100,10 +110,6 @@ class Docs:
         resonator_ids = [
             resonator.resonator_name for resonator in resonator_template.resonators
         ]
-
-        # Simulation
-        simulated_echoes = Theory1SimulatedEchoes()
-        simulated_resonators = Theory1SimulatedResonators("", resonator_template)
 
         # Tables
         echoes_table = simulated_echoes.get_table()
@@ -169,6 +175,34 @@ class Docs:
         with output_fpath.open(mode="w", encoding="utf-8") as fp:
             fp.write(html_str)
 
+    def export_resonator_template_damage_by_theory_1(
+        self, resonator_template: TemplateModel
+    ):
+        md5 = resonator_template.get_md5()
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1.md"
+
+        # Simulation
+        simulated_echoes = Theory1SimulatedEchoes()
+        simulated_resonators = Theory1SimulatedResonators("", resonator_template)
+
+        self.export_resonator_template_damage(
+            resonator_template, output_fpath, simulated_echoes, simulated_resonators
+        )
+
+    def export_resonator_template_damage_by_half_built_atk(
+        self, resonator_template: TemplateModel
+    ):
+        md5 = resonator_template.get_md5()
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk.md"
+
+        # Simulation
+        simulated_echoes = HalfBuiltAtkSimulatedEchoes()
+        simulated_resonators = HalfBuiltAtkSimulatedResonators("", resonator_template)
+
+        self.export_resonator_template_damage(
+            resonator_template, output_fpath, simulated_echoes, simulated_resonators
+        )
+
     def export_resonator_templates(self):
         template_fpath = "./html/docs/resonator/template.jinja2"
         output_path = "./build/html/docs/resonator/template"
@@ -208,6 +242,9 @@ class Docs:
                 self._template_id_to_relative_url[template_id] = url
 
                 self.export_resonator_template_damage_by_theory_1(resonator_template)
+                self.export_resonator_template_damage_by_half_built_atk(
+                    resonator_template
+                )
 
     def export_resonator_outline(self):
         template_fpath = "./html/docs/resonator/outline.jinja2"
