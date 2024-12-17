@@ -554,16 +554,11 @@ class ZhTwEnum(str, Enum):
     ECHOES_THEORY_1: str = "理論1"
     ECHOES_HALF_BUILT_ATK: str = "小畢業[攻]"
 
-    ECHO_43311_CRIT_RATE_2_ELEM: str = "43311-暴-2屬"
-    ECHO_43311_CRIT_RATE_1_ELEM_1_ATK: str = "43311-暴-1屬1攻"
-    ECHO_43311_CRIT_RATE_2_ATK: str = "43311-暴-2攻"
-    ECHO_43311_CRIT_DMG_2_ELEM: str = "43311-暴傷-2屬"
-    ECHO_43311_CRIT_DMG_1_ELEM_1_ATK: str = "43311-暴傷-1屬1攻"
-    ECHO_43311_CRIT_DMG_2_ATK: str = "43311-暴傷-2攻"
-
-    ECHO_44111_2_CRIT_RATE: str = "44111-2暴"
-    ECHO_44111_1_CRIT_RATE_1_CRIT_DMG: str = "44111-1暴1暴傷"
-    ECHO_44111_2_CRIT_DMG: str = "44111-2暴傷"
+    ECHOES_HALF_BUILT_SKILL_BONUS: str = "小畢業[技能加成]"
+    ECHOES_HALF_BUILT_RESONANCE_SKILL: str = "小畢業[共技]"
+    ECHOES_HALF_BUILT_BASIC_ATK: str = "小畢業[普攻]"
+    ECHOES_HALF_BUILT_HEAVY_ATK: str = "小畢業[重擊]"
+    ECHOES_HALF_BUILT_RESONANCE_LIBERATION: str = "小畢業[共解]"
 
     MONSTER_LV_90_RES_10: str = "90等抗性10白板"
     MONSTER_LV_90_RES_20: str = "90等抗性20白板"

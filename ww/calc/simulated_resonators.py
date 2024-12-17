@@ -5,12 +5,7 @@ import pandas as pd
 from ww.calc.calculated_resonators import (
     get_calculated_resonators_table_by_resonators_table,
 )
-from ww.calc.simulated_echoes import (
-    HalfBuiltAtkSimulatedEchoes,
-    SimulatedEchoes,
-    Theory1SimulatedEchoes,
-    get_simulated_echo_id,
-)
+from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
 from ww.locale import ZhTwEnum, _
 from ww.model.resonator import (
     ResonatorInformationModel,
@@ -92,7 +87,7 @@ class SimulatedResonators:
         template: TemplateModel,
         echo_table: Optional[EchoTable] = None,
         weapon_stat_table: WeaponStatTable = WeaponStatTable,
-        simulated_echoes: SimulatedEchoes = SimulatedEchoes,
+        simulated_echoes: Optional[SimulatedEchoes] = None,
     ):
         self.prefix = prefix
         self.resonator_name = resonator_name
@@ -103,7 +98,10 @@ class SimulatedResonators:
         else:
             self.echo_table = echo_table
         self.weapon_stat_table = weapon_stat_table
-        self.simulated_echoes = simulated_echoes(prefix)
+        if simulated_echoes is None:
+            self.simulated_echoes = SimulatedEchoes(prefix)
+        else:
+            self.simulated_echoes = simulated_echoes
 
         self.resonators_table_column_names = [e.value for e in ResonatorTsvColumnEnum]
 
@@ -635,45 +633,3 @@ class SimulatedResonators:
             resonators_table, echoes_table=echoes_table
         )
         return table
-
-
-class Theory1SimulatedResonators(SimulatedResonators):
-
-    def __init__(
-        self,
-        prefix: str,
-        resonator_name: str,
-        template: TemplateModel,
-        echo_table: Optional[EchoTable] = None,
-        weapon_stat_table: WeaponStatTable = WeaponStatTable,
-        simulated_echoes: Theory1SimulatedEchoes = Theory1SimulatedEchoes,
-    ):
-        super().__init__(
-            prefix,
-            resonator_name,
-            template,
-            echo_table=echo_table,
-            weapon_stat_table=weapon_stat_table,
-            simulated_echoes=simulated_echoes,
-        )
-
-
-class HalfBuiltAtkSimulatedResonators(SimulatedResonators):
-
-    def __init__(
-        self,
-        prefix: str,
-        resonator_name: str,
-        template: TemplateModel,
-        echo_table: Optional[EchoTable] = None,
-        weapon_stat_table: WeaponStatTable = WeaponStatTable,
-        simulated_echoes: HalfBuiltAtkSimulatedEchoes = HalfBuiltAtkSimulatedEchoes,
-    ):
-        super().__init__(
-            prefix,
-            resonator_name,
-            template,
-            echo_table=echo_table,
-            weapon_stat_table=weapon_stat_table,
-            simulated_echoes=simulated_echoes,
-        )

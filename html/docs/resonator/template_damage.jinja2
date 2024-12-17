@@ -5,7 +5,8 @@
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
       <div class="wuwa-flex-col">
-        <div class="wuwa-barh-id">{{damage_distribution.monster_id}}</div>
+        <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+        <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}: {{damage_distribution.monster_id}}</div>
         {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
         <div class="wuwa-barh-dps">
           DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
@@ -413,8 +414,9 @@
             <img src="{{r.resonator_src}}" />
           </div>
           <div class="wuwa-flex-col">
-            <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
-            <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
+            <div class="wuwa-barh-id wuwa-fs5">{{resonator_damage_distribution.resonator_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}:
               {{damage_distribution.monster_id}}</div>
           </div>
         </div>
@@ -460,8 +462,9 @@
             <img src="{{r.resonator_src}}" />
           </div>
           <div class="wuwa-flex-col">
-            <div class="wuwa-barh-id">{{resonator_damage_distribution.resonator_id}}</div>
-            <div class="wuwa-barh-id-gray">{{_(ZhTwEnum.MONSTER_ID)}}:
+            <div class="wuwa-barh-id wuwa-fs5">{{resonator_damage_distribution.resonator_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}:
               {{damage_distribution.monster_id}}</div>
           </div>
         </div>

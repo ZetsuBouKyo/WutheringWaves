@@ -61,7 +61,7 @@ class TemplateResonatorModel(BaseModel):
     resonator_inherent_skill_1: Optional[bool] = None
     resonator_inherent_skill_2: Optional[bool] = None
     resonator_base_attr: str = ""
-    resonator_skill_bonus: str = ""
+    resonator_skill_bonus: str = ""  # ResonatorSkillBonusTypeEnum
     resonator_echo_1: str = ""
     resonator_echo_sonata_1: str = ""
     resonator_echo_sonata_2: str = ""
@@ -213,6 +213,12 @@ class TemplateModel(BaseModel):
         for resonator in cls.resonators:
             if resonator.resonator_name == resonator_name:
                 return resonator.resonator_base_attr
+        return ""
+
+    def get_skill_bonus(cls, resonator_name: str) -> str:
+        for resonator in cls.resonators:
+            if resonator.resonator_name == resonator_name:
+                return resonator.resonator_skill_bonus
         return ""
 
     def get_echo_1(cls, resonator_name: str) -> str:

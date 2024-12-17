@@ -286,9 +286,6 @@ class HalfBuiltAtkSimulatedEchoes(SimulatedEchoes):
     def get_echoes(self, prefix: str, sonata: str):
         echoes = self.get_base_echoes(prefix, sonata)
         for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
-                self.echo_sub_affixes.atk
-            )
             echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
                 self.echo_sub_affixes.atk_p
             )
@@ -298,5 +295,100 @@ class HalfBuiltAtkSimulatedEchoes(SimulatedEchoes):
             echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
                 self.echo_sub_affixes.crit_dmg
             )
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
+                self.echo_sub_affixes.atk
+            )
+
+        return echoes
+
+
+class HalfBuiltResonanceSkillSimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
+        echoes = self.get_base_echoes(prefix, sonata)
+        for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
+                self.echo_sub_affixes.crit_rate
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
+                self.echo_sub_affixes.crit_dmg
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = mean(
+                self.echo_sub_affixes.resonance_skill
+            )
+
+        return echoes
+
+
+class HalfBuiltBasicAtkSimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
+        echoes = self.get_base_echoes(prefix, sonata)
+        for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
+                self.echo_sub_affixes.crit_rate
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
+                self.echo_sub_affixes.crit_dmg
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = mean(
+                self.echo_sub_affixes.basic_attack
+            )
+
+        return echoes
+
+
+class HalfBuiltHeavyAtkSimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
+        echoes = self.get_base_echoes(prefix, sonata)
+        for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
+                self.echo_sub_affixes.crit_rate
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
+                self.echo_sub_affixes.crit_dmg
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = mean(
+                self.echo_sub_affixes.heavy_attack
+            )
+
+        return echoes
+
+
+class HalfBuiltResonanceLiberationSimulatedEchoes(SimulatedEchoes):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def get_echoes(self, prefix: str, sonata: str):
+        echoes = self.get_base_echoes(prefix, sonata)
+        for echo in echoes:
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
+                self.echo_sub_affixes.crit_rate
+            )
+            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
+                self.echo_sub_affixes.crit_dmg
+            )
+            echo[
+                ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
+            ] = mean(self.echo_sub_affixes.resonance_liberation)
 
         return echoes
