@@ -1,0 +1,52 @@
+# {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}
+
+<div class="wuwa-container">
+  <div class="wuwa-flex-col">
+    <div class="wuwa-barh">
+      <div class="wuwa-flex-col">
+        {% for damage_distribution in damage_distributions %}
+        {% for r_damage_distribution in damage_distribution.resonators.values() %}
+        {% set resonator_name = r_damage_distribution.resonator_name %}
+        <div class="wuwa-barh-row wuwa-h100">
+          <div class="wuwa-barh-resonator-icon">
+            <img src="{{resonators_info[resonator_name].resonator_src}}" />
+          </div>
+          <div class="wuwa-flex-col wuwa-h100p">
+            <div class="wuwa-barh-title">
+              <div class="wuwa-barh-resonator-id wuwa-fs5">{{r_damage_distribution.resonator_id}}</div>
+              <div class="wuwa-barh-template-info wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}:
+                {{damage_distribution.template_id}}
+              </div>
+              <div class="wuwa-barh-template-info wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}:
+                {{damage_distribution.monster_id}}</div>
+            </div>
+            <div class="wuwa-barh-damage-container">
+              {% set element = get_element_class_name(resonators_info[resonator_name].element) %}
+              {% set percentage = r_damage_distribution.damage / max_damage %}
+              {% set in_out = 0.5 %}
+              {% set black_elements = ['aero', 'spectro'] %}
+              <div class="wuwa-barh-damage wuwa-bg-{{element}}"
+                style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
+                {% if percentage >= in_out %}
+                <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
+                  {{to_number_string(r_damage_distribution.damage)}}
+                  ({{get_percentage_str(r_damage_distribution.damage, base_damage)}})
+                </div>
+                {% else %}
+                &nbsp;
+                {% endif %}
+              </div>
+              {% if percentage < in_out %} <div class="wuwa-barh-damage-value-out">
+                {{to_number_string(r_damage_distribution.damage)}}
+                ({{get_percentage_str(r_damage_distribution.damage, base_damage)}})
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>

@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import Union
+from typing import List, Union
 
 import yaml
 
@@ -36,7 +36,11 @@ from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
-from ww.model.template import TemplateModel, TemplateRowActionEnum
+from ww.model.template import (
+    TemplateDamageDistributionModel,
+    TemplateModel,
+    TemplateRowActionEnum,
+)
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
     get_percentage_str,
@@ -95,6 +99,121 @@ class Docs:
         self.export_resonator_templates()
         self.export_resonator_outline()
 
+    def export_resonator_echo_damage_comparison(
+        self,
+        resonator_template: TemplateModel,
+        output_fpath: str,
+        simulated_echoes: SimulatedEchoes,
+        simulated_resonators: SimulatedResonators,
+    ):
+        template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
+        template = get_jinja2_template(template_fpath)
+
+        resonator_ids, resonators_table = (
+            simulated_resonators.get_main_resonator_ids_and_resonators_table_for_echo_comparison()
+        )
+
+        calculated_resonators_table = (
+            simulated_resonators.get_calculated_resonators_table(resonators_table)
+        )
+
+        # Resonator damage distribution
+        monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
+        damage = Damage(
+            monster_id=monster_id,
+            resonators_table=resonators_table,
+            calculated_resonators_table=calculated_resonators_table,
+        )
+        damage_distributions: List[TemplateDamageDistributionModel] = []
+        for resonator_id in resonator_ids:
+            dmg_distri = damage.get_damage_distributions_with_labels(
+                resonator_template.id,
+                resonator_id,
+                "",
+                "",
+                monster_id=monster_id,
+            )
+            dmg_distri = dmg_distri.get("", None)
+            if dmg_distri is None:
+                continue
+            damage_distributions.append(dmg_distri)
+
+        resonators_info = {}
+        damages = []
+        for damage_distribution in damage_distributions:
+            for (
+                resonator_damage_distribution
+            ) in damage_distribution.resonators.values():
+                resonator_id = resonator_damage_distribution.resonator_id
+                resonator_name = resonator_damage_distribution.resonator_name
+                resonator_info = resonators_info.get(resonator_name, None)
+                if resonator_info is None:
+                    resonator_info = merge_resonator_model(
+                        resonator_id,
+                        resonators_table,
+                        calculated_resonators_table,
+                        is_docs=True,
+                    )
+                    if resonator_info:
+                        resonators_info[resonator_name] = resonator_info
+                damages.append(resonator_damage_distribution.damage)
+
+        max_damage = get_max_damage(
+            damages,
+            default_max_damage=Decimal("100000"),
+            tick=Decimal("50000"),
+        )
+        base_damage = max(damages)
+
+        html_str = template.render(
+            template=resonator_template,
+            resonators_info=resonators_info,
+            damage_distributions=damage_distributions,
+            max_damage=max_damage,
+            base_damage=base_damage,
+            get_element_class_name=get_element_class_name,
+            get_percentage_str=get_percentage_str,
+            to_number_string=to_number_string,
+            to_percentage_str=to_percentage_str,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+        )
+
+        output_fpath = Path(output_fpath)
+        os.makedirs(output_fpath.parent, exist_ok=True)
+        with output_fpath.open(mode="w", encoding="utf-8") as fp:
+            fp.write(html_str)
+
+    def export_resonator_echo_damage_comparison_with_theory_1(
+        self, resonator_name: str, resonator_template: TemplateModel
+    ):
+        md5 = resonator_template.get_md5()
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1/echo_damage_comparison.md"
+
+        prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+        simulated_echoes = Theory1SimulatedEchoes(prefix)
+        simulated_resonators = Theory1SimulatedResonators(
+            prefix, resonator_name, resonator_template
+        )
+        self.export_resonator_echo_damage_comparison(
+            resonator_template, output_fpath, simulated_echoes, simulated_resonators
+        )
+
+    def export_resonator_echo_damage_comparison_with_half_built_atk(
+        self, resonator_name: str, resonator_template: TemplateModel
+    ):
+        md5 = resonator_template.get_md5()
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/echo_damage_comparison.md"
+
+        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
+        simulated_echoes = HalfBuiltAtkSimulatedEchoes(prefix)
+        simulated_resonators = HalfBuiltAtkSimulatedResonators(
+            prefix, resonator_name, resonator_template
+        )
+        self.export_resonator_echo_damage_comparison(
+            resonator_template, output_fpath, simulated_echoes, simulated_resonators
+        )
+
     def export_resonator_template_damage(
         self,
         resonator_template: TemplateModel,
@@ -103,7 +222,6 @@ class Docs:
         simulated_resonators: SimulatedResonators,
     ):
         template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
-
         template = get_jinja2_template(template_damage_fpath)
 
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
@@ -224,6 +342,15 @@ class Docs:
             for template_id in resonator.template_ids:
                 resonator_template = get_template(template_id)
 
+                # Echo damage comparison
+                self.export_resonator_echo_damage_comparison_with_theory_1(
+                    resonator.name, resonator_template
+                )
+                self.export_resonator_echo_damage_comparison_with_half_built_atk(
+                    resonator.name, resonator_template
+                )
+
+                # Output method
                 all_output_methods = get_html_template_output_methods(
                     resonator_template.rows, labels=[""], is_docs=True
                 )
@@ -239,6 +366,7 @@ class Docs:
                     _=_,
                 )
 
+                # Damage analysis
                 md5 = resonator_template.get_md5()
                 fname = f"{md5}.md"
                 output_fpath = output_path / fname

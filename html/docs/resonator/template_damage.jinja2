@@ -15,7 +15,7 @@
         {% for resonator in template.resonators %}
         {% set resonator_name = resonator.resonator_name %}
         {% set r = merge_resonator_model(resonator_name, resonators_table, calculated_resonators_table, is_docs=True) %}
-        <div class="wuwa-barh-row">
+        <div class="wuwa-barh-row wuwa-h40">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
           </div>
@@ -408,7 +408,7 @@
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
       <div class="wuwa-flex-col">
-        <div class="wuwa-barh-row wuwa-margin-bottom-24">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-margin-bottom-24">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
           </div>
@@ -419,7 +419,7 @@
           </div>
         </div>
         {% for e in ResonatorSkillTypeEnum %}
-        <div class="wuwa-barh-row wuwa-border-left">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-border-left">
           <div class="wuwa-barh-damage-100">
             {% set element = get_element_class_name(r.element) %}
             {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
@@ -455,7 +455,7 @@
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
       <div class="wuwa-flex-col">
-        <div class="wuwa-barh-row wuwa-margin-bottom-24">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-margin-bottom-24">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
           </div>
@@ -466,7 +466,7 @@
           </div>
         </div>
         {% for e in SkillBonusTypeEnum %}
-        <div class="wuwa-barh-row wuwa-border-left">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-border-left">
           <div class="wuwa-barh-damage-100">
             {% set element = get_element_class_name(r.element) %}
             {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}

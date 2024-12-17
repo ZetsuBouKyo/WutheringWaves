@@ -71,6 +71,8 @@ def merge_resonator_model(
         return
 
     resonator_data = resonators.get(resonator.name, "")
+    if not resonator_data:
+        return
     resonator_element = resonator_data.element
     element_class_name = get_element_class_name(resonator_element)
 

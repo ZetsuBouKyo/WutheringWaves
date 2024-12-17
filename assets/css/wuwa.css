@@ -9,6 +9,30 @@ div.wuwa-container {
   box-sizing: content-box;
 }
 
+div.wuwa-h40 {
+  height: 40px;
+}
+
+div.wuwa-h100 {
+  height: 100px;
+}
+
+div.wuwa-h100p {
+  height: 100%;
+}
+
+div.wuwa-fs8 {
+  font-size: 0.8rem;
+}
+
+div.wuwa-fs6 {
+  font-size: 0.6rem;
+}
+
+div.wuwa-fs5 {
+  font-size: 0.5rem;
+}
+
 div.wuwa-barh {
   display: flex;
   flex-direction: column;
@@ -252,7 +276,6 @@ td.wuwa-resonator-info-td {
 div.wuwa-barh-row {
   display: flex;
   flex-direction: row;
-  height: 40px;
   align-items: center;
   padding: 8px 0px;
 }
@@ -286,7 +309,6 @@ div.wuwa-barh-resonator-id {
 
 div.wuwa-barh-template-info {
   display: flex;
-  font-size: 0.8rem;
   color: rgb(140, 140, 140);
 }
 

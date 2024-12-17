@@ -134,6 +134,7 @@ class ZhTwEnum(str, Enum):
     DAMAGE_ANALYSIS: str = "傷害分析"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"
+    ECHO_DAMAGE_COMPARISON: str = "聲骸傷害比較"
     SKILL_DAMAGE_DISTRIBUTION: str = "技能傷害占比"
     SKILL_BONUS_DAMAGE_DISTRIBUTION: str = "技能加成傷害占比"
     TEAM_DAMAGE_DISTRIBUTION: str = "隊伍傷害占比"
