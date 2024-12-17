@@ -4,6 +4,8 @@ from typing import List, Optional
 
 from pydantic import BaseModel, ConfigDict
 
+from ww.locale import ZhTwEnum, _
+
 
 class EchoTsvColumnEnum(str, Enum):
     PRIMARY_KEY: str = "名稱"
@@ -84,6 +86,17 @@ def get_resonator_echo_main_dmg_bonus(
         e.MAIN_HAVOC_DMG_BONUS.value,
     ]
     return bonus
+
+
+class EchoesModelEnum(str, Enum):
+    THEORY_1: str = _(ZhTwEnum.ECHOES_THEORY_1)
+    HALF_BUILT_ATK: str = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
+    HALF_BUILT_BASIC_ATK: str = _(ZhTwEnum.ECHOES_HALF_BUILT_BASIC_ATK)
+    HALF_BUILT_HEAVY_ATK: str = _(ZhTwEnum.ECHOES_HALF_BUILT_HEAVY_ATK)
+    HALF_BUILT_RESONANCE_SKILL: str = _(ZhTwEnum.ECHOES_HALF_BUILT_RESONANCE_SKILL)
+    HALF_BUILT_RESONANCE_LIBERATION: str = _(
+        ZhTwEnum.ECHOES_HALF_BUILT_RESONANCE_LIBERATION
+    )
 
 
 class EchoModel(BaseModel):

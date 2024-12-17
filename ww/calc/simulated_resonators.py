@@ -7,11 +7,13 @@ from ww.calc.calculated_resonators import (
 )
 from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
 from ww.locale import ZhTwEnum, _
+from ww.model.echo import EchoesModelEnum
 from ww.model.resonator import (
     ResonatorInformationModel,
     ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
 )
+from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import TemplateModel
 from ww.model.weapon import WeaponStatEnum
 from ww.tables.echo import EchoTable
@@ -78,19 +80,29 @@ def get_resonators_table(resonators: List[dict], columns: List[str]) -> Resonato
     return table
 
 
+def get_prefix_by_resonator_skill_bonus(skill_bonus: str) -> Optional[str]:
+    if skill_bonus == ResonatorSkillBonusTypeEnum.BASIC.value:
+        prefix = EchoesModelEnum.HALF_BUILT_BASIC_ATK.value
+    elif skill_bonus == ResonatorSkillBonusTypeEnum.HEAVY.value:
+        prefix = EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value
+    elif skill_bonus == ResonatorSkillBonusTypeEnum.RESONANCE_SKILL.value:
+        prefix = EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value
+    elif skill_bonus == ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value:
+        prefix = EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value
+    else:
+        return
+    return prefix
+
+
 class SimulatedResonators:
 
     def __init__(
         self,
-        prefix: str,
-        resonator_name: str,
         template: TemplateModel,
         echo_table: Optional[EchoTable] = None,
         weapon_stat_table: WeaponStatTable = WeaponStatTable,
         simulated_echoes: Optional[SimulatedEchoes] = None,
     ):
-        self.prefix = prefix
-        self.resonator_name = resonator_name
         self.template = template
 
         if echo_table is None:
@@ -99,13 +111,13 @@ class SimulatedResonators:
             self.echo_table = echo_table
         self.weapon_stat_table = weapon_stat_table
         if simulated_echoes is None:
-            self.simulated_echoes = SimulatedEchoes(prefix)
+            self.simulated_echoes = SimulatedEchoes()
         else:
             self.simulated_echoes = simulated_echoes
 
         self.resonators_table_column_names = [e.value for e in ResonatorTsvColumnEnum]
 
-    def get_empty_resonator(
+    def _get_empty_resonator(
         self,
         resonator_name: str,
         resonator_chain: str,
@@ -143,7 +155,7 @@ class SimulatedResonators:
 
         return resonator
 
-    def is_weapon_crit_rate(self, weapon_name: str) -> bool:
+    def _is_weapon_crit_rate(self, weapon_name: str) -> bool:
         weapon_level = "90"
         weapon_stat_table: WeaponStatTable = self.weapon_stat_table(weapon_name)
         weapon_crit_rate = weapon_stat_table.search(
@@ -154,7 +166,7 @@ class SimulatedResonators:
             return True
         return False
 
-    def update_resonator_by_resonator_information(
+    def _update_resonator_by_resonator_information(
         self, resonator: dict, resonator_information: ResonatorInformationModel
     ):
         resonator[ResonatorTsvColumnEnum.STAT_BONUS_HP_P.value] = get_number(
@@ -206,71 +218,24 @@ class SimulatedResonators:
             ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_LIBERATION_BONUS.value
         ] = get_number(resonator_information.stat_bonus.resonance_liberation)
 
-    def get_resonator(
+    def _get_resonator_with_43311_3c_2elem(
         self,
-        resonator_name: str,
-        resonator_chain: str,
-        weapon_name: str,
-        weapon_tune: str,
-    ) -> dict:
-        prefix = self.prefix
-        resonator = self.get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune
-        )
-        resonator[ResonatorTsvColumnEnum.ID.value] = resonator_name
-
-        resonator_information = get_resonator_information(resonator_name)
-        resonator_element = resonator_information.element
-        self.update_resonator_by_resonator_information(resonator, resonator_information)
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-        if self.is_weapon_crit_rate(weapon_name):
-            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_DMG)
-        else:
-            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_RATE)
-
-        resonator_base_attr = self.template.get_base_attr(resonator_name)
-        if resonator_base_attr == ResonatorStatTsvColumnEnum.HP.value:
-            main_affix_1c = _(ZhTwEnum.ABBR_HP)
-        elif resonator_base_attr == ResonatorStatTsvColumnEnum.ATK.value:
-            main_affix_1c = _(ZhTwEnum.ABBR_ATK)
-        elif resonator_base_attr == ResonatorStatTsvColumnEnum.DEF.value:
-            main_affix_1c = _(ZhTwEnum.ABBR_DEF)
-
-        resonator[ResonatorTsvColumnEnum.ECHO_1.value] = get_simulated_echo_id(
-            "4", prefix, main_affix_4c, resonator_sonatas[0], "1"
-        )
-        resonator[ResonatorTsvColumnEnum.ECHO_2.value] = get_simulated_echo_id(
-            "3", prefix, resonator_element, resonator_sonatas[1], "1"
-        )
-        resonator[ResonatorTsvColumnEnum.ECHO_3.value] = get_simulated_echo_id(
-            "3", prefix, resonator_element, resonator_sonatas[2], "2"
-        )
-        resonator[ResonatorTsvColumnEnum.ECHO_4.value] = get_simulated_echo_id(
-            "1", prefix, main_affix_1c, resonator_sonatas[3], "1"
-        )
-        resonator[ResonatorTsvColumnEnum.ECHO_5.value] = get_simulated_echo_id(
-            "1", prefix, main_affix_1c, resonator_sonatas[4], "2"
-        )
-
-        return resonator
-
-    def get_resonator_with_43311_3c_2elem(
-        self,
+        prefix: str,
         resonator_name: str,
         resonator_chain: str,
         weapon_name: str,
         weapon_tune: str,
         main_affix_4c: str,
     ):
-        prefix = self.prefix
-        resonator = self.get_empty_resonator(
+        resonator = self._get_empty_resonator(
             resonator_name, resonator_chain, weapon_name, weapon_tune
         )
 
         resonator_information = get_resonator_information(resonator_name)
         resonator_element = resonator_information.element
-        self.update_resonator_by_resonator_information(resonator, resonator_information)
+        self._update_resonator_by_resonator_information(
+            resonator, resonator_information
+        )
 
         resonator_sonatas = self.template.get_sonatas(resonator_name)
 
@@ -326,22 +291,24 @@ class SimulatedResonators:
 
         return resonator
 
-    def get_resonator_with_43311_3c_1elem_1attr(
+    def _get_resonator_with_43311_3c_1elem_1attr(
         self,
+        prefix: str,
         resonator_name: str,
         resonator_chain: str,
         weapon_name: str,
         weapon_tune: str,
         main_affix_4c: str,
     ):
-        prefix = self.prefix
-        resonator = self.get_empty_resonator(
+        resonator = self._get_empty_resonator(
             resonator_name, resonator_chain, weapon_name, weapon_tune
         )
 
         resonator_information = get_resonator_information(resonator_name)
         resonator_element = resonator_information.element
-        self.update_resonator_by_resonator_information(resonator, resonator_information)
+        self._update_resonator_by_resonator_information(
+            resonator, resonator_information
+        )
 
         resonator_sonatas = self.template.get_sonatas(resonator_name)
 
@@ -397,21 +364,23 @@ class SimulatedResonators:
 
         return resonator
 
-    def get_resonator_with_43311_3c_2attr(
+    def _get_resonator_with_43311_3c_2attr(
         self,
+        prefix: str,
         resonator_name: str,
         resonator_chain: str,
         weapon_name: str,
         weapon_tune: str,
         main_affix_4c: str,
     ):
-        prefix = self.prefix
-        resonator = self.get_empty_resonator(
+        resonator = self._get_empty_resonator(
             resonator_name, resonator_chain, weapon_name, weapon_tune
         )
 
         resonator_information = get_resonator_information(resonator_name)
-        self.update_resonator_by_resonator_information(resonator, resonator_information)
+        self._update_resonator_by_resonator_information(
+            resonator, resonator_information
+        )
 
         resonator_sonatas = self.template.get_sonatas(resonator_name)
 
@@ -467,8 +436,9 @@ class SimulatedResonators:
 
         return resonator
 
-    def get_resonator_with_44111(
+    def _get_resonator_with_44111(
         self,
+        prefix: str,
         resonator_name: str,
         resonator_chain: str,
         weapon_name: str,
@@ -476,13 +446,14 @@ class SimulatedResonators:
         main_affix_4c_1: str,
         main_affix_4c_2: str,
     ):
-        prefix = self.prefix
-        resonator = self.get_empty_resonator(
+        resonator = self._get_empty_resonator(
             resonator_name, resonator_chain, weapon_name, weapon_tune
         )
 
         resonator_information = get_resonator_information(resonator_name)
-        self.update_resonator_by_resonator_information(resonator, resonator_information)
+        self._update_resonator_by_resonator_information(
+            resonator, resonator_information
+        )
 
         resonator_sonatas = self.template.get_sonatas(resonator_name)
 
@@ -538,8 +509,32 @@ class SimulatedResonators:
 
         return resonator
 
-    def get_resonators(
+    def _get_resonator(
         self,
+        prefix: str,
+        resonator_name: str,
+        resonator_chain: str,
+        weapon_name: str,
+        weapon_tune: str,
+    ) -> dict:
+        if self._is_weapon_crit_rate(weapon_name):
+            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_DMG)
+        else:
+            main_affix_4c = _(ZhTwEnum.ABBR_CRIT_RATE)
+
+        resonator = self._get_resonator_with_43311_3c_2elem(
+            prefix,
+            resonator_name,
+            resonator_chain,
+            weapon_name,
+            weapon_tune,
+            main_affix_4c,
+        )
+        return resonator
+
+    def _get_resonators(
+        self,
+        prefix: str,
         resonator_name: str,
         resonator_chain: str,
         weapon_name: str,
@@ -548,14 +543,29 @@ class SimulatedResonators:
         resonators = []
         main_affixes_4c = [_(ZhTwEnum.ABBR_CRIT_RATE), _(ZhTwEnum.ABBR_CRIT_DMG)]
         for main_affix_4c in main_affixes_4c:
-            resonator_1 = self.get_resonator_with_43311_3c_2elem(
-                resonator_name, resonator_chain, weapon_name, weapon_tune, main_affix_4c
+            resonator_1 = self._get_resonator_with_43311_3c_2elem(
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                main_affix_4c,
             )
-            resonator_2 = self.get_resonator_with_43311_3c_1elem_1attr(
-                resonator_name, resonator_chain, weapon_name, weapon_tune, main_affix_4c
+            resonator_2 = self._get_resonator_with_43311_3c_1elem_1attr(
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                main_affix_4c,
             )
-            resonator_3 = self.get_resonator_with_43311_3c_2attr(
-                resonator_name, resonator_chain, weapon_name, weapon_tune, main_affix_4c
+            resonator_3 = self._get_resonator_with_43311_3c_2attr(
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                main_affix_4c,
             )
             resonators.append(resonator_1)
             resonators.append(resonator_2)
@@ -570,7 +580,8 @@ class SimulatedResonators:
                 (_(ZhTwEnum.ABBR_CRIT_DMG), _(ZhTwEnum.ABBR_CRIT_DMG)),
             ]
             for main_affix_4c_1, main_affix_4c_2 in main_affixes_4c:
-                resonator = self.get_resonator_with_44111(
+                resonator = self._get_resonator_with_44111(
+                    prefix,
                     resonator_name,
                     resonator_chain,
                     weapon_name,
@@ -582,7 +593,10 @@ class SimulatedResonators:
 
         return resonators
 
-    def get_resonators_table_for_damage_distribution(self) -> ResonatorsTable:
+    def get_3_resonators_with_prefix(
+        self, prefix: str
+    ) -> Tuple[List[str], ResonatorsTable]:
+        resonator_ids = []
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -590,17 +604,23 @@ class SimulatedResonators:
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
-            resonator_dict = self.get_resonator(
-                resonator_name, resonator_chain, weapon_name, weapon_tune
+            # Table
+            resonator_dict = self._get_resonator(
+                prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
             )
             resonators.append(resonator_dict)
-        table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return table
 
-    def get_main_resonator_ids_and_resonators_table_for_echo_comparison(
+            # Resonator ID
+            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
+            resonator_ids.append(resonator_id)
+
+        table = get_resonators_table(resonators, self.resonators_table_column_names)
+        return resonator_ids, table
+
+    def get_3_resonators_with_half_built_skill_bonus(
         self,
     ) -> Tuple[List[str], ResonatorsTable]:
-        main_resonator_ids = []
+        resonator_ids = []
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -608,22 +628,65 @@ class SimulatedResonators:
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
-            if resonator_name == self.resonator_name:
-                main_resonators = self.get_resonators(
-                    resonator_name, resonator_chain, weapon_name, weapon_tune
-                )
-                for main_resonator in main_resonators:
-                    main_resonator_ids.append(
-                        main_resonator[ResonatorTsvColumnEnum.ID.value]
-                    )
-                resonators += main_resonators
-            else:
-                resonator_dict = self.get_resonator(
-                    resonator_name, resonator_chain, weapon_name, weapon_tune
-                )
-                resonators.append(resonator_dict)
+            prefix = get_prefix_by_resonator_skill_bonus(
+                resonator.resonator_skill_bonus
+            )
+            if prefix is None:
+                continue
+
+            resonator_dict = self._get_resonator(
+                prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
+            )
+            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
+
+            resonator_ids.append(resonator_id)
+            resonators.append(resonator_dict)
         table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return main_resonator_ids, table
+        return resonator_ids, table
+
+    def get_resonators_for_echo_comparison_with_prefix(
+        self, resonator_name: str, prefix: str
+    ) -> Tuple[List[str], ResonatorsTable]:
+        resonator = self.template.get_resonator(resonator_name)
+        resonator_name = resonator.resonator_name
+        resonator_chain = resonator.resonator_chain
+        weapon_name = resonator.resonator_weapon_name
+        weapon_tune = resonator.resonator_weapon_rank
+
+        resonators = self._get_resonators(
+            prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
+        )
+
+        resonator_ids = []
+        for r in resonators:
+            resonator_ids.append(r[ResonatorTsvColumnEnum.ID.value])
+
+        table = get_resonators_table(resonators, self.resonators_table_column_names)
+        return resonator_ids, table
+
+    def get_resonators_for_echo_comparison_with_half_built_skill_bonus(
+        self, resonator_name: str
+    ) -> Tuple[List[str], ResonatorsTable]:
+        resonator = self.template.get_resonator(resonator_name)
+        resonator_name = resonator.resonator_name
+        resonator_chain = resonator.resonator_chain
+        resonator_skill_bonus = resonator.resonator_skill_bonus
+
+        weapon_name = resonator.resonator_weapon_name
+        weapon_tune = resonator.resonator_weapon_rank
+
+        prefix = get_prefix_by_resonator_skill_bonus(resonator_skill_bonus)
+
+        resonators = self._get_resonators(
+            prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
+        )
+
+        resonator_ids = []
+        for r in resonators:
+            resonator_ids.append(r[ResonatorTsvColumnEnum.ID.value])
+
+        table = get_resonators_table(resonators, self.resonators_table_column_names)
+        return resonator_ids, table
 
     def get_calculated_resonators_table(
         self, resonators_table: ResonatorsTable

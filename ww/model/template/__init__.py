@@ -203,6 +203,12 @@ class TemplateModel(BaseModel):
     def get_label_names(cls) -> List[str]:
         return [label.name for label in cls.labels]
 
+    def get_resonator(cls, resonator_name: str) -> Optional[TemplateResonatorModel]:
+        for resonator in cls.resonators:
+            if resonator.resonator_name == resonator_name:
+                return resonator
+        return None
+
     def get_sonatas(cls, resonator_name: str) -> List[str]:
         for resonator in cls.resonators:
             if resonator.resonator_name == resonator_name:

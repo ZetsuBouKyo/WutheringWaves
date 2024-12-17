@@ -6,6 +6,7 @@ import pandas as pd
 
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import (
+    EchoesModelEnum,
     EchoSonataEnum,
     ResonatorEchoTsvColumnEnum,
     get_resonator_echo_main_dmg_bonus,
@@ -24,8 +25,7 @@ def get_simulated_echo_id(
 
 class SimulatedEchoes:
 
-    def __init__(self, prefix: str, echoes_theory_1_fpath: str = ECHOES_THEORY_1_FPATH):
-        self.prefix = prefix
+    def __init__(self, echoes_theory_1_fpath: str = ECHOES_THEORY_1_FPATH):
         self.echoes_theory_1_fpath = echoes_theory_1_fpath
 
         echo_main_affixes_table = EchoMainAffixesTable()
@@ -222,39 +222,8 @@ class SimulatedEchoes:
 
         return echoes
 
-    def get_echoes_with_sonatas(self) -> List[str]:
-        echoes = []
-        for e in EchoSonataEnum:
-            sonata = e.value
-            echoes += self.get_echoes(self.prefix, sonata)
-        return echoes
-
-    def get_df(self) -> pd.DataFrame:
-        echoes = self.get_echoes_with_sonatas()
-
-        data = {name: [] for name in self.echoes_table_column_names}
-        for echo in echoes:
-            for key, value in echo.items():
-                data[key].append(value)
-
-        df = pd.DataFrame(data, columns=self.echoes_table_column_names)
-        return df
-
-    def get_table(self) -> EchoesTable:
-        df = self.get_df()
-        table = EchoesTable()
-        table.df = df
-        return table
-
-    def get_echoes(self, prefix: str, sonata: str):
-        raise NotImplementedError
-
-
-class Theory1SimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
+    def update_echoes_with_theory_1(self, echoes: List[dict], sonata: str):
+        prefix = EchoesModelEnum.THEORY_1.value
         echoes = self.get_base_echoes(prefix, sonata)
         for echo in echoes:
             echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal("24")
@@ -276,119 +245,86 @@ class Theory1SimulatedEchoes(SimulatedEchoes):
                 ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
             ] = Decimal("0.016")
 
-        return echoes
+            echoes.append(echo)
 
-
-class HalfBuiltAtkSimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
-                self.echo_sub_affixes.atk_p
-            )
+    def update_echoes_with_half_built(
+        self, echoes: List[str], prefix: str, sonata: str
+    ):
+        base_echoes = self.get_base_echoes(prefix, sonata)
+        for echo in base_echoes:
             echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
                 self.echo_sub_affixes.crit_rate
             )
             echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
                 self.echo_sub_affixes.crit_dmg
             )
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
-                self.echo_sub_affixes.atk
-            )
-
-        return echoes
-
-
-class HalfBuiltResonanceSkillSimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
             echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
                 self.echo_sub_affixes.atk_p
             )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
-                self.echo_sub_affixes.crit_rate
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
-                self.echo_sub_affixes.crit_dmg
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = mean(
-                self.echo_sub_affixes.resonance_skill
-            )
+
+            if prefix == EchoesModelEnum.HALF_BUILT_ATK.value:
+                echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
+                    self.echo_sub_affixes.atk
+                )
+            elif prefix == EchoesModelEnum.HALF_BUILT_BASIC_ATK.value:
+                echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = (
+                    mean(self.echo_sub_affixes.basic_attack)
+                )
+            elif prefix == EchoesModelEnum.HALF_BUILT_BASIC_ATK.value:
+                echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = (
+                    mean(self.echo_sub_affixes.basic_attack)
+                )
+            elif prefix == EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value:
+                echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = (
+                    mean(self.echo_sub_affixes.heavy_attack)
+                )
+            elif prefix == EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value:
+                echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = (
+                    mean(self.echo_sub_affixes.resonance_skill)
+                )
+            elif prefix == EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value:
+                echo[
+                    ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
+                ] = mean(self.echo_sub_affixes.resonance_liberation)
+            else:
+                continue
+
+            echoes.append(echo)
+
+    def get_echoes_with_sonatas(self) -> List[str]:
+        echoes = []
+
+        for sonata_enum in EchoSonataEnum:
+            sonata = sonata_enum.value
+            self.update_echoes_with_theory_1(echoes, sonata)
+
+        half_built_prefixes = [
+            EchoesModelEnum.HALF_BUILT_ATK.value,
+            EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
+            EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
+            EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
+            EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
+        ]
+        for prefix in half_built_prefixes:
+            for sonata_enum in EchoSonataEnum:
+                sonata = sonata_enum.value
+                self.update_echoes_with_half_built(echoes, prefix, sonata)
 
         return echoes
 
+    def get_df(self) -> pd.DataFrame:
+        echoes = self.get_echoes_with_sonatas()
 
-class HalfBuiltBasicAtkSimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
+        data = {name: [] for name in self.echoes_table_column_names}
         for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
-                self.echo_sub_affixes.atk_p
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
-                self.echo_sub_affixes.crit_rate
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
-                self.echo_sub_affixes.crit_dmg
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = mean(
-                self.echo_sub_affixes.basic_attack
-            )
+            for key, value in echo.items():
+                data[key].append(value)
 
-        return echoes
+        df = pd.DataFrame(data, columns=self.echoes_table_column_names)
+        return df
 
-
-class HalfBuiltHeavyAtkSimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
-                self.echo_sub_affixes.atk_p
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
-                self.echo_sub_affixes.crit_rate
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
-                self.echo_sub_affixes.crit_dmg
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = mean(
-                self.echo_sub_affixes.heavy_attack
-            )
-
-        return echoes
-
-
-class HalfBuiltResonanceLiberationSimulatedEchoes(SimulatedEchoes):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-    def get_echoes(self, prefix: str, sonata: str):
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
-                self.echo_sub_affixes.atk_p
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
-                self.echo_sub_affixes.crit_rate
-            )
-            echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
-                self.echo_sub_affixes.crit_dmg
-            )
-            echo[
-                ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
-            ] = mean(self.echo_sub_affixes.resonance_liberation)
-
-        return echoes
+    def get_table(self) -> EchoesTable:
+        df = self.get_df()
+        table = EchoesTable()
+        table.df = df
+        return table
