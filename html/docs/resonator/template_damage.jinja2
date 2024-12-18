@@ -13,9 +13,9 @@
           ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
         </div>
         {% endif %}
-        {% for resonator in template.resonators %}
-        {% set resonator_name = resonator.resonator_name %}
-        {% set r = merge_resonator_model(resonator_name, resonators_table, calculated_resonators_table, is_docs=True) %}
+        {% for resonator_id in resonator_ids %}
+        {% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
+        {% set resonator_name = r.name %}
         <div class="wuwa-barh-row wuwa-h40">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
@@ -48,10 +48,9 @@
 </div>
 </div>
 
-{% for resonator in template.resonators %}
-## {{resonator.resonator_name}}
-{% set r = merge_resonator_model(resonator.resonator_name, resonators_table, calculated_resonators_table, is_docs=True)
-%}
+{% for resonator_id in resonator_ids %}
+{% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
+## {{r.name}}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-title">
     <div class="wuwa-resonator-info-row-cell">
@@ -248,7 +247,7 @@
   </div>
 </div>
 ### {{_(ZhTwEnum.ECHO)}}
-{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(resonator.resonator_name) %}
+{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(r.name) %}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-table">
     <table class="wuwa-resonator-info-table wuwa-margin-right-12">
@@ -298,7 +297,7 @@
       </tr>
       <tr>
         <td class="wuwa-resonator-info-td">{{_(ZhTwEnum.ECHO_1)}}</td>
-        <td class="wuwa-resonator-info-td" align="right">{{template.get_echo_1(resonator.resonator_name)}}</td>
+        <td class="wuwa-resonator-info-td" align="right">{{template.get_echo_1(r.name)}}</td>
       </tr>
       <tr>
         <td class="wuwa-resonator-info-td">&nbsp;</td>
@@ -404,7 +403,7 @@
   </div>
 </div>
 ### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[resonator.resonator_name] %}
+{% set resonator_damage_distribution = damage_distribution.resonators[r.name] %}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -452,7 +451,7 @@
 </div>
 </div>
 ### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[resonator.resonator_name] %}
+{% set resonator_damage_distribution = damage_distribution.resonators[r.name] %}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -507,10 +506,8 @@
     {% for row in calculated_rows %}
     {% if row.resonator_name %}
     <div class="wuwa-flex-row wuwa-margin-bottom-8 {{'wuwa-margin-top-8' if loop.index > 1}}">
-      {% set r = merge_resonator_model(row.resonator_name, resonators_table, calculated_resonators_table, is_docs=True)
-      %}
       <div class="wuwa-barh-resonator-icon">
-        <img src="{{r.resonator_src}}" />
+        <img src="{{get_resonator_icon_url(row.resonator_name)}}" />
       </div>
       <div class="wuwa-detailed-damage-row-text">
         {{row.resonator_name}}

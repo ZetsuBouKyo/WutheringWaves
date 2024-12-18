@@ -1,12 +1,11 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import List, Optional, Tuple, Union
+from typing import List, Union
 
 import yaml
 
 from ww.calc.damage import Damage
-from ww.calc.simulated_echoes import SimulatedEchoes
 from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
@@ -19,17 +18,17 @@ from ww.html.image.output_method import (
     get_asset,
     get_html_template_output_methods,
 )
-from ww.html.image.resonator import get_element_class_name, merge_resonator_model
+from ww.html.image.resonator import (
+    get_element_class_name,
+    get_resonator_icon_url,
+    merge_resonator_model,
+)
 from ww.locale import ZhTwEnum, _
 from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
-from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum, ResonatorSkillTypeEnum
-from ww.model.template import (
-    TemplateDamageDistributionModel,
-    TemplateModel,
-    TemplateRowActionEnum,
-)
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
+from ww.model.template import TemplateDamageDistributionModel, TemplateModel
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
     get_percentage_str,
@@ -281,6 +280,7 @@ class Docs:
         html_str = template.render(
             template=resonator_template,
             resonators_table=resonators_table,
+            resonator_ids=resonator_ids,
             calculated_resonators_table=calculated_resonators_table,
             damage_distribution=damage_distribution,
             calculated_rows=calculated_rows,
@@ -288,6 +288,7 @@ class Docs:
             get_element_class_name=get_element_class_name,
             get_max_damage=get_max_damage,
             get_percentage_str=get_percentage_str,
+            get_resonator_icon_url=get_resonator_icon_url,
             get_resonator_skill_base_damage=get_resonator_skill_base_damage,
             get_team_resonator_damages=get_team_resonator_damages,
             to_number_string=to_number_string,

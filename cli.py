@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
+from time import time
 
 import PyInstaller.__main__
 import tomli
@@ -108,6 +109,7 @@ def docs(
     version: str = Option(get_version()),
     config_file: str = Option("./build/html/mkdocs.yml"),
 ):
+    t0 = time()
     # Copy the assets
     assets_src_path = "./assets"
     assets_dest_path = "./build/html/docs/assets"
@@ -121,7 +123,6 @@ def docs(
 
     docs = Docs()
     docs.export()
-    # shutil.copytree("html/docs", "build/html/docs", dirs_exist_ok=True)
 
     try:
         # Build the mkdocs command
@@ -138,6 +139,10 @@ def docs(
         print("Error during MkDocs build:")
         print(e.stderr)
 
+    t1 = time()
+    diff = t1 - t0
+    print(f"time: {diff} (s)")
+
 
 @app.command()
 def print_docs_settings(version: str = Option(get_version())):
@@ -152,25 +157,19 @@ def print_docs_settings(version: str = Option(get_version())):
 
 @app.command()
 def tmp():
-    from ww.calc.simulated_resonators import Theory1SimulatedResonators
+    # from ww.calc.simulated_resonators import Theory1SimulatedResonators
+    # from ww.crud.template import get_template
+    # from ww.locale import ZhTwEnum, _
+    # from ww.utils.pd import save_df
+
+    from ww.calc.simulated_echoes import SimulatedEchoes
     from ww.crud.template import get_template
     from ww.locale import ZhTwEnum, _
     from ww.utils.pd import save_df
 
-    template_id = "[理論]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
-    template = get_template(template_id)
-
-    resonator_name = "椿"
-    prefix = _(ZhTwEnum.ECHOES_THEORY_1)
-
-    s = Theory1SimulatedResonators(prefix, resonator_name, template)
-    resonators_ids, resonators_table = (
-        s.get_main_resonator_ids_and_resonators_table_for_echo_comparison()
-    )
-    out = s.get_calculated_resonators_table(resonators_table)
-    df = out.df
-    save_df("tmp.tsv", df, out.column_names)
-    print(resonators_ids)
+    echoes = SimulatedEchoes()
+    df = echoes.get_df()
+    save_df("tmp.tsv", df, echoes.echoes_table_column_names)
 
 
 if __name__ == "__main__":
