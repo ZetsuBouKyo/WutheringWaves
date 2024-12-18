@@ -7,7 +7,7 @@ from ww.calc.calculated_resonators import (
 )
 from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
 from ww.locale import ZhTwEnum, _
-from ww.model.echo import EchoesModelEnum
+from ww.model.echo import EchoesModelEnum, ResonatorEchoTsvColumnEnum
 from ww.model.resonator import (
     ResonatorInformationModel,
     ResonatorStatTsvColumnEnum,
@@ -115,6 +115,8 @@ class SimulatedResonators:
         else:
             self.simulated_echoes = simulated_echoes
 
+        self.echoes = []
+        self.echo_ids = set()
         self.resonators_table_column_names = [e.value for e in ResonatorTsvColumnEnum]
 
     def _get_empty_resonator(
@@ -218,6 +220,13 @@ class SimulatedResonators:
             ResonatorTsvColumnEnum.STAT_BONUS_RESONANCE_LIBERATION_BONUS.value
         ] = get_number(resonator_information.stat_bonus.resonance_liberation)
 
+    def _add_echo(self, echo: dict):
+        echo_id = echo[ResonatorEchoTsvColumnEnum.ID.value]
+        if echo_id in self.echo_ids:
+            return
+        self.echo_ids.add(echo_id)
+        self.echoes.append(echo)
+
     def _get_resonator_with_43311_3c_2elem(
         self,
         prefix: str,
@@ -270,6 +279,27 @@ class SimulatedResonators:
         resonator[ResonatorTsvColumnEnum.ECHO_5.value] = get_simulated_echo_id(
             echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
         )
+
+        echo_1 = self.simulated_echoes.get_echo(
+            echo_cost_1, prefix, main_affix_4c, resonator_sonatas[0], "1"
+        )
+        echo_2 = self.simulated_echoes.get_echo(
+            echo_cost_2, prefix, resonator_element, resonator_sonatas[1], "1"
+        )
+        echo_3 = self.simulated_echoes.get_echo(
+            echo_cost_3, prefix, resonator_element, resonator_sonatas[2], "2"
+        )
+        echo_4 = self.simulated_echoes.get_echo(
+            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "1"
+        )
+        echo_5 = self.simulated_echoes.get_echo(
+            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
+        )
+        self._add_echo(echo_1)
+        self._add_echo(echo_2)
+        self._add_echo(echo_3)
+        self._add_echo(echo_4)
+        self._add_echo(echo_5)
 
         resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
             prefix,
@@ -344,6 +374,27 @@ class SimulatedResonators:
             echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
         )
 
+        echo_1 = self.simulated_echoes.get_echo(
+            echo_cost_1, prefix, main_affix_4c, resonator_sonatas[0], "1"
+        )
+        echo_2 = self.simulated_echoes.get_echo(
+            echo_cost_2, prefix, resonator_element, resonator_sonatas[1], "1"
+        )
+        echo_3 = self.simulated_echoes.get_echo(
+            echo_cost_3, prefix, base_attr, resonator_sonatas[2], "2"
+        )
+        echo_4 = self.simulated_echoes.get_echo(
+            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "1"
+        )
+        echo_5 = self.simulated_echoes.get_echo(
+            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
+        )
+        self._add_echo(echo_1)
+        self._add_echo(echo_2)
+        self._add_echo(echo_3)
+        self._add_echo(echo_4)
+        self._add_echo(echo_5)
+
         resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
             prefix,
             resonator_name,
@@ -416,6 +467,27 @@ class SimulatedResonators:
             echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
         )
 
+        echo_1 = self.simulated_echoes.get_echo(
+            echo_cost_1, prefix, main_affix_4c, resonator_sonatas[0], "1"
+        )
+        echo_2 = self.simulated_echoes.get_echo(
+            echo_cost_2, prefix, base_attr, resonator_sonatas[1], "1"
+        )
+        echo_3 = self.simulated_echoes.get_echo(
+            echo_cost_3, prefix, base_attr, resonator_sonatas[2], "2"
+        )
+        echo_4 = self.simulated_echoes.get_echo(
+            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "1"
+        )
+        echo_5 = self.simulated_echoes.get_echo(
+            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
+        )
+        self._add_echo(echo_1)
+        self._add_echo(echo_2)
+        self._add_echo(echo_3)
+        self._add_echo(echo_4)
+        self._add_echo(echo_5)
+
         resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
             prefix,
             resonator_name,
@@ -480,14 +552,35 @@ class SimulatedResonators:
             echo_cost_2, prefix, main_affix_4c_2, resonator_sonatas[1], "2"
         )
         resonator[ResonatorTsvColumnEnum.ECHO_3.value] = get_simulated_echo_id(
-            echo_cost_3, prefix, base_attr, resonator_sonatas[2], "2"
+            echo_cost_3, prefix, base_attr, resonator_sonatas[2], "1"
         )
         resonator[ResonatorTsvColumnEnum.ECHO_4.value] = get_simulated_echo_id(
-            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "1"
+            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "2"
         )
         resonator[ResonatorTsvColumnEnum.ECHO_5.value] = get_simulated_echo_id(
-            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
+            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "3"
         )
+
+        echo_1 = self.simulated_echoes.get_echo(
+            echo_cost_1, prefix, main_affix_4c_1, resonator_sonatas[0], "1"
+        )
+        echo_2 = self.simulated_echoes.get_echo(
+            echo_cost_2, prefix, main_affix_4c_2, resonator_sonatas[1], "2"
+        )
+        echo_3 = self.simulated_echoes.get_echo(
+            echo_cost_3, prefix, base_attr, resonator_sonatas[2], "1"
+        )
+        echo_4 = self.simulated_echoes.get_echo(
+            echo_cost_4, prefix, base_attr, resonator_sonatas[3], "2"
+        )
+        echo_5 = self.simulated_echoes.get_echo(
+            echo_cost_5, prefix, base_attr, resonator_sonatas[4], "3"
+        )
+        self._add_echo(echo_1)
+        self._add_echo(echo_2)
+        self._add_echo(echo_3)
+        self._add_echo(echo_4)
+        self._add_echo(echo_5)
 
         resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
             prefix,
@@ -691,8 +784,9 @@ class SimulatedResonators:
     def get_calculated_resonators_table(
         self, resonators_table: ResonatorsTable
     ) -> CalculatedResonatorsTable:
-        echoes_table = self.simulated_echoes.get_table()
+        echoes_table = self.simulated_echoes.get_table_with_echoes(self.echoes)
         table = get_calculated_resonators_table_by_resonators_table(
             resonators_table, echoes_table=echoes_table
         )
+
         return table

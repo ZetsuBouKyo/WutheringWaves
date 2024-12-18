@@ -81,7 +81,6 @@ class Docs:
         self._mkdocs_settings = MkdocsSettings(mkdocs_settings, mkdocs_fpath)
 
         self._template_id_to_relative_url = {}
-        self.simulated_echoes = SimulatedEchoes()
 
     def export(self):
         self._mkdocs_settings.save()
@@ -178,9 +177,7 @@ class Docs:
         resonator_template: TemplateModel,
         output_fpath: str,
     ):
-        simulated_resonators = SimulatedResonators(
-            resonator_template, simulated_echoes=self.simulated_echoes
-        )
+        simulated_resonators = SimulatedResonators(resonator_template)
         resonator_ids, resonators_table = (
             simulated_resonators.get_resonators_for_echo_comparison_with_prefix(
                 resonator_name, prefix
@@ -224,9 +221,7 @@ class Docs:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/echo_damage_comparison.md"
 
-        simulated_resonators = SimulatedResonators(
-            resonator_template, simulated_echoes=self.simulated_echoes
-        )
+        simulated_resonators = SimulatedResonators(resonator_template)
         resonator_ids, resonators_table = (
             simulated_resonators.get_resonators_for_echo_comparison_with_half_built_skill_bonus(
                 resonator_name
@@ -340,9 +335,7 @@ class Docs:
 
         # Simulation
         prefix = _(ZhTwEnum.ECHOES_THEORY_1)
-        simulated_resonators = SimulatedResonators(
-            resonator_template, simulated_echoes=self.simulated_echoes
-        )
+        simulated_resonators = SimulatedResonators(resonator_template)
 
         self.export_template_damage_analysis_with_prefix(
             prefix, resonator_template, output_fpath, simulated_resonators
@@ -356,9 +349,7 @@ class Docs:
 
         # Simulation
         prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
-        simulated_resonators = SimulatedResonators(
-            resonator_template, simulated_echoes=self.simulated_echoes
-        )
+        simulated_resonators = SimulatedResonators(resonator_template)
 
         self.export_template_damage_analysis_with_prefix(
             prefix, resonator_template, output_fpath, simulated_resonators
@@ -370,9 +361,7 @@ class Docs:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/damage_analysis.md"
 
-        simulated_resonators = SimulatedResonators(
-            resonator_template, simulated_echoes=self.simulated_echoes
-        )
+        simulated_resonators = SimulatedResonators(resonator_template)
 
         resonator_ids, resonators_table = (
             simulated_resonators.get_3_resonators_with_half_built_skill_bonus()
