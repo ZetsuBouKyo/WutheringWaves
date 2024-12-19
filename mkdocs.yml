@@ -91,3 +91,4 @@ extra_css:
 
 nav:
   - 首頁: index.md
+  - 統計: statistics.md
