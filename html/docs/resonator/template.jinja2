@@ -1,5 +1,43 @@
 # {{template.id}}
 
+## {{_(ZhTwEnum.INFORMATION)}}
+
+### {{_(ZhTwEnum.RESONATOR)}}
+
+| {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.RESONANCE_CHAIN)}} | {{_(ZhTwEnum.WEAPON_NAME)}}         | {{_(ZhTwEnum.TUNE)}}                | {{_(ZhTwEnum.BASE_ATTR)}}         | {{_(ZhTwEnum.MAIN_SKILL_BONUS)}}    |
+| ------------------------------ | ------------------------------- | ----------------------------------- | ----------------------------------- | --------------------------------- | ----------------------------------- |
+{% for resonator in template.resonators -%}
+| {{resonator.resonator_name}}   | {{resonator.resonator_chain}}   | {{resonator.resonator_weapon_name}} | {{resonator.resonator_weapon_rank}} | {{resonator.resonator_base_attr}} | {{resonator.resonator_skill_bonus}} |
+{% endfor %}
+
+### {{_(ZhTwEnum.ECHO)}}
+
+| {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.ECHO_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_2)}}         | {{_(ZhTwEnum.ECHO_SONATA_3)}}         | {{_(ZhTwEnum.ECHO_SONATA_4)}}         | {{_(ZhTwEnum.ECHO_SONATA_5)}}         |
+| ------------------------------ | ------------------------------ | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
+{% for resonator in template.resonators -%}
+| {{resonator.resonator_name}}   | {{resonator.resonator_echo_1}} | {{resonator.resonator_echo_sonata_1}} | {{resonator.resonator_echo_sonata_2}} | {{resonator.resonator_echo_sonata_3}} | {{resonator.resonator_echo_sonata_4}} | {{resonator.resonator_echo_sonata_5}} |
+{% endfor %}
+
+## {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
+
+### 聲骸配置
+
+#### [{{_(ZhTwEnum.ECHOES_THEORY_1)}}](/simulated_echo/index.html)
+
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/theory_1/damage_analysis/index.html)
+- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/theory_1/echo_damage_comparison/index.html)
+
+#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_ATK)}}](/simulated_echo/index.html)
+
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/damage_analysis/index.html)
+- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/echo_damage_comparison/index.html)
+
+
+#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}](/simulated_echo/index.html)
+
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/damage_analysis/index.html)
+- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/echo_damage_comparison/index.html)
+
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}
 
 <div class="wuwa-container">
@@ -35,23 +73,3 @@
   </div>
   {% endfor %}
 </div>
-
-## {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
-
-### 聲骸配置
-
-#### [{{_(ZhTwEnum.ECHOES_THEORY_1)}}](/simulated_echo/index.html)
-
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/theory_1/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/theory_1/echo_damage_comparison/index.html)
-
-#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_ATK)}}](/simulated_echo/index.html)
-
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/echo_damage_comparison/index.html)
-
-
-#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}](/simulated_echo/index.html)
-
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/echo_damage_comparison/index.html)

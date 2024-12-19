@@ -65,6 +65,9 @@ class ZhTwEnum(str, Enum):
     BUFF: str = "增益"
     BUFF_NAME_TO_DELETE: str = "增益名稱"
 
+    BASE_ATTR: str = "基礎屬性"
+    MAIN_SKILL_BONUS: str = "主要技能加成"
+
     DURATION_1: str = "時間(下限)"
     DURATION_2: str = "時間(上限)"
 
