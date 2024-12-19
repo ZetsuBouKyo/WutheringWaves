@@ -13,7 +13,7 @@ from ww.tables.echo import (
     get_echo_skill_descriptions_fpath,
     get_echo_sonata_descriptions_fpath,
 )
-from ww.tables.resonator import get_resonator_information_fpath
+from ww.tables.resonator import get_resonator_skill_information_fpath
 from ww.tables.weapon import get_weapon_information_fpath
 
 
@@ -31,7 +31,7 @@ def get_resonator_buffs(name: str) -> List[Dict[str, str]]:
 
 
 def get_resonator_buff_description(name: str, source: str) -> str:
-    fpath = get_resonator_information_fpath(name)
+    fpath = get_resonator_skill_information_fpath(name)
     if not fpath.exists():
         return ""
 

@@ -21,8 +21,8 @@ from ww.model.resonator import ResonatorStatTsvColumnEnum
 from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
 from ww.tables.resonator import (
     get_resonator_dir_path,
-    get_resonator_information_fpath,
     get_resonator_skill_fpath,
+    get_resonator_skill_information_fpath,
     get_resonator_stat_fpath,
 )
 from ww.ui.combobox import QAutoCompleteComboBox
@@ -169,7 +169,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
             return
         resonator_name = self.resonator_name_combobox.currentText()
 
-        json_fpath = get_resonator_information_fpath(resonator_name)
+        json_fpath = get_resonator_skill_information_fpath(resonator_name)
         if json_fpath is None:
             return
 
@@ -189,7 +189,7 @@ class QPrivateDataResonatorInformationTab(QWidget):
             return
 
         data = self.get_data()
-        json_fpath = get_resonator_information_fpath(resonator_name)
+        json_fpath = get_resonator_skill_information_fpath(resonator_name)
         if json_fpath is None:
             return
         if json_fpath.is_dir():
@@ -326,7 +326,9 @@ class QPrivateDataResonatorTabs(QWidget):
 
         resonator_dir_path = get_resonator_dir_path(resonator_name)
 
-        resonator_information_fpath = get_resonator_information_fpath(resonator_name)
+        resonator_information_fpath = get_resonator_skill_information_fpath(
+            resonator_name
+        )
         resonator_stat_fpath = get_resonator_stat_fpath(resonator_name)
         resonator_skill_fpath = get_resonator_skill_fpath(resonator_name)
         fpaths = [
