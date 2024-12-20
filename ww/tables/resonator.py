@@ -18,7 +18,7 @@ from ww.tables.crud import get_row, search
 from ww.utils.pd import get_empty_df, safe_get_df
 
 RESONATOR_HOME_PATH = f"./data/v1/zh_tw/{_(ZhTwEnum.CHARACTER)}"
-RESONATOR_SKILL_INFORMATION_FNAME = f"{_(ZhTwEnum.SKILL_INFORMATION)}.json"
+RESONATOR_INFORMATION_FNAME = f"{_(ZhTwEnum.INFORMATION)}.json"
 RESONATOR_STAT_FNAME = f"{_(ZhTwEnum.STAT)}.tsv"
 RESONATOR_SKILL_FNAME = f"{_(ZhTwEnum.SKILL)}.tsv"
 RESONATOR_SKILL_INFORMATION_FNAME = f"{_(ZhTwEnum.SKILL_INFORMATION)}.json"
@@ -31,6 +31,12 @@ def get_resonator_dir_path(resonator_name: str) -> Optional[Path]:
     if not resonator_name:
         return None
     return Path(RESONATOR_HOME_PATH) / resonator_name
+
+
+def get_resonator_information_fpath(resonator_name: str) -> Optional[Path]:
+    if not resonator_name:
+        return None
+    return Path(RESONATOR_HOME_PATH) / resonator_name / RESONATOR_INFORMATION_FNAME
 
 
 def get_resonator_stat_fpath(resonator_name: str) -> Optional[Path]:
@@ -54,7 +60,7 @@ def get_resonator_skill_information_fpath(resonator_name: str) -> Optional[Path]
 
 
 def get_resonator_information(resonator_name: str) -> ResonatorInformationModel:
-    _path = get_resonator_skill_information_fpath(resonator_name)
+    _path = get_resonator_information_fpath(resonator_name)
     with _path.open(mode="r", encoding="utf-8") as fp:
         data = json.load(fp)
     return ResonatorInformationModel(**data)
