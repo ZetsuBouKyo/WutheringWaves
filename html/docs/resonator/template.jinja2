@@ -7,7 +7,9 @@
 | {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.RESONANCE_CHAIN)}} | {{_(ZhTwEnum.WEAPON_NAME)}}         | {{_(ZhTwEnum.TUNE)}}                | {{_(ZhTwEnum.BASE_ATTR)}}         | {{_(ZhTwEnum.MAIN_SKILL_BONUS)}}    |
 | ------------------------------ | ------------------------------- | ----------------------------------- | ----------------------------------- | --------------------------------- | ----------------------------------- |
 {% for resonator in template.resonators -%}
+{%- if resonator.resonator_name -%}
 | {{resonator.resonator_name}}   | {{resonator.resonator_chain}}   | {{resonator.resonator_weapon_name}} | {{resonator.resonator_weapon_rank}} | {{resonator.resonator_base_attr}} | {{resonator.resonator_skill_bonus}} |
+{%- endif -%}
 {% endfor %}
 
 ### {{_(ZhTwEnum.ECHO)}}
@@ -15,7 +17,9 @@
 | {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.ECHO_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_2)}}         | {{_(ZhTwEnum.ECHO_SONATA_3)}}         | {{_(ZhTwEnum.ECHO_SONATA_4)}}         | {{_(ZhTwEnum.ECHO_SONATA_5)}}         |
 | ------------------------------ | ------------------------------ | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
 {% for resonator in template.resonators -%}
+{%- if resonator.resonator_name -%}
 | {{resonator.resonator_name}}   | {{resonator.resonator_echo_1}} | {{resonator.resonator_echo_sonata_1}} | {{resonator.resonator_echo_sonata_2}} | {{resonator.resonator_echo_sonata_3}} | {{resonator.resonator_echo_sonata_4}} | {{resonator.resonator_echo_sonata_5}} |
+{%- endif -%}
 {% endfor %}
 
 ## {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}

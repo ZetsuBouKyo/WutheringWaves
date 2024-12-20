@@ -295,6 +295,7 @@ class SimulatedResonators:
         echo_5 = self.simulated_echoes.get_echo(
             echo_cost_5, prefix, base_attr, resonator_sonatas[4], "2"
         )
+
         self._add_echo(echo_1)
         self._add_echo(echo_2)
         self._add_echo(echo_3)
@@ -633,6 +634,8 @@ class SimulatedResonators:
         weapon_name: str,
         weapon_tune: str,
     ) -> List[dict]:
+        if not resonator_name:
+            return []
         resonators = []
         main_affixes_4c = [_(ZhTwEnum.ABBR_CRIT_RATE), _(ZhTwEnum.ABBR_CRIT_DMG)]
         for main_affix_4c in main_affixes_4c:
@@ -697,6 +700,9 @@ class SimulatedResonators:
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
+            if not resonator_name:
+                continue
+
             # Table
             resonator_dict = self._get_resonator(
                 prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
@@ -720,6 +726,9 @@ class SimulatedResonators:
             resonator_chain = resonator.resonator_chain
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
+
+            if not resonator_name:
+                continue
 
             prefix = get_prefix_by_resonator_skill_bonus(
                 resonator.resonator_skill_bonus

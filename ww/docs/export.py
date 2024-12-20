@@ -258,11 +258,15 @@ class Docs:
             calculated_resonators_table=calculated_resonators_table,
         )
 
+        _resonator_ids = ["", "", ""]
+        for i in range(len(resonator_ids)):
+            _resonator_ids[i] = resonator_ids[i]
+
         damage_distributions = damage.get_damage_distributions_with_labels(
             resonator_template.id,
-            resonator_ids[0],
-            resonator_ids[1],
-            resonator_ids[2],
+            _resonator_ids[0],
+            _resonator_ids[1],
+            _resonator_ids[2],
             monster_id=monster_id,
         )
         damage_distribution = damage_distributions.get("", None)
@@ -270,9 +274,9 @@ class Docs:
         # Detailed damage
         calculated_rows = damage.get_calculated_rows(
             resonator_template.id,
-            resonator_ids[0],
-            resonator_ids[1],
-            resonator_ids[2],
+            _resonator_ids[0],
+            _resonator_ids[1],
+            _resonator_ids[2],
             monster_id,
             is_default=True,
         )
@@ -280,7 +284,7 @@ class Docs:
         html_str = template.render(
             template=resonator_template,
             resonators_table=resonators_table,
-            resonator_ids=resonator_ids,
+            resonator_ids=resonator_ids,  # 1 <= len(resonator_ids) <= 3
             calculated_resonators_table=calculated_resonators_table,
             damage_distribution=damage_distribution,
             calculated_rows=calculated_rows,
