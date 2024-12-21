@@ -23,3 +23,4 @@ class MkdocsSettings:
 
     def update_resonator_outline(self):
         self._mkdocs_settings["nav"].append({"共鳴者": [{"概要": "resonators.md"}]})
+        self._mkdocs_settings["nav"].append({"Tier": "tier/outline.md"})

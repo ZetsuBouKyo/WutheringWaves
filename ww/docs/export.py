@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import List, Union
+from typing import Dict, List, Union
 
 import yaml
 
@@ -45,6 +45,12 @@ MKDOCS_FPATH = "./build/html/mkdocs.yml"
 DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
 
+# url
+TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
+TIER_HALF_BUILT_ATK_URL: str = "/tier/half_built_atk/index.html"
+TIER_HALF_BUILT_SKILL_BONUS_URL: str = "/tier/half_built_skill_bonus/index.html"
+
+
 def get_resonator_skill_base_damage(
     resonator_damage_distribution,
     skill_enum: Union[SkillBonusTypeEnum, ResonatorSkillTypeEnum],
@@ -58,6 +64,14 @@ def get_resonator_skill_base_damage(
 def get_resonator_outline_url(resonator_name: str) -> str:
     resonator_info = get_resonator_information(resonator_name)
     return f"/resonator/{resonator_info.no}/outline/index.html"
+
+
+def export_html(fpath: Union[str, Path], html_str: str):
+    if type(fpath) is str:
+        fpath = Path(fpath)
+    os.makedirs(fpath.parent, exist_ok=True)
+    with fpath.open(mode="w", encoding="utf-8") as fp:
+        fp.write(html_str)
 
 
 class Docs:
@@ -85,14 +99,25 @@ class Docs:
         self._docs_model = DocsModel(**docs_settings)
         self._mkdocs_settings = MkdocsSettings(mkdocs_settings, mkdocs_fpath)
 
-        self._template_id_to_relative_url = {}
-
     def export(self):
         self._mkdocs_settings.save()
 
-        self.export_resonator_templates()
-        self.export_resonator_outline()
+        (
+            template_id_to_relative_url,
+            template_id_to_theory_1,
+            template_id_to_half_built_atk,
+            template_id_to_half_built_skill_bonus,
+        ) = self.export_resonator_templates()
+        self.export_resonator_outline(template_id_to_relative_url)
         self.export_resonators()
+
+        self.export_tier_outline()
+        self.export_tier_barhs(
+            template_id_to_relative_url,
+            template_id_to_theory_1,
+            template_id_to_half_built_atk,
+            template_id_to_half_built_skill_bonus,
+        )
 
     def export_resonator_echo_damage_comparison(
         self,
@@ -171,10 +196,7 @@ class Docs:
             _=_,
         )
 
-        output_fpath = Path(output_fpath)
-        os.makedirs(output_fpath.parent, exist_ok=True)
-        with output_fpath.open(mode="w", encoding="utf-8") as fp:
-            fp.write(html_str)
+        export_html(output_fpath, html_str)
 
     def export_resonator_echo_damage_comparison_with_prefix(
         self,
@@ -249,7 +271,7 @@ class Docs:
         simulated_resonators: SimulatedResonators,
         resonator_ids: List[str],
         resonators_table,
-    ):
+    ) -> TemplateDamageDistributionModel:
         template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
         template = get_jinja2_template(template_damage_fpath)
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
@@ -314,10 +336,9 @@ class Docs:
             Decimal=Decimal,
         )
 
-        output_fpath = Path(output_fpath)
-        os.makedirs(output_fpath.parent, exist_ok=True)
-        with output_fpath.open(mode="w", encoding="utf-8") as fp:
-            fp.write(html_str)
+        export_html(output_fpath, html_str)
+
+        return damage_distribution
 
     def export_template_damage_analysis_with_prefix(
         self,
@@ -325,11 +346,11 @@ class Docs:
         resonator_template: TemplateModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
-    ):
+    ) -> TemplateDamageDistributionModel:
         resonator_ids, resonators_table = (
             simulated_resonators.get_3_resonators_with_prefix(prefix)
         )
-        self.export_template_damage_analysis(
+        return self.export_template_damage_analysis(
             resonator_template,
             output_fpath,
             simulated_resonators,
@@ -339,7 +360,7 @@ class Docs:
 
     def export_template_damage_analysis_with_theory_1(
         self, resonator_template: TemplateModel
-    ):
+    ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = (
             f"./build/html/docs/resonator/template/{md5}/theory_1/damage_analysis.md"
@@ -349,13 +370,13 @@ class Docs:
         prefix = _(ZhTwEnum.ECHOES_THEORY_1)
         simulated_resonators = SimulatedResonators(resonator_template)
 
-        self.export_template_damage_analysis_with_prefix(
+        return self.export_template_damage_analysis_with_prefix(
             prefix, resonator_template, output_fpath, simulated_resonators
         )
 
     def export_template_damage_analysis_with_half_built_atk(
         self, resonator_template: TemplateModel
-    ):
+    ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/damage_analysis.md"
 
@@ -363,13 +384,13 @@ class Docs:
         prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
         simulated_resonators = SimulatedResonators(resonator_template)
 
-        self.export_template_damage_analysis_with_prefix(
+        return self.export_template_damage_analysis_with_prefix(
             prefix, resonator_template, output_fpath, simulated_resonators
         )
 
     def export_template_damage_analysis_with_half_built_skill_bonus(
         self, resonator_template: TemplateModel
-    ):
+    ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/damage_analysis.md"
 
@@ -379,7 +400,7 @@ class Docs:
             simulated_resonators.get_3_resonators_with_half_built_skill_bonus()
         )
 
-        self.export_template_damage_analysis(
+        return self.export_template_damage_analysis(
             resonator_template,
             output_fpath,
             simulated_resonators,
@@ -388,6 +409,11 @@ class Docs:
         )
 
     def export_resonator_templates(self):
+        template_id_to_relative_url = {}
+        template_id_to_theory_1 = {}
+        template_id_to_half_built_atk = {}
+        template_id_to_half_built_skill_bonus = {}
+
         template_fpath = "./html/docs/resonator/template.jinja2"
         output_path = "./build/html/docs/resonator/template"
 
@@ -431,42 +457,57 @@ class Docs:
                 md5 = resonator_template.get_md5()
                 fname = f"{md5}.md"
                 output_fpath = output_path / fname
-
-                with output_fpath.open(mode="w", encoding="utf-8") as fp:
-                    fp.write(html_str)
+                export_html(output_fpath, html_str)
 
                 url = f"/resonator/template/{md5}/index.html"
-                self._template_id_to_relative_url[template_id] = url
+                template_id_to_relative_url[template_id] = url
 
-                self.export_template_damage_analysis_with_theory_1(resonator_template)
-                self.export_template_damage_analysis_with_half_built_atk(
-                    resonator_template
+                theory_1_damage_distribution = (
+                    self.export_template_damage_analysis_with_theory_1(
+                        resonator_template
+                    )
                 )
-                self.export_template_damage_analysis_with_half_built_skill_bonus(
-                    resonator_template
+                half_built_atk_damage_distribution = (
+                    self.export_template_damage_analysis_with_half_built_atk(
+                        resonator_template
+                    )
+                )
+                half_built_skill_bonus_damage_distribution = (
+                    self.export_template_damage_analysis_with_half_built_skill_bonus(
+                        resonator_template
+                    )
                 )
 
-    def export_resonator_outline(self):
-        resonator_outline_template_fpath = "./html/docs/resonator/outline.jinja2"
-        resonator_outline_template = get_jinja2_template(
-            resonator_outline_template_fpath
+                template_id_to_theory_1[template_id] = theory_1_damage_distribution
+                template_id_to_half_built_atk[template_id] = (
+                    half_built_atk_damage_distribution
+                )
+                template_id_to_half_built_skill_bonus[template_id] = (
+                    half_built_skill_bonus_damage_distribution
+                )
+
+        return (
+            template_id_to_relative_url,
+            template_id_to_theory_1,
+            template_id_to_half_built_atk,
+            template_id_to_half_built_skill_bonus,
         )
+
+    def export_resonator_outline(self, template_id_to_relative_url: Dict[str, str]):
+        template_fpath = "./html/docs/resonator/outline.jinja2"
+        template = get_jinja2_template(template_fpath)
         for resonator in self._docs_model.resonators:
             resonator_info = get_resonator_information(resonator.name)
-            resonator_outline_output_fpath = (
-                f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
-            )
-            resonator_outline_output_fpath = Path(resonator_outline_output_fpath)
-            os.makedirs(resonator_outline_output_fpath.parent, exist_ok=True)
+            output_fpath = f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
 
-            resonator_outline_html_str = resonator_outline_template.render(
+            html_str = template.render(
                 resonator=resonator,
-                template_id_to_relative_url=self._template_id_to_relative_url,
+                template_id_to_relative_url=template_id_to_relative_url,
                 ZhTwEnum=ZhTwEnum,
                 _=_,
             )
-            with resonator_outline_output_fpath.open(mode="w", encoding="utf-8") as fp:
-                fp.write(resonator_outline_html_str)
+
+            export_html(output_fpath, html_str)
 
     def export_resonators(self):
         template_fpath = "./html/docs/resonators.jinja2"
@@ -485,11 +526,77 @@ class Docs:
             _=_,
         )
 
-        output_fpath = Path(output_fpath)
-        os.makedirs(output_fpath.parent, exist_ok=True)
-        with output_fpath.open(mode="w", encoding="utf-8") as fp:
-            fp.write(html_str)
-        output_fpath = Path(output_fpath)
-        os.makedirs(output_fpath.parent, exist_ok=True)
-        with output_fpath.open(mode="w", encoding="utf-8") as fp:
-            fp.write(html_str)
+        export_html(output_fpath, html_str)
+
+    def export_tier_outline(self):
+        template_fpath = "./html/docs/tier/outline.jinja2"
+        output_fpath = "./build/html/docs/tier/outline.md"
+
+        template = get_jinja2_template(template_fpath)
+
+        html_str = template.render(
+            TIER_THEORY_1_URL=TIER_THEORY_1_URL,
+            TIER_HALF_BUILT_ATK_URL=TIER_HALF_BUILT_ATK_URL,
+            TIER_HALF_BUILT_SKILL_BONUS_URL=TIER_HALF_BUILT_SKILL_BONUS_URL,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+        )
+
+        export_html(output_fpath, html_str)
+
+    def export_tier_barh(
+        self,
+        template_id_to_relative_url: Dict[str, str],
+        template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
+        output_fpath: str,
+    ):
+        template_fpath = "./html/docs/tier/barh.jinja2"
+
+        template = get_jinja2_template(template_fpath)
+
+        template_ids = self._docs_model.tier.template_ids
+        template_ids.sort(
+            key=lambda template_id: template_id_to_damage_distribution[
+                template_id
+            ].get_max_dps(),
+            reverse=True,
+        )
+
+        dps = []
+        for damage_distribution in template_id_to_damage_distribution.values():
+            dps.append(damage_distribution.get_max_dps())
+        max_dps = get_max_damage(
+            dps, default_max_damage=Decimal(35000), tick=Decimal(2000)
+        )
+
+        html_str = template.render(
+            template_ids=template_ids,
+            template_id_to_relative_url=template_id_to_relative_url,
+            template_id_to_damage_distribution=template_id_to_damage_distribution,
+            max_dps=max_dps,
+            get_element_class_name=get_element_class_name,
+            get_percentage_str=get_percentage_str,
+            get_resonator_icon_url=get_resonator_icon_url,
+            get_resonator_information=get_resonator_information,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+        )
+
+        export_html(output_fpath, html_str)
+
+    def export_tier_barhs(
+        self,
+        template_id_to_relative_url: Dict[str, str],
+        template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_atk: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_skill_bonus: Dict[
+            str, TemplateDamageDistributionModel
+        ],
+    ):
+        theory_1_fpath = "./build/html/docs/tier/theory_1.md"
+        self.export_tier_barh(
+            template_id_to_relative_url, template_id_to_theory_1, theory_1_fpath
+        )
+        self.export_tier_barh(
+            template_id_to_relative_url, template_id_to_theory_1, theory_1_fpath
+        )

@@ -308,6 +308,7 @@ class ZhTwEnum(str, Enum):
     RESULT_ECHO_ELEMENT: str = "[聲骸]屬性"
     RESULT_ECHO_SKILL_DMG: str = "[聲骸]技能倍率"
 
+    DPS: str = "DPS"
     RESULT_MIN_DPS: str = "[計算]最小DPS"
     RESULT_MAX_DPS: str = "[計算]最大DPS"
     RESULT_DAMAGE: str = "[計算]傷害"
