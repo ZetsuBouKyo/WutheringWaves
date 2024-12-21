@@ -45,6 +45,8 @@ class ZhTwEnum(str, Enum):
     ECHO_SONATA_4: str = "合鳴4"
     ECHO_SONATA_5: str = "合鳴5"
 
+    ECHO_CONFIGURATION: str = "聲骸配置"
+
     TEMPLATE: str = "模板"
 
     MONSTER_ID: str = "怪物ID"
@@ -573,3 +575,5 @@ class ZhTwEnum(str, Enum):
     MONSTER_LV_100_RES_20: str = "100等抗性20白板"
     MONSTER_LV_100_RES_40: str = "100等抗性40白板"
     MONSTER_LV_100_RES_60: str = "100等抗性60白板"
+
+    TIER: str = "Tier"

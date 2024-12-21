@@ -546,6 +546,7 @@ class Docs:
 
     def export_tier_barh(
         self,
+        title: str,
         template_id_to_relative_url: Dict[str, str],
         template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
         output_fpath: str,
@@ -570,6 +571,7 @@ class Docs:
         )
 
         html_str = template.render(
+            title=title,
             template_ids=template_ids,
             template_id_to_relative_url=template_id_to_relative_url,
             template_id_to_damage_distribution=template_id_to_damage_distribution,
@@ -595,19 +597,15 @@ class Docs:
     ):
         theory_1_fpath = "./build/html/docs/tier/theory_1.md"
         self.export_tier_barh(
-            template_id_to_relative_url, template_id_to_theory_1, theory_1_fpath
-        )
-        self.export_tier_barh(
-            template_id_to_relative_url, template_id_to_theory_1, theory_1_fpath
+            _(ZhTwEnum.ECHOES_THEORY_1),
+            template_id_to_relative_url,
+            template_id_to_theory_1,
+            theory_1_fpath,
         )
 
         half_built_atk_fpath = "./build/html/docs/tier/half_built_atk.md"
         self.export_tier_barh(
-            template_id_to_relative_url,
-            template_id_to_half_built_atk,
-            half_built_atk_fpath,
-        )
-        self.export_tier_barh(
+            _(ZhTwEnum.ECHOES_HALF_BUILT_ATK),
             template_id_to_relative_url,
             template_id_to_half_built_atk,
             half_built_atk_fpath,
@@ -617,11 +615,7 @@ class Docs:
             "./build/html/docs/tier/half_built_skill_bonus.md"
         )
         self.export_tier_barh(
-            template_id_to_relative_url,
-            template_id_to_half_built_skill_bonus,
-            half_built_skill_bonus_fpath,
-        )
-        self.export_tier_barh(
+            _(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS),
             template_id_to_relative_url,
             template_id_to_half_built_skill_bonus,
             half_built_skill_bonus_fpath,
