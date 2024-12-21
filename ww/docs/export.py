@@ -29,6 +29,7 @@ from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import TemplateDamageDistributionModel, TemplateModel
+from ww.tables.resonator import get_resonator_information
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
     get_percentage_str,
@@ -52,6 +53,11 @@ def get_resonator_skill_base_damage(
     for e in skill_enum:
         base_damage += resonator_damage_distribution.get_damage(e.name.lower())
     return base_damage
+
+
+def get_resonator_outline_url(resonator_name: str) -> str:
+    resonator_info = get_resonator_information(resonator_name)
+    return f"/resonator/{resonator_info.no}/outline/index.html"
 
 
 class Docs:
@@ -86,6 +92,7 @@ class Docs:
 
         self.export_resonator_templates()
         self.export_resonator_outline()
+        self.export_resonators()
 
     def export_resonator_echo_damage_comparison(
         self,
@@ -440,14 +447,40 @@ class Docs:
                 )
 
     def export_resonator_outline(self):
-        template_fpath = "./html/docs/resonator/outline.jinja2"
-        output_fpath = "./build/html/docs/resonator/outline.md"
+        resonator_outline_template_fpath = "./html/docs/resonator/outline.jinja2"
+        resonator_outline_template = get_jinja2_template(
+            resonator_outline_template_fpath
+        )
+        for resonator in self._docs_model.resonators:
+            resonator_info = get_resonator_information(resonator.name)
+            resonator_outline_output_fpath = (
+                f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
+            )
+            resonator_outline_output_fpath = Path(resonator_outline_output_fpath)
+            os.makedirs(resonator_outline_output_fpath.parent, exist_ok=True)
+
+            resonator_outline_html_str = resonator_outline_template.render(
+                resonator=resonator,
+                template_id_to_relative_url=self._template_id_to_relative_url,
+                ZhTwEnum=ZhTwEnum,
+                _=_,
+            )
+            with resonator_outline_output_fpath.open(mode="w", encoding="utf-8") as fp:
+                fp.write(resonator_outline_html_str)
+
+    def export_resonators(self):
+        template_fpath = "./html/docs/resonators.jinja2"
+        output_fpath = "./build/html/docs/resonators.md"
 
         template = get_jinja2_template(template_fpath)
 
+        resonator_names = [resonator.name for resonator in self._docs_model.resonators]
+        resonator_names.sort(key=lambda name: get_resonator_information(name).no)
+
         html_str = template.render(
-            docs_settings=self._docs_model,
-            template_id_to_relative_url=self._template_id_to_relative_url,
+            resonator_names=resonator_names,
+            get_resonator_icon_url=get_resonator_icon_url,
+            get_resonator_outline_url=get_resonator_outline_url,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )

@@ -53,6 +53,10 @@ div.wuwa-barh {
   flex-direction: row;
 }
 
+.wuwa-flex-wrap {
+  flex-wrap: wrap;
+}
+
 .wuwa-border-left {
   border-left: 2px solid rgb(240, 240, 240);
 }
@@ -430,4 +434,13 @@ td.wuwa-detailed-damage {
 
 td.wuwa-detailed-damage-h-60 {
   height: 60px;
+}
+
+/* resonator outline */
+
+img.wuwa-resonator-outline-icon {
+  height: 64px;
+  width: 64px;
+  object-fit: contain;
+  padding: 0px 8px;
 }

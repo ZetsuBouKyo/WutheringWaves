@@ -1,10 +1,6 @@
-# 概要
+# {{resonator.name}}
 
-{% for resonator in docs_settings.resonators %}
-## {{resonator.name}}
-### {{_(ZhTwEnum.TEMPLATE)}}
+## {{_(ZhTwEnum.TEMPLATE)}}
 {% for template_id in resonator.template_ids %}
 - [{{template_id}}]({{template_id_to_relative_url[template_id]}})
-{%- endfor -%}
-
-{% endfor %}
+{% endfor -%}
