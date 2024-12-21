@@ -600,3 +600,29 @@ class Docs:
         self.export_tier_barh(
             template_id_to_relative_url, template_id_to_theory_1, theory_1_fpath
         )
+
+        half_built_atk_fpath = "./build/html/docs/tier/half_built_atk.md"
+        self.export_tier_barh(
+            template_id_to_relative_url,
+            template_id_to_half_built_atk,
+            half_built_atk_fpath,
+        )
+        self.export_tier_barh(
+            template_id_to_relative_url,
+            template_id_to_half_built_atk,
+            half_built_atk_fpath,
+        )
+
+        half_built_skill_bonus_fpath = (
+            "./build/html/docs/tier/half_built_skill_bonus.md"
+        )
+        self.export_tier_barh(
+            template_id_to_relative_url,
+            template_id_to_half_built_skill_bonus,
+            half_built_skill_bonus_fpath,
+        )
+        self.export_tier_barh(
+            template_id_to_relative_url,
+            template_id_to_half_built_skill_bonus,
+            half_built_skill_bonus_fpath,
+        )
