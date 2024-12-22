@@ -29,18 +29,23 @@
 #### [{{_(ZhTwEnum.ECHOES_THEORY_1)}}](/simulated_echo/index.html)
 
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/theory_1/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/theory_1/echo_damage_comparison/index.html)
+{% for no, name in echo_comparisons -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/theory_1/echo_damage_comparison/{{no}}/index.html)
+{% endfor %}
 
 #### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_ATK)}}](/simulated_echo/index.html)
 
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/echo_damage_comparison/index.html)
-
+{% for no, name in echo_comparisons -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/echo_damage_comparison/{{no}}/index.html)
+{% endfor %}
 
 #### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}](/simulated_echo/index.html)
 
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/damage_analysis/index.html)
-- [{{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/echo_damage_comparison/index.html)
+{% for no, name in echo_comparisons -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/echo_damage_comparison/{{no}}/index.html)
+{% endfor %}
 
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}
 
@@ -81,36 +86,36 @@
 <div class="wuwa-container">
   <table class="wuwa wuwa-w100p wuwa-white">
     <tr>
-      <td class="wuwa">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
-      <td class="wuwa">{{_(ZhTwEnum.ACTION)}}</td>
-      <td class="wuwa">{{_(ZhTwEnum.TIME_START)}}</td>
-      <td class="wuwa">{{_(ZhTwEnum.TIME_END)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w25p">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w25p">{{_(ZhTwEnum.ACTION)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w25p">{{_(ZhTwEnum.TIME_START)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w25p">{{_(ZhTwEnum.TIME_END)}}</td>
     </tr>
     {% for output_method in output_methods %}
     {% for action in output_method.actions %}
     <tr>
-      <td class="wuwa">
+      <td class="wuwa wuwa-px16 wuwa-py4">
         {% if loop.index > 1 %}
         &nbsp;
         {% else %}
         {{output_method.resonator_name}}
         {% endif %}
       </td>
-      <td class="wuwa">
+      <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80">
         {% if action.name %}
         {{action.name}}
         {% else %}
         &nbsp;
         {% endif %}
       </td>
-      <td class="wuwa">
+      <td class="wuwa wuwa-px16 wuwa-py4">
         {% if action.time_start %}
         {{action.time_start}}
         {% else %}
         &nbsp;
         {% endif %}
       </td>
-      <td class="wuwa">
+      <td class="wuwa wuwa-px16 wuwa-py4">
         {% if action.time_end %}
         {{action.time_end}}
         {% else %}

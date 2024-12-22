@@ -93,10 +93,10 @@ th.wuwa-px16 {
   padding-right: 16px;
 }
 
-td.wuwa-py2,
-th.wuwa-py2 {
-  padding-top: 2px;
-  padding-bottom: 2px;
+td.wuwa-py4,
+th.wuwa-py4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 td.wuwa-middle,
@@ -240,6 +240,7 @@ img.wuwa-resonator-output-method-icon {
 .wuwa-rows {
   display: flex;
   flex-direction: row;
+  padding: 8px 0px;
 }
 
 .wuwa-left-row {
