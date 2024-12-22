@@ -44,7 +44,7 @@
 
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}
 
-<div class="wuwa-container wuwa-margin-bottom-24">
+<div class="wuwa-container wuwa-margin-bottom-16">
   {% for output_method in output_methods %}
   <div class="wuwa-rows {{'wuwa-margin-bottom' if loop.index < output_methods|length}}">
     <div class="wuwa-left-row">
@@ -77,39 +77,40 @@
   </div>
   {% endfor %}
 </div>
+
 <div class="wuwa-container">
   <table class="wuwa wuwa-w100p wuwa-white">
     <tr>
-      <td class="wuwa wuwa-px16 wuwa-py2">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
-      <td class="wuwa wuwa-px16 wuwa-py2">{{_(ZhTwEnum.ACTION)}}</td>
-      <td class="wuwa wuwa-px16 wuwa-py2">{{_(ZhTwEnum.TIME_START)}}</td>
-      <td class="wuwa wuwa-px16 wuwa-py2">{{_(ZhTwEnum.TIME_END)}}</td>
+      <td class="wuwa">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
+      <td class="wuwa">{{_(ZhTwEnum.ACTION)}}</td>
+      <td class="wuwa">{{_(ZhTwEnum.TIME_START)}}</td>
+      <td class="wuwa">{{_(ZhTwEnum.TIME_END)}}</td>
     </tr>
     {% for output_method in output_methods %}
     {% for action in output_method.actions %}
     <tr>
-      <td class="wuwa wuwa-px16 wuwa-py2">
+      <td class="wuwa">
         {% if loop.index > 1 %}
         &nbsp;
         {% else %}
         {{output_method.resonator_name}}
         {% endif %}
       </td>
-      <td class="wuwa wuwa-px16 wuwa-py2 wuwa-gray-80-80-80">
+      <td class="wuwa">
         {% if action.name %}
         {{action.name}}
         {% else %}
         &nbsp;
         {% endif %}
       </td>
-      <td class="wuwa wuwa-px16 wuwa-py2">
+      <td class="wuwa">
         {% if action.time_start %}
         {{action.time_start}}
         {% else %}
         &nbsp;
         {% endif %}
       </td>
-      <td class="wuwa wuwa-px16 wuwa-py2">
+      <td class="wuwa">
         {% if action.time_end %}
         {{action.time_end}}
         {% else %}
