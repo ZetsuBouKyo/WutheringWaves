@@ -9,27 +9,63 @@ div.wuwa-container {
   box-sizing: content-box;
 }
 
-div.wuwa-h40 {
+.wuwa-h40 {
   height: 40px;
 }
 
-div.wuwa-h100 {
+.wuwa-h60 {
+  height: 60px;
+}
+
+.wuwa-h100 {
   height: 100px;
 }
 
-div.wuwa-h100p {
+.wuwa-h100p {
   height: 100%;
 }
 
-div.wuwa-fs8 {
+.wuwa-w60 {
+  width: 60px;
+}
+
+.wuwa-w80 {
+  width: 80px;
+}
+
+.wuwa-w120 {
+  width: 120px;
+}
+
+.wuwa-w150 {
+  width: 150px;
+}
+
+.wuwa-w25p {
+  width: 25%;
+}
+
+.wuwa-w33p {
+  width: 33.33%;
+}
+
+.wuwa-w50p {
+  width: 50%;
+}
+
+.wuwa-w100p {
+  width: 100%;
+}
+
+.wuwa-fs8 {
   font-size: 0.8rem;
 }
 
-div.wuwa-fs6 {
+.wuwa-fs6 {
   font-size: 0.6rem;
 }
 
-div.wuwa-fs5 {
+.wuwa-fs5 {
   font-size: 0.5rem;
 }
 
@@ -37,6 +73,39 @@ div.wuwa-barh {
   display: flex;
   flex-direction: column;
   padding: 16px 0px;
+}
+
+table.wuwa {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border: 1px rgb(100, 100, 100) solid;
+  width: 100%;
+}
+
+td.wuwa,
+th.wuwa {
+  border: 1px rgb(40, 40, 40) solid;
+}
+
+td.wuwa-px16,
+th.wuwa-px16 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+td.wuwa-py2,
+th.wuwa-py2 {
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+td.wuwa-middle,
+th.wuwa-middle {
+  vertical-align: middle;
+}
+
+.wuwa-block {
+  display: block;
 }
 
 .wuwa-flex {
@@ -81,12 +150,20 @@ div.wuwa-barh {
   margin-bottom: 8px;
 }
 
+.wuwa-margin-bottom-16 {
+  margin-bottom: 16px;
+}
+
 .wuwa-margin-bottom-24 {
   margin-bottom: 24px;
 }
 
 .wuwa-black {
   color: rgb(24, 24, 24);
+}
+
+.wuwa-gray-80-80-80 {
+  color: rgb(80, 80, 80);
 }
 
 .wuwa-philippine-gray {
@@ -219,10 +296,6 @@ img.wuwa-resonator-output-method-icon {
   color: rgb(220, 220, 240);
 }
 
-.wuwa-margin-bottom {
-  margin-bottom: 8px;
-}
-
 /* Resonator */
 div.wuwa-resonator-info-title {
   color: rgb(240, 240, 240);
@@ -235,8 +308,7 @@ div.wuwa-resonator-info-title {
 div.wuwa-resonator-info-row-cell {
   display: flex;
   align-self: center;
-  border-radius: 8px;
-  border: 2px rgb(100, 100, 100) solid;
+  border: 1px rgb(100, 100, 100) solid;
   margin-right: 10px;
   height: 48px;
 }
@@ -401,11 +473,6 @@ div.wuwa-detailed-damage-row-text:after {
   width: 400px;
 }
 
-.wuwa-detailed-damage-row-block {
-  display: block;
-  color: rgb(240, 240, 240);
-}
-
 .wuwa-detailed-damage-frac {
   display: inline-block;
   position: relative;
@@ -427,20 +494,9 @@ div.wuwa-detailed-damage-row-text:after {
   display: none;
 }
 
-table.wuwa-detailed-damage {
-  border-radius: 8px;
-  border: 2px rgb(100, 100, 100) solid;
-  width: 100%;
-  color: rgb(160, 160, 160);
-}
-
 td.wuwa-detailed-damage {
   padding: 0px 16px;
   vertical-align: middle;
-}
-
-td.wuwa-detailed-damage-h-60 {
-  height: 60px;
 }
 
 /* resonator outline */

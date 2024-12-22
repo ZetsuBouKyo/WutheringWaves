@@ -70,6 +70,8 @@ class ZhTwEnum(str, Enum):
     BASE_ATTR: str = "基礎屬性"
     MAIN_SKILL_BONUS: str = "主要技能加成"
 
+    TIME_START: str = "開始時間"
+    TIME_END: str = "結束時間"
     DURATION_1: str = "時間(下限)"
     DURATION_2: str = "時間(上限)"
 
@@ -123,6 +125,7 @@ class ZhTwEnum(str, Enum):
 
     CALCULATED_DMG_NO_CRIT: str = "計算傷害"
     CALCULATED_DMG_CRIT: str = "計算暴擊傷害"
+    EXPECTED_DMG: str = "期望傷害"
 
     DETAILED_CALCULATION: str = "詳細計算過程"
     CALCULATED_RESULTS: str = "計算結果"
@@ -136,6 +139,7 @@ class ZhTwEnum(str, Enum):
     RESONATOR_SKILL_BONUS_TYPE: str = "技能加成"
     DETAILED_DAMAGE: str = "詳細傷害"
     DAMAGE: str = "傷害"
+    DAMAGE_LIST: str = "傷害列表"
     DAMAGE_ANALYSIS: str = "傷害分析"
     DAMAGE_DISTRIBUTION: str = "傷害占比"
     DAMAGE_COMPARE: str = "傷害比較"

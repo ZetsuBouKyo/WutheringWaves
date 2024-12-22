@@ -60,6 +60,9 @@ class TemplateHtmlResonatorModel(BaseModel):
 class TemplateHtmlOutputMethodActionModel(BaseModel):
     name: str = ""
     src: str = ""
+    skill_id: str = ""
+    time_start: str = ""
+    time_end: str = ""
 
 
 class TemplateHtmlOutputMethodModel(BaseModel):

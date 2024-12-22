@@ -125,7 +125,11 @@ def get_html_template_output_methods(
 
             action_src = action_icons.get(action_name, "")
             action = TemplateHtmlOutputMethodActionModel(
-                name=action_name, src=action_src
+                name=action_name,
+                src=action_src,
+                skill_id=row.skill_id,
+                time_start=row.time_start,
+                time_end=row.time_end,
             )
             current_output_methods[label].actions.append(action)
 
