@@ -139,6 +139,30 @@ templates:
     is_tier: true
     echo_comparison:
       - "椿"
+  - id: "[理論]+1椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
+  - id: "[理論]+2椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
+  - id: "[理論]+3椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
+  - id: "[理論]+4椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
+  - id: "[理論]+5椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
+  - id: "[理論]+6椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
   # 珂萊塔
   - id: "[內鬼]+0珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-v2.05"
     is_tier: false
