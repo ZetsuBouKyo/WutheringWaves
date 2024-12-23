@@ -181,7 +181,7 @@ templates:
     echo_comparison:
       - "珂萊塔"
 
-comparison:
+comparisons:
   凌陽:
     - title: 隊伍比較
       template_ids:

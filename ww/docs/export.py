@@ -805,9 +805,7 @@ class Docs:
         dps = []
         for damage_distribution in template_id_to_damage_distribution.values():
             dps.append(damage_distribution.get_max_dps())
-        max_dps = get_max_damage(
-            [max(dps)], default_max_damage=Decimal(2000), tick=Decimal(2000)
-        )
+        max_dps = max(dps)
 
         html_str = template.render(
             title=title,
