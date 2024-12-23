@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+from logging import DEBUG
 from pathlib import Path
 from time import time
 
@@ -16,6 +17,7 @@ from ww.commands.custom import app as custom
 from ww.commands.resonator import app as resonator
 from ww.commands.weapon import app as weapon
 from ww.docs.export import Docs
+from ww.logging import logger_cli
 
 _help = """
 The CLI for ZetsuBou
@@ -108,7 +110,10 @@ def build(version: str = Option(get_version())):
 def docs(
     version: str = Option(get_version()),
     config_file: str = Option("./build/html/mkdocs.yml"),
+    debug_level: int = Option(DEBUG),
 ):
+    logger_cli.setLevel(debug_level)
+
     t0 = time()
     # Copy the assets
     assets_src_path = "./assets"

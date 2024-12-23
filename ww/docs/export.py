@@ -24,6 +24,7 @@ from ww.html.image.resonator import (
     merge_resonator_model,
 )
 from ww.locale import ZhTwEnum, _
+from ww.logging import logger_cli
 from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
@@ -760,7 +761,13 @@ class Docs:
         )
 
         dps = []
-        for damage_distribution in template_id_to_damage_distribution.values():
+        for template_id in template_ids:
+            damage_distribution = template_id_to_damage_distribution.get(
+                template_id, None
+            )
+            if damage_distribution is None:
+                logger_cli.debug(f"Template ID: {template_id} is None.")
+                continue
             dps.append(damage_distribution.get_resonator_max_dps(resonator_name))
         max_dps = max(dps)
 
@@ -803,8 +810,15 @@ class Docs:
         )
 
         dps = []
-        for damage_distribution in template_id_to_damage_distribution.values():
+        for template_id in template_ids:
+            damage_distribution = template_id_to_damage_distribution.get(
+                template_id, None
+            )
+            if damage_distribution is None:
+                logger_cli.debug(f"Template ID: {template_id} is None.")
+                continue
             dps.append(damage_distribution.get_max_dps())
+
         max_dps = max(dps)
 
         html_str = template.render(

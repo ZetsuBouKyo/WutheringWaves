@@ -98,13 +98,14 @@ class TemplateDamageDistributionModel(BaseModel):
             return None
         return to_number_string(m)
 
-    def get_max_dps(cls) -> Optional[Decimal]:
+    def get_max_dps(cls) -> Decimal:
         if not cls.damage or not cls.duration_1 or not cls.duration_2:
-            return None
+            return Decimal("0.0")
         durations = [cls.get_duration_1(), cls.get_duration_2()]
         duration = min(durations)
         if duration >= Decimal(0.0):
             return cls.damage / duration
+        return Decimal("0.0")
 
     def get_max_dps_string(cls) -> Optional[str]:
         m = cls.get_max_dps()
@@ -118,10 +119,10 @@ class TemplateDamageDistributionModel(BaseModel):
             return ""
         return to_percentage_str(resonator.damage / cls.damage)
 
-    def get_resonator_max_dps(cls, resonator_name: str) -> Optional[Decimal]:
+    def get_resonator_max_dps(cls, resonator_name: str) -> Decimal:
         resonator = cls.resonators.get(resonator_name, None)
         if resonator is None or not cls.damage:
-            return None
+            return Decimal("0.0")
         max_dps = cls.get_max_dps()
         dps = max_dps * resonator.damage / cls.damage
         return dps
