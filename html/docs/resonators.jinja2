@@ -3,7 +3,8 @@
 <div class="wuwa-container">
     <div class="wuwa-flex-wrap">
         {% for name in resonator_names %}
-        <a href="{{get_resonator_outline_url(name)}}">
+        {% set no = get_resonator_information(name).no %}
+        <a href="{{get_resonator_outline_url(no)}}">
             <img class="wuwa-resonator-outline-icon" src="{{get_resonator_icon_url(name)}}" title="{{name}}" />
         </a>
         {% endfor %}

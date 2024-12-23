@@ -27,6 +27,7 @@ from ww.locale import ZhTwEnum, _
 from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
+from ww.model.resonator import ResonatorInformationModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.template import (
     TemplateDamageDistributionModel,
@@ -49,6 +50,11 @@ MKDOCS_FPATH = "./build/html/mkdocs.yml"
 DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
 
+# echoes
+THEORY_1 = "theory_1"
+HALF_BUILT_ATK = "half_built_atk"
+HALF_BUILT_SKILL_BONUS = "half_built_skill_bonus"
+
 # url
 TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
 TIER_HALF_BUILT_ATK_URL: str = "/tier/half_built_atk/index.html"
@@ -65,9 +71,26 @@ def get_resonator_skill_base_damage(
     return base_damage
 
 
-def get_resonator_outline_url(resonator_name: str) -> str:
-    resonator_info = get_resonator_information(resonator_name)
-    return f"/resonator/{resonator_info.no}/outline/index.html"
+def get_resonator_outline_url(no: str) -> str:
+    return f"/resonator/{no}/outline/index.html"
+
+
+def get_resonator_dps_comparison_url(md5: str, prefix: str, no: str) -> str:
+    return f"/resonator/{no}/comparison/{prefix}/{md5}/resonator_dps/index.html"
+
+
+def get_resonator_dps_comparison_md(md5: str, prefix: str, no: str) -> str:
+    return (
+        f"./build/html/docs/resonator/{no}/comparison/{prefix}/{md5}/resonator_dps.md"
+    )
+
+
+def get_team_dps_comparison_url(md5: str, prefix: str, no: str) -> str:
+    return f"/resonator/{no}/comparison/{prefix}/{md5}/team_dps/index.html"
+
+
+def get_team_dps_comparison_md(md5: str, prefix: str, no: str) -> str:
+    return f"./build/html/docs/resonator/{no}/comparison/{prefix}/{md5}/team_dps.md"
 
 
 def get_damage_analysis_url(md5: str, prefix: str) -> str:
@@ -110,6 +133,16 @@ class Docs:
 
         self._docs_model = DocsModel(**docs_settings)
         self._mkdocs_settings = MkdocsSettings(mkdocs_settings, mkdocs_fpath)
+        self._resonator_name_to_info: Dict[str, ResonatorInformationModel] = {}
+
+    def _get_resonator_information(
+        self, resonator_name: str
+    ) -> ResonatorInformationModel:
+        info = self._resonator_name_to_info.get(resonator_name, None)
+        if info is None:
+            info = get_resonator_information(resonator_name)
+            self._resonator_name_to_info[resonator_name] = info
+        return info
 
     def export(self):
         self._mkdocs_settings.save()
@@ -123,12 +156,16 @@ class Docs:
             resonator_name_to_template_ids,
         ) = self.export_resonator_templates()
         self.export_resonator_outline(
-            resonator_name_to_template_ids, template_id_to_relative_url
+            resonator_name_to_template_ids,
+            template_id_to_relative_url,
+            template_id_to_theory_1,
+            template_id_to_half_built_atk,
+            template_id_to_half_built_skill_bonus,
         )
         self.export_resonators(resonator_name_to_template_ids)
 
         self.export_tier_outline()
-        self.export_tier_barhs(
+        self.export_3_resonators_tier_barhs(
             template_ids_tier,
             template_id_to_relative_url,
             template_id_to_theory_1,
@@ -491,7 +528,7 @@ class Docs:
                 else:
                     resonator_name_to_template_ids[resonator_name].append(template_id)
 
-                resonator_no = get_resonator_information(resonator_name).no
+                resonator_no = self._get_resonator_information(resonator_name).no
 
                 self.export_resonator_echo_damage_comparison_with_theory_1(
                     resonator_no, resonator_name, resonator_template
@@ -572,22 +609,50 @@ class Docs:
         self,
         resonator_name_to_template_ids: Dict[str, List[str]],
         template_id_to_relative_url: Dict[str, str],
+        template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_atk: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_skill_bonus: Dict[
+            str, TemplateDamageDistributionModel
+        ],
     ):
         template_fpath = "./html/docs/resonator/outline.jinja2"
         template = get_jinja2_template(template_fpath)
+        comparisons = self._docs_model.comparisons
+        print(comparisons)
         for resonator_name, template_ids in resonator_name_to_template_ids.items():
-            resonator_info = get_resonator_information(resonator_name)
-            output_fpath = f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
+            resonator_info = self._get_resonator_information(resonator_name)
+            resonator_no = resonator_info.no
+            resonator_comparisons = comparisons.get(resonator_name, None)
 
             html_str = template.render(
+                resonator_no=resonator_no,
                 resonator_name=resonator_name,
+                resonator_comparisons=resonator_comparisons,
                 template_ids=template_ids,
                 template_id_to_relative_url=template_id_to_relative_url,
+                get_resonator_dps_comparison_url=get_resonator_dps_comparison_url,
+                get_team_dps_comparison_url=get_team_dps_comparison_url,
                 ZhTwEnum=ZhTwEnum,
                 _=_,
             )
-
+            output_fpath = f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
             export_html(output_fpath, html_str)
+
+            print(resonator_comparisons)
+            if resonator_comparisons is None:
+                continue
+
+            for comparison in resonator_comparisons:
+                comparison_fpath = get_team_dps_comparison_md(
+                    comparison.get_md5(), THEORY_1, resonator_no
+                )
+                self.export_3_resonators_tier_barh(
+                    comparison.title,
+                    comparison.template_ids,
+                    template_id_to_relative_url,
+                    template_id_to_theory_1,
+                    comparison_fpath,
+                )
 
     def export_resonators(self, resonator_name_to_template_ids: Dict[str, List[str]]):
         template_fpath = "./html/docs/resonators.jinja2"
@@ -596,12 +661,13 @@ class Docs:
         template = get_jinja2_template(template_fpath)
 
         resonator_names = list(resonator_name_to_template_ids.keys())
-        resonator_names.sort(key=lambda name: get_resonator_information(name).no)
+        resonator_names.sort(key=lambda name: self._get_resonator_information(name).no)
 
         html_str = template.render(
             resonator_names=resonator_names,
             get_resonator_icon_url=get_resonator_icon_url,
             get_resonator_outline_url=get_resonator_outline_url,
+            get_resonator_information=self._get_resonator_information,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )
@@ -624,7 +690,7 @@ class Docs:
 
         export_html(output_fpath, html_str)
 
-    def export_tier_barh(
+    def export_3_resonators_tier_barh(
         self,
         title: str,
         template_ids: List[str],
@@ -659,14 +725,14 @@ class Docs:
             get_element_class_name=get_element_class_name,
             get_percentage_str=get_percentage_str,
             get_resonator_icon_url=get_resonator_icon_url,
-            get_resonator_information=get_resonator_information,
+            get_resonator_information=self._get_resonator_information,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )
 
         export_html(output_fpath, html_str)
 
-    def export_tier_barhs(
+    def export_3_resonators_tier_barhs(
         self,
         template_ids: List[str],
         template_id_to_relative_url: Dict[str, str],
@@ -677,7 +743,7 @@ class Docs:
         ],
     ):
         theory_1_fpath = "./build/html/docs/tier/theory_1.md"
-        self.export_tier_barh(
+        self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_THEORY_1),
             template_ids,
             template_id_to_relative_url,
@@ -686,7 +752,7 @@ class Docs:
         )
 
         half_built_atk_fpath = "./build/html/docs/tier/half_built_atk.md"
-        self.export_tier_barh(
+        self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_HALF_BUILT_ATK),
             template_ids,
             template_id_to_relative_url,
@@ -697,7 +763,7 @@ class Docs:
         half_built_skill_bonus_fpath = (
             "./build/html/docs/tier/half_built_skill_bonus.md"
         )
-        self.export_tier_barh(
+        self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS),
             template_ids,
             template_id_to_relative_url,
