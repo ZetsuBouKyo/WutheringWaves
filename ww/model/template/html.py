@@ -63,6 +63,7 @@ class TemplateHtmlOutputMethodActionModel(BaseModel):
     skill_id: str = ""
     time_start: str = ""
     time_end: str = ""
+    index_1_based: str = ""
 
 
 class TemplateHtmlOutputMethodModel(BaseModel):

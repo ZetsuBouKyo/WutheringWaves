@@ -502,12 +502,50 @@
 </div>
 {% endfor %}
 
+## {{_(ZhTwEnum.OUTPUT_METHOD)}}
+
+<div class="wuwa-container wuwa-margin-bottom-16">
+  {% for output_method in output_methods %}
+  <div class="wuwa-rows {{'wuwa-margin-bottom' if loop.index < output_methods|length}}">
+    <div class="wuwa-left-row">
+      <div class="wuwa-resonator-output-method-icon">
+        <img class="wuwa-resonator-output-method-icon" src="{{output_method.resonator_src}}" />
+      </div>
+    </div>
+    <div class="wuwa-right-row">
+      <div class="wuwa-actions">
+        {% for action in output_method.actions %}
+        <div class="wuwa-action">
+          <div class="wuwa-action-text">
+            <a href="#dmg-{{action.index_1_based}}">
+              {{action.name}}
+            </a>
+          </div>
+          {% if action.src != "" %}
+          <img class="wuwa-action-icon" src="{{action.src}}" />
+          {% endif %}
+          <img class="wuwa-action-next" src="{{right_arrow_src}}" />
+        </div>
+        {% endfor %}
+      </div>
+      {% for comment in output_method.comments %}
+      <div class="wuwa-comments">
+        <div class="wuwa-comment">
+          {{comment}}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
 ## {{_(ZhTwEnum.DAMAGE_LIST)}}
 
 <div class="wuwa-container">
   {% for row in calculated_rows -%}
   {% if row.resonator_name -%}
-  <table class="wuwa wuwa-w100p wuwa-white wuwa-margin-bottom-16">
+  <table class="wuwa wuwa-w100p wuwa-white wuwa-margin-bottom-16" id="dmg-{{loop.index}}">
     <tr>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80 wuwa-w150">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80 wuwa-w80">{{_(ZhTwEnum.ACTION)}}</td>
@@ -560,11 +598,13 @@
         {% endif %}
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80 wuwa-w33p">
-        {% if row.damage_crit %}
-        {{to_number_string(row.damage_crit)}}
-        {% else %}
-        &nbsp;
-        {% endif %}
+        <a href="#detailed-dmg-{{loop.index}}">
+          {% if row.damage_crit %}
+          {{to_number_string(row.damage_crit)}}
+          {% else %}
+          &nbsp;
+          {% endif %}
+        </a>
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w33p">
         {% if row.damage %}
@@ -584,7 +624,8 @@
   <div class="wuwa-flex-col">
     {% for row in calculated_rows %}
     {% if row.resonator_name %}
-    <div class="wuwa-flex-row wuwa-margin-bottom-8 {{'wuwa-margin-top-8' if loop.index > 1}}">
+    <div id="detailed-dmg-{{loop.index}}"
+      class="wuwa-flex-row wuwa-margin-bottom-8 {{'wuwa-margin-top-8' if loop.index > 1}}">
       <div class="wuwa-barh-resonator-icon">
         <img src="{{get_resonator_icon_url(row.resonator_name)}}" />
       </div>

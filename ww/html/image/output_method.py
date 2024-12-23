@@ -87,7 +87,7 @@ def get_html_template_output_methods(
 
     output_methods: Dict[str, List[TemplateHtmlOutputMethodModel]] = {}
     current_output_methods: Dict[str, TemplateHtmlOutputMethodModel] = {}
-    for row in rows:
+    for i, row in enumerate(rows):
         action_name = row.action
 
         if (
@@ -130,6 +130,7 @@ def get_html_template_output_methods(
                 skill_id=row.skill_id,
                 time_start=row.time_start,
                 time_end=row.time_end,
+                index_1_based=str(i + 1),
             )
             current_output_methods[label].actions.append(action)
 

@@ -28,7 +28,11 @@ from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
-from ww.model.template import TemplateDamageDistributionModel, TemplateModel
+from ww.model.template import (
+    TemplateDamageDistributionModel,
+    TemplateHtmlOutputMethodModel,
+    TemplateModel,
+)
 from ww.tables.resonator import get_resonator_information
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
@@ -288,6 +292,7 @@ class Docs:
     def export_template_damage_analysis(
         self,
         resonator_template: TemplateModel,
+        output_methods: TemplateHtmlOutputMethodModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
         resonator_ids: List[str],
@@ -338,6 +343,7 @@ class Docs:
             calculated_resonators_table=calculated_resonators_table,
             damage_distribution=damage_distribution,
             calculated_rows=calculated_rows,
+            output_methods=output_methods,
             merge_resonator_model=merge_resonator_model,
             get_element_class_name=get_element_class_name,
             get_max_damage=get_max_damage,
@@ -348,6 +354,7 @@ class Docs:
             to_number_string=to_number_string,
             to_percentage_str=to_percentage_str,
             to_trimmed_number_string=to_trimmed_number_string,
+            right_arrow_src=get_asset(RIGHT_ARROW_ICON_FPATH),
             ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,
             SkillBaseAttrEnum=SkillBaseAttrEnum,
             SkillBonusTypeEnum=SkillBonusTypeEnum,
@@ -365,6 +372,7 @@ class Docs:
         self,
         prefix: str,
         resonator_template: TemplateModel,
+        output_methods: TemplateHtmlOutputMethodModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
     ) -> TemplateDamageDistributionModel:
@@ -373,6 +381,7 @@ class Docs:
         )
         return self.export_template_damage_analysis(
             resonator_template,
+            output_methods,
             output_fpath,
             simulated_resonators,
             resonator_ids,
@@ -380,7 +389,9 @@ class Docs:
         )
 
     def export_template_damage_analysis_with_theory_1(
-        self, resonator_template: TemplateModel
+        self,
+        resonator_template: TemplateModel,
+        output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = (
@@ -392,11 +403,17 @@ class Docs:
         simulated_resonators = SimulatedResonators(resonator_template)
 
         return self.export_template_damage_analysis_with_prefix(
-            prefix, resonator_template, output_fpath, simulated_resonators
+            prefix,
+            resonator_template,
+            output_methods,
+            output_fpath,
+            simulated_resonators,
         )
 
     def export_template_damage_analysis_with_half_built_atk(
-        self, resonator_template: TemplateModel
+        self,
+        resonator_template: TemplateModel,
+        output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/damage_analysis.md"
@@ -406,11 +423,17 @@ class Docs:
         simulated_resonators = SimulatedResonators(resonator_template)
 
         return self.export_template_damage_analysis_with_prefix(
-            prefix, resonator_template, output_fpath, simulated_resonators
+            prefix,
+            resonator_template,
+            output_methods,
+            output_fpath,
+            simulated_resonators,
         )
 
     def export_template_damage_analysis_with_half_built_skill_bonus(
-        self, resonator_template: TemplateModel
+        self,
+        resonator_template: TemplateModel,
+        output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/damage_analysis.md"
@@ -423,6 +446,7 @@ class Docs:
 
         return self.export_template_damage_analysis(
             resonator_template,
+            output_methods,
             output_fpath,
             simulated_resonators,
             resonator_ids,
@@ -509,16 +533,18 @@ class Docs:
             template_id_to_relative_url[template_id] = url
 
             theory_1_damage_distribution = (
-                self.export_template_damage_analysis_with_theory_1(resonator_template)
+                self.export_template_damage_analysis_with_theory_1(
+                    resonator_template, output_methods
+                )
             )
             half_built_atk_damage_distribution = (
                 self.export_template_damage_analysis_with_half_built_atk(
-                    resonator_template
+                    resonator_template, output_methods
                 )
             )
             half_built_skill_bonus_damage_distribution = (
                 self.export_template_damage_analysis_with_half_built_skill_bonus(
-                    resonator_template
+                    resonator_template, output_methods
                 )
             )
 
