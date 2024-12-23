@@ -605,6 +605,36 @@ class Docs:
             resonator_name_to_template_ids,
         )
 
+    def export_resonator_comparison(
+        self,
+        title: str,
+        prefix: str,
+        md5: str,
+        resonator_no: str,
+        resonator_name: str,
+        template_ids: List[str],
+        template_id_to_relative_url: Dict[str, str],
+        template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
+    ):
+        team_fpath = get_team_dps_comparison_md(md5, prefix, resonator_no)
+        self.export_3_resonators_tier_barh(
+            title,
+            template_ids,
+            template_id_to_relative_url,
+            template_id_to_damage_distribution,
+            team_fpath,
+        )
+
+        resonator_fpath = get_resonator_dps_comparison_md(md5, prefix, resonator_no)
+        self.export_1_resonators_tier_barh(
+            title,
+            resonator_name,
+            template_ids,
+            template_id_to_relative_url,
+            template_id_to_damage_distribution,
+            resonator_fpath,
+        )
+
     def export_resonator_outline(
         self,
         resonator_name_to_template_ids: Dict[str, List[str]],
@@ -642,27 +672,35 @@ class Docs:
                 continue
 
             for comparison in resonator_comparisons:
-                team_fpath = get_team_dps_comparison_md(
-                    comparison.get_md5(), THEORY_1, resonator_no
-                )
-                self.export_3_resonators_tier_barh(
+                self.export_resonator_comparison(
                     comparison.title,
-                    comparison.template_ids,
-                    template_id_to_relative_url,
-                    template_id_to_theory_1,
-                    team_fpath,
-                )
-
-                resonator_fpath = get_resonator_dps_comparison_md(
-                    comparison.get_md5(), THEORY_1, resonator_no
-                )
-                self.export_1_resonators_tier_barh(
-                    comparison.title,
+                    THEORY_1,
+                    comparison.get_md5(),
+                    resonator_no,
                     resonator_name,
                     comparison.template_ids,
                     template_id_to_relative_url,
                     template_id_to_theory_1,
-                    resonator_fpath,
+                )
+                self.export_resonator_comparison(
+                    comparison.title,
+                    HALF_BUILT_ATK,
+                    comparison.get_md5(),
+                    resonator_no,
+                    resonator_name,
+                    comparison.template_ids,
+                    template_id_to_relative_url,
+                    template_id_to_half_built_atk,
+                )
+                self.export_resonator_comparison(
+                    comparison.title,
+                    HALF_BUILT_SKILL_BONUS,
+                    comparison.get_md5(),
+                    resonator_no,
+                    resonator_name,
+                    comparison.template_ids,
+                    template_id_to_relative_url,
+                    template_id_to_half_built_skill_bonus,
                 )
 
     def export_resonators(self, resonator_name_to_template_ids: Dict[str, List[str]]):
