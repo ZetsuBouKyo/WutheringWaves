@@ -4,23 +4,137 @@
 
 ### {{_(ZhTwEnum.RESONATOR)}}
 
-| {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.RESONANCE_CHAIN)}} | {{_(ZhTwEnum.WEAPON_NAME)}}         | {{_(ZhTwEnum.TUNE)}}                | {{_(ZhTwEnum.BASE_ATTR)}}         | {{_(ZhTwEnum.MAIN_SKILL_BONUS)}}    |
-| ------------------------------ | ------------------------------- | ----------------------------------- | ----------------------------------- | --------------------------------- | ----------------------------------- |
-{% for resonator in template.resonators -%}
-{% if resonator.resonator_name -%}
-| {{resonator.resonator_name}}   | {{resonator.resonator_chain}}   | {{resonator.resonator_weapon_name}} | {{resonator.resonator_weapon_rank}} | {{resonator.resonator_base_attr}} | {{resonator.resonator_skill_bonus}} |
-{% endif -%}
-{% endfor %}
+<div class="wuwa-container">
+  <table class="wuwa wuwa-w100p wuwa-white">
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_CHAIN)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.WEAPON_NAME)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.TUNE)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.BASE_ATTR)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.MAIN_SKILL_BONUS)}}</td>
+    </tr>
+    {% for resonator in template.resonators -%}
+    {% if resonator.resonator_name -%}
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_name %}
+        {{resonator.resonator_name}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_chain %}
+        {{resonator.resonator_chain}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_weapon_name %}
+        {{resonator.resonator_weapon_name}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_weapon_rank %}
+        {{resonator.resonator_weapon_rank}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_base_attr %}
+        {{resonator.resonator_base_attr}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_skill_bonus %}
+        {{resonator.resonator_skill_bonus}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</div>
 
 ### {{_(ZhTwEnum.ECHO)}}
 
-| {{_(ZhTwEnum.CHARACTER_NAME)}} | {{_(ZhTwEnum.ECHO_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_1)}}         | {{_(ZhTwEnum.ECHO_SONATA_2)}}         | {{_(ZhTwEnum.ECHO_SONATA_3)}}         | {{_(ZhTwEnum.ECHO_SONATA_4)}}         | {{_(ZhTwEnum.ECHO_SONATA_5)}}         |
-| ------------------------------ | ------------------------------ | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- | ------------------------------------- |
-{% for resonator in template.resonators -%}
-{% if resonator.resonator_name -%}
-| {{resonator.resonator_name}}   | {{resonator.resonator_echo_1}} | {{resonator.resonator_echo_sonata_1}} | {{resonator.resonator_echo_sonata_2}} | {{resonator.resonator_echo_sonata_3}} | {{resonator.resonator_echo_sonata_4}} | {{resonator.resonator_echo_sonata_5}} |
-{% endif -%}
-{% endfor %}
+<div class="wuwa-container">
+  <table class="wuwa wuwa-w100p wuwa-white">
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CHARACTER_NAME)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_1)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_1)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_2)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_3)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_4)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_5)}}</td>
+    </tr>
+    {% for resonator in template.resonators -%}
+    {% if resonator.resonator_name -%}
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_name %}
+        {{resonator.resonator_name}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_1 %}
+        {{resonator.resonator_echo_1}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_sonata_1 %}
+        {{resonator.resonator_echo_sonata_1}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_sonata_2 %}
+        {{resonator.resonator_echo_sonata_2}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_sonata_3 %}
+        {{resonator.resonator_echo_sonata_3}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_sonata_4 %}
+        {{resonator.resonator_echo_sonata_4}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_echo_sonata_5 %}
+        {{resonator.resonator_echo_sonata_5}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+  </table>
+</div>
 
 ## {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
 
@@ -28,23 +142,29 @@
 
 #### [{{_(ZhTwEnum.ECHOES_THEORY_1)}}](/simulated_echo/index.html)
 
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/theory_1/damage_analysis/index.html)
+{% set _prefix = "theory_1" -%}
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/theory_1/echo_damage_comparison/{{no}}/index.html)
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "theory_1", no) -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
 #### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_ATK)}}](/simulated_echo/index.html)
 
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/damage_analysis/index.html)
+{% set _prefix = "half_built_atk" -%}
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_atk/echo_damage_comparison/{{no}}/index.html)
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_atk", no) -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
 #### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}](/simulated_echo/index.html)
 
-- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/damage_analysis/index.html)
+{% set _prefix = "half_built_skill_bonus" -%}
+- [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}](/resonator/template/{{template.get_md5()}}/half_built_skill_bonus/echo_damage_comparison/{{no}}/index.html)
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_skill_bonus", no) -%}
+- [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}

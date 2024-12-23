@@ -80,11 +80,13 @@ table.wuwa {
   border-spacing: 0;
   border: 1px rgb(100, 100, 100) solid;
   width: 100%;
+  overflow-x: auto;
 }
 
 td.wuwa,
 th.wuwa {
   border: 1px rgb(40, 40, 40) solid;
+  font-size: 0.64rem;
 }
 
 td.wuwa-px16,

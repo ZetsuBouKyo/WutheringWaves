@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict, List, Tuple, Union
 
 import yaml
 
@@ -64,6 +64,14 @@ def get_resonator_skill_base_damage(
 def get_resonator_outline_url(resonator_name: str) -> str:
     resonator_info = get_resonator_information(resonator_name)
     return f"/resonator/{resonator_info.no}/outline/index.html"
+
+
+def get_damage_analysis_url(md5: str, prefix: str) -> str:
+    return f"/resonator/template/{md5}/{prefix}/damage_analysis/index.html"
+
+
+def get_echo_damage_comparison_url(md5: str, prefix: str, no: str) -> str:
+    return f"/resonator/template/{md5}/{prefix}/echo_damage_comparison/{no}/index.html"
 
 
 def export_html(fpath: Union[str, Path], html_str: str):
@@ -180,6 +188,10 @@ class Docs:
                         resonators_info[resonator_name] = resonator_info
                 damages.append(resonator_damage_distribution.damage)
 
+        damage_distributions.sort(
+            key=lambda damage_distribution: damage_distribution.damage, reverse=True
+        )
+
         max_damage = get_max_damage(
             damages,
             default_max_damage=Decimal("100000"),
@@ -188,7 +200,10 @@ class Docs:
         base_damage = max(damages)
 
         html_str = template.render(
+            resonators_table=resonators_table,
+            calculated_resonators_table=calculated_resonators_table,
             template=resonator_template,
+            resonator_ids=resonator_ids,
             resonators_info=resonators_info,
             damage_distributions=damage_distributions,
             max_damage=max_damage,
@@ -197,6 +212,7 @@ class Docs:
             get_percentage_str=get_percentage_str,
             to_number_string=to_number_string,
             to_percentage_str=to_percentage_str,
+            merge_resonator_model=merge_resonator_model,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )
@@ -413,7 +429,16 @@ class Docs:
             resonators_table,
         )
 
-    def export_resonator_templates(self):
+    def export_resonator_templates(
+        self,
+    ) -> Tuple[
+        Dict[str, str],
+        Dict[str, TemplateDamageDistributionModel],
+        Dict[str, TemplateDamageDistributionModel],
+        Dict[str, TemplateDamageDistributionModel],
+        List[str],
+        Dict[str, List[str]],
+    ]:
         template_id_to_relative_url = {}
         template_id_to_theory_1 = {}
         template_id_to_half_built_atk = {}
@@ -468,6 +493,8 @@ class Docs:
                 echo_comparisons=echo_comparisons,
                 output_methods=output_methods,
                 right_arrow_src=get_asset(RIGHT_ARROW_ICON_FPATH),
+                get_damage_analysis_url=get_damage_analysis_url,
+                get_echo_damage_comparison_url=get_echo_damage_comparison_url,
                 ZhTwEnum=ZhTwEnum,
                 _=_,
             )

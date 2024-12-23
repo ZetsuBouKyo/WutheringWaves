@@ -13,7 +13,9 @@
           </div>
           <div class="wuwa-flex-col wuwa-h100p">
             <div class="wuwa-barh-title">
-              <div class="wuwa-barh-resonator-id wuwa-fs5">{{r_damage_distribution.resonator_id}}</div>
+              <div class="wuwa-barh-resonator-id wuwa-fs5">
+                <a href="#{{r_damage_distribution.resonator_id}}">{{r_damage_distribution.resonator_id}}</a>
+              </div>
               <div class="wuwa-barh-template-info wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}:
                 {{damage_distribution.template_id}}
               </div>
@@ -25,7 +27,7 @@
               {% set percentage = r_damage_distribution.damage / max_damage %}
               {% set in_out = 0.5 %}
               {% set black_elements = ['aero', 'spectro'] %}
-              <div class="wuwa-barh-damage wuwa-barh-corner wuwa-bg-{{element}}"
+              <div class="wuwa-barh-damage wuwa-barh-corner wuwa-h40 wuwa-bg-{{element}}"
                 style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
                 {% if percentage >= in_out %}
                 <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
@@ -50,3 +52,361 @@
   </div>
 </div>
 </div>
+
+{% for resonator_id in resonator_ids %}
+{% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
+
+<h2 id="{{resonator_id}}">{{resonator_id}}</h2>
+<div class="wuwa-container">
+  <div class="wuwa-resonator-info-title">
+    <div class="wuwa-resonator-info-row-cell">
+      <img class="wuwa-resonator-info-icon" src="{{r.resonator_src}}" />
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{r.name}}</div>
+      <img class="wuwa-resonator-info-icon" src="{{r.element_src}}" />
+      <div class="wuwa-resonator-info">{{r.element}}</div>
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{_(ZhTwEnum.CHAIN)}} {{r.chain}}</div>
+    </div>
+    <div class="wuwa-resonator-info-row-cell wuwa-resonator-info-row-cell-padding">
+      <div class="wuwa-resonator-info">{{r.weapon_name}}</div>
+      <div class="wuwa-resonator-info">
+        LV{{r.weapon_level}}&nbsp;&nbsp;{{_(ZhTwEnum.TUNE)}} {{r.weapon_rank}}
+      </div>
+    </div>
+  </div>
+  <div class="wuwa-resonator-info-table">
+    <table class="wuwa wuwa-w50p wuwa-white wuwa-margin-right-12">
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.LEVEL)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.level}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HP)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.hp}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ATK)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.attack}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.DEF)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.defense}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CRIT_RATE)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.crit_rate)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CRIT_DMG)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.crit_dmg)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.energy_regen)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_SKILL_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.resonance_skill_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.BASIC_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.basic_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HEAVY_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.heavy_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_LIBERATION_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.resonance_liberation_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HEALING_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.healing_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.PHYSICAL_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.physical_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.GLACIO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.glacio_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.FUSION_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.fusion_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ELECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.electro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.AERO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.aero_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.SPECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.spectro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HAVOC_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.havoc_dmg_bonus)}}</td>
+      </tr>
+    </table>
+    <table class="wuwa wuwa-w50p wuwa-white">
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.PHYSICAL_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.physical_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.GLACIO_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.glacio_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.FUSION_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.fusion_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ELECTRO_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.electro_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.AERO_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.aero_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.SPECTRO_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.spectro_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HAVOC_DMG_RES)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r.havoc_dmg_res)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.NORMAL_ATTACK_LV)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.normal_attack_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_SKILL_LV)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.resonance_skill_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.FORTE_CIRCUIT_LV)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.forte_circuit_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_LIBERATION_LV)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.resonance_liberation_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.INTRO_SKILL_LV)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.intro_skill_lv}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.INHERENT_SKILL_1)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.inherent_skill_1}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.INHERENT_SKILL_2)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r.inherent_skill_2}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(resonator_id) %}
+<div class="wuwa-container">
+  <div class="wuwa-resonator-info-table">
+    <table class="wuwa wuwa-w50p wuwa-white wuwa-margin-right-12">
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HP)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_hp}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HP_P)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_hp_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ATK)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_atk}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ATK_P)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_atk_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.DEF)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_def}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.DEF_P)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_def_p)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CRIT_RATE)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_crit_rate)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.CRIT_DMG)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_crit_dmg)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_energy_regen)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_1)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{template.get_echo_1(r.name)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_1)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_sonata_1}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_2)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_sonata_2}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_3)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_sonata_3}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_4)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_sonata_4}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ECHO_SONATA_5)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{r_echo.echo_sonata_5}}</td>
+      </tr>
+    </table>
+    <table class="wuwa wuwa-w50p wuwa-white">
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_SKILL_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_resonance_skill_dmg_bonus)}}
+        </td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.BASIC_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_basic_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HEAVY_ATTACK_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_heavy_attack_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONANCE_LIBERATION_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">
+          {{to_percentage_str(r_echo.echo_resonance_liberation_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HEALING_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_healing_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.GLACIO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_glacio_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.FUSION_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_fusion_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ELECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_electro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.AERO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_aero_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.SPECTRO_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_spectro_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.HAVOC_DMG_BONUS)}}</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">{{to_percentage_str(r_echo.echo_havoc_dmg_bonus)}}</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+      <tr>
+        <td class="wuwa wuwa-px16 wuwa-py4">&nbsp;</td>
+        <td class="wuwa wuwa-px16 wuwa-py4" align="right">&nbsp;</td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+{% endfor %}
