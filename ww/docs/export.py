@@ -618,7 +618,7 @@ class Docs:
         template_fpath = "./html/docs/resonator/outline.jinja2"
         template = get_jinja2_template(template_fpath)
         comparisons = self._docs_model.comparisons
-        print(comparisons)
+
         for resonator_name, template_ids in resonator_name_to_template_ids.items():
             resonator_info = self._get_resonator_information(resonator_name)
             resonator_no = resonator_info.no
@@ -638,12 +638,11 @@ class Docs:
             output_fpath = f"./build/html/docs/resonator/{resonator_info.no}/outline.md"
             export_html(output_fpath, html_str)
 
-            print(resonator_comparisons)
             if resonator_comparisons is None:
                 continue
 
             for comparison in resonator_comparisons:
-                comparison_fpath = get_team_dps_comparison_md(
+                team_fpath = get_team_dps_comparison_md(
                     comparison.get_md5(), THEORY_1, resonator_no
                 )
                 self.export_3_resonators_tier_barh(
@@ -651,7 +650,19 @@ class Docs:
                     comparison.template_ids,
                     template_id_to_relative_url,
                     template_id_to_theory_1,
-                    comparison_fpath,
+                    team_fpath,
+                )
+
+                resonator_fpath = get_resonator_dps_comparison_md(
+                    comparison.get_md5(), THEORY_1, resonator_no
+                )
+                self.export_1_resonators_tier_barh(
+                    comparison.title,
+                    resonator_name,
+                    comparison.template_ids,
+                    template_id_to_relative_url,
+                    template_id_to_theory_1,
+                    resonator_fpath,
                 )
 
     def export_resonators(self, resonator_name_to_template_ids: Dict[str, List[str]]):
@@ -690,6 +701,50 @@ class Docs:
 
         export_html(output_fpath, html_str)
 
+    def export_1_resonators_tier_barh(
+        self,
+        title: str,
+        resonator_name: str,
+        template_ids: List[str],
+        template_id_to_relative_url: Dict[str, str],
+        template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
+        output_fpath: str,
+    ):
+        template_fpath = "./html/docs/tier/resonator.jinja2"
+
+        template = get_jinja2_template(template_fpath)
+
+        template_ids.sort(
+            key=lambda template_id: template_id_to_damage_distribution[
+                template_id
+            ].get_resonator_max_dps(resonator_name),
+            reverse=True,
+        )
+
+        dps = []
+        for damage_distribution in template_id_to_damage_distribution.values():
+            dps.append(damage_distribution.get_resonator_max_dps(resonator_name))
+        max_dps = max(dps)
+
+        html_str = template.render(
+            title=title,
+            resonator_name=resonator_name,
+            template_ids=template_ids,
+            template_id_to_relative_url=template_id_to_relative_url,
+            template_id_to_damage_distribution=template_id_to_damage_distribution,
+            max_dps=max_dps,
+            get_element_class_name=get_element_class_name,
+            get_percentage_str=get_percentage_str,
+            get_resonator_icon_url=get_resonator_icon_url,
+            get_resonator_information=self._get_resonator_information,
+            to_number_string=to_number_string,
+            to_percentage_str=to_percentage_str,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+        )
+
+        export_html(output_fpath, html_str)
+
     def export_3_resonators_tier_barh(
         self,
         title: str,
@@ -713,7 +768,7 @@ class Docs:
         for damage_distribution in template_id_to_damage_distribution.values():
             dps.append(damage_distribution.get_max_dps())
         max_dps = get_max_damage(
-            dps, default_max_damage=Decimal(35000), tick=Decimal(2000)
+            [max(dps)], default_max_damage=Decimal(2000), tick=Decimal(2000)
         )
 
         html_str = template.render(
