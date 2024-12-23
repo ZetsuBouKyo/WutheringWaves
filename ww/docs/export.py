@@ -726,6 +726,7 @@ class Docs:
             get_percentage_str=get_percentage_str,
             get_resonator_icon_url=get_resonator_icon_url,
             get_resonator_information=self._get_resonator_information,
+            to_number_string=to_number_string,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )

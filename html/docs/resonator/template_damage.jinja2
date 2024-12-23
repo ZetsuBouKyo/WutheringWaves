@@ -16,7 +16,7 @@
         {% for resonator_id in resonator_ids %}
         {% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
         {% set resonator_name = r.name %}
-        <div class="wuwa-barh-row wuwa-h40">
+        <div class="wuwa-barh-row">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
           </div>
@@ -27,7 +27,7 @@
             {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage %}
             {% set in_out = 0.3 %}
             {% set black_elements = ['aero', 'spectro'] %}
-            <div class="wuwa-barh-damage wuwa-barh-corner wuwa-bg-{{element}}"
+            <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
               {% if percentage >= in_out %}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
@@ -422,7 +422,7 @@
           </div>
         </div>
         {% for e in ResonatorSkillTypeEnum %}
-        <div class="wuwa-barh-row wuwa-h40 wuwa-border-left">
+        <div class="wuwa-barh-row wuwa-border-left">
           <div class="wuwa-barh-damage-100">
             {% set element = get_element_class_name(r.element) %}
             {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
@@ -431,7 +431,7 @@
             {% set percentage = damage / base_damage %}
             {% set in_out = 0.4 %}
             {% set black_elements = ['aero', 'spectro'] %}
-            <div class="wuwa-barh-damage wuwa-barh-corner wuwa-bg-{{element}}"
+            <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
               {% if percentage >= in_out %}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
@@ -470,7 +470,7 @@
           </div>
         </div>
         {% for e in SkillBonusTypeEnum %}
-        <div class="wuwa-barh-row wuwa-h40 wuwa-border-left">
+        <div class="wuwa-barh-row wuwa-border-left">
           <div class="wuwa-barh-damage-100">
             {% set element = get_element_class_name(r.element) %}
             {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
@@ -479,7 +479,7 @@
             {% set percentage = damage / base_damage %}
             {% set in_out = 0.4 %}
             {% set black_elements = ['aero', 'spectro'] %}
-            <div class="wuwa-barh-damage wuwa-barh-corner wuwa-bg-{{element}}"
+            <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
               {% if percentage >= in_out %}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">

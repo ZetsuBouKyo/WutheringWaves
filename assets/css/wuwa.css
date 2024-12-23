@@ -9,6 +9,10 @@ div.wuwa-container {
   box-sizing: content-box;
 }
 
+.wuwa-h30 {
+  height: 30px;
+}
+
 .wuwa-h40 {
   height: 40px;
 }
@@ -406,7 +410,6 @@ div.wuwa-barh-damage {
   display: flex;
   flex-direction: row;
   align-items: center;
-  height: 100%;
 }
 
 div.wuwa-barh-damage-value-in {
