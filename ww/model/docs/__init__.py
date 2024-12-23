@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 
 from pydantic import BaseModel
 
@@ -9,5 +9,11 @@ class DocsTemplateModel(BaseModel):
     echo_comparison: List[str] = []
 
 
+class DocsComparisonModel(BaseModel):
+    title: str = ""
+    template_ids: List[str] = []
+
+
 class DocsModel(BaseModel):
     templates: List[DocsTemplateModel] = []
+    comparison: Dict[str, List[DocsComparisonModel]] = {}
