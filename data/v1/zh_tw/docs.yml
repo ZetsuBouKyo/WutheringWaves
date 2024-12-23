@@ -51,6 +51,14 @@ templates:
     is_tier: true
     echo_comparison:
       - "凌陽"
+  - id: "[理論]+1凌陽+1駭行,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-4AE-0鐵甲"
+    is_tier: true
+    echo_comparison:
+      - "凌陽"
+  - id: "[理論]+1凌陽+1駭行,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-4AE-3鐵甲"
+    is_tier: true
+    echo_comparison:
+      - "凌陽"
   # 安可
   - id: "[腦測]+0安可+1掣傀之手,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-3套"
     is_tier: true
