@@ -234,11 +234,6 @@ class Docs:
             key=lambda damage_distribution: damage_distribution.damage, reverse=True
         )
 
-        max_damage = get_max_damage(
-            damages,
-            default_max_damage=Decimal("100000"),
-            tick=Decimal("50000"),
-        )
         base_damage = max(damages)
 
         html_str = template.render(
@@ -248,7 +243,6 @@ class Docs:
             resonator_ids=resonator_ids,
             resonators_info=resonators_info,
             damage_distributions=damage_distributions,
-            max_damage=max_damage,
             base_damage=base_damage,
             get_element_class_name=get_element_class_name,
             get_percentage_str=get_percentage_str,

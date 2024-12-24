@@ -37,7 +37,7 @@
                         {% set in_out = 0.10 %}
                         {% set black_elements = ['aero', 'spectro'] %}
                         <div title="DPS: {{to_number_string(damage_distribution.get_resonator_max_dps(resonator.resonator_name))}}"
-                            class="wuwa-barh-damage wuwa-h30 wuwa-bg-{{element}} {{'wuwa-barh-corner' if loop.index == 3 else 'wuwa-barh-divide'}}"
+                            class="wuwa-barh-damage wuwa-h30 wuwa-bg-{{element}} {{'wuwa-barh-corner' if loop.index == damage_distribution.resonators.values()|length else 'wuwa-barh-divide'}}"
                             style="width: {{get_percentage_str(damage_distribution.get_resonator_max_dps(resonator.resonator_name), max_dps)}};">
                             {% if percentage >= in_out %}
                             <div
