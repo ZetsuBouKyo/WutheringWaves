@@ -13,6 +13,7 @@
       <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.TUNE)}}</td>
       <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.BASE_ATTR)}}</td>
       <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.MAIN_SKILL_BONUS)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.ENERGY_REGEN)}}</td>
     </tr>
     {% for resonator in template.resonators -%}
     {% if resonator.resonator_name -%}
@@ -55,6 +56,13 @@
       <td class="wuwa wuwa-px16 wuwa-py4">
         {% if resonator.resonator_skill_bonus %}
         {{resonator.resonator_skill_bonus}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if resonator.resonator_energy_regen %}
+        {{resonator.resonator_energy_regen}}
         {% else %}
         &nbsp;
         {% endif %}
