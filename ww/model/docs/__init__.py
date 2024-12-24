@@ -42,10 +42,9 @@ class DocsModel(BaseModel):
         for template_id in template_ids:
             template = get_template(template_id)
 
-            assert not template.duration_1
-            assert not template.duration_2
-            assert not template.monster_id
+            assert template.duration_1, template_id
+            assert template.duration_2, template_id
 
             for resonator in template.resonators:
-                assert resonator.check()
+                assert resonator.check(), template_id
         return True

@@ -71,9 +71,10 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_5: str = ""
 
     def check(cls) -> bool:
+        if not cls.resonator_name:
+            return True
         return (
-            cls.resonator_name
-            and cls.resonator_weapon_name
+            cls.resonator_weapon_name
             and cls.resonator_weapon_rank
             and cls.resonator_base_attr
             and cls.resonator_skill_bonus
