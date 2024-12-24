@@ -129,6 +129,8 @@ def docs(
     docs = Docs()
     docs.export()
 
+    t1 = time()
+
     try:
         # Build the mkdocs command
         command = ["mkdocs", "build", "--config-file", config_file]
@@ -144,9 +146,11 @@ def docs(
         print("Error during MkDocs build:")
         print(e.stderr)
 
-    t1 = time()
-    diff = t1 - t0
-    print(f"time: {diff} (s)")
+    t2 = time()
+    t2_0 = t2 - t0
+    t1_0 = t1 - t0
+    print(f"Create markdown files: {t1_0} (s)")
+    print(f"Total: {t2_0} (s)")
 
 
 @app.command()
