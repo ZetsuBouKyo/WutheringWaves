@@ -134,6 +134,30 @@ templates:
     echo_comparison:
       - "相里要"
       - "吟霖"
+  - id: "[腦測]+1相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+2相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+3相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+4相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+5相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+6相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
   - id: "[腦測]+0相里要+1金掌,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
     is_tier: true
     echo_comparison:
