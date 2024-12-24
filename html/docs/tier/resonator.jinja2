@@ -29,7 +29,7 @@
                     <div class="wuwa-tier-resonator-barh">
                         {% set element = get_element_class_name(get_resonator_information(resonator_name).element) %}
                         {% set percentage = damage_distribution.get_resonator_max_dps(resonator_name) / max_dps %}
-                        {% set in_out = 0.10 %}
+                        {% set in_out = 0.50 %}
                         {% set black_elements = ['aero', 'spectro'] %}
                         <div class="wuwa-barh-damage wuwa-h30 wuwa-bg-{{element}} wuwa-barh-corner"
                             style="width: {{get_percentage_str(damage_distribution.get_resonator_max_dps(resonator_name), max_dps)}};">
