@@ -62,6 +62,7 @@ class TemplateResonatorModel(BaseModel):
     resonator_inherent_skill_2: Optional[bool] = None
     resonator_base_attr: str = ""
     resonator_skill_bonus: str = ""  # ResonatorSkillBonusTypeEnum
+    resonator_energy_regen: str = ""
     resonator_echo_1: str = ""
     resonator_echo_sonata_1: str = ""
     resonator_echo_sonata_2: str = ""
@@ -90,6 +91,7 @@ class TemplateResonatorModel(BaseModel):
             resonator_inherent_skill_2,
             cls.resonator_base_attr,
             cls.resonator_skill_bonus,
+            cls.resonator_energy_regen,
             cls.resonator_echo_1,
             cls.resonator_echo_sonata_1,
             cls.resonator_echo_sonata_2,

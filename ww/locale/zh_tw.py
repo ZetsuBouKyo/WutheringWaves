@@ -23,6 +23,7 @@ class ZhTwEnum(str, Enum):
     RESONATOR_INHERENT_SKILL_2: bool = "[角色]固有技能2"
     RESONATOR_BASE_ATTR: str = "[角色]基礎屬性"
     RESONATOR_SKILL_BONUS: str = "[角色]技能屬性"
+    RESONATOR_ENERGY_REGEN: str = "[角色]共鳴效率"
     RESONATOR_ECHO_1: str = "[聲骸]名稱1"
     RESONATOR_ECHO_2: str = "[聲骸]名稱2"
     RESONATOR_ECHO_3: str = "[聲骸]名稱3"

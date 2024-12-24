@@ -123,6 +123,10 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
                 ):
                     resonator.resonator_skill_bonus = cell
                 elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ENERGY_REGEN.value
+                ):
+                    resonator.resonator_skill_bonus = cell
+                elif col == self.get_column_id(
                     TemplateResonatorTableColumnEnum.RESONATOR_ECHO_1.value
                 ):
                     resonator.resonator_echo_1 = cell
