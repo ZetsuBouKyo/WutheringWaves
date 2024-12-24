@@ -133,6 +133,8 @@ class Docs:
                 return
 
         self._docs_model = DocsModel(**docs_settings)
+        self._docs_model.check()
+
         self._mkdocs_settings = MkdocsSettings(mkdocs_settings, mkdocs_fpath)
         self._resonator_name_to_info: Dict[str, ResonatorInformationModel] = {}
 
@@ -541,8 +543,9 @@ class Docs:
                 resonator_template.rows, labels=[""], is_docs=True
             )
             output_methods = all_output_methods.get("", None)
-            if output_methods is None:
-                continue
+            assert (
+                output_methods is not None
+            ), f"{template_id} does not have output methods."
 
             html_str = jinja2_template.render(
                 template=resonator_template,

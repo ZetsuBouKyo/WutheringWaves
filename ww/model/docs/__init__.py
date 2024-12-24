@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from pydantic import BaseModel
 
+from ww.crud.template import get_template
 from ww.utils import get_md5
 
 
@@ -22,3 +23,29 @@ class DocsComparisonModel(BaseModel):
 class DocsModel(BaseModel):
     templates: List[DocsTemplateModel] = []
     comparisons: Dict[str, List[DocsComparisonModel]] = {}
+
+    def get_template_ids(cls) -> List[str]:
+        template_ids = set()
+        for template in cls.templates:
+            template_ids.add(template.id)
+
+        for comparisons in cls.comparisons.values():
+            for comparison in comparisons:
+                template_ids |= set(comparison.template_ids)
+
+        template_ids = list(template_ids)
+        template_ids.sort()
+        return template_ids
+
+    def check(cls) -> bool:
+        template_ids = cls.get_template_ids()
+        for template_id in template_ids:
+            template = get_template(template_id)
+
+            assert not template.duration_1
+            assert not template.duration_2
+            assert not template.monster_id
+
+            for resonator in template.resonators:
+                assert resonator.check()
+        return True

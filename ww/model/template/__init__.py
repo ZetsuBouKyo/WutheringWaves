@@ -70,6 +70,21 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_4: str = ""
     resonator_echo_sonata_5: str = ""
 
+    def check(cls) -> bool:
+        return (
+            cls.resonator_name
+            and cls.resonator_weapon_name
+            and cls.resonator_weapon_rank
+            and cls.resonator_base_attr
+            and cls.resonator_skill_bonus
+            and cls.resonator_echo_1
+            and cls.resonator_echo_sonata_1
+            and cls.resonator_echo_sonata_2
+            and cls.resonator_echo_sonata_3
+            and cls.resonator_echo_sonata_4
+            and cls.resonator_echo_sonata_5
+        )
+
     def get_row(cls):
         resonator_inherent_skill_1 = cls.resonator_inherent_skill_1
         if resonator_inherent_skill_1 is None:
