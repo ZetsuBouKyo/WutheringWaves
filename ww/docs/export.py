@@ -815,7 +815,7 @@ class Docs:
                 logger_cli.debug(f"Template ID: {template_id} is None.")
                 continue
             dps.append(damage_distribution.get_max_dps())
-
+        assert len(dps) > 0, f"{title}: {template_ids}"
         max_dps = max(dps)
 
         html_str = template.render(
