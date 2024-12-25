@@ -61,6 +61,9 @@ class TemplateColumnEnum(str, Enum):
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
     HIT: str = _(ZhTwEnum.HITS)
 
+    TIME_START: str = "[實戰]起手秒數"
+    TIME_END: str = "[實戰]結束秒數"
+
     RESULT_BONUS_TYPE: str = _(ZhTwEnum.RESULT_BONUS_TYPE)
     RESULT_ELEMENT: str = _(ZhTwEnum.RESULT_ELEMENT)
     RESULT_SKILL_BASE_ATTRIBUTE: str = _(ZhTwEnum.RESULT_SKILL_BASE_ATTRIBUTE)
@@ -95,7 +98,5 @@ class TemplateColumnEnum(str, Enum):
     )
     RESONATING_SPIN_CONCERTO_REGEN: str = "協奏能量"
     ACCUMULATED_RESONATING_SPIN_CONCERTO_REGEN: str = "累積協奏"
-    TIME_START: str = "[實戰]起手秒數"
-    TIME_END: str = "[實戰]結束秒數"
     CUMULATIVE_TIME: str = "[實戰]累積結束秒數"
     FRAME: str = "幀數"
