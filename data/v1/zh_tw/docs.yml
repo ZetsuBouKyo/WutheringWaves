@@ -119,6 +119,10 @@ templates:
     is_tier: false
     echo_comparison:
       - "忌炎"
+  - id: "[腦測]+6忌炎+5蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_tier: false
+    echo_comparison:
+      - "忌炎"
   # 今汐
   - id: "[理論]+0今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
     is_tier: true
@@ -157,6 +161,10 @@ templates:
     is_tier: false
     echo_comparison:
       - "今汐"
+  - id: "[腦測]+6今汐+5時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_tier: false
+    echo_comparison:
+      - "今汐"
   # 長離
   - id: "[腦測]+0長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏"
     is_tier: true
@@ -188,6 +196,10 @@ templates:
     echo_comparison:
       - "長離"
   - id: "[腦測]+6長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_tier: false
+    echo_comparison:
+      - "長離"
+  - id: "[腦測]+6長離+5赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
     is_tier: false
     echo_comparison:
       - "長離"
@@ -223,6 +235,10 @@ templates:
     echo_comparison:
       - "相里要"
   - id: "[腦測]+6相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_tier: false
+    echo_comparison:
+      - "相里要"
+  - id: "[腦測]+6相里要+5諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
     is_tier: false
     echo_comparison:
       - "相里要"
@@ -284,6 +300,10 @@ templates:
     is_tier: false
     echo_comparison:
       - "椿"
+  - id: "[理論]+6椿+5裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_tier: false
+    echo_comparison:
+      - "椿"
   # 珂萊塔
   - id: "[內鬼]+0珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-v2.05"
     is_tier: false
@@ -310,6 +330,10 @@ templates:
     echo_comparison:
       - "珂萊塔"
   - id: "[內鬼]+6珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-v2.05"
+    is_tier: false
+    echo_comparison:
+      - "珂萊塔"
+  - id: "[內鬼]+6珂萊塔+5死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-v2.05"
     is_tier: false
     echo_comparison:
       - "珂萊塔"
