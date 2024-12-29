@@ -269,6 +269,14 @@ templates:
     echo_comparison:
       - "守岸人"
   # 椿
+  - id: "[腦測]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_tier: true
+    echo_comparison:
+      - "椿"
+  - id: "[腦測]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-30s-延奏"
+    is_tier: true
+    echo_comparison:
+      - "椿"
   - id: "[理論]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機-椿無延奏"
     is_tier: true
     echo_comparison:
