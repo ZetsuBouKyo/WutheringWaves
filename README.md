@@ -18,6 +18,26 @@ poetry install
 python app.py
 ```
 
+### Data
+
+The data used in [Wuthering Waves Guide](https://wutheringwavesguide.netlify.app/) can be found at [g/WutheringWavesCache](https://github.com/ZetsuBouKyo/WutheringWavesCache).
+
+The expected folder structure is as follows
+
+```
+ww
+├── .vscode
+├── assets
+├── cache
+│   └── v1 # https://github.com/ZetsuBouKyo/WutheringWavesCache
+├── data
+├── docs
+├── html
+├── tests
+├── ww
+└── ...
+```
+
 ## FAQ
 
 https://www.twitch.tv/zetsuboukyo
