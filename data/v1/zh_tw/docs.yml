@@ -4,6 +4,11 @@ templates:
     is_tier: true
     echo_comparison:
       - "漂泊者·湮滅(男)"
+  # 散華
+  - id: "[理論]+0椿+1裁春,+6散華+1千古洑流,+0維里奈+1奇幻變奏-暖機"
+    is_tier: true
+    echo_comparison:
+      - "散華"
   # 秋水
   - id: "[腦測]+6秋水+1死與舞,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
     is_tier: false
@@ -264,10 +269,6 @@ templates:
     echo_comparison:
       - "守岸人"
   # 椿
-  - id: "[理論]+0椿+1裁春,+6散華+1千古洑流,+0維里奈+1奇幻變奏-暖機"
-    is_tier: true
-    echo_comparison:
-      - "椿"
   - id: "[理論]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機-椿無延奏"
     is_tier: true
     echo_comparison:
@@ -343,6 +344,11 @@ templates:
       - "珂萊塔"
 
 comparisons:
+  散華:
+    - title: 武器比較
+      template_ids:
+        - "[理論]+0椿+1裁春,+6散華+1千古洑流,+0維里奈+1奇幻變奏-暖機"
+        - "[理論]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
   凌陽:
     - title: "6+1散華 vs 0+1折枝"
       template_ids:
