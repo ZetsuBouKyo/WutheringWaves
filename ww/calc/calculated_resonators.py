@@ -518,6 +518,32 @@ class CalculatedResonator:
                 CalculatedResonatorTsvColumnEnum.ECHO_HEALING_BONUS.value
             ] += get_number("0.1")
 
+        # 2.0
+        if count_sonatas[EchoSonataEnum.FROSTY_RESOLVE.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            ] += get_number("0.12")
+
+        if count_sonatas[EchoSonataEnum.ETERNAL_RADIANCE.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.MIDNIGHT_VEIL.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.EMPYREAN_ANTHEM.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.TIDEBREAKING_COURAGE.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value
+            ] += get_number("0.1")
+
     def _update_calculated(self):
         # HP Percentage
         stat_bonus_hp_p = get_number(

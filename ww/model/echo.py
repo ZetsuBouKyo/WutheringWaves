@@ -29,6 +29,11 @@ class EchoSonataEnum(str, Enum):
     CELESTIAL_LIGHT: str = "浮星祛暗"
     SUN_SINKING_ECLIPSE: str = "沉日劫明"
     REJUVENATING_GLOW: str = "隱世回光"
+    FROSTY_RESOLVE: str = "凌冽決斷之心"
+    ETERNAL_RADIANCE: str = "此間永駐之光"
+    MIDNIGHT_VEIL: str = "幽夜隱匿之帷"
+    EMPYREAN_ANTHEM: str = "高天共奏之曲"
+    TIDEBREAKING_COURAGE: str = "無懼浪濤之勇"
 
 
 class ResonatorEchoTsvColumnEnum(str, Enum):
