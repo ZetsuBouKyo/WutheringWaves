@@ -1,6 +1,6 @@
 from decimal import Decimal
 from statistics import mean
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import pandas as pd
 
@@ -19,8 +19,10 @@ ECHOES_THEORY_1_FPATH = "./data/v1/zh_tw/echoes_theory_1.tsv"
 
 
 def get_simulated_echo_id(
-    cost: str, prefix: str, main_affix: str, sonata: str, no: str
+    cost: str, prefix: str, main_affix: str, sonata: str, no: str, name: str = ""
 ) -> str:
+    if name:
+        return f"{prefix} {sonata} {name} {cost}c {main_affix} {no}"
     return f"{prefix} {sonata} {cost}c {main_affix} {no}"
 
 
@@ -345,8 +347,19 @@ class SimulatedEchoes:
         table.df = df
         return table
 
+    def get_simulated_table_with_echoes(self, echoes: Dict[str, dict]):
+        self._id_to_echo = echoes
+
+        return self
+
     def get_echo_with_main_affix(
-        self, cost: str, prefix: str, main_affix: str, sonata: str, no: str
+        self,
+        cost: str,
+        prefix: str,
+        main_affix: str,
+        sonata: str,
+        no: str,
+        name: str = "",
     ) -> Optional[dict]:
         echo = None
         elements = [
@@ -389,12 +402,23 @@ class SimulatedEchoes:
             elif main_affix == _(ZhTwEnum.ABBR_DEF):
                 echo = self.get_echo_1c_def_p(prefix, sonata, no)
 
+        if name:
+            echo[ResonatorEchoTsvColumnEnum.NAME.value] = name
+
         return echo
 
     def get_echo(
-        self, cost: str, prefix: str, main_affix: str, sonata: str, no: str
+        self,
+        cost: str,
+        prefix: str,
+        main_affix: str,
+        sonata: str,
+        no: str,
+        name: str = "",
     ) -> Optional[dict]:
-        echo = self.get_echo_with_main_affix(cost, prefix, main_affix, sonata, no)
+        echo = self.get_echo_with_main_affix(
+            cost, prefix, main_affix, sonata, no, name=name
+        )
         if echo is None:
             return echo
 
@@ -411,3 +435,10 @@ class SimulatedEchoes:
             self.update_echo_sub_affix_with_half_built(echo, prefix)
 
         return echo
+
+    def search(self, id: str, key: str):
+        if not hasattr(self, "_id_to_echo"):
+            return None
+        echo = self._id_to_echo.get(id, {})
+        value = echo.get(key, None)
+        return value
