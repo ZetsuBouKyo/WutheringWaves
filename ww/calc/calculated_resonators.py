@@ -242,6 +242,19 @@ class CalculatedResonator:
             CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ENERGY_REGEN.value
         ] = weapon_rank_energy_regen
 
+    def _update_by_echo_1(self, echo_id: str):
+        # Name
+        echo_name = self.echoes_table.search(echo_id, ResonatorEchoTsvColumnEnum.NAME)
+
+        if echo_name == _(ZhTwEnum.ECHO_SENTRY_CONSTRUCT):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
+            ] += get_number("0.12")
+
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            ] += get_number("0.12")
+
     def _update_by_echo(self, echo_id: str, index: int):
         # Name
         echo_name = self.echoes_table.search(echo_id, ResonatorEchoTsvColumnEnum.NAME)
@@ -442,6 +455,7 @@ class CalculatedResonator:
         self.echo_id_4 = self._old_row[ResonatorTsvColumnEnum.ECHO_4]
         self.echo_id_5 = self._old_row[ResonatorTsvColumnEnum.ECHO_5]
 
+        self._update_by_echo_1(self.echo_id_1)
         self._update_by_echo(self.echo_id_1, 1)
         self._update_by_echo(self.echo_id_2, 2)
         self._update_by_echo(self.echo_id_3, 3)

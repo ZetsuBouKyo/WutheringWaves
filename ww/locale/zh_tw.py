@@ -582,3 +582,5 @@ class ZhTwEnum(str, Enum):
     MONSTER_LV_100_RES_60: str = "100等抗性60白板"
 
     TIER: str = "Tier"
+
+    ECHO_SENTRY_CONSTRUCT: str = "異構武裝"
