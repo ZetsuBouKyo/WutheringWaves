@@ -942,6 +942,7 @@ class SimulatedResonators:
         resonator_chain: str,
         weapon_name: str,
         weapon_tune: str,
+        echo_name_1: str,
     ) -> dict:
         if self._is_weapon_crit_rate(weapon_name):
             main_affix_4c = _(ZhTwEnum.ABBR_CRIT_DMG)
@@ -955,6 +956,7 @@ class SimulatedResonators:
             weapon_name,
             weapon_tune,
             main_affix_4c,
+            echo_name_1,
         )
         return resonator
 
@@ -1079,6 +1081,7 @@ class SimulatedResonators:
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
             resonator_chain = resonator.resonator_chain
+            resonator_echo_1 = resonator.resonator_echo_1
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
@@ -1087,7 +1090,12 @@ class SimulatedResonators:
 
             # Table
             resonator_dict = self._get_resonator(
-                prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                resonator_echo_1,
             )
             resonators.append(resonator_dict)
 
@@ -1106,6 +1114,7 @@ class SimulatedResonators:
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
             resonator_chain = resonator.resonator_chain
+            resonator_echo_1 = resonator.resonator_echo_1
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
@@ -1119,7 +1128,12 @@ class SimulatedResonators:
                 continue
 
             resonator_dict = self._get_resonator(
-                prefix, resonator_name, resonator_chain, weapon_name, weapon_tune
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                resonator_echo_1,
             )
             resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
 

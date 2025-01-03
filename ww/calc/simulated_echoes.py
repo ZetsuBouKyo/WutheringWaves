@@ -41,136 +41,146 @@ class SimulatedEchoes:
         self.echoes_table = EchoesTable()
         self.echoes_table.df = get_empty_df(self.echoes_table_column_names)
 
-    def get_empty_echo(
-        self, cost: int, prefix: str, main_affix: str, sonata: str, no: int
+    def update_echo(
+        self,
+        echo: dict,
+        cost: int,
+        prefix: str,
+        main_affix: str,
+        sonata: str,
+        no: int,
+        name: str = "",
     ):
-        echo = {name: "" for name in self.echoes_table_column_names}
         echo[ResonatorEchoTsvColumnEnum.ID.value] = get_simulated_echo_id(
-            cost, prefix, main_affix, sonata, no
+            cost, prefix, main_affix, sonata, no, name=name
         )
+        echo[ResonatorEchoTsvColumnEnum.NAME.value] = name
         echo[ResonatorEchoTsvColumnEnum.ECHO_SONATA.value] = sonata
+
+    def get_empty_echo(self):
+        echo = {name: "" for name in self.echoes_table_column_names}
         return echo
 
-    def get_echo_4c(self, prefix: str, main_affix: str, sonata: str, no: int):
+    def get_echo_4c(self):
         cost = "4"
-        echo = self.get_empty_echo(cost, prefix, main_affix, sonata, no)
+        echo = self.get_empty_echo()
         echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
         echo[ResonatorEchoTsvColumnEnum.MAIN_ATK.value] = (
             self.echo_main_affixes.cost_4.atk
         )
         return echo
 
-    def get_echo_4c_crit_rate(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_CRIT_RATE), sonata, no)
+    def get_echo_4c_crit_rate(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_CRIT_RATE.value] = (
             self.echo_main_affixes.cost_4.crit_rate
         )
         return echo
 
-    def get_echo_4c_crit_dmg(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_CRIT_DMG), sonata, no)
+    def get_echo_4c_crit_dmg(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_CRIT_DMG.value] = (
             self.echo_main_affixes.cost_4.crit_dmg
         )
         return echo
 
-    def get_echo_4c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_HP), sonata, no)
+    def get_echo_4c_hp_p(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
             self.echo_main_affixes.cost_4.hp_p
         )
         return echo
 
-    def get_echo_4c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_ATK), sonata, no)
+    def get_echo_4c_atk_p(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
             self.echo_main_affixes.cost_4.atk_p
         )
         return echo
 
-    def get_echo_4c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_DEF), sonata, no)
+    def get_echo_4c_def_p(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
             self.echo_main_affixes.cost_4.def_p
         )
         return echo
 
-    def get_echo_4c_healing(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_4c(prefix, _(ZhTwEnum.ABBR_HEALING), sonata, no)
+    def get_echo_4c_healing(self):
+        echo = self.get_echo_4c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_HEALING_BONUS.value] = (
             self.echo_main_affixes.cost_4.healing
         )
         return echo
 
-    def get_echo_3c(self, prefix: str, main_affix: str, sonata: str, no: int):
+    def get_echo_3c(self):
         cost = "3"
-        echo = self.get_empty_echo(cost, prefix, main_affix, sonata, no)
+        echo = self.get_empty_echo()
         echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
         echo[ResonatorEchoTsvColumnEnum.MAIN_ATK.value] = (
             self.echo_main_affixes.cost_3.atk
         )
         return echo
 
-    def get_echo_3c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, _(ZhTwEnum.ABBR_HP), sonata, no)
+    def get_echo_3c_hp_p(self):
+        echo = self.get_echo_3c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
             self.echo_main_affixes.cost_3.hp_p
         )
         return echo
 
-    def get_echo_3c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, _(ZhTwEnum.ABBR_ATK), sonata, no)
+    def get_echo_3c_atk_p(self):
+        echo = self.get_echo_3c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
             self.echo_main_affixes.cost_3.atk_p
         )
         return echo
 
-    def get_echo_3c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, _(ZhTwEnum.ABBR_DEF), sonata, no)
+    def get_echo_3c_def_p(self):
+        echo = self.get_echo_3c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
             self.echo_main_affixes.cost_3.def_p
         )
         return echo
 
-    def get_echo_3c_elem(self, prefix: str, element: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, element, sonata, no)
+    def get_echo_3c_elem(self, element: str):
+        echo = self.get_echo_3c()
         echo[get_resonator_echo_main_dmg_bonus(element)] = (
             self.echo_main_affixes.cost_3.glacio
         )
         return echo
 
-    def get_echo_3c_energy_regen(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_3c(prefix, _(ZhTwEnum.ABBR_ENERGY_REGEN), sonata, no)
+    def get_echo_3c_energy_regen(self):
+        echo = self.get_echo_3c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_ENERGY_REGEN.value] = (
             self.echo_main_affixes.cost_3.energy_regen
         )
         return echo
 
-    def get_echo_1c(self, prefix: str, main_affix: str, sonata: str, no: int):
+    def get_echo_1c(self):
         cost = "1"
-        echo = self.get_empty_echo(cost, prefix, main_affix, sonata, no)
+        echo = self.get_empty_echo()
         echo[ResonatorEchoTsvColumnEnum.COST.value] = cost
         echo[ResonatorEchoTsvColumnEnum.MAIN_HP.value] = (
             self.echo_main_affixes.cost_1.hp
         )
         return echo
 
-    def get_echo_1c_hp_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, _(ZhTwEnum.ABBR_HP), sonata, no)
+    def get_echo_1c_hp_p(self):
+        echo = self.get_echo_1c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_HP_P.value] = (
             self.echo_main_affixes.cost_1.hp_p
         )
         return echo
 
-    def get_echo_1c_atk_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, _(ZhTwEnum.ABBR_ATK), sonata, no)
+    def get_echo_1c_atk_p(self):
+        echo = self.get_echo_1c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_ATK_P.value] = (
             self.echo_main_affixes.cost_1.atk_p
         )
         return echo
 
-    def get_echo_1c_def_p(self, prefix: str, sonata: str, no: int):
-        echo = self.get_echo_1c(prefix, _(ZhTwEnum.ABBR_DEF), sonata, no)
+    def get_echo_1c_def_p(self):
+        echo = self.get_echo_1c()
         echo[ResonatorEchoTsvColumnEnum.MAIN_DEF_P.value] = (
             self.echo_main_affixes.cost_1.def_p
         )
@@ -372,38 +382,37 @@ class SimulatedEchoes:
         ]
         if cost == "4":
             if main_affix == _(ZhTwEnum.ABBR_HP):
-                echo = self.get_echo_4c_hp_p(prefix, sonata, no)
+                echo = self.get_echo_4c_hp_p()
             elif main_affix == _(ZhTwEnum.ABBR_ATK):
-                echo = self.get_echo_4c_atk_p(prefix, sonata, no)
+                echo = self.get_echo_4c_atk_p()
             elif main_affix == _(ZhTwEnum.ABBR_DEF):
-                echo = self.get_echo_4c_def_p(prefix, sonata, no)
+                echo = self.get_echo_4c_def_p()
             elif main_affix == _(ZhTwEnum.ABBR_CRIT_RATE):
-                echo = self.get_echo_4c_crit_rate(prefix, sonata, no)
+                echo = self.get_echo_4c_crit_rate()
             elif main_affix == _(ZhTwEnum.ABBR_CRIT_DMG):
-                echo = self.get_echo_4c_crit_dmg(prefix, sonata, no)
+                echo = self.get_echo_4c_crit_dmg()
             elif main_affix == _(ZhTwEnum.ABBR_HEALING):
-                echo = self.get_echo_4c_healing(prefix, sonata, no)
+                echo = self.get_echo_4c_healing()
         elif cost == "3":
             if main_affix == _(ZhTwEnum.ABBR_HP):
-                echo = self.get_echo_3c_hp_p(prefix, sonata, no)
+                echo = self.get_echo_3c_hp_p()
             elif main_affix == _(ZhTwEnum.ABBR_ATK):
-                echo = self.get_echo_3c_atk_p(prefix, sonata, no)
+                echo = self.get_echo_3c_atk_p()
             elif main_affix == _(ZhTwEnum.ABBR_DEF):
-                echo = self.get_echo_3c_def_p(prefix, sonata, no)
+                echo = self.get_echo_3c_def_p()
             elif main_affix in elements:
-                echo = self.get_echo_3c_elem(prefix, main_affix, sonata, no)
+                echo = self.get_echo_3c_elem(main_affix)
             elif main_affix == _(ZhTwEnum.ABBR_ENERGY_REGEN):
-                echo = self.get_echo_3c_energy_regen(prefix, sonata, no)
+                echo = self.get_echo_3c_energy_regen()
         elif cost == "1":
             if main_affix == _(ZhTwEnum.ABBR_HP):
-                echo = self.get_echo_1c_hp_p(prefix, sonata, no)
+                echo = self.get_echo_1c_hp_p()
             elif main_affix == _(ZhTwEnum.ABBR_ATK):
-                echo = self.get_echo_1c_atk_p(prefix, sonata, no)
+                echo = self.get_echo_1c_atk_p()
             elif main_affix == _(ZhTwEnum.ABBR_DEF):
-                echo = self.get_echo_1c_def_p(prefix, sonata, no)
+                echo = self.get_echo_1c_def_p()
 
-        if name:
-            echo[ResonatorEchoTsvColumnEnum.NAME.value] = name
+        self.update_echo(echo, cost, prefix, main_affix, sonata, no, name)
 
         return echo
 
