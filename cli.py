@@ -2,13 +2,15 @@ import json
 import os
 import shutil
 import subprocess
-from logging import DEBUG
+from logging import DEBUG, Formatter
+from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from time import time
 
 import PyInstaller.__main__
 import tomli
 import yaml
+from rich.logging import RichHandler
 from typer import Option, Typer
 
 from ww.commands.analyze import app as analyze
@@ -112,9 +114,23 @@ def docs(
     config_file: str = Option("./build/html/mkdocs.yml"),
     debug_level: int = Option(DEBUG),
 ):
-    logger_cli.setLevel(debug_level)
+    fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
+    logging_fpath = "./build/cli.log"
 
-    t0 = time()
+    stream_handler = RichHandler()
+
+    rotating_file_formatter = Formatter(fmt=fmt)
+    rotating_file_handler = RotatingFileHandler(
+        logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    rotating_file_handler.setFormatter(rotating_file_formatter)
+
+    logger_cli.setLevel(debug_level)
+    logger_cli.addHandler(stream_handler)
+    logger_cli.addHandler(rotating_file_handler)
+
+    logger_cli.debug(f"Making docs...")
+
     # Copy the assets
     assets_src_path = "./assets"
     assets_dest_path = "./build/html/docs/assets"
@@ -129,7 +145,7 @@ def docs(
     docs = Docs()
     docs.export()
 
-    t1 = time()
+    logger_cli.debug(f"Markdown files created.")
 
     try:
         # Build the mkdocs command
@@ -146,11 +162,7 @@ def docs(
         print("Error during MkDocs build:")
         print(e.stderr)
 
-    t2 = time()
-    t2_0 = t2 - t0
-    t1_0 = t1 - t0
-    print(f"Create markdown files: {t1_0} (s)")
-    print(f"Total: {t2_0} (s)")
+    logger_cli.debug(f"HTML files created.")
 
 
 @app.command()

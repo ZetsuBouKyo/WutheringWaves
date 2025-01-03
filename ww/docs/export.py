@@ -514,12 +514,15 @@ class Docs:
 
         for template in self._docs_model.templates:
             template_id = template.id
+            logger_cli.debug(f"Template ID: {template_id} calculating...")
 
             resonator_template = get_template(template_id)
 
             # Echo damage comparison
             echo_comparisons = []
             for resonator_name in template.echo_comparison:
+                logger_cli.debug(f"Echo damage comparison: {resonator_name}")
+
                 if resonator_name_to_template_ids.get(resonator_name, None) is None:
                     resonator_name_to_template_ids[resonator_name] = [template_id]
                 else:
@@ -530,12 +533,20 @@ class Docs:
                 self.export_resonator_echo_damage_comparison_with_theory_1(
                     resonator_no, resonator_name, resonator_template
                 )
+                logger_cli.debug("Echo damage comparison: Theory 1 finished.")
+
                 self.export_resonator_echo_damage_comparison_with_half_built_atk(
                     resonator_no, resonator_name, resonator_template
                 )
+                logger_cli.debug("Echo damage comparison: Half built ATK finished.")
+
                 self.export_resonator_echo_damage_comparison_with_half_built_skill_bonus(
                     resonator_no, resonator_name, resonator_template
                 )
+                logger_cli.debug(
+                    "Echo damage comparison: Half built Skill Bonus finished."
+                )
+
                 echo_comparisons.append((resonator_no, resonator_name))
 
             # Output method
@@ -572,16 +583,21 @@ class Docs:
                     resonator_template, output_methods
                 )
             )
+            logger_cli.debug("Damage analysis: Theory 1 finished.")
+
             half_built_atk_damage_distribution = (
                 self.export_template_damage_analysis_with_half_built_atk(
                     resonator_template, output_methods
                 )
             )
+            logger_cli.debug("Damage analysis: Half built ATK finished.")
+
             half_built_skill_bonus_damage_distribution = (
                 self.export_template_damage_analysis_with_half_built_skill_bonus(
                     resonator_template, output_methods
                 )
             )
+            logger_cli.debug("Damage analysis: Half built Skill Bonus finished.")
 
             template_id_to_theory_1[template_id] = theory_1_damage_distribution
             template_id_to_half_built_atk[template_id] = (
@@ -593,6 +609,8 @@ class Docs:
 
             if template.is_tier:
                 template_ids_tier.append(template_id)
+
+            logger_cli.debug(f"Template ID: {template_id} calculated.")
 
         return (
             template_id_to_relative_url,
