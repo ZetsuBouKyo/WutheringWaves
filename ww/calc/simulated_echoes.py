@@ -289,52 +289,52 @@ class SimulatedEchoes:
                 ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
             ] = mean(self.echo_sub_affixes.resonance_liberation)
 
-    def update_echoes_with_half_built(
-        self, echoes: List[str], prefix: str, sonata: str
-    ):
-        base_echoes = self.get_base_echoes(prefix, sonata)
-        for echo in base_echoes:
-            self.update_echo_sub_affix_with_half_built(echo, prefix)
+    # def update_echoes_with_half_built(
+    #     self, echoes: List[str], prefix: str, sonata: str
+    # ):
+    #     base_echoes = self.get_base_echoes(prefix, sonata)
+    #     for echo in base_echoes:
+    #         self.update_echo_sub_affix_with_half_built(echo, prefix)
 
-            echoes.append(echo)
+    #         echoes.append(echo)
 
-    def get_echoes_with_sonatas(self) -> List[str]:
-        echoes = []
+    # def get_echoes_with_sonatas(self) -> List[str]:
+    #     echoes = []
 
-        for sonata_enum in EchoSonataEnum:
-            sonata = sonata_enum.value
-            self.update_echoes_with_theory_1(echoes, sonata)
+    #     for sonata_enum in EchoSonataEnum:
+    #         sonata = sonata_enum.value
+    #         self.update_echoes_with_theory_1(echoes, sonata)
 
-        half_built_prefixes = [
-            EchoesModelEnum.HALF_BUILT_ATK.value,
-            EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
-            EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
-            EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
-            EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
-        ]
-        for prefix in half_built_prefixes:
-            for sonata_enum in EchoSonataEnum:
-                sonata = sonata_enum.value
-                self.update_echoes_with_half_built(echoes, prefix, sonata)
+    #     half_built_prefixes = [
+    #         EchoesModelEnum.HALF_BUILT_ATK.value,
+    #         EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
+    #         EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
+    #         EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
+    #         EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
+    #     ]
+    #     for prefix in half_built_prefixes:
+    #         for sonata_enum in EchoSonataEnum:
+    #             sonata = sonata_enum.value
+    #             self.update_echoes_with_half_built(echoes, prefix, sonata)
 
-        return echoes
+    #     return echoes
 
-    def get_df(self) -> pd.DataFrame:
-        echoes = self.get_echoes_with_sonatas()
+    # def get_df(self) -> pd.DataFrame:
+    #     echoes = self.get_echoes_with_sonatas()
 
-        data = {name: [] for name in self.echoes_table_column_names}
-        for echo in echoes:
-            for key, value in echo.items():
-                data[key].append(value)
+    #     data = {name: [] for name in self.echoes_table_column_names}
+    #     for echo in echoes:
+    #         for key, value in echo.items():
+    #             data[key].append(value)
 
-        df = pd.DataFrame(data, columns=self.echoes_table_column_names)
-        return df
+    #     df = pd.DataFrame(data, columns=self.echoes_table_column_names)
+    #     return df
 
-    def get_table(self) -> EchoesTable:
-        df = self.get_df()
-        table = EchoesTable()
-        table.df = df
-        return table
+    # def get_table(self) -> EchoesTable:
+    #     df = self.get_df()
+    #     table = EchoesTable()
+    #     table.df = df
+    #     return table
 
     def get_table_with_echoes(self, echoes: List[str]) -> EchoesTable:
         data = {name: [] for name in self.echoes_table_column_names}
