@@ -274,6 +274,8 @@ class ZhTwEnum(str, Enum):
     INTRO_SKILL: str = "變奏技能"
     OUTRO_SKILL: str = "延奏技能"
 
+    COORDINATED_ATTACK: str = "協同攻擊"
+
     INHERENT_SKILL: str = "固有技能"
     INHERENT_SKILL_1: str = "固有技能1"
     INHERENT_SKILL_2: str = "固有技能2"
