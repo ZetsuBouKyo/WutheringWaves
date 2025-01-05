@@ -157,12 +157,12 @@
 - [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
-#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_ATK)}}](/simulated_echo/index.html)
+#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}](/simulated_echo/index.html)
 
-{% set _prefix = "half_built_atk" -%}
+{% set _prefix = "half_built_small" -%}
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_atk", no) -%}
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_small", no) -%}
 - [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 

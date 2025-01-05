@@ -235,9 +235,18 @@ class SimulatedEchoes:
 
         return echoes
 
-    def update_echo_sub_affix_with_theory_1(self, echo: dict):
-        echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal("24")
-        echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = Decimal("0.054")
+    def update_echo_sub_affix_with_theory_1(self, echo: dict, base_attr: str):
+        # Base attribute
+        if base_attr == _(ZhTwEnum.HP):
+            echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = Decimal("450")
+            echo[ResonatorEchoTsvColumnEnum.SUB_HP_P.value] = Decimal("0.054")
+        elif base_attr == _(ZhTwEnum.ATK):
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal("24")
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = Decimal("0.054")
+        elif base_attr == _(ZhTwEnum.DEF):
+            echo[ResonatorEchoTsvColumnEnum.SUB_DEF.value] = Decimal("30")
+            echo[ResonatorEchoTsvColumnEnum.SUB_DEF_P.value] = Decimal("0.068325")
+
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = Decimal("0.084")
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = Decimal("0.1008")
         echo[ResonatorEchoTsvColumnEnum.SUB_ENERGY_REGEN.value] = Decimal("0.0192")
@@ -255,29 +264,51 @@ class SimulatedEchoes:
             Decimal("0.016")
         )
 
-    def update_echoes_with_theory_1(self, echoes: List[dict], sonata: str):
-        prefix = EchoesModelEnum.THEORY_1.value
-        echoes = self.get_base_echoes(prefix, sonata)
-        for echo in echoes:
-            self.update_echo_sub_affix_with_theory_1(echo)
+    # def update_echoes_with_theory_1(self, echoes: List[dict], sonata: str):
+    #     prefix = EchoesModelEnum.THEORY_1.value
+    #     echoes = self.get_base_echoes(prefix, sonata)
+    #     for echo in echoes:
+    #         self.update_echo_sub_affix_with_theory_1(echo)
 
-            echoes.append(echo)
+    #         echoes.append(echo)
 
-    def update_echo_sub_affix_with_half_built(self, echo: dict, prefix: str):
+    def update_echo_sub_affix_with_half_built(
+        self, echo: dict, prefix: str, base_attr: str
+    ):
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = mean(
             self.echo_sub_affixes.crit_rate
         )
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = mean(
             self.echo_sub_affixes.crit_dmg
         )
-        echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
-            self.echo_sub_affixes.atk_p
-        )
 
-        if prefix == EchoesModelEnum.HALF_BUILT_ATK.value:
-            echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
-                self.echo_sub_affixes.atk
+        if base_attr == _(ZhTwEnum.HP):
+            echo[ResonatorEchoTsvColumnEnum.SUB_HP_P.value] = mean(
+                self.echo_sub_affixes.hp_p
             )
+        elif base_attr == _(ZhTwEnum.ATK):
+            echo[ResonatorEchoTsvColumnEnum.SUB_ATK_P.value] = mean(
+                self.echo_sub_affixes.atk_p
+            )
+        elif base_attr == _(ZhTwEnum.DEF):
+            echo[ResonatorEchoTsvColumnEnum.SUB_DEF_P.value] = mean(
+                self.echo_sub_affixes.def_p
+            )
+
+        if prefix == EchoesModelEnum.HALF_BUILT_SMALL.value:
+            if base_attr == _(ZhTwEnum.HP):
+                echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = mean(
+                    self.echo_sub_affixes.hp
+                )
+            elif base_attr == _(ZhTwEnum.ATK):
+                echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = mean(
+                    self.echo_sub_affixes.atk
+                )
+            elif base_attr == _(ZhTwEnum.DEF):
+                echo[ResonatorEchoTsvColumnEnum.SUB_DEF.value] = mean(
+                    self.echo_sub_affixes.def_
+                )
+
         elif prefix == EchoesModelEnum.HALF_BUILT_BASIC_ATK.value:
             echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = mean(
                 self.echo_sub_affixes.basic_attack
@@ -316,7 +347,7 @@ class SimulatedEchoes:
     #         self.update_echoes_with_theory_1(echoes, sonata)
 
     #     half_built_prefixes = [
-    #         EchoesModelEnum.HALF_BUILT_ATK.value,
+    #         EchoesModelEnum.HALF_BUILT_SMALL.value,
     #         EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
     #         EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
     #         EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
@@ -420,6 +451,7 @@ class SimulatedEchoes:
         self,
         cost: str,
         prefix: str,
+        base_attr: str,
         main_affix: str,
         sonata: str,
         no: str,
@@ -432,16 +464,16 @@ class SimulatedEchoes:
             return echo
 
         half_built_prefixes = [
-            EchoesModelEnum.HALF_BUILT_ATK.value,
+            EchoesModelEnum.HALF_BUILT_SMALL.value,
             EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
             EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
             EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
             EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
         ]
         if prefix == EchoesModelEnum.THEORY_1.value:
-            self.update_echo_sub_affix_with_theory_1(echo)
+            self.update_echo_sub_affix_with_theory_1(echo, base_attr)
         elif prefix in half_built_prefixes:
-            self.update_echo_sub_affix_with_half_built(echo, prefix)
+            self.update_echo_sub_affix_with_half_built(echo, prefix, base_attr)
 
         return echo
 

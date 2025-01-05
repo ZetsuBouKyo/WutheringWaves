@@ -303,22 +303,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, resonator_element, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            resonator_element,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, resonator_element, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            resonator_element,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -385,22 +406,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, resonator_element, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            resonator_element,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, base_affix, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -466,22 +508,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, base_affix, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, base_affix, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -549,22 +612,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, main_affix_3c, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            main_affix_3c,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, main_affix_3c, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            main_affix_3c,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -633,22 +717,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, main_affix_3c, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            main_affix_3c,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, base_affix, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -717,22 +822,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, resonator_element, resonator_sonatas[1], "1"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            resonator_element,
+            resonator_sonatas[1],
+            "1",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, main_affix_3c, resonator_sonatas[2], "2"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            main_affix_3c,
+            resonator_sonatas[2],
+            "2",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "1"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "1",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "2"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "2",
         )
 
         self._update_resonator_by_echoes(
@@ -799,22 +925,43 @@ class SimulatedResonators:
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
+            resonator_base_attr,
             main_affix_4c_1,
             resonator_sonatas[0],
             "1",
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2, prefix, main_affix_4c_2, resonator_sonatas[1], "2"
+            echo_cost_2,
+            prefix,
+            resonator_base_attr,
+            main_affix_4c_2,
+            resonator_sonatas[1],
+            "2",
         )
         echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3, prefix, base_affix, resonator_sonatas[2], "1"
+            echo_cost_3,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[2],
+            "1",
         )
         echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4, prefix, base_affix, resonator_sonatas[3], "2"
+            echo_cost_4,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[3],
+            "2",
         )
         echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5, prefix, base_affix, resonator_sonatas[4], "3"
+            echo_cost_5,
+            prefix,
+            resonator_base_attr,
+            base_affix,
+            resonator_sonatas[4],
+            "3",
         )
 
         self._update_resonator_by_echoes(

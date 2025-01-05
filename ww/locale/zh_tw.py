@@ -565,7 +565,7 @@ class ZhTwEnum(str, Enum):
     ABBR_HEALING: str = "治"
 
     ECHOES_THEORY_1: str = "理論1"
-    ECHOES_HALF_BUILT_ATK: str = "小畢業[攻]"
+    ECHOES_HALF_BUILT_SMALL: str = "小畢業[小Ｏ]"
 
     ECHOES_HALF_BUILT_SKILL_BONUS: str = "小畢業[技能加成]"
     ECHOES_HALF_BUILT_RESONANCE_SKILL: str = "小畢業[共技]"

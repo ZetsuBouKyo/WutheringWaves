@@ -55,7 +55,7 @@ DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
 # url
 TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
-TIER_HALF_BUILT_ATK_URL: str = "/tier/half_built_atk/index.html"
+TIER_HALF_BUILT_SMALL_URL: str = "/tier/half_built_small/index.html"
 TIER_HALF_BUILT_SKILL_BONUS_URL: str = "/tier/half_built_skill_bonus/index.html"
 
 
@@ -150,7 +150,7 @@ class Docs:
         (
             template_id_to_relative_url,
             template_id_to_theory_1,
-            template_id_to_half_built_atk,
+            template_id_to_half_built_small,
             template_id_to_half_built_skill_bonus,
             template_ids_tier,
             resonator_name_to_template_ids,
@@ -159,7 +159,7 @@ class Docs:
             resonator_name_to_template_ids,
             template_id_to_relative_url,
             template_id_to_theory_1,
-            template_id_to_half_built_atk,
+            template_id_to_half_built_small,
             template_id_to_half_built_skill_bonus,
         )
         self.export_resonators(resonator_name_to_template_ids)
@@ -169,7 +169,7 @@ class Docs:
             template_ids_tier,
             template_id_to_relative_url,
             template_id_to_theory_1,
-            template_id_to_half_built_atk,
+            template_id_to_half_built_small,
             template_id_to_half_built_skill_bonus,
         )
 
@@ -288,13 +288,13 @@ class Docs:
             prefix, resonator_name, resonator_template, output_fpath
         )
 
-    def export_resonator_echo_damage_comparison_with_half_built_atk(
+    def export_resonator_echo_damage_comparison_with_half_built_small(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/echo_damage_comparison/{resonator_no}.md"
 
-        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
+        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)
         self.export_resonator_echo_damage_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
         )
@@ -443,16 +443,16 @@ class Docs:
             simulated_resonators,
         )
 
-    def export_template_damage_analysis_with_half_built_atk(
+    def export_template_damage_analysis_with_half_built_small(
         self,
         resonator_template: TemplateModel,
         output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_atk/damage_analysis.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/damage_analysis.md"
 
         # Simulation
-        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_ATK)
+        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)
         simulated_resonators = SimulatedResonators(resonator_template)
 
         return self.export_template_damage_analysis_with_prefix(
@@ -499,7 +499,7 @@ class Docs:
     ]:
         template_id_to_relative_url = {}
         template_id_to_theory_1 = {}
-        template_id_to_half_built_atk = {}
+        template_id_to_half_built_small = {}
         template_id_to_half_built_skill_bonus = {}
         template_ids_tier = []
         resonator_name_to_template_ids: Dict[str, List[str]] = {}
@@ -535,10 +535,10 @@ class Docs:
                 )
                 logger_cli.debug("Echo damage comparison: Theory 1 finished.")
 
-                self.export_resonator_echo_damage_comparison_with_half_built_atk(
+                self.export_resonator_echo_damage_comparison_with_half_built_small(
                     resonator_no, resonator_name, resonator_template
                 )
-                logger_cli.debug("Echo damage comparison: Half built ATK finished.")
+                logger_cli.debug("Echo damage comparison: Half built Small finished.")
 
                 self.export_resonator_echo_damage_comparison_with_half_built_skill_bonus(
                     resonator_no, resonator_name, resonator_template
@@ -585,12 +585,12 @@ class Docs:
             )
             logger_cli.debug("Damage analysis: Theory 1 finished.")
 
-            half_built_atk_damage_distribution = (
-                self.export_template_damage_analysis_with_half_built_atk(
+            half_built_small_damage_distribution = (
+                self.export_template_damage_analysis_with_half_built_small(
                     resonator_template, output_methods
                 )
             )
-            logger_cli.debug("Damage analysis: Half built ATK finished.")
+            logger_cli.debug("Damage analysis: Half built Small finished.")
 
             half_built_skill_bonus_damage_distribution = (
                 self.export_template_damage_analysis_with_half_built_skill_bonus(
@@ -600,8 +600,8 @@ class Docs:
             logger_cli.debug("Damage analysis: Half built Skill Bonus finished.")
 
             template_id_to_theory_1[template_id] = theory_1_damage_distribution
-            template_id_to_half_built_atk[template_id] = (
-                half_built_atk_damage_distribution
+            template_id_to_half_built_small[template_id] = (
+                half_built_small_damage_distribution
             )
             template_id_to_half_built_skill_bonus[template_id] = (
                 half_built_skill_bonus_damage_distribution
@@ -615,7 +615,7 @@ class Docs:
         return (
             template_id_to_relative_url,
             template_id_to_theory_1,
-            template_id_to_half_built_atk,
+            template_id_to_half_built_small,
             template_id_to_half_built_skill_bonus,
             template_ids_tier,
             resonator_name_to_template_ids,
@@ -656,7 +656,7 @@ class Docs:
         resonator_name_to_template_ids: Dict[str, List[str]],
         template_id_to_relative_url: Dict[str, str],
         template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_atk: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_small: Dict[str, TemplateDamageDistributionModel],
         template_id_to_half_built_skill_bonus: Dict[
             str, TemplateDamageDistributionModel
         ],
@@ -700,13 +700,13 @@ class Docs:
                 )
                 self.export_resonator_comparison(
                     comparison.title,
-                    SimulationTypeEnum.HALF_BUILT_ATK.value,
+                    SimulationTypeEnum.HALF_BUILT_SMALL.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
                     comparison.template_ids,
                     template_id_to_relative_url,
-                    template_id_to_half_built_atk,
+                    template_id_to_half_built_small,
                 )
                 self.export_resonator_comparison(
                     comparison.title,
@@ -747,7 +747,7 @@ class Docs:
 
         html_str = template.render(
             TIER_THEORY_1_URL=TIER_THEORY_1_URL,
-            TIER_HALF_BUILT_ATK_URL=TIER_HALF_BUILT_ATK_URL,
+            TIER_HALF_BUILT_SMALL_URL=TIER_HALF_BUILT_SMALL_URL,
             TIER_HALF_BUILT_SKILL_BONUS_URL=TIER_HALF_BUILT_SKILL_BONUS_URL,
             ZhTwEnum=ZhTwEnum,
             _=_,
@@ -858,7 +858,7 @@ class Docs:
         template_ids: List[str],
         template_id_to_relative_url: Dict[str, str],
         template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_atk: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_half_built_small: Dict[str, TemplateDamageDistributionModel],
         template_id_to_half_built_skill_bonus: Dict[
             str, TemplateDamageDistributionModel
         ],
@@ -872,13 +872,13 @@ class Docs:
             theory_1_fpath,
         )
 
-        half_built_atk_fpath = "./build/html/docs/tier/half_built_atk.md"
+        half_built_small_fpath = "./build/html/docs/tier/half_built_small.md"
         self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_HALF_BUILT_ATK),
+            _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL),
             template_ids,
             template_id_to_relative_url,
-            template_id_to_half_built_atk,
-            half_built_atk_fpath,
+            template_id_to_half_built_small,
+            half_built_small_fpath,
         )
 
         half_built_skill_bonus_fpath = (
