@@ -30,6 +30,7 @@ from ww.model.buff import SkillBonusTypeEnum
 from ww.model.docs import DocsModel
 from ww.model.resonator import ResonatorInformationModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
+from ww.model.simulation import SimulationTypeEnum
 from ww.model.template import (
     TemplateDamageDistributionModel,
     TemplateHtmlOutputMethodModel,
@@ -48,13 +49,9 @@ from ww.utils.number import (
 DEFAULT_MKDOCS_FPATH = "./mkdocs.yml"
 MKDOCS_FPATH = "./build/html/mkdocs.yml"
 
+
 DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
-
-# echoes
-THEORY_1 = "theory_1"
-HALF_BUILT_ATK = "half_built_atk"
-HALF_BUILT_SKILL_BONUS = "half_built_skill_bonus"
 
 # url
 TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
@@ -239,9 +236,9 @@ class Docs:
         base_damage = max(damages)
 
         html_str = template.render(
-            resonators_table=resonators_table,
-            calculated_resonators_table=calculated_resonators_table,
             template=resonator_template,
+            calculated_resonators_table=calculated_resonators_table,
+            resonators_table=resonators_table,
             resonator_ids=resonator_ids,
             resonators_info=resonators_info,
             damage_distributions=damage_distributions,
@@ -690,7 +687,7 @@ class Docs:
             for comparison in resonator_comparisons:
                 self.export_resonator_comparison(
                     comparison.title,
-                    THEORY_1,
+                    SimulationTypeEnum.THEORY_1.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
@@ -700,7 +697,7 @@ class Docs:
                 )
                 self.export_resonator_comparison(
                     comparison.title,
-                    HALF_BUILT_ATK,
+                    SimulationTypeEnum.HALF_BUILT_ATK.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
@@ -710,7 +707,7 @@ class Docs:
                 )
                 self.export_resonator_comparison(
                     comparison.title,
-                    HALF_BUILT_SKILL_BONUS,
+                    SimulationTypeEnum.HALF_BUILT_SKILL_BONUS.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
