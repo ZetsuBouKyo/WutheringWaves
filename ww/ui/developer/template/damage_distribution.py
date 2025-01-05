@@ -4,6 +4,7 @@ from typing import List
 from PySide2.QtWidgets import QHBoxLayout, QPushButton, QVBoxLayout, QWidget
 
 from ww.calc.damage import Damage
+from ww.calc.simulated_resonators import SimulatedResonators
 from ww.locale import ZhTwEnum, _
 from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
@@ -118,28 +119,54 @@ class QTemplateDamageDistributionTab(QWidget):
         test_resonator_id_2 = template.test_resonator_id_2
         test_resonator_id_3 = template.test_resonator_id_3
 
-        test_resonator_names = ["", "", ""]
-
         test_resonators = self.q_template_basic_tab.get_test_resonators()
-        for test_resonator_name, test_resonator_id in test_resonators.items():
-            if test_resonator_id == test_resonator_id_1:
-                test_resonator_names[0] = test_resonator_name
-            elif test_resonator_id == test_resonator_id_2:
-                test_resonator_names[1] = test_resonator_name
-            elif test_resonator_id == test_resonator_id_3:
-                test_resonator_names[2] = test_resonator_name
+        test_resonator_names = ["", "", ""]
+        if not test_resonators:
+            prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+            template: TemplateModel = self.q_template_basic_tab.get_template()
+
+            simulated_resonators = SimulatedResonators(template)
+            test_resonators, resonators_table = (
+                simulated_resonators.get_3_resonators_with_prefix(prefix)
+            )
+            if len(test_resonators) == 0:
+                return
+
+            calculated_resonators_table = (
+                simulated_resonators.get_calculated_resonators_table(resonators_table)
+            )
+
+            damage = Damage(
+                monster_id=template.monster_id,
+                resonators_table=resonators_table,
+                calculated_resonators_table=calculated_resonators_table,
+            )
+
+            resonator_names = test_resonators.keys()
+            for i, resonator_name in enumerate(resonator_names):
+                if i > 2:
+                    break
+                test_resonator_names[i] = resonator_name
+
+        else:
+            damage = Damage(monster_id=template.monster_id)
+
+            for test_resonator_name, test_resonator_id in test_resonators.items():
+                if test_resonator_id == test_resonator_id_1:
+                    test_resonator_names[0] = test_resonator_name
+                elif test_resonator_id == test_resonator_id_2:
+                    test_resonator_names[1] = test_resonator_name
+                elif test_resonator_id == test_resonator_id_3:
+                    test_resonator_names[2] = test_resonator_name
 
         # Calculate
-        damage = Damage(monster_id=template.monster_id)
         damage_distribution = damage.extract_damage_distribution_from_rows(
             test_resonators, template.id, template.monster_id, calculated_rows
         )
 
         # Create table data
-
         skill_type_data = []
         skill_data = []
-
         for resonator_name in test_resonator_names:
             skill_type_row = get_row(
                 resonator_name, damage_distribution, SkillBonusTypeEnum
