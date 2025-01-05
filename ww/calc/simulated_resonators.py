@@ -1,4 +1,5 @@
-from typing import List, Optional, Tuple
+from collections import OrderedDict
+from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
@@ -1075,8 +1076,8 @@ class SimulatedResonators:
 
     def get_3_resonators_with_prefix(
         self, prefix: str
-    ) -> Tuple[List[str], ResonatorsTable]:
-        resonator_ids = []
+    ) -> Tuple[Dict[str, str], ResonatorsTable]:
+        resonator_name_to_id = OrderedDict()
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -1085,7 +1086,7 @@ class SimulatedResonators:
             weapon_name = resonator.resonator_weapon_name
             weapon_tune = resonator.resonator_weapon_rank
 
-            if not resonator_name:
+            if not resonator_name or not weapon_name or not weapon_tune:
                 continue
 
             # Table
@@ -1101,15 +1102,15 @@ class SimulatedResonators:
 
             # Resonator ID
             resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
-            resonator_ids.append(resonator_id)
+            resonator_name_to_id[resonator_name] = resonator_id
 
         table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return resonator_ids, table
+        return resonator_name_to_id, table
 
     def get_3_resonators_with_half_built_skill_bonus(
         self,
-    ) -> Tuple[List[str], ResonatorsTable]:
-        resonator_ids = []
+    ) -> Tuple[Dict[str, str], ResonatorsTable]:
+        resonator_name_to_id = OrderedDict()
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -1135,12 +1136,14 @@ class SimulatedResonators:
                 weapon_tune,
                 resonator_echo_1,
             )
-            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
-
-            resonator_ids.append(resonator_id)
             resonators.append(resonator_dict)
+
+            # Resonator ID
+            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
+            resonator_name_to_id[resonator_name] = resonator_id
+
         table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return resonator_ids, table
+        return resonator_name_to_id, table
 
     def get_resonators_for_echo_comparison_with_prefix(
         self, resonator_name: str, prefix: str

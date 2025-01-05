@@ -407,9 +407,11 @@ class Docs:
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
     ) -> TemplateDamageDistributionModel:
-        resonator_ids, resonators_table = (
+        resonator_name_to_id, resonators_table = (
             simulated_resonators.get_3_resonators_with_prefix(prefix)
         )
+        resonator_ids = list(resonator_name_to_id.values())
+
         return self.export_template_damage_analysis(
             resonator_template,
             output_methods,
@@ -471,9 +473,10 @@ class Docs:
 
         simulated_resonators = SimulatedResonators(resonator_template)
 
-        resonator_ids, resonators_table = (
+        resonator_name_to_id, resonators_table = (
             simulated_resonators.get_3_resonators_with_half_built_skill_bonus()
         )
+        resonator_ids = list(resonator_name_to_id.values())
 
         return self.export_template_damage_analysis(
             resonator_template,

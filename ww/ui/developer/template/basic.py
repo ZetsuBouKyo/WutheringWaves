@@ -396,6 +396,31 @@ class QTemplateBasicTab(QWidget):
     def get_template_id(self) -> str:
         return self.q_template_ids.currentText()
 
+    def get_template(self) -> TemplateModel:
+        template_id = self.get_template_id()
+        template_id = template_id.strip()
+
+        test_resonator_ids = self.get_test_resonator_ids()
+        monster_id = self.get_monster_id()
+        duration_1 = self.get_duration_1()
+        duration_2 = self.get_duration_2()
+        description = self.get_description()
+        resonators = self.get_resonators()
+
+        template = TemplateModel(
+            id=template_id,
+            test_resonator_id_1=test_resonator_ids[0],
+            test_resonator_id_2=test_resonator_ids[1],
+            test_resonator_id_3=test_resonator_ids[2],
+            monster_id=monster_id,
+            duration_1=duration_1,
+            duration_2=duration_2,
+            description=description,
+            resonators=resonators,
+        )
+
+        return template
+
     def create_template_id(self):
         resonators = self.q_resonator_table.get_resonators()
         strs = []

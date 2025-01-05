@@ -18,6 +18,7 @@ from PySide2.QtWidgets import (
 )
 
 from ww.calc.damage import Damage
+from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.buff import (
     add_echo_buff_descriptions,
     add_echo_sonata_buff_descriptions,
@@ -36,6 +37,7 @@ from ww.model.template import (
     TemplateBuffTableColumnEnum,
     TemplateBuffTableRowModel,
     TemplateColumnEnum,
+    TemplateModel,
     TemplateRowBuffTypeEnum,
     TemplateRowModel,
 )
@@ -669,17 +671,45 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             row = self.get_selected_row()
             if row is None:
                 return
-        row_data = self.get_row(row)
-
-        name_to_id = self.q_template_basic_tab.get_test_resonators()
         monster_id = self.q_template_basic_tab.get_monster_id()
 
+        row_data = self.get_row(row)
+        resonator_id = None
         resonator_name = row_data.resonator_name
-        resonator_id = name_to_id.get(resonator_name, None)
+
+        name_to_id = self.q_template_basic_tab.get_test_resonators()
+        if name_to_id:
+            resonator_id = name_to_id.get(resonator_name, None)
+            if resonator_id is None:
+                return
+
+            damage = Damage(monster_id=monster_id)
+        else:
+            prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+            template: TemplateModel = self.q_template_basic_tab.get_template()
+
+            simulated_resonators = SimulatedResonators(template)
+            resonator_name_to_id, resonators_table = (
+                simulated_resonators.get_3_resonators_with_prefix(prefix)
+            )
+            if len(resonator_name_to_id) == 0:
+                return
+            resonator_id = resonator_name_to_id.get(resonator_name, None)
+            if resonator_id is None:
+                return
+
+            calculated_resonators_table = (
+                simulated_resonators.get_calculated_resonators_table(resonators_table)
+            )
+
+            damage = Damage(
+                monster_id=monster_id,
+                resonators_table=resonators_table,
+                calculated_resonators_table=calculated_resonators_table,
+            )
+
         if resonator_id is None:
             return
-
-        damage = Damage(monster_id=monster_id)
         calculated_row = damage.get_calculated_row(resonator_id, row_data)
 
         if calculated_row is None:
