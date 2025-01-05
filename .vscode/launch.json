@@ -15,16 +15,7 @@
             "type": "debugpy",
             "request": "launch",
             "module": "pytest",
-            "args": [
-                "--cov=back",
-                "--cov=command",
-                "--cov=dags",
-                "--cov=lib",
-                "--cov=tests",
-                "--cov-report",
-                "term-missing",
-                "${file}"
-            ],
+            "args": ["--cov=ww", "--cov=tests", "--cov-report", "term-missing", "${file}"],
             "showReturnValue": true,
             "justMyCode": false
         },
@@ -33,16 +24,7 @@
             "type": "debugpy",
             "request": "launch",
             "module": "pytest",
-            "args": [
-                "pytest",
-                "--cov=back",
-                "--cov=command",
-                "--cov=dags",
-                "--cov=lib",
-                "--cov=tests",
-                "--cov-report",
-                "term-missing tests/"
-            ],
+            "args": ["pytest", "--cov=ww", "--cov=tests", "--cov-report", "term-missing tests/"],
             "showReturnValue": true,
             "justMyCode": false
         },
