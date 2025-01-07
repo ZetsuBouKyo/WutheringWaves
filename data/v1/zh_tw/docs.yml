@@ -208,6 +208,11 @@ templates:
     is_tier: false
     echo_comparison:
       - "長離"
+  # 折枝
+  - id: "[腦測]+0折枝+1瓊枝冰綃,+6散華+1赫奕流明,+0維里奈+1奇幻變奏"
+    is_tier: true
+    echo_comparison:
+      - "折枝"
   # 相里要
   - id: "[腦測]+0相里要+1諸方玄樞,+0長離+1赫奕流明,+0維里奈+1奇幻變奏-長軸"
     is_tier: true
