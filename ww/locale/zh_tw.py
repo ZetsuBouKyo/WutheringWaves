@@ -137,7 +137,6 @@ class ZhTwEnum(str, Enum):
     FILE_PATH_IS_EMPTY: str = "沒有檔案路徑。"
     IMAGE_EXPORT_SUCCESSFUL: str = "圖片匯出成功"
 
-    RESONATOR_SKILL_BONUS_TYPE: str = "技能加成"
     DETAILED_DAMAGE: str = "詳細傷害"
     DAMAGE: str = "傷害"
     DAMAGE_LIST: str = "傷害列表"
@@ -366,9 +365,10 @@ class ZhTwEnum(str, Enum):
 
     PRIMARY_KEY: str = "代稱"
 
-    RESONATOR_SKILL_TYPE_BONUS: str = "種類加成"
+    RESONATOR_SKILL_BONUS_TYPE: str = "技能加成種類"
     RESONATOR_SKILL_PRIMARY_KEY: str = "代稱"
     RESONATOR_SKILL_TYPE_ZH_TW: str = "種類"
+    RESONATOR_SKILL_BONUS_TYPES: str = "Skill Bonus Types"
     RESONATOR_SKILL_ENTRY: str = "Entry#"
     RESONATOR_SKILL_ELEMENT: str = "屬性"
     RESONATOR_SKILL_BASE_TYPE: str = "Type"

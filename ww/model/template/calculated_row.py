@@ -20,7 +20,7 @@ class CalculatedTemplateColumnEnum(str, Enum):
     RESONATOR_SKILL_ELEMENT: str = "[角色技能]屬性"
     RESONATOR_SKILL_BASE_ATTR: str = "[角色技能]基礎參數"
     RESONATOR_SKILL_TYPE: str = "[角色技能]種類"
-    RESONATOR_SKILL_TYPE_BONUS: str = "[角色技能]加成種類"
+    RESONATOR_SKILL_BONUS_TYPE: str = "[角色技能]加成種類"
     RESONATOR_SKILL_DMG: str = "[角色技能]倍率"
 
     ECHO_ELEMENT: str = "[聲骸]屬性"
@@ -74,6 +74,7 @@ class CalculatedTemplateRowModel(BaseModel):
 
     result_element: Optional[ElementEnum] = None
     result_bonus_type: Optional[SkillBonusTypeEnum] = None
+    result_bonus_types: Optional[List[SkillBonusTypeEnum]] = []
     result_skill_base_attribute: Optional[SkillBaseAttrEnum] = None
     result_skill_dmg: Optional[Decimal] = None
     result_skill_hit: Optional[Decimal] = Decimal("1")
