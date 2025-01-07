@@ -24,6 +24,7 @@ from ww.model.template import (
     CalculatedTemplateRowModel,
     TemplateDamageDistributionModel,
     TemplateResonatorDamageDistributionModel,
+    TemplateResonatorSkillDamageDistributionModel,
     TemplateRowBuffModel,
     TemplateRowBuffTypeEnum,
     TemplateRowModel,
@@ -753,6 +754,7 @@ class Damage:
                 damage_no_crit = get_number(row.damage_no_crit)
                 damage_crit = get_number(row.damage_crit)
 
+                # Skill bonus type
                 skill_bonus_type = row.result_bonus_type
                 if skill_bonus_type == SkillBonusTypeEnum.BASIC.value:
                     damage_distributions[label].resonators[
@@ -787,12 +789,14 @@ class Damage:
                         resonator_name
                     ].none += damage
 
+                # Coordinated attack
                 skill_bonus_types = row.result_bonus_types
                 if SkillBonusTypeEnum.COORDINATED_ATTACK.value in skill_bonus_types:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].coordinated_attack += damage
 
+                # Skill type
                 resonator_skill_type = row.resonator_skill_type
                 if resonator_skill_type == ResonatorSkillTypeEnum.NORMAL_ATTACK.value:
                     damage_distributions[label].resonators[
@@ -823,6 +827,24 @@ class Damage:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].forte_circuit += damage
+
+                # Skill
+                skill_id = row.skill_id
+                resonator_skill = (
+                    damage_distributions[label]
+                    .resonators[resonator_name]
+                    .skills.get(skill_id, None)
+                )
+                if resonator_skill is None:
+                    damage_distributions[label].resonators[resonator_name].skills[
+                        skill_id
+                    ] = TemplateResonatorSkillDamageDistributionModel(
+                        id=skill_id, type=resonator_skill_type, damage=damage
+                    )
+                else:
+                    damage_distributions[label].resonators[resonator_name].skills[
+                        skill_id
+                    ].damage += damage
 
                 damage_distributions[label].resonators[resonator_name].damage += damage
                 damage_distributions[label].resonators[

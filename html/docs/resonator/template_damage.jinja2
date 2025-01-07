@@ -7,39 +7,39 @@
       <div class="wuwa-flex-col">
         <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
         <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}: {{damage_distribution.monster_id}}</div>
-        {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 %}
+        {% if damage_distribution.damage and damage_distribution.duration_1 and damage_distribution.duration_2 -%}
         <div class="wuwa-barh-dps">
           DPS: {{damage_distribution.get_min_dps_string()}} ~ {{damage_distribution.get_max_dps_string()}}
           ({{damage_distribution.duration_1}}s ~ {{damage_distribution.duration_2}}s)
         </div>
-        {% endif %}
-        {% for resonator_id in resonator_ids %}
-        {% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
-        {% set resonator_name = r.name %}
+        {% endif -%}
+        {% for resonator_id in resonator_ids -%}
+        {% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) -%}
+        {% set resonator_name = r.name -%}
         <div class="wuwa-barh-row">
           <div class="wuwa-barh-resonator-icon">
             <img src="{{r.resonator_src}}" />
           </div>
           <div class="wuwa-barh-damage-container">
-            {% set element = get_element_class_name(r.element) %}
-            {% set team_resonator_damages = get_team_resonator_damages(damage_distribution) %}
-            {% set max_damage = get_max_damage(team_resonator_damages) %}
-            {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage %}
-            {% set in_out = 0.3 %}
-            {% set black_elements = ['aero', 'spectro'] %}
+            {% set element = get_element_class_name(r.element) -%}
+            {% set team_resonator_damages = get_team_resonator_damages(damage_distribution) -%}
+            {% set max_damage = get_max_damage(team_resonator_damages) -%}
+            {% set percentage = damage_distribution.resonators[resonator_name].damage / max_damage -%}
+            {% set in_out = 0.3 -%}
+            {% set black_elements = ['aero', 'spectro'] -%}
             <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage_distribution.resonators[resonator_name].damage, max_damage)}};">
-              {% if percentage >= in_out %}
+              {% if percentage >= in_out -%}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
                 {{resonator_name}}
                 {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
               </div>
-              {% endif %}
+              {% endif -%}
             </div>
-            {% if percentage < in_out %} <div class="wuwa-barh-damage-value-out">{{resonator_name}}
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out">{{resonator_name}}
               {{damage_distribution.get_damage_string_with_percentage(resonator_name)}}
           </div>
-          {% endif %}
+          {% endif -%}
         </div>
       </div>
       {% endfor %}
@@ -48,8 +48,8 @@
 </div>
 </div>
 
-{% for resonator_id in resonator_ids %}
-{% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) %}
+{% for resonator_id in resonator_ids -%}
+{% set r = merge_resonator_model(resonator_id, resonators_table, calculated_resonators_table, is_docs=True) -%}
 ## {{r.name}}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-title">
@@ -248,7 +248,7 @@
 </div>
 
 ### {{_(ZhTwEnum.ECHO)}}
-{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(resonator_id) %}
+{% set r_echo = calculated_resonators_table.get_calculated_resonator_model(resonator_id) -%}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-table">
     <table class="wuwa wuwa-w50p wuwa-white wuwa-margin-right-12">
@@ -405,7 +405,8 @@
 </div>
 
 ### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[r.name] %}
+{% set resonator_damage_distribution = damage_distribution.resonators[r.name] -%}
+{% set resonator_skill_damage_distribution = damage_distribution.resonators[r.name].get_skill_damages() -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -421,30 +422,30 @@
               {{damage_distribution.monster_id}}</div>
           </div>
         </div>
-        {% for e in ResonatorSkillTypeEnum %}
+        {% for skill in resonator_skill_damage_distribution -%}
         <div class="wuwa-barh-row wuwa-border-left">
           <div class="wuwa-barh-damage-100">
-            {% set element = get_element_class_name(r.element) %}
-            {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
-            {% set base_damage = get_resonator_skill_base_damage(resonator_damage_distribution, ResonatorSkillTypeEnum)
-            %}
-            {% set percentage = damage / base_damage %}
-            {% set in_out = 0.4 %}
-            {% set black_elements = ['aero', 'spectro'] %}
+            {% set element = get_element_class_name(r.element) -%}
+            {% set damage = skill.damage -%}
+            {% set base_damage = resonator_damage_distribution.damage -%}
+            {% set percentage = damage / base_damage -%}
+            {% set in_out = 0.5 -%}
+            {% set black_elements = ['aero', 'spectro'] -%}
             <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
-              {% if percentage >= in_out %}
-              <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
-                {{e.value}}
+              {% if percentage >= in_out -%}
+              <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}"
+                title="{{skill.type}}">
+                {{skill.name}}
                 {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
               </div>
-              {% endif %}
+              {% endif -%}
             </div>
-            {% if percentage < in_out %} <div class="wuwa-barh-damage-value-out">
-              {{e.value}}
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out" title="{{skill.type}}">
+              {{skill.name}}
               {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
           </div>
-          {% endif %}
+          {% endif -%}
         </div>
       </div>
       {% endfor %}
@@ -452,8 +453,9 @@
   </div>
 </div>
 </div>
-### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[r.name] %}
+
+### {{_(ZhTwEnum.SKILL_TYPE_DAMAGE_DISTRIBUTION)}}
+{% set resonator_damage_distribution = damage_distribution.resonators[r.name] -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -469,30 +471,79 @@
               {{damage_distribution.monster_id}}</div>
           </div>
         </div>
-        {% for e in SkillBonusTypeEnum %}
+        {% for e in ResonatorSkillTypeEnum -%}
         <div class="wuwa-barh-row wuwa-border-left">
           <div class="wuwa-barh-damage-100">
-            {% set element = get_element_class_name(r.element) %}
-            {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) %}
+            {% set element = get_element_class_name(r.element) -%}
+            {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) -%}
             {% set base_damage = get_resonator_skill_base_damage(resonator_damage_distribution, ResonatorSkillTypeEnum)
-            %}
-            {% set percentage = damage / base_damage %}
-            {% set in_out = 0.4 %}
-            {% set black_elements = ['aero', 'spectro'] %}
+            -%}
+            {% set percentage = damage / base_damage -%}
+            {% set in_out = 0.4 -%}
+            {% set black_elements = ['aero', 'spectro'] -%}
             <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
-              {% if percentage >= in_out %}
+              {% if percentage >= in_out -%}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
                 {{e.value}}
                 {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
               </div>
-              {% endif %}
+              {% endif -%}
             </div>
-            {% if percentage < in_out %} <div class="wuwa-barh-damage-value-out">
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out">
               {{e.value}}
               {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
           </div>
-          {% endif %}
+          {% endif -%}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
+{% set resonator_damage_distribution = damage_distribution.resonators[r.name] -%}
+<div class="wuwa-container">
+  <div class="wuwa-flex-col">
+    <div class="wuwa-barh">
+      <div class="wuwa-flex-col">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-margin-bottom-24">
+          <div class="wuwa-barh-resonator-icon">
+            <img src="{{r.resonator_src}}" />
+          </div>
+          <div class="wuwa-flex-col">
+            <div class="wuwa-barh-id wuwa-fs5">{{resonator_damage_distribution.resonator_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}:
+              {{damage_distribution.monster_id}}</div>
+          </div>
+        </div>
+        {% for e in SkillBonusTypeEnum -%}
+        <div class="wuwa-barh-row wuwa-border-left">
+          <div class="wuwa-barh-damage-100">
+            {% set element = get_element_class_name(r.element) -%}
+            {% set damage = resonator_damage_distribution.get_damage(e.name.lower()) -%}
+            {% set base_damage = get_resonator_skill_base_damage(resonator_damage_distribution, ResonatorSkillTypeEnum)
+            -%}
+            {% set percentage = damage / base_damage -%}
+            {% set in_out = 0.4 -%}
+            {% set black_elements = ['aero', 'spectro'] -%}
+            <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
+              style="width: {{get_percentage_str(damage, base_damage)}};">
+              {% if percentage >= in_out -%}
+              <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
+                {{e.value}}
+                {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
+              </div>
+              {% endif -%}
+            </div>
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out">
+              {{e.value}}
+              {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
+          </div>
+          {% endif -%}
         </div>
       </div>
       {% endfor %}
@@ -505,7 +556,7 @@
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}
 
 <div class="wuwa-container wuwa-margin-bottom-16">
-  {% for output_method in output_methods %}
+  {% for output_method in output_methods -%}
   <div class="wuwa-rows {{'wuwa-margin-bottom' if loop.index < output_methods|length}}">
     <div class="wuwa-left-row">
       <div class="wuwa-resonator-output-method-icon">
@@ -514,21 +565,21 @@
     </div>
     <div class="wuwa-right-row">
       <div class="wuwa-actions">
-        {% for action in output_method.actions %}
+        {% for action in output_method.actions -%}
         <div class="wuwa-action">
           <div class="wuwa-action-text">
             <a href="#dmg-{{action.index_1_based}}">
               {{action.name}}
             </a>
           </div>
-          {% if action.src != "" %}
+          {% if action.src != "" -%}
           <img class="wuwa-action-icon" src="{{action.src}}" />
-          {% endif %}
+          {% endif -%}
           <img class="wuwa-action-next" src="{{right_arrow_src}}" />
         </div>
         {% endfor %}
       </div>
-      {% for comment in output_method.comments %}
+      {% for comment in output_method.comments -%}
       <div class="wuwa-comments">
         <div class="wuwa-comment">
           {{comment}}
@@ -554,32 +605,32 @@
     </tr>
     <tr>
       <td class="wuwa wuwa-px16 wuwa-py4">
-        {% if row.resonator_name %}
+        {% if row.resonator_name -%}
         {{row.resonator_name}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4">
-        {% if row.action %}
+        {% if row.action -%}
         {{row.action}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4">
-        {% if row.skill_id %}
+        {% if row.skill_id -%}
         {{row.skill_id}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80">
-        {% if row.hits %}
+        {% if row.hits -%}
         {{row.hits}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
     </tr>
   </table>
@@ -591,39 +642,39 @@
     </tr>
     <tr align="right">
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80 wuwa-w33p">
-        {% if row.damage_no_crit %}
+        {% if row.damage_no_crit -%}
         {{to_number_string(row.damage_no_crit)}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-gray-80-80-80 wuwa-w33p">
         <a href="#detailed-dmg-{{loop.index}}">
-          {% if row.damage_crit %}
+          {% if row.damage_crit -%}
           {{to_number_string(row.damage_crit)}}
-          {% else %}
+          {% else -%}
           &nbsp;
-          {% endif %}
+          {% endif -%}
         </a>
       </td>
       <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w33p">
-        {% if row.damage %}
+        {% if row.damage -%}
         {{to_number_string(row.damage)}}
-        {% else %}
+        {% else -%}
         &nbsp;
-        {% endif %}
+        {% endif -%}
       </td>
     </tr>
   </table>
-  {% endif %}
+  {% endif -%}
   {% endfor %}
 </div>
 
 ## {{_(ZhTwEnum.DETAILED_DAMAGE)}}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
-    {% for row in calculated_rows %}
-    {% if row.resonator_name %}
+    {% for row in calculated_rows -%}
+    {% if row.resonator_name -%}
     <div id="detailed-dmg-{{loop.index}}"
       class="wuwa-flex-row wuwa-margin-bottom-8 {{'wuwa-margin-top-8' if loop.index > 1}}">
       <div class="wuwa-barh-resonator-icon">
@@ -649,37 +700,37 @@
         </tr>
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
-            {% if row.action %}
+            {% if row.action -%}
             {{row.action}}
-            {% else %}
+            {% else -%}
             &nbsp;
-            {% endif %}
+            {% endif -%}
           </td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
-            {% if row.skill_id %}
+            {% if row.skill_id -%}
             {{row.skill_id}}
-            {% else %}
+            {% else -%}
             &nbsp;
-            {% endif %}
+            {% endif -%}
           </td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
-            {% if row.resonator_skill_type_bonus %}
+            {% if row.resonator_skill_type_bonus -%}
             {{row.resonator_skill_type_bonus}}
-            {% else %}
+            {% else -%}
             &nbsp;
-            {% endif %}
+            {% endif -%}
           </td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
-            {% if row.hits %}
+            {% if row.hits -%}
             {{row.hits}}{{_(ZhTwEnum.HIT)}}
-            {% else %}
+            {% else -%}
             &nbsp;
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
       </table>
     </div>
-    {% if row.real_dmg_no_crit or row.real_dmg_crit or row.damage_no_crit or row.damage_crit %}
+    {% if row.real_dmg_no_crit or row.real_dmg_crit or row.damage_no_crit or row.damage_crit -%}
     <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
       {{_(ZhTwEnum.DAMAGE)}}
     </div>
@@ -702,8 +753,8 @@
         </tr>
       </table>
     </div>
-    {% endif %}
-    {% if row.buffs|length > 0 %}
+    {% endif -%}
+    {% if row.buffs|length > 0 -%}
     <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
       {{_(ZhTwEnum.BUFF)}}
     </div>
@@ -714,7 +765,7 @@
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w120">{{_(ZhTwEnum.BUFF_TYPE)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-w60">{{_(ZhTwEnum.BUFF_VALUE)}}</td>
         </tr>
-        {% for buff in row.buffs %}
+        {% for buff in row.buffs -%}
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">{{buff.name}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">{{buff.type}}</td>
@@ -723,8 +774,8 @@
         {% endfor %}
       </table>
     </div>
-    {% endif %}
-    {% if row.skill_id %}
+    {% endif -%}
+    {% if row.skill_id -%}
     <div class="wuwa-flex-row wuwa-margin-bottom-8 wuwa-philippine-gray">
       {{_(ZhTwEnum.CALCULATE)}}
     </div>
@@ -733,60 +784,60 @@
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60 wuwa-w120">{{_(ZhTwEnum.REGION_BASE_ATTR)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">{% if
-            row.result_skill_base_attribute==SkillBaseAttrEnum.ATK.value %}
+            row.result_skill_base_attribute==SkillBaseAttrEnum.ATK.value -%}
             [{{to_trimmed_number_string(row.result_atk)}} × (1 + {{to_trimmed_number_string(row.result_atk_p)}}) +
             {{to_trimmed_number_string(row.result_atk_addition)}}]
-            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.DEF.value %}
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.DEF.value -%}
             [{{to_trimmed_number_string(row.result_def)}} × (1 + {{to_trimmed_number_string(row.result_def_p)}}) +
             {{to_trimmed_number_string(row.result_def_addition)}}]
-            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.HP.value %}
+            {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.HP.value -%}
             [{{to_trimmed_number_string(row.result_hp)}} × (1 + {{to_trimmed_number_string(row.result_hp_p)}}) +
             {{to_trimmed_number_string(row.result_hp_addition)}}]
-            {% endif %}</td>
+            {% endif -%}</td>
         </tr>
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60">{{_(ZhTwEnum.REGION_SKILL_DMG)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
             ×
-            {% if row.resonator_skill_dmg_addition %}
+            {% if row.resonator_skill_dmg_addition -%}
             ({{to_trimmed_number_string(row.resonator_skill_dmg)}} +
             {{to_trimmed_number_string(row.resonator_skill_dmg_addition)}})
-            {% else %}
+            {% else -%}
             {{to_trimmed_number_string(row.resonator_skill_dmg)}}
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60">{{_(ZhTwEnum.REGION_MAGNIFIER)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
             ×
-            {% if row.result_magnifier %}
+            {% if row.result_magnifier -%}
             (1 + {{to_trimmed_number_string(row.result_magnifier)}})
-            {% else %}
+            {% else -%}
             1
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60">{{_(ZhTwEnum.REGION_AMPLIFIER)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
             ×
-            {% if row.result_amplifier %}
+            {% if row.result_amplifier -%}
             (1 + {{to_trimmed_number_string(row.result_amplifier)}})
-            {% else %}
+            {% else -%}
             1
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
         <tr>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60">{{_(ZhTwEnum.REGION_BONUS)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
             ×
-            {% if row.result_bonus %}
+            {% if row.result_bonus -%}
             (1 + {{to_trimmed_number_string(row.result_bonus)}})
-            {% else %}
+            {% else -%}
             1
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
         <tr>
@@ -805,9 +856,9 @@
               <span class="symbol">/</span>
               <span class="bottom">800 + 8 × {{to_trimmed_number_string(row.resonator_level)}} + [792 + (8 ×
                 {{to_trimmed_number_string(row.monster_level)}})]
-                {% if row.result_ignore_def %}
+                {% if row.result_ignore_def -%}
                 × (1 - {{to_trimmed_number_string(row.result_ignore_def)}})
-                {% endif %}
+                {% endif -%}
               </span>
             </div>
           </td>
@@ -816,17 +867,17 @@
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60">{{_(ZhTwEnum.REGION_RES)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">
             ×
-            {% if row.result_reduce_res %}
+            {% if row.result_reduce_res -%}
             (1 - {{to_trimmed_number_string(row.monster_res)}} + {{to_trimmed_number_string(row.result_reduce_res)}})
-            {% else %}
+            {% else -%}
             (1 - {{to_trimmed_number_string(row.monster_res)}})
-            {% endif %}
+            {% endif -%}
           </td>
         </tr>
       </table>
     </div>
-    {% endif %}
-    {% endif %}
+    {% endif -%}
+    {% endif -%}
     {% endfor %}
   </div>
 </div>

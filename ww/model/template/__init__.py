@@ -15,6 +15,7 @@ from ww.model.template.calculated_row import (
 from ww.model.template.damage import (
     TemplateDamageDistributionModel,
     TemplateResonatorDamageDistributionModel,
+    TemplateResonatorSkillDamageDistributionModel,
 )
 from ww.model.template.html import (
     TemplateHtmlOutputMethodActionModel,
@@ -47,6 +48,7 @@ __all__ = [
     "TemplateHtmlResonatorModel",
     "TemplateLabelTableColumnEnum",
     "TemplateResonatorDamageDistributionModel",
+    "TemplateResonatorSkillDamageDistributionModel",
     "TemplateResonatorTableColumnEnum",
     "TemplateRowActionEnum",
     "TemplateRowBuffTypeEnum",

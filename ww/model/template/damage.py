@@ -1,10 +1,11 @@
 from collections import OrderedDict
 from decimal import Decimal
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from ww.model.resonator import ResonatorName
+from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.utils.number import get_number, to_number_string, to_percentage_str
 
 
@@ -21,6 +22,15 @@ def get_damage_string_with_percentage(
     damage_distribution_str = f"{numerator:,.2f}"
 
     return f"{damage_distribution_str} ({percentage_str})"
+
+
+class TemplateResonatorSkillDamageDistributionModel(BaseModel):
+    model_config = ConfigDict(use_enum_values=True)
+
+    id: str = ""
+    name: str = ""
+    type: Optional[ResonatorSkillTypeEnum] = None
+    damage: Decimal = Decimal("0.0")
 
 
 class TemplateResonatorDamageDistributionModel(BaseModel):
@@ -48,6 +58,8 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     damage_no_crit: Decimal = Decimal("0.0")
     damage_crit: Decimal = Decimal("0.0")
 
+    skills: Dict[str, TemplateResonatorSkillDamageDistributionModel] = {}
+
     def get_damage_string_with_percentage(cls, name: str) -> str:
         damage = getattr(cls, name)
         return get_damage_string_with_percentage(damage, cls.damage)
@@ -55,6 +67,30 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     def get_damage(cls, name: str) -> Decimal:
         damage = getattr(cls, name)
         return damage
+
+    def get_skill_damages(cls) -> List[TemplateResonatorSkillDamageDistributionModel]:
+        skills_dict: Dict[str, TemplateResonatorSkillDamageDistributionModel] = {}
+        for skill in cls.skills.values():
+            skill_id = skill.id
+            skill_name = skill_id
+            if "-" in skill_id:
+                skill_name = skill_id.split("-")[0]
+
+            if skills_dict.get(skill_name, None) is None:
+                skills_dict[skill_name] = TemplateResonatorSkillDamageDistributionModel(
+                    name=skill_name, type=skill.type, damage=skill.damage
+                )
+            else:
+                skills_dict[skill_name].damage += skill.damage
+
+        skills: List[TemplateResonatorSkillDamageDistributionModel] = list(
+            skills_dict.values()
+        )
+        skills.sort(
+            key=lambda skill: skill.damage,
+            reverse=True,
+        )
+        return skills
 
 
 class TemplateDamageDistributionModel(BaseModel):
