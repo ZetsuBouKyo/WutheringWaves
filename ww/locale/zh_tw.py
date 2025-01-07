@@ -419,6 +419,7 @@ class ZhTwEnum(str, Enum):
     BUFF_TARGET_ALL: str = "全部"
     BUFF_TARGET_NEXT: str = "下一位"
     BUFF_TARGET_SELF: str = "自己"
+    BUFF_ACTIVE: str = "登場角色"
 
     BUFF_SOURCE_RESONATOR_INHERENT_SKILL_1: str = "固有技能1"
     BUFF_SOURCE_RESONATOR_INHERENT_SKILL_2: str = "固有技能2"
