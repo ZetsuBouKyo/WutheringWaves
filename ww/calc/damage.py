@@ -367,7 +367,10 @@ class Damage:
             template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_ZH_TW
         )
         resonator_skill_bonus_type = resonator_skill_table.search(
-            template_row_skill_id, ResonatorSkillTsvColumnEnum.TYPE_BONUS
+            template_row_skill_id, ResonatorSkillTsvColumnEnum.SKILL_BONUS_TYPE
+        )
+        resonator_skill_is_coordinated = resonator_skill_table.search(
+            template_row_skill_id, ResonatorSkillTsvColumnEnum.COORDINATED
         )
         resonator_skill_lv = resonator_skill_levels.get(
             f"{resonator_skill_type}LV", None
@@ -452,6 +455,12 @@ class Damage:
         else:
             bonus_type = SkillBonusTypeEnum.NONE.value
         calculated_row.result_bonus_type = bonus_type
+
+        calculated_row.result_bonus_types = [bonus_type]
+        if resonator_skill_is_coordinated:
+            calculated_row.result_bonus_types.append(
+                SkillBonusTypeEnum.COORDINATED_ATTACK.value
+            )
 
         # Monster
         if self._monster_id is not None:
@@ -744,32 +753,32 @@ class Damage:
                 damage_no_crit = get_number(row.damage_no_crit)
                 damage_crit = get_number(row.damage_crit)
 
-                skill_type_bonus = row.result_bonus_type
-                if skill_type_bonus == SkillBonusTypeEnum.BASIC.value:
+                skill_bonus_type = row.result_bonus_type
+                if skill_bonus_type == SkillBonusTypeEnum.BASIC.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].basic += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.HEAVY.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.HEAVY.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].heavy += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.SKILL.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.SKILL.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].skill += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.LIBERATION.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.LIBERATION.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].liberation += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.INTRO.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.INTRO.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].intro += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.OUTRO.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.OUTRO.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].outro += damage
-                elif skill_type_bonus == SkillBonusTypeEnum.ECHO.value:
+                elif skill_bonus_type == SkillBonusTypeEnum.ECHO.value:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].echo += damage
@@ -777,6 +786,12 @@ class Damage:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].none += damage
+
+                skill_bonus_types = row.result_bonus_types
+                if SkillBonusTypeEnum.COORDINATED_ATTACK.value in skill_bonus_types:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].coordinated_attack += damage
 
                 resonator_skill_type = row.resonator_skill_type
                 if resonator_skill_type == ResonatorSkillTypeEnum.NORMAL_ATTACK.value:

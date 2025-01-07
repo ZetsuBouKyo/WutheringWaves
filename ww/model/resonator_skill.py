@@ -55,6 +55,7 @@ class ResonatorSkillTsvColumnEnum(str, Enum):
     )
     HARDNESS: str = _(ZhTwEnum.RESONATOR_SKILL_HARDNESS)
     TOUGHNESS: str = _(ZhTwEnum.RESONATOR_SKILL_TOUGHNESS)
+    COORDINATED: str = _(ZhTwEnum.RESONATOR_SKILL_COORDINATED)
     TYPE_EN: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_EN)
     HIT: str = _(ZhTwEnum.RESONATOR_SKILL_HIT)
     STA_REGEN: str = _(ZhTwEnum.RESONATOR_SKILL_STA_REGEN)

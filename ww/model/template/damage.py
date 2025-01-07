@@ -34,6 +34,7 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     intro: Decimal = Decimal("0.0")
     outro: Decimal = Decimal("0.0")
     echo: Decimal = Decimal("0.0")
+    coordinated_attack: Decimal = Decimal("0.0")
     none: Decimal = Decimal("0.0")
 
     normal_attack: Decimal = Decimal("0.0")
