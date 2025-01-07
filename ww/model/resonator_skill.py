@@ -27,7 +27,7 @@ class ResonatorSkillBonusTypeEnum(str, Enum):
 
 
 class ResonatorSkillTsvColumnEnum(str, Enum):
-    TYPE_BONUS: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_BONUS)
+    SKILL_BONUS_TYPE: str = _(ZhTwEnum.RESONATOR_SKILL_BONUS_TYPE)
     PRIMARY_KEY: str = _(ZhTwEnum.RESONATOR_SKILL_PRIMARY_KEY)
     TYPE_ZH_TW: str = _(ZhTwEnum.RESONATOR_SKILL_TYPE_ZH_TW)
 
