@@ -401,6 +401,10 @@ templates:
     is_tier: false
     echo_comparison:
       - "珂萊塔"
+  - id: "[腦測]+6珂萊塔+5死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_tier: false
+    echo_comparison:
+      - "珂萊塔"
   - id: "[腦測]+0珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手-凝夜白霜"
     is_tier: true
     echo_comparison:
