@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import pandas as pd
 
@@ -900,13 +900,14 @@ class CalculatedResonator:
         ] = stat_bonus_havoc_dmg_res
 
 
-def get_calculated_resonators_df_by_resonators_table(
-    resonators_table: ResonatorsTable, echoes_table: Optional[EchoesTable] = None
-) -> pd.DataFrame:
+def get_calculated_resonators_dict_by_resonators_table(
+    resonators_table: ResonatorsTable,
+    echoes_table: Optional[EchoesTable] = None,
+    callback: Callable[[dict], bool] = None,
+) -> dict:
     resonators_df = resonators_table.df
 
     calculated_resonators_columns = [e.value for e in CalculatedResonatorTsvColumnEnum]
-
     calculated_resonators_dict = {
         column: [] for column in calculated_resonators_columns
     }
@@ -924,6 +925,12 @@ def get_calculated_resonators_df_by_resonators_table(
             new_resonator_id = new_resonator_dict.get(
                 CalculatedResonatorTsvColumnEnum.ID.value, None
             )
+
+            if callback is not None:
+                check = callback(new_resonator_dict)
+                if not check:
+                    continue
+
             if not new_resonator_id:
                 for col in calculated_resonators_columns:
                     calculated_resonators_dict[col].append("")
@@ -934,6 +941,17 @@ def get_calculated_resonators_df_by_resonators_table(
 
         except TypeError:
             continue
+    return calculated_resonators_dict
+
+
+def get_calculated_resonators_df_by_resonators_table(
+    resonators_table: ResonatorsTable,
+    echoes_table: Optional[EchoesTable] = None,
+    callback: Callable[[dict], bool] = None,
+) -> pd.DataFrame:
+    calculated_resonators_dict = get_calculated_resonators_dict_by_resonators_table(
+        resonators_table, echoes_table, callback=callback
+    )
 
     calculated_resonators_df = pd.DataFrame(calculated_resonators_dict)
     return calculated_resonators_df

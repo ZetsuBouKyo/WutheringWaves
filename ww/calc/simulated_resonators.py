@@ -1,4 +1,5 @@
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
+from functools import partial
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
@@ -10,6 +11,7 @@ from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoesModelEnum, ResonatorEchoTsvColumnEnum
 from ww.model.resonator import (
+    CalculatedResonatorTsvColumnEnum,
     ResonatorInformationModel,
     ResonatorStatTsvColumnEnum,
     ResonatorTsvColumnEnum,
@@ -104,6 +106,41 @@ def get_base_affix(base_attr: str) -> str:
     elif base_attr == ResonatorStatTsvColumnEnum.DEF.value:
         affix = _(ZhTwEnum.ABBR_DEF)
     return affix
+
+
+def filter_calculated_resonators(
+    calculated_resonator: dict, resonator_template: Optional[TemplateModel] = None
+) -> bool:
+    if resonator_template is None:
+        return True
+
+    calculated_resonator_name = calculated_resonator[
+        CalculatedResonatorTsvColumnEnum.NAME.value
+    ]
+    if not calculated_resonator_name:
+        return True
+
+    resonator = resonator_template.get_resonator(calculated_resonator_name)
+    if not resonator:
+        return True
+
+    resonator_energy_regen = get_number(resonator.resonator_energy_regen)
+    if not resonator_energy_regen:
+        return True
+
+    calculated_resonator_energy_regen = get_number(
+        calculated_resonator[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ENERGY_REGEN.value
+        ]
+    )
+
+    # Check maximum energy regen
+    if (
+        calculated_resonator_energy_regen + get_number(0.124) * 5
+    ) < resonator_energy_regen:
+        return False
+
+    return True
 
 
 class SimulatedResonators:
@@ -269,22 +306,30 @@ class SimulatedResonators:
         self.echoes.append(echo)
         self.echoes_id_to_echo[echo_id] = echo
 
-    def _get_resonator_with_43311_3c_2elem(
+    def _get_resonator_with_affixes(
         self,
         prefix: str,
         resonator_name: str,
         resonator_chain: str,
+        resonator_information: ResonatorInformationModel,
         weapon_name: str,
         weapon_tune: str,
-        main_affix_4c: str,
         echo_name_1: str,
+        echo_cost_1: str,
+        echo_affix_1: str,
+        echo_cost_2: str,
+        echo_affix_2: str,
+        echo_cost_3: str,
+        echo_affix_3: str,
+        echo_cost_4: str,
+        echo_affix_4: str,
+        echo_cost_5: str,
+        echo_affix_5: str,
     ):
         resonator = self._get_empty_resonator(
             resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
         )
 
-        resonator_information = get_resonator_information(resonator_name)
-        resonator_element = resonator_information.element
         self._update_resonator_by_resonator_information(
             resonator, resonator_information
         )
@@ -292,54 +337,59 @@ class SimulatedResonators:
         resonator_sonatas = self.template.get_sonatas(resonator_name)
 
         resonator_base_attr = self.template.get_base_attr(resonator_name)
-        base_affix = get_base_affix(resonator_base_attr)
 
-        echo_cost_1 = "4"
-        echo_cost_2 = "3"
-        echo_cost_3 = "3"
-        echo_cost_4 = "1"
-        echo_cost_5 = "1"
+        affix_count = defaultdict(lambda: 1)
+        echo_no_1 = affix_count[echo_affix_1]
+        affix_count[echo_affix_1] += 1
+        echo_no_2 = affix_count[echo_affix_2]
+        affix_count[echo_affix_2] += 1
+        echo_no_3 = affix_count[echo_affix_3]
+        affix_count[echo_affix_3] += 1
+        echo_no_4 = affix_count[echo_affix_4]
+        affix_count[echo_affix_4] += 1
+        echo_no_5 = affix_count[echo_affix_5]
+        affix_count[echo_affix_5] += 1
 
         echo_1 = self.simulated_echoes.get_echo(
             echo_cost_1,
             prefix,
             resonator_base_attr,
-            main_affix_4c,
+            echo_affix_1,
             resonator_sonatas[0],
-            "1",
+            echo_no_1,
             name=echo_name_1,
         )
         echo_2 = self.simulated_echoes.get_echo(
             echo_cost_2,
             prefix,
             resonator_base_attr,
-            resonator_element,
+            echo_affix_2,
             resonator_sonatas[1],
-            "1",
+            echo_no_2,
         )
         echo_3 = self.simulated_echoes.get_echo(
             echo_cost_3,
             prefix,
             resonator_base_attr,
-            resonator_element,
+            echo_affix_3,
             resonator_sonatas[2],
-            "2",
+            echo_no_3,
         )
         echo_4 = self.simulated_echoes.get_echo(
             echo_cost_4,
             prefix,
             resonator_base_attr,
-            base_affix,
+            echo_affix_4,
             resonator_sonatas[3],
-            "1",
+            echo_no_4,
         )
         echo_5 = self.simulated_echoes.get_echo(
             echo_cost_5,
             prefix,
             resonator_base_attr,
-            base_affix,
+            echo_affix_5,
             resonator_sonatas[4],
-            "2",
+            echo_no_5,
         )
 
         self._update_resonator_by_echoes(
@@ -359,18 +409,65 @@ class SimulatedResonators:
             weapon_name,
             weapon_tune,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            resonator_element,
+            echo_affix_2,
             echo_cost_3,
-            resonator_element,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
 
         return resonator
+
+    def _get_resonator_with_43311_3c_2elem(
+        self,
+        prefix: str,
+        resonator_name: str,
+        resonator_chain: str,
+        weapon_name: str,
+        weapon_tune: str,
+        main_affix_4c: str,
+        echo_name_1: str,
+    ):
+        resonator_information = get_resonator_information(resonator_name)
+        resonator_element = resonator_information.element
+        resonator_base_attr = self.template.get_base_attr(resonator_name)
+        base_affix = get_base_affix(resonator_base_attr)
+
+        echo_cost_1 = "4"
+        echo_cost_2 = "3"
+        echo_cost_3 = "3"
+        echo_cost_4 = "1"
+        echo_cost_5 = "1"
+
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = resonator_element
+        echo_affix_3 = resonator_element
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
+
+        return self._get_resonator_with_affixes(
+            prefix,
+            resonator_name,
+            resonator_chain,
+            resonator_information,
+            weapon_name,
+            weapon_tune,
+            echo_name_1,
+            echo_cost_1,
+            echo_affix_1,
+            echo_cost_2,
+            echo_affix_2,
+            echo_cost_3,
+            echo_affix_3,
+            echo_cost_4,
+            echo_affix_4,
+            echo_cost_5,
+            echo_affix_5,
+        )
 
     def _get_resonator_with_43311_3c_1elem_1attr(
         self,
@@ -382,18 +479,8 @@ class SimulatedResonators:
         main_affix_4c: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
         resonator_element = resonator_information.element
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
 
@@ -403,77 +490,31 @@ class SimulatedResonators:
         echo_cost_4 = "1"
         echo_cost_5 = "1"
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            resonator_element,
-            resonator_sonatas[1],
-            "1",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[2],
-            "2",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "1",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "2",
-        )
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = resonator_element
+        echo_affix_3 = base_affix
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            resonator_element,
+            echo_affix_2,
             echo_cost_3,
-            base_affix,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator_with_43311_3c_2attr(
         self,
@@ -485,17 +526,7 @@ class SimulatedResonators:
         main_affix_4c: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
 
@@ -505,77 +536,31 @@ class SimulatedResonators:
         echo_cost_4 = "1"
         echo_cost_5 = "1"
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[1],
-            "1",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[2],
-            "2",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "1",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "2",
-        )
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = base_affix
+        echo_affix_3 = base_affix
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            base_affix,
+            echo_affix_2,
             echo_cost_3,
-            base_affix,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator_with_43311_3c_2g(
         self,
@@ -587,17 +572,7 @@ class SimulatedResonators:
         main_affix_4c: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
 
@@ -609,77 +584,31 @@ class SimulatedResonators:
 
         main_affix_3c = _(ZhTwEnum.ABBR_ENERGY_REGEN)
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            main_affix_3c,
-            resonator_sonatas[1],
-            "1",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            main_affix_3c,
-            resonator_sonatas[2],
-            "2",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "1",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "2",
-        )
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = main_affix_3c
+        echo_affix_3 = main_affix_3c
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            main_affix_3c,
+            echo_affix_2,
             echo_cost_3,
-            main_affix_3c,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator_with_43311_3c_1g_1attr(
         self,
@@ -691,18 +620,7 @@ class SimulatedResonators:
         main_affix_4c: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
-
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
 
@@ -714,77 +632,31 @@ class SimulatedResonators:
 
         main_affix_3c = _(ZhTwEnum.ABBR_ENERGY_REGEN)
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            main_affix_3c,
-            resonator_sonatas[1],
-            "1",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[2],
-            "2",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "1",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "2",
-        )
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = main_affix_3c
+        echo_affix_3 = base_affix
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            main_affix_3c,
+            echo_affix_2,
             echo_cost_3,
-            base_affix,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator_with_43311_3c_1g_1elem(
         self,
@@ -796,17 +668,8 @@ class SimulatedResonators:
         main_affix_4c: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
         resonator_element = resonator_information.element
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
 
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
@@ -819,77 +682,31 @@ class SimulatedResonators:
 
         main_affix_3c = _(ZhTwEnum.ABBR_ENERGY_REGEN)
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            resonator_element,
-            resonator_sonatas[1],
-            "1",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            main_affix_3c,
-            resonator_sonatas[2],
-            "2",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "1",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "2",
-        )
+        echo_affix_1 = main_affix_4c
+        echo_affix_2 = main_affix_3c
+        echo_affix_3 = resonator_element
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c,
+            echo_affix_1,
             echo_cost_2,
-            resonator_element,
+            echo_affix_2,
             echo_cost_3,
-            main_affix_3c,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator_with_44111(
         self,
@@ -902,17 +719,7 @@ class SimulatedResonators:
         main_affix_4c_2: str,
         echo_name_1: str,
     ):
-        resonator = self._get_empty_resonator(
-            resonator_name, resonator_chain, weapon_name, weapon_tune, echo_name_1
-        )
-
         resonator_information = get_resonator_information(resonator_name)
-        self._update_resonator_by_resonator_information(
-            resonator, resonator_information
-        )
-
-        resonator_sonatas = self.template.get_sonatas(resonator_name)
-
         resonator_base_attr = self.template.get_base_attr(resonator_name)
         base_affix = get_base_affix(resonator_base_attr)
 
@@ -922,77 +729,31 @@ class SimulatedResonators:
         echo_cost_4 = "1"
         echo_cost_5 = "1"
 
-        echo_1 = self.simulated_echoes.get_echo(
-            echo_cost_1,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c_1,
-            resonator_sonatas[0],
-            "1",
-            name=echo_name_1,
-        )
-        echo_2 = self.simulated_echoes.get_echo(
-            echo_cost_2,
-            prefix,
-            resonator_base_attr,
-            main_affix_4c_2,
-            resonator_sonatas[1],
-            "2",
-        )
-        echo_3 = self.simulated_echoes.get_echo(
-            echo_cost_3,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[2],
-            "1",
-        )
-        echo_4 = self.simulated_echoes.get_echo(
-            echo_cost_4,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[3],
-            "2",
-        )
-        echo_5 = self.simulated_echoes.get_echo(
-            echo_cost_5,
-            prefix,
-            resonator_base_attr,
-            base_affix,
-            resonator_sonatas[4],
-            "3",
-        )
+        echo_affix_1 = main_affix_4c_1
+        echo_affix_2 = main_affix_4c_2
+        echo_affix_3 = base_affix
+        echo_affix_4 = base_affix
+        echo_affix_5 = base_affix
 
-        self._update_resonator_by_echoes(
-            resonator, echo_1, echo_2, echo_3, echo_4, echo_5
-        )
-
-        self._add_echo(echo_1)
-        self._add_echo(echo_2)
-        self._add_echo(echo_3)
-        self._add_echo(echo_4)
-        self._add_echo(echo_5)
-
-        resonator[ResonatorTsvColumnEnum.ID.value] = get_resonator_id(
+        return self._get_resonator_with_affixes(
             prefix,
             resonator_name,
             resonator_chain,
+            resonator_information,
             weapon_name,
             weapon_tune,
+            echo_name_1,
             echo_cost_1,
-            main_affix_4c_1,
+            echo_affix_1,
             echo_cost_2,
-            main_affix_4c_2,
+            echo_affix_2,
             echo_cost_3,
-            base_affix,
+            echo_affix_3,
             echo_cost_4,
-            base_affix,
+            echo_affix_4,
             echo_cost_5,
-            base_affix,
+            echo_affix_5,
         )
-
-        return resonator
 
     def _get_resonator(
         self,
@@ -1266,7 +1027,11 @@ class SimulatedResonators:
             self.echoes_id_to_echo
         )
         table = get_calculated_resonators_table_by_resonators_table(
-            resonators_table, echoes_table=echoes_table
+            resonators_table,
+            echoes_table=echoes_table,
+            callable=partial(
+                filter_calculated_resonators, resonator_template=self.template
+            ),
         )
 
         return table
