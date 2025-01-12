@@ -264,6 +264,7 @@ class ZhTwEnum(str, Enum):
     WEAPON_PASSIVE_STAT: str = "固有屬性"
     WEAPON_ATK_P_INCREASE: str = "攻擊提升"
     WEAPON_HP_P_INCREASE: str = "生命提升"
+    WEAPON_CRIT_RATE_INCREASE: str = "暴擊提升"
     WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE: str = "全屬性傷害加成提升"
     WEAPON_ENERGY_REGEN_INCREASE: str = "共鳴效率提升"
 
@@ -496,6 +497,7 @@ class ZhTwEnum(str, Enum):
 
     RESONATOR_WEAPON_RANK_ATK_P: str = "武器諧振攻擊提升"
     RESONATOR_WEAPON_RANK_HP_P: str = "武器諧振生命提升"
+    RESONATOR_WEAPON_RANK_CRIT_RATE: str = "武器諧振暴擊提升"
     RESONATOR_WEAPON_RANK_ENERGY_REGEN: str = "武器諧振共鳴效率提升"
     RESONATOR_WEAPON_RANK_ATTRIBUTE_DMG_BONUS: str = "武器諧振全屬性傷害加成提升"
 
@@ -588,3 +590,5 @@ class ZhTwEnum(str, Enum):
     TIER: str = "Tier"
 
     ECHO_SENTRY_CONSTRUCT: str = "異構武裝"
+    ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
+    ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"

@@ -222,6 +222,9 @@ class CalculatedResonator:
         weapon_rank_hp_p = get_number(
             weapon_table.search(self.weapon_rank, WeaponRankEnum.HP_P)
         )
+        weapon_rank_crit_rate = get_number(
+            weapon_table.search(self.weapon_rank, WeaponRankEnum.CRIT_RATE)
+        )
         weapon_rank_attribute_dmg_bonus = get_number(
             weapon_table.search(self.weapon_rank, WeaponRankEnum.ATTRIBUTE_DMG_BONUS)
         )
@@ -234,6 +237,9 @@ class CalculatedResonator:
         )
         self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_HP_P.value] = (
             weapon_rank_hp_p
+        )
+        self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_RANK_CRIT_RATE.value] = (
+            weapon_rank_crit_rate
         )
         self._new_row[
             CalculatedResonatorTsvColumnEnum.WEAPON_RANK_ATTRIBUTE_DMG_BONUS.value
@@ -253,6 +259,22 @@ class CalculatedResonator:
 
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_INFERNO_RIDER):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
+            ] += get_number("0.12")
+
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_SKILL_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_DRAGON_OF_DIRGE):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
+            ] += get_number("0.12")
+
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
             ] += get_number("0.12")
 
     def _update_by_echo(self, echo_id: str, index: int):
@@ -629,6 +651,9 @@ class CalculatedResonator:
         crit_rate = (
             self._new_row[CalculatedResonatorTsvColumnEnum.BASE_CRIT_RATE.value]
             + self._new_row[CalculatedResonatorTsvColumnEnum.WEAPON_CRIT_RATE.value]
+            + self._new_row[
+                CalculatedResonatorTsvColumnEnum.WEAPON_RANK_CRIT_RATE.value
+            ]
             + self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_CRIT_RATE.value]
             + stat_bonus_crit_rate
         )

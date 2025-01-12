@@ -213,6 +213,7 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
 
     WEAPON_RANK_ATK_P: str = _(ZhTwEnum.RESONATOR_WEAPON_RANK_ATK_P)
     WEAPON_RANK_HP_P: str = _(ZhTwEnum.RESONATOR_WEAPON_RANK_HP_P)
+    WEAPON_RANK_CRIT_RATE: str = _(ZhTwEnum.RESONATOR_WEAPON_RANK_CRIT_RATE)
     WEAPON_RANK_ENERGY_REGEN: str = _(ZhTwEnum.RESONATOR_WEAPON_RANK_ENERGY_REGEN)
     WEAPON_RANK_ATTRIBUTE_DMG_BONUS: str = _(
         ZhTwEnum.RESONATOR_WEAPON_RANK_ATTRIBUTE_DMG_BONUS
@@ -430,6 +431,7 @@ class CalculatedResonatorModel(BaseModel):
 
     weapon_rank_atk_p: str = ""
     weapon_rank_hp_p: str = ""
+    weapon_rank_crit_rate: str = ""
     weapon_rank_energy_regen: str = ""
     weapon_rank_attribute_dmg_bonus: str = ""
 
