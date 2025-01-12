@@ -551,6 +551,7 @@ class ZhTwEnum(str, Enum):
     CAMELLYA: str = "椿"
     ROCCIA: str = "洛可可"
     CARLOTTA: str = "珂萊塔"
+    BRANT: str = "布蘭特"
     ROVER_HAVOC_FEMALE: str = "漂泊者·湮滅(女)"
     ROVER_HAVOC_MALE: str = "漂泊者·湮滅(男)"
 

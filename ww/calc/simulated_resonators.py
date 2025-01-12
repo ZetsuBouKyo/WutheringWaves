@@ -1,13 +1,11 @@
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 from functools import partial
 from typing import Dict, List, Optional, Tuple
 
 import pandas as pd
 
-from ww.calc.calculated_resonators import (
-    get_calculated_resonators_table_by_resonators_table,
-)
-from ww.calc.simulated_echoes import SimulatedEchoes, get_simulated_echo_id
+from ww.calc.calculated_resonators import CalculatedResonators
+from ww.calc.simulated_echoes import SimulatedEchoes
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import EchoesModelEnum, ResonatorEchoTsvColumnEnum
 from ww.model.resonator import (
@@ -20,11 +18,7 @@ from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
 from ww.model.template import TemplateModel
 from ww.model.weapon import WeaponStatEnum
 from ww.tables.echo import EchoTable
-from ww.tables.resonator import (
-    CalculatedResonatorsTable,
-    ResonatorsTable,
-    get_resonator_information,
-)
+from ww.tables.resonator import ResonatorsTable, get_resonator_information
 from ww.tables.weapon import WeaponStatTable
 from ww.utils.number import get_number
 
@@ -893,10 +887,7 @@ class SimulatedResonators:
 
         return resonators
 
-    def get_3_resonators_with_prefix(
-        self, prefix: str
-    ) -> Tuple[Dict[str, str], ResonatorsTable]:
-        resonator_name_to_id = OrderedDict()
+    def get_3_resonators_with_prefix(self, prefix: str) -> ResonatorsTable:
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -919,17 +910,10 @@ class SimulatedResonators:
             )
             resonators.append(resonator_dict)
 
-            # Resonator ID
-            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
-            resonator_name_to_id[resonator_name] = resonator_id
-
         table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return resonator_name_to_id, table
+        return table
 
-    def get_3_resonators_with_half_built_skill_bonus(
-        self,
-    ) -> Tuple[Dict[str, str], ResonatorsTable]:
-        resonator_name_to_id = OrderedDict()
+    def get_3_resonators_with_half_built_skill_bonus(self) -> ResonatorsTable:
         resonators = []
         for resonator in self.template.resonators:
             resonator_name = resonator.resonator_name
@@ -957,12 +941,8 @@ class SimulatedResonators:
             )
             resonators.append(resonator_dict)
 
-            # Resonator ID
-            resonator_id = resonator_dict[ResonatorTsvColumnEnum.ID.value]
-            resonator_name_to_id[resonator_name] = resonator_id
-
         table = get_resonators_table(resonators, self.resonators_table_column_names)
-        return resonator_name_to_id, table
+        return table
 
     def get_resonators_for_echo_comparison_with_prefix(
         self, resonator_name: str, prefix: str
@@ -1022,16 +1002,16 @@ class SimulatedResonators:
 
     def get_calculated_resonators_table(
         self, resonators_table: ResonatorsTable
-    ) -> CalculatedResonatorsTable:
+    ) -> CalculatedResonators:
         echoes_table = self.simulated_echoes.get_simulated_table_with_echoes(
             self.echoes_id_to_echo
         )
-        table = get_calculated_resonators_table_by_resonators_table(
+        calculated_resonators = CalculatedResonators(
             resonators_table,
             echoes_table=echoes_table,
-            callable=partial(
+            callback=partial(
                 filter_calculated_resonators, resonator_template=self.template
             ),
         )
 
-        return table
+        return calculated_resonators

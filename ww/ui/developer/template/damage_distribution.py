@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from enum import Enum
 from typing import List
 
@@ -126,15 +127,19 @@ class QTemplateDamageDistributionTab(QWidget):
             template: TemplateModel = self.q_template_basic_tab.get_template()
 
             simulated_resonators = SimulatedResonators(template)
-            test_resonators, resonators_table = (
-                simulated_resonators.get_3_resonators_with_prefix(prefix)
-            )
-            if len(test_resonators) == 0:
-                return
+            resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
-            calculated_resonators_table = (
+            calculated_resonators = (
                 simulated_resonators.get_calculated_resonators_table(resonators_table)
             )
+            calculated_resonators_table = calculated_resonators.get_table()
+            id_to_name = calculated_resonators.get_id_to_name()
+            test_resonators = OrderedDict()
+            for id, name in id_to_name.items():
+                test_resonators[name] = id
+
+            if len(test_resonators) == 0:
+                return
 
             damage = Damage(
                 monster_id=template.monster_id,

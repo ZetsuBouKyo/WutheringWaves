@@ -43,6 +43,9 @@ resonators = {
     _(ZhTwEnum.YOUHU): BaseResonatorModel(
         name=_(ZhTwEnum.YOUHU), element=_(ZhTwEnum.GLACIO)
     ),
+    _(ZhTwEnum.CARLOTTA): BaseResonatorModel(
+        name=_(ZhTwEnum.CARLOTTA), element=_(ZhTwEnum.GLACIO)
+    ),
     _(ZhTwEnum.CHIXIA): BaseResonatorModel(
         name=_(ZhTwEnum.CHIXIA), element=_(ZhTwEnum.FUSION)
     ),
@@ -54,6 +57,9 @@ resonators = {
     ),
     _(ZhTwEnum.CHANGLI): BaseResonatorModel(
         name=_(ZhTwEnum.CHANGLI), element=_(ZhTwEnum.FUSION)
+    ),
+    _(ZhTwEnum.BRANT): BaseResonatorModel(
+        name=_(ZhTwEnum.BRANT), element=_(ZhTwEnum.FUSION)
     ),
     _(ZhTwEnum.CALCHARO): BaseResonatorModel(
         name=_(ZhTwEnum.CALCHARO), element=_(ZhTwEnum.ELECTRO)
@@ -103,16 +109,13 @@ resonators = {
     _(ZhTwEnum.CAMELLYA): BaseResonatorModel(
         name=_(ZhTwEnum.CAMELLYA), element=_(ZhTwEnum.HAVOC)
     ),
-    _(ZhTwEnum.ROCCIA): BaseResonatorModel(
-        name=_(ZhTwEnum.ROCCIA), element=_(ZhTwEnum.HAVOC)
-    ),
-    _(ZhTwEnum.CARLOTTA): BaseResonatorModel(
-        name=_(ZhTwEnum.CARLOTTA), element=_(ZhTwEnum.GLACIO)
-    ),
     _(ZhTwEnum.ROVER_HAVOC_FEMALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_FEMALE), element=_(ZhTwEnum.HAVOC)
     ),
     _(ZhTwEnum.ROVER_HAVOC_MALE): BaseResonatorModel(
         name=_(ZhTwEnum.ROVER_HAVOC_MALE), element=_(ZhTwEnum.HAVOC)
+    ),
+    _(ZhTwEnum.ROCCIA): BaseResonatorModel(
+        name=_(ZhTwEnum.ROCCIA), element=_(ZhTwEnum.HAVOC)
     ),
 }

@@ -178,15 +178,16 @@ class Docs:
         resonator_template: TemplateModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
-        resonator_ids: List[str],
         resonators_table,
     ):
         template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
         template = get_jinja2_template(template_fpath)
 
-        calculated_resonators_table = (
-            simulated_resonators.get_calculated_resonators_table(resonators_table)
+        calculated_resonators = simulated_resonators.get_calculated_resonators_table(
+            resonators_table
         )
+        calculated_resonators_table = calculated_resonators.get_table()
+        resonator_ids = calculated_resonators.get_ids()
 
         # Resonator damage distribution
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
@@ -262,7 +263,7 @@ class Docs:
         output_fpath: str,
     ):
         simulated_resonators = SimulatedResonators(resonator_template)
-        resonator_ids, resonators_table = (
+        _, resonators_table = (
             simulated_resonators.get_resonators_for_echo_comparison_with_prefix(
                 resonator_name, prefix
             )
@@ -272,7 +273,6 @@ class Docs:
             resonator_template,
             output_fpath,
             simulated_resonators,
-            resonator_ids,
             resonators_table,
         )
 
@@ -306,7 +306,7 @@ class Docs:
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/echo_damage_comparison/{resonator_no}.md"
 
         simulated_resonators = SimulatedResonators(resonator_template)
-        resonator_ids, resonators_table = (
+        _, resonators_table = (
             simulated_resonators.get_resonators_for_echo_comparison_with_half_built_skill_bonus(
                 resonator_name
             )
@@ -316,7 +316,6 @@ class Docs:
             resonator_template,
             output_fpath,
             simulated_resonators,
-            resonator_ids,
             resonators_table,
         )
 
@@ -326,16 +325,17 @@ class Docs:
         output_methods: TemplateHtmlOutputMethodModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
-        resonator_ids: List[str],
         resonators_table,
     ) -> TemplateDamageDistributionModel:
         template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
         template = get_jinja2_template(template_damage_fpath)
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
 
-        calculated_resonators_table = (
-            simulated_resonators.get_calculated_resonators_table(resonators_table)
+        calculated_resonators = simulated_resonators.get_calculated_resonators_table(
+            resonators_table
         )
+        calculated_resonators_table = calculated_resonators.get_table()
+        resonator_ids = calculated_resonators.get_ids()
 
         # Resonator skill damage distribution
         damage = Damage(
@@ -407,17 +407,13 @@ class Docs:
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
     ) -> TemplateDamageDistributionModel:
-        resonator_name_to_id, resonators_table = (
-            simulated_resonators.get_3_resonators_with_prefix(prefix)
-        )
-        resonator_ids = list(resonator_name_to_id.values())
+        resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
         return self.export_template_damage_analysis(
             resonator_template,
             output_methods,
             output_fpath,
             simulated_resonators,
-            resonator_ids,
             resonators_table,
         )
 
@@ -473,17 +469,15 @@ class Docs:
 
         simulated_resonators = SimulatedResonators(resonator_template)
 
-        resonator_name_to_id, resonators_table = (
+        resonators_table = (
             simulated_resonators.get_3_resonators_with_half_built_skill_bonus()
         )
-        resonator_ids = list(resonator_name_to_id.values())
 
         return self.export_template_damage_analysis(
             resonator_template,
             output_methods,
             output_fpath,
             simulated_resonators,
-            resonator_ids,
             resonators_table,
         )
 

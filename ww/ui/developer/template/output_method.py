@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from copy import deepcopy
 from decimal import Decimal
 from functools import partial
@@ -689,18 +690,24 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             template: TemplateModel = self.q_template_basic_tab.get_template()
 
             simulated_resonators = SimulatedResonators(template)
-            resonator_name_to_id, resonators_table = (
-                simulated_resonators.get_3_resonators_with_prefix(prefix)
+            resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
+
+            calculated_resonators = (
+                simulated_resonators.get_calculated_resonators_table(resonators_table)
             )
-            if len(resonator_name_to_id) == 0:
-                return
+            calculated_resonators_table = calculated_resonators.get_table()
+            id_to_name = calculated_resonators.get_id_to_name()
+            resonator_name_to_id = OrderedDict()
+            for id, name in id_to_name.items():
+                resonator_name_to_id[name] = id
+            
+
             resonator_id = resonator_name_to_id.get(resonator_name, None)
             if resonator_id is None:
                 return
 
-            calculated_resonators_table = (
-                simulated_resonators.get_calculated_resonators_table(resonators_table)
-            )
+            if len(resonator_name_to_id) == 0:
+                return
 
             damage = Damage(
                 monster_id=monster_id,

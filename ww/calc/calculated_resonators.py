@@ -1,6 +1,7 @@
 import os
+from collections import OrderedDict
 from pathlib import Path
-from typing import Callable, Optional
+from typing import Callable, Dict, List, Optional
 
 import pandas as pd
 
@@ -900,81 +901,87 @@ class CalculatedResonator:
         ] = stat_bonus_havoc_dmg_res
 
 
-def get_calculated_resonators_dict_by_resonators_table(
-    resonators_table: ResonatorsTable,
-    echoes_table: Optional[EchoesTable] = None,
-    callback: Callable[[dict], bool] = None,
-) -> dict:
-    resonators_df = resonators_table.df
+class CalculatedResonators:
+    def __init__(
+        self,
+        resonators_table: ResonatorsTable,
+        echoes_table: Optional[EchoesTable] = None,
+        callback: Callable[[dict], bool] = None,
+    ):
+        self.resonators_table = resonators_table
+        self.echoes_table = echoes_table
+        self.callback = callback
 
-    calculated_resonators_columns = [e.value for e in CalculatedResonatorTsvColumnEnum]
-    calculated_resonators_dict = {
-        column: [] for column in calculated_resonators_columns
-    }
+        self.init()
 
-    c = 0
-    for _, row in resonators_df.iterrows():
-        c += 1
-        try:
-            new_resonator = CalculatedResonator(row)
-            if echoes_table is not None:
-                new_resonator.echoes_table = echoes_table
-            new_resonator.calculate()
+    def init(self):
+        resonators_df = self.resonators_table.df
 
-            new_resonator_dict = new_resonator.get_row_dict()
-            new_resonator_id = new_resonator_dict.get(
-                CalculatedResonatorTsvColumnEnum.ID.value, None
-            )
+        calculated_resonators_columns = [
+            e.value for e in CalculatedResonatorTsvColumnEnum
+        ]
+        calculated_resonators_dict = {
+            column: [] for column in calculated_resonators_columns
+        }
+        calculated_resonator_id_to_name = OrderedDict()
 
-            if callback is not None:
-                check = callback(new_resonator_dict)
-                if not check:
-                    continue
+        c = 0
+        for _, row in resonators_df.iterrows():
+            c += 1
+            try:
+                new_resonator = CalculatedResonator(row)
+                if self.echoes_table is not None:
+                    new_resonator.echoes_table = self.echoes_table
+                new_resonator.calculate()
 
-            if not new_resonator_id:
-                for col in calculated_resonators_columns:
-                    calculated_resonators_dict[col].append("")
-            else:
-                for col in calculated_resonators_columns:
-                    cell = new_resonator_dict.get(col, None)
-                    calculated_resonators_dict[col].append(cell)
+                new_resonator_dict = new_resonator.get_row_dict()
+                new_resonator_id = new_resonator_dict.get(
+                    CalculatedResonatorTsvColumnEnum.ID.value, None
+                )
+                new_resonator_name = new_resonator_dict.get(
+                    CalculatedResonatorTsvColumnEnum.NAME.value, None
+                )
 
-        except TypeError:
-            continue
-    return calculated_resonators_dict
+                if self.callback is not None:
+                    check = self.callback(new_resonator_dict)
+                    if not check:
+                        continue
+                calculated_resonator_id_to_name[new_resonator_id] = new_resonator_name
 
+                if not new_resonator_id:
+                    for col in calculated_resonators_columns:
+                        calculated_resonators_dict[col].append("")
+                else:
+                    for col in calculated_resonators_columns:
+                        cell = new_resonator_dict.get(col, None)
+                        calculated_resonators_dict[col].append(cell)
 
-def get_calculated_resonators_df_by_resonators_table(
-    resonators_table: ResonatorsTable,
-    echoes_table: Optional[EchoesTable] = None,
-    callback: Callable[[dict], bool] = None,
-) -> pd.DataFrame:
-    calculated_resonators_dict = get_calculated_resonators_dict_by_resonators_table(
-        resonators_table, echoes_table, callback=callback
-    )
+            except TypeError:
+                continue
 
-    calculated_resonators_df = pd.DataFrame(calculated_resonators_dict)
-    return calculated_resonators_df
+        self._id_to_name = calculated_resonator_id_to_name
+        self._dict = calculated_resonators_dict
+        self._df = pd.DataFrame(calculated_resonators_dict)
 
+        self._table = CalculatedResonatorsTable()
+        self._table.df = self._df
 
-def get_calculated_resonators_table_by_resonators_table(
-    resonators_table: ResonatorsTable, echoes_table: Optional[EchoesTable] = None
-) -> CalculatedResonatorsTable:
-    if echoes_table is None:
-        echoes_table = EchoesTable()
+    def get_ids(self) -> List[str]:
+        return list(self._id_to_name.keys())
 
-    df = get_calculated_resonators_df_by_resonators_table(
-        resonators_table, echoes_table=echoes_table
-    )
+    def get_id_to_name(self) -> Dict[str, str]:
+        return self._id_to_name
 
-    table = CalculatedResonatorsTable()
-    table.df = df
-    return table
+    def get_df(self) -> pd.DataFrame:
+        return self._df
+
+    def get_table(self) -> CalculatedResonatorsTable:
+        return self._table
 
 
 def get_calculated_resonators_df() -> pd.DataFrame:
     resonators_table = ResonatorsTable()
-    return get_calculated_resonators_df_by_resonators_table(resonators_table)
+    return CalculatedResonators(resonators_table).get_df()
 
 
 def calc():
