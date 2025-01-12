@@ -76,7 +76,8 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
             if "-" in skill_id:
                 skill_id_split: str = skill_id.split("-")
                 if skill_id_split[-1].isdigit():
-                    skill_name = [0]
+                    skill_name_split = skill_id_split[:-1]
+                    skill_name = "".join(skill_name_split)
 
             if skills_dict.get(skill_name, None) is None:
                 skills_dict[skill_name] = TemplateResonatorSkillDamageDistributionModel(
