@@ -15,7 +15,7 @@ from ww.model.resonator import (
     ResonatorTsvColumnEnum,
 )
 from ww.model.resonator_skill import ResonatorSkillBonusTypeEnum
-from ww.model.template import TemplateModel
+from ww.model.template import TemplateModel, TemplateResonatorModel
 from ww.model.weapon import WeaponStatEnum
 from ww.tables.echo import EchoTable
 from ww.tables.resonator import ResonatorsTable, get_resonator_information
@@ -750,29 +750,54 @@ class SimulatedResonators:
         )
 
     def _get_resonator(
-        self,
-        prefix: str,
-        resonator_name: str,
-        resonator_chain: str,
-        weapon_name: str,
-        weapon_tune: str,
-        echo_name_1: str,
-    ) -> dict:
+        self, prefix: str, resonator: TemplateResonatorModel
+    ) -> Optional[dict]:
+        resonator_name = resonator.resonator_name
+        resonator_chain = resonator.resonator_chain
+        resonator_echo_1 = resonator.resonator_echo_1
+        weapon_name = resonator.resonator_weapon_name
+        weapon_tune = resonator.resonator_weapon_rank
+
+        if not resonator_name or not weapon_name or not weapon_tune:
+            return
+
         if self._is_weapon_crit_rate(weapon_name):
             main_affix_4c = _(ZhTwEnum.ABBR_CRIT_DMG)
         else:
             main_affix_4c = _(ZhTwEnum.ABBR_CRIT_RATE)
 
-        resonator = self._get_resonator_with_43311_3c_2elem(
-            prefix,
-            resonator_name,
-            resonator_chain,
-            weapon_name,
-            weapon_tune,
-            main_affix_4c,
-            echo_name_1,
-        )
-        return resonator
+        if resonator.are_custom_echoes():
+            resonator_information = get_resonator_information(resonator_name)
+            resonator_dict = self._get_resonator_with_affixes(
+                prefix,
+                resonator_name,
+                resonator_chain,
+                resonator_information,
+                weapon_name,
+                weapon_tune,
+                resonator_echo_1,
+                resonator.resonator_echo_cost_1,
+                resonator.resonator_echo_affix_1,
+                resonator.resonator_echo_cost_2,
+                resonator.resonator_echo_affix_2,
+                resonator.resonator_echo_cost_3,
+                resonator.resonator_echo_affix_3,
+                resonator.resonator_echo_cost_4,
+                resonator.resonator_echo_affix_4,
+                resonator.resonator_echo_cost_5,
+                resonator.resonator_echo_affix_5,
+            )
+        else:
+            resonator_dict = self._get_resonator_with_43311_3c_2elem(
+                prefix,
+                resonator_name,
+                resonator_chain,
+                weapon_name,
+                weapon_tune,
+                main_affix_4c,
+                resonator_echo_1,
+            )
+        return resonator_dict
 
     def _get_resonators(
         self,
@@ -890,24 +915,9 @@ class SimulatedResonators:
     def get_3_resonators_with_prefix(self, prefix: str) -> ResonatorsTable:
         resonators = []
         for resonator in self.template.resonators:
-            resonator_name = resonator.resonator_name
-            resonator_chain = resonator.resonator_chain
-            resonator_echo_1 = resonator.resonator_echo_1
-            weapon_name = resonator.resonator_weapon_name
-            weapon_tune = resonator.resonator_weapon_rank
-
-            if not resonator_name or not weapon_name or not weapon_tune:
+            resonator_dict = self._get_resonator(prefix, resonator)
+            if not resonator_dict:
                 continue
-
-            # Table
-            resonator_dict = self._get_resonator(
-                prefix,
-                resonator_name,
-                resonator_chain,
-                weapon_name,
-                weapon_tune,
-                resonator_echo_1,
-            )
             resonators.append(resonator_dict)
 
         table = get_resonators_table(resonators, self.resonators_table_column_names)
@@ -916,29 +926,16 @@ class SimulatedResonators:
     def get_3_resonators_with_half_built_skill_bonus(self) -> ResonatorsTable:
         resonators = []
         for resonator in self.template.resonators:
-            resonator_name = resonator.resonator_name
-            resonator_chain = resonator.resonator_chain
-            resonator_echo_1 = resonator.resonator_echo_1
-            weapon_name = resonator.resonator_weapon_name
-            weapon_tune = resonator.resonator_weapon_rank
-
-            if not resonator_name:
-                continue
-
             prefix = get_prefix_by_resonator_skill_bonus(
                 resonator.resonator_skill_bonus
             )
             if prefix is None:
                 continue
 
-            resonator_dict = self._get_resonator(
-                prefix,
-                resonator_name,
-                resonator_chain,
-                weapon_name,
-                weapon_tune,
-                resonator_echo_1,
-            )
+            resonator_dict = self._get_resonator(prefix, resonator)
+            if not resonator_dict:
+                continue
+
             resonators.append(resonator_dict)
 
         table = get_resonators_table(resonators, self.resonators_table_column_names)

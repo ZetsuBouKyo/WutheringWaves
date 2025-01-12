@@ -26,6 +26,8 @@ from ww.ui.combobox import QAutoCompleteComboBox
 from ww.ui.table import QBaseTableWidget
 from ww.ui.table.cell import set_item
 from ww.ui.table.cell.combobox import (
+    set_echo_affix_combobox,
+    set_echo_cost_combobox,
     set_echo_name_combobox,
     set_echo_sonata_combobox,
     set_resonator_base_attr_combobox,
@@ -150,6 +152,46 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
                     TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_5.value
                 ):
                     resonator.resonator_echo_sonata_5 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_1.value
+                ):
+                    resonator.resonator_echo_cost_1 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_2.value
+                ):
+                    resonator.resonator_echo_cost_2 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_3.value
+                ):
+                    resonator.resonator_echo_cost_3 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_4.value
+                ):
+                    resonator.resonator_echo_cost_4 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_5.value
+                ):
+                    resonator.resonator_echo_cost_5 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_1.value
+                ):
+                    resonator.resonator_echo_affix_1 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_2.value
+                ):
+                    resonator.resonator_echo_affix_2 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_3.value
+                ):
+                    resonator.resonator_echo_affix_3 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_4.value
+                ):
+                    resonator.resonator_echo_affix_4 = cell
+                elif col == self.get_column_id(
+                    TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_5.value
+                ):
+                    resonator.resonator_echo_affix_5 = cell
 
             data.append(resonator)
         return data
@@ -225,6 +267,56 @@ class QTemplateTabResonatorTable(QBaseTableWidget):
             == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_SONATA_5.value
         ):
             set_echo_sonata_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_1.value
+        ):
+            set_echo_cost_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_2.value
+        ):
+            set_echo_cost_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_3.value
+        ):
+            set_echo_cost_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_4.value
+        ):
+            set_echo_cost_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_COST_5.value
+        ):
+            set_echo_cost_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_1.value
+        ):
+            set_echo_affix_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_2.value
+        ):
+            set_echo_affix_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_3.value
+        ):
+            set_echo_affix_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_4.value
+        ):
+            set_echo_affix_combobox(self, row, col, value)
+        elif (
+            self.column_names[col]
+            == TemplateResonatorTableColumnEnum.RESONATOR_ECHO_AFFIX_5.value
+        ):
+            set_echo_affix_combobox(self, row, col, value)
         else:
             set_item(self, row, col, value)
 

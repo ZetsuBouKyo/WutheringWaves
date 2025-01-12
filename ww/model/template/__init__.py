@@ -71,6 +71,16 @@ class TemplateResonatorModel(BaseModel):
     resonator_echo_sonata_3: str = ""
     resonator_echo_sonata_4: str = ""
     resonator_echo_sonata_5: str = ""
+    resonator_echo_cost_1: str = ""
+    resonator_echo_cost_2: str = ""
+    resonator_echo_cost_3: str = ""
+    resonator_echo_cost_4: str = ""
+    resonator_echo_cost_5: str = ""
+    resonator_echo_affix_1: str = ""
+    resonator_echo_affix_2: str = ""
+    resonator_echo_affix_3: str = ""
+    resonator_echo_affix_4: str = ""
+    resonator_echo_affix_5: str = ""
 
     def check(cls) -> bool:
         if not cls.resonator_name:
@@ -88,6 +98,20 @@ class TemplateResonatorModel(BaseModel):
             and cls.resonator_echo_sonata_5
         )
 
+    def are_custom_echoes(cls) -> bool:
+        return (
+            cls.resonator_echo_cost_1
+            and cls.resonator_echo_cost_2
+            and cls.resonator_echo_cost_3
+            and cls.resonator_echo_cost_4
+            and cls.resonator_echo_cost_5
+            and cls.resonator_echo_affix_1
+            and cls.resonator_echo_affix_2
+            and cls.resonator_echo_affix_3
+            and cls.resonator_echo_affix_4
+            and cls.resonator_echo_affix_5
+        )
+
     def get_row(cls):
         resonator_inherent_skill_1 = cls.resonator_inherent_skill_1
         if resonator_inherent_skill_1 is None:
@@ -100,6 +124,7 @@ class TemplateResonatorModel(BaseModel):
             resonator_inherent_skill_2 = ""
         else:
             resonator_inherent_skill_2 = str(int(resonator_inherent_skill_2))
+
         return [
             cls.resonator_name,
             cls.resonator_chain,
@@ -116,6 +141,16 @@ class TemplateResonatorModel(BaseModel):
             cls.resonator_echo_sonata_3,
             cls.resonator_echo_sonata_4,
             cls.resonator_echo_sonata_5,
+            cls.resonator_echo_cost_1,
+            cls.resonator_echo_cost_2,
+            cls.resonator_echo_cost_3,
+            cls.resonator_echo_cost_4,
+            cls.resonator_echo_cost_5,
+            cls.resonator_echo_affix_1,
+            cls.resonator_echo_affix_2,
+            cls.resonator_echo_affix_3,
+            cls.resonator_echo_affix_4,
+            cls.resonator_echo_affix_5,
         ]
 
     def get_sonatas(cls) -> List[str]:

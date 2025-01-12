@@ -4,7 +4,13 @@ from PySide2.QtWidgets import QTableWidget
 
 from ww.crud import get_actions, get_buff_types, get_elements, get_skill_base_attributes
 from ww.crud.buff import get_buff_sources, get_buff_targets, get_skill_bonus_types
-from ww.crud.echo import get_echo_names, get_echo_sonatas, get_echoes
+from ww.crud.echo import (
+    get_echo_affixes,
+    get_echo_costs,
+    get_echo_names,
+    get_echo_sonatas,
+    get_echoes,
+)
 from ww.crud.monster import get_monster_ids
 from ww.crud.resonator import (
     get_resonator_base_attrs,
@@ -232,6 +238,30 @@ def set_echo_name_combobox(
 ) -> QAutoCompleteComboBox:
     return set_combobox(
         table, row, column, value, [], getOptions=get_echo_names, toolTip=toolTip
+    )
+
+
+def set_echo_cost_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_echo_costs, toolTip=toolTip
+    )
+
+
+def set_echo_affix_combobox(
+    table: QTableWidget,
+    row: int,
+    column: int,
+    value: str,
+    toolTip: Optional[str] = None,
+) -> QAutoCompleteComboBox:
+    return set_combobox(
+        table, row, column, value, [], getOptions=get_echo_affixes, toolTip=toolTip
     )
 
 
