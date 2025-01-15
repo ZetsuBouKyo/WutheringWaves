@@ -603,3 +603,7 @@ class ZhTwEnum(str, Enum):
     ECHO_SENTRY_CONSTRUCT: str = "異構武裝"
     ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
     ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"
+
+    DOCS_RESONATOR_OUTLINE_1: str = "以隊伍為基準比較DPS"
+    DOCS_RESONATOR_OUTLINE_2_1: str = "以"
+    DOCS_RESONATOR_OUTLINE_2_2: str = "為基準比較DPS"
