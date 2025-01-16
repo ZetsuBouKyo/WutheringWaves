@@ -604,6 +604,9 @@ class ZhTwEnum(str, Enum):
     ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
     ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"
 
-    DOCS_RESONATOR_OUTLINE_1: str = "以隊伍為基準比較DPS"
-    DOCS_RESONATOR_OUTLINE_2_1: str = "以"
-    DOCS_RESONATOR_OUTLINE_2_2: str = "為基準比較DPS"
+    DOCS_RESONATOR_OUTLINE_1: str = (
+        "各模板內有詳細的傷害分析，不同數值聲骸傷害試算、3C與4C聲骸比較、技能占比、技能種類占比、技能加成種類占比、輸出手法流程摘要與秒數、技能傷害計算及公式。"
+    )
+    DOCS_RESONATOR_OUTLINE_2: str = "以隊伍為基準比較DPS"
+    DOCS_RESONATOR_OUTLINE_3_1: str = "以"
+    DOCS_RESONATOR_OUTLINE_3_2: str = "為基準比較DPS"
