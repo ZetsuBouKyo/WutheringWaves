@@ -6,17 +6,23 @@
 - [{{template_id}}]({{template_id_to_relative_url[template_id]}})
 {% endfor -%}
 
-{% if resonator_comparisons %}
+## {{_(ZhTwEnum.DAMAGE_COMPARE)}}
+
+{% if resonator_comparisons -%}
 {% for comparison in resonator_comparisons -%}
 {% set _md5 = comparison.get_md5() -%}
 {% set no = resonator_no %}
-## {{comparison.title}}
+
+### {{comparison.title}}
+
 {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_2)}}
+
 - [{{_(ZhTwEnum.ECHOES_THEORY_1)}}]({{get_team_dps_comparison_url(_md5, "theory_1", no)}})
 - [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}]({{get_team_dps_comparison_url(_md5, "half_built_small", no)}})
 - [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}]({{get_team_dps_comparison_url(_md5, "half_built_skill_bonus", no)}})
 
 {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_3_1)}} {{resonator_name}} {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_3_2)}}
+
 - [{{_(ZhTwEnum.ECHOES_THEORY_1)}}]({{get_resonator_dps_comparison_url(_md5, "theory_1", no)}})
 - [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}]({{get_resonator_dps_comparison_url(_md5, "half_built_small", no)}})
 {% set _url = get_resonator_dps_comparison_url(_md5, "half_built_skill_bonus", no) -%}
