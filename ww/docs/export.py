@@ -7,6 +7,7 @@ import yaml
 
 from ww.calc.damage import Damage
 from ww.calc.simulated_resonators import SimulatedResonators
+from ww.crud.resonator import get_resonator_names
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
 from ww.html.image.damage import get_max_damage
@@ -36,7 +37,7 @@ from ww.model.template import (
     TemplateHtmlOutputMethodModel,
     TemplateModel,
 )
-from ww.tables.resonator import get_resonator_information
+from ww.tables.resonator import ResonatorSkillTable, get_resonator_information
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
     get_percentage_str,
@@ -659,15 +660,19 @@ class Docs:
         template = get_jinja2_template(template_fpath)
         comparisons = self._docs_model.comparisons
 
-        for resonator_name, template_ids in resonator_name_to_template_ids.items():
+        resonator_names = get_resonator_names()
+        for resonator_name in resonator_names:
+            template_ids = resonator_name_to_template_ids.get(resonator_name, [])
             resonator_info = self._get_resonator_information(resonator_name)
             resonator_no = resonator_info.no
             resonator_comparisons = comparisons.get(resonator_name, None)
+            resonator_skills = ResonatorSkillTable(resonator_name).get_skills_model()
 
             html_str = template.render(
                 resonator_no=resonator_no,
                 resonator_name=resonator_name,
                 resonator_comparisons=resonator_comparisons,
+                resonator_skills=resonator_skills,
                 template_ids=template_ids,
                 template_id_to_relative_url=template_id_to_relative_url,
                 get_resonator_dps_comparison_url=get_resonator_dps_comparison_url,
@@ -719,11 +724,18 @@ class Docs:
 
         template = get_jinja2_template(template_fpath)
 
-        resonator_names = list(resonator_name_to_template_ids.keys())
+        resonator_names = [
+            name
+            for name in get_resonator_names()
+            if name
+            not in [_(ZhTwEnum.ROVER_SPECTRO_FEMALE), _(ZhTwEnum.ROVER_HAVOC_FEMALE)]
+        ]
+        calculated_resonator_names = list(resonator_name_to_template_ids.keys())
         resonator_names.sort(key=lambda name: self._get_resonator_information(name).no)
 
         html_str = template.render(
             resonator_names=resonator_names,
+            calculated_resonator_names=calculated_resonator_names,
             get_resonator_icon_url=get_resonator_icon_url,
             get_resonator_outline_url=get_resonator_outline_url,
             get_resonator_information=self._get_resonator_information,

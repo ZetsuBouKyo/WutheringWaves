@@ -1,14 +1,17 @@
 # {{resonator_name}}
 
-## {{_(ZhTwEnum.TEMPLATE)}}
+{% if template_ids -%}
+## {{_(ZhTwEnum.DAMAGE_ANALYSIS)}}
+
 {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_1)}}
 {% for template_id in template_ids %}
 - [{{template_id}}]({{template_id_to_relative_url[template_id]}})
 {% endfor -%}
-
-## {{_(ZhTwEnum.DAMAGE_COMPARE)}}
+{% endif %}
 
 {% if resonator_comparisons -%}
+## {{_(ZhTwEnum.DAMAGE_COMPARE)}}
+
 {% for comparison in resonator_comparisons -%}
 {% set _md5 = comparison.get_md5() -%}
 {% set no = resonator_no %}
@@ -29,3 +32,144 @@
 - [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}]({{_url}})
 {% endfor %}
 {% endif %}
+
+## {{_(ZhTwEnum.RESONATOR_SKILL_DATA)}}
+
+<div class="wuwa-container wuwa-overflow-x">
+  <table class="wuwa wuwa-w100p wuwa-white">
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_TYPE_ZH_TW)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_PRIMARY_KEY)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_BONUS_TYPE)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_BASE_ATTR_ZH_TW)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_RESONANCE_LIBERATION_ENERGY)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_RESONATING_SPIN_CONCERTO_ENERGY)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV1)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV2)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV3)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV4)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV5)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV6)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV7)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV8)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV9)}}</td>
+      <td class="wuwa wuwa-px16 wuwa-py4">{{_(ZhTwEnum.RESONATOR_SKILL_LV10)}}</td>
+    </tr>
+    {% for skill in resonator_skills -%}
+    <tr>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.skill_type %}
+        {{skill.skill_type}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.skill_name %}
+        {{skill.skill_name}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.skill_bonus_type %}
+        {{skill.skill_bonus_type}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.base_attribute %}
+        {{skill.base_attribute}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.resonance_energy %}
+        {{skill.resonance_energy}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.concerto_energy %}
+        {{skill.concerto_energy}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_1 %}
+        {{skill.lv_1}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_2 %}
+        {{skill.lv_2}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_3 %}
+        {{skill.lv_3}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_4 %}
+        {{skill.lv_4}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_5 %}
+        {{skill.lv_5}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_6 %}
+        {{skill.lv_6}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_7 %}
+        {{skill.lv_7}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_8 %}
+        {{skill.lv_8}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_9 %}
+        {{skill.lv_9}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+      <td class="wuwa wuwa-px16 wuwa-py4">
+        {% if skill.lv_10 %}
+        {{skill.lv_10}}
+        {% else %}
+        &nbsp;
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>

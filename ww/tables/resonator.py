@@ -13,7 +13,7 @@ from ww.model.resonator import (
     ResonatorTsvColumnEnum,
     ResonatorTsvModel,
 )
-from ww.model.resonator_skill import ResonatorSkillTsvColumnEnum
+from ww.model.resonator_skill import ResonatorSkillModel, ResonatorSkillTsvColumnEnum
 from ww.tables.crud import get_row, search
 from ww.utils.pd import get_empty_df, safe_get_df
 
@@ -99,6 +99,54 @@ class ResonatorSkillTable:
 
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value)
+
+    def get_skills_model(self) -> List[ResonatorSkillModel]:
+        skills = []
+        for _, row in self.df.iterrows():
+            skill_type = row.get(ResonatorSkillTsvColumnEnum.TYPE_ZH_TW.value, "")
+            skill_name = row.get(ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value, "")
+            skill_bonus_type = row.get(
+                ResonatorSkillTsvColumnEnum.SKILL_BONUS_TYPE.value, ""
+            )
+            base_attribute = row.get(ResonatorSkillTsvColumnEnum.BASE_ATTR.value, "")
+            resonance_energy = row.get(
+                ResonatorSkillTsvColumnEnum.RESONANCE_LIBERATION_ENERGY.value, ""
+            )
+            concerto_energy = row.get(
+                ResonatorSkillTsvColumnEnum.RESONATING_SPIN_CONCERTO_ENERGY.value, ""
+            )
+            lv_1 = row.get(ResonatorSkillTsvColumnEnum.LV1.value, "")
+            lv_2 = row.get(ResonatorSkillTsvColumnEnum.LV2.value, "")
+            lv_3 = row.get(ResonatorSkillTsvColumnEnum.LV3.value, "")
+            lv_4 = row.get(ResonatorSkillTsvColumnEnum.LV4.value, "")
+            lv_5 = row.get(ResonatorSkillTsvColumnEnum.LV5.value, "")
+            lv_6 = row.get(ResonatorSkillTsvColumnEnum.LV6.value, "")
+            lv_7 = row.get(ResonatorSkillTsvColumnEnum.LV7.value, "")
+            lv_8 = row.get(ResonatorSkillTsvColumnEnum.LV8.value, "")
+            lv_9 = row.get(ResonatorSkillTsvColumnEnum.LV9.value, "")
+            lv_10 = row.get(ResonatorSkillTsvColumnEnum.LV10.value, "")
+
+            skill = ResonatorSkillModel(
+                skill_type=skill_type,
+                skill_name=skill_name,
+                skill_bonus_type=skill_bonus_type,
+                base_attribute=base_attribute,
+                resonance_energy=resonance_energy,
+                concerto_energy=concerto_energy,
+                lv_1=lv_1,
+                lv_2=lv_2,
+                lv_3=lv_3,
+                lv_4=lv_4,
+                lv_5=lv_5,
+                lv_6=lv_6,
+                lv_7=lv_7,
+                lv_8=lv_8,
+                lv_9=lv_9,
+                lv_10=lv_10,
+            )
+
+            skills.append(skill)
+        return skills
 
 
 class ResonatorsTable:

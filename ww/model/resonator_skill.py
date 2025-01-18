@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pydantic import BaseModel
+
 from ww.locale import ZhTwEnum, _
 
 
@@ -79,3 +81,22 @@ class ResonatorSkillTsvColumnEnum(str, Enum):
     HEALING: str = _(ZhTwEnum.RESONATOR_SKILL_HEALING)
     IGNORE_DEF: str = _(ZhTwEnum.RESONATOR_SKILL_IGNORE_DEF)
     REDUCE_RES: str = _(ZhTwEnum.RESONATOR_SKILL_REDUCE_RES)
+
+
+class ResonatorSkillModel(BaseModel):
+    skill_type: str = ""
+    skill_name: str = ""
+    skill_bonus_type: str = ""
+    base_attribute: str = ""
+    resonance_energy: str = ""
+    concerto_energy: str = ""
+    lv_1: str = ""
+    lv_2: str = ""
+    lv_3: str = ""
+    lv_4: str = ""
+    lv_5: str = ""
+    lv_6: str = ""
+    lv_7: str = ""
+    lv_8: str = ""
+    lv_9: str = ""
+    lv_10: str = ""

@@ -9,6 +9,10 @@ div.wuwa-container {
   box-sizing: content-box;
 }
 
+.wuwa-overflow-x {
+  overflow-x: auto;
+}
+
 .wuwa-h30 {
   height: 30px;
 }
@@ -85,6 +89,7 @@ table.wuwa {
   border: 1px rgb(100, 100, 100) solid;
   width: 100%;
   overflow-x: auto;
+  white-space: nowrap;
 }
 
 td.wuwa,
