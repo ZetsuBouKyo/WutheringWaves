@@ -202,24 +202,21 @@ class Docs:
                 continue
             damage_distributions.append(dmg_distri)
 
-        resonators_info = {}
         damages = []
+        resonator_models: Dict[str, TemplateHtmlResonatorModel] = {}
         for damage_distribution in damage_distributions:
             for (
                 resonator_damage_distribution
             ) in damage_distribution.resonators.values():
                 resonator_id = resonator_damage_distribution.resonator_id
-                resonator_name = resonator_damage_distribution.resonator_name
-                resonator_info = resonators_info.get(resonator_name, None)
-                if resonator_info is None:
-                    resonator_info = merge_resonator_model(
-                        resonator_id,
-                        resonators_table,
-                        calculated_resonators_table,
-                        is_docs=True,
-                    )
-                    if resonator_info:
-                        resonators_info[resonator_name] = resonator_info
+                resonator_model = merge_resonator_model(
+                    resonator_id,
+                    resonators_table,
+                    calculated_resonators_table,
+                    is_docs=True,
+                )
+                resonator_models[resonator_id] = resonator_model
+
                 damages.append(resonator_damage_distribution.damage)
 
         damage_distributions.sort(
@@ -230,17 +227,12 @@ class Docs:
 
         html_str = template.render(
             template=resonator_template,
-            calculated_resonators_table=calculated_resonators_table,
-            resonators_table=resonators_table,
             resonator_ids=resonator_ids,
-            resonators_info=resonators_info,
+            resonator_models=resonator_models,
             damage_distributions=damage_distributions,
             base_damage=base_damage,
-            get_element_class_name=get_element_class_name,
             get_percentage_str=get_percentage_str,
             to_number_string=to_number_string,
-            to_percentage_str=to_percentage_str,
-            merge_resonator_model=merge_resonator_model,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )

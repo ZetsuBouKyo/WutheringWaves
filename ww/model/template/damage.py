@@ -35,8 +35,8 @@ class TemplateResonatorSkillDamageDistributionModel(BaseModel):
 
 
 class TemplateResonatorDamageDistributionModel(BaseModel):
-    resonator_name: str = ""
     resonator_id: str = ""
+    resonator_name: str = ""
 
     basic: Decimal = Decimal("0.0")
     heavy: Decimal = Decimal("0.0")
