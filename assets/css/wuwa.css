@@ -421,6 +421,9 @@ div.wuwa-barh-damage-value-in {
   margin-left: auto;
   margin-right: 8px;
   display: flex;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0px 8px;
 }
 
 div.wuwa-barh-damage-value-out {
@@ -428,6 +431,9 @@ div.wuwa-barh-damage-value-out {
   display: flex;
   color: rgb(240, 240, 240);
   align-self: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0px 8px;
 }
 
 div.wuwa-barh-id {
