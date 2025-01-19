@@ -246,6 +246,10 @@ class TemplateModel(BaseModel):
     resonators: List[TemplateResonatorModel] = []
     rows: List[TemplateRowModel] = []
 
+    def get_title(cls) -> str:
+        resonator_names = [name for name in cls.get_resonator_names() if name]
+        return ", ".join(resonator_names)
+
     def get_md5(cls) -> str:
         return get_md5(cls.id)
 
