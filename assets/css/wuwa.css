@@ -438,6 +438,7 @@ div.wuwa-barh-damage-value-out {
   overflow: hidden;
   white-space: nowrap;
   padding: 0px 8px;
+  max-width: 48%;
 }
 
 div.wuwa-barh-id {

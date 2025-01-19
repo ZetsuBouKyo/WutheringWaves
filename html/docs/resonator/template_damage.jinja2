@@ -538,7 +538,7 @@
             {% set base_damage = resonator_damage_distribution.get_resonator_skill_base_damage(ResonatorSkillTypeEnum)
             -%}
             {% set percentage = damage / base_damage -%}
-            {% set in_out = 0.4 -%}
+            {% set in_out = 0.5 -%}
             {% set black_elements = ['aero', 'spectro'] -%}
             <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
@@ -587,7 +587,7 @@
             {% set base_damage = resonator_damage_distribution.get_resonator_skill_base_damage(ResonatorSkillTypeEnum)
             -%}
             {% set percentage = damage / base_damage -%}
-            {% set in_out = 0.4 -%}
+            {% set in_out = 0.5 -%}
             {% set black_elements = ['aero', 'spectro'] -%}
             <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-{{element}}"
               style="width: {{get_percentage_str(damage, base_damage)}};">
