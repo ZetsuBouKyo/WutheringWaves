@@ -46,9 +46,57 @@
 </div>
 </div>
 
+## {{_(ZhTwEnum.BUFF_DAMAGE_DISTRIBUTION)}}
+<div class="wuwa-container">
+  <div class="wuwa-flex-col">
+    <div class="wuwa-barh">
+      <div class="wuwa-flex-col">
+        <div class="wuwa-barh-row wuwa-h40 wuwa-margin-bottom-24">
+          <div class="wuwa-flex-col">
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEMPLATE_ID)}}: {{damage_distribution.template_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.MONSTER_ID)}}:
+              {{damage_distribution.monster_id}}</div>
+            <div class="wuwa-barh-id wuwa-fs5">{{_(ZhTwEnum.TEAM_DAMAGE)}}:
+              {{to_number_string(damage_distribution.damage)}}</div>
+          </div>
+        </div>
+        {% set buff_damage_base = damage_distribution.damage - damage_distributions_with_buffs[0][1].damage -%}
+        {% for buff_name, buff_damage_distribution in damage_distributions_with_buffs -%}
+        <div class="wuwa-barh-row wuwa-border-left">
+          <div class="wuwa-barh-damage-100">
+            {% set buff_damage = damage_distribution.damage - buff_damage_distribution.damage -%}
+            {% set percentage = buff_damage / buff_damage_base -%}
+            {% set percentage_str = get_percentage_str(buff_damage, buff_damage_base) -%}
+            {% set buff_percentage_str = get_percentage_str(buff_damage, damage_distribution.damage) -%}
+            {% set in_out = 0.5 -%}
+            <div class="wuwa-barh-damage wuwa-h30 wuwa-barh-corner wuwa-bg-white" style="width: {{percentage_str}};"
+              title="{{buff_name}} {{to_number_string(buff_damage)}} ({{buff_percentage_str}})">
+              {% if percentage >= in_out -%}
+              <div class="wuwa-barh-damage-value-in wuwa-black">
+                {{buff_name}}
+                {{to_number_string(buff_damage)}} ({{buff_percentage_str}})
+              </div>
+              {% endif -%}
+            </div>
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out"
+              title="{{buff_name}} {{to_number_string(buff_damage)}} ({{buff_percentage_str}})">
+              {{buff_name}}
+              {{to_number_string(buff_damage)}} ({{buff_percentage_str}})
+          </div>
+          {% endif -%}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</div>
+
+## {{_(ZhTwEnum.RESONATOR)}}
+
 {% for name in template.get_resonator_names() -%}
 {% set resonator_model = resonator_models[name] -%}
-## {{resonator_model.name}}
+### {{resonator_model.name}}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-title">
     <div class="wuwa-resonator-info-row-cell">
@@ -249,7 +297,7 @@
   </div>
 </div>
 
-### {{_(ZhTwEnum.ECHO)}}
+#### {{_(ZhTwEnum.ECHO)}}
 <div class="wuwa-container">
   <div class="wuwa-resonator-info-table">
     <table class="wuwa wuwa-w50p wuwa-white wuwa-margin-right-12">
@@ -414,7 +462,7 @@
   </div>
 </div>
 
-### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
+#### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
 {% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
 {% set resonator_skill_damage_distribution = damage_distribution.resonators[resonator_model.name].get_skill_damages()
 -%}
@@ -465,7 +513,7 @@
 </div>
 </div>
 
-### {{_(ZhTwEnum.SKILL_TYPE_DAMAGE_DISTRIBUTION)}}
+#### {{_(ZhTwEnum.SKILL_TYPE_DAMAGE_DISTRIBUTION)}}
 {% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
@@ -514,7 +562,7 @@
 </div>
 </div>
 
-### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
+#### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
 {% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
@@ -602,7 +650,7 @@
   {% endfor %}
 </div>
 
-## {{_(ZhTwEnum.DAMAGE_LIST)}}
+### {{_(ZhTwEnum.DAMAGE_LIST)}}
 
 <div class="wuwa-container">
   {% for row in calculated_rows -%}
@@ -681,7 +729,7 @@
   {% endfor %}
 </div>
 
-## {{_(ZhTwEnum.DETAILED_DAMAGE)}}
+### {{_(ZhTwEnum.DETAILED_DAMAGE)}}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     {% for row in calculated_rows -%}

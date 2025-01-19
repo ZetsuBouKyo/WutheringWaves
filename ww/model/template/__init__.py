@@ -198,10 +198,13 @@ class TemplateRowModel(BaseModel):
     frame: str = ""
     comment: str = ""
 
-    def get_labels_str(cls):
+    def get_labels_str(cls) -> str:
         return ", ".join(cls.labels)
 
-    def get_buffs_str(cls):
+    def get_buff_names(cls) -> List[str]:
+        return [buff.name for buff in cls.buffs if buff.name]
+
+    def get_buffs_str(cls) -> str:
         buff_data = {e.value: [] for e in TemplateBuffTableColumnEnum}
 
         for buff in cls.buffs:
@@ -252,6 +255,14 @@ class TemplateModel(BaseModel):
 
     def get_md5(cls) -> str:
         return get_md5(cls.id)
+
+    def get_buff_names(cls) -> List[str]:
+        buffs_set = set()
+        for row in cls.rows:
+            buffs_set |= set(row.get_buff_names())
+        buffs = list(buffs_set)
+        buffs.sort()
+        return buffs
 
     def get_label(cls, label_name: str) -> Optional[TemplateLabelModel]:
         for label in cls.labels:

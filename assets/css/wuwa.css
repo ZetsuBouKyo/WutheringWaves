@@ -209,6 +209,10 @@ th.wuwa-middle {
   color: rgb(208, 140, 180);
 }
 
+.wuwa-bg-white {
+  background-color: rgb(240, 240, 240);
+}
+
 .wuwa-bg-glacio {
   background-color: rgb(72, 172, 252);
 }

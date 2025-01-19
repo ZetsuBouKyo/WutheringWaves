@@ -129,8 +129,8 @@ class QTemplateDamageDistributionTab(QWidget):
             simulated_resonators = SimulatedResonators(template)
             resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
-            calculated_resonators = (
-                simulated_resonators.get_calculated_resonators_table(resonators_table)
+            calculated_resonators = simulated_resonators.get_calculated_resonators(
+                resonators_table
             )
             calculated_resonators_table = calculated_resonators.get_table()
             id_to_name = calculated_resonators.get_id_to_name()

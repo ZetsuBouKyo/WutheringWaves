@@ -1,6 +1,6 @@
 from collections import OrderedDict
 from copy import deepcopy
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 from ww.crud.template import get_template
 from ww.model import Number, SkillBaseAttrEnum
@@ -39,9 +39,15 @@ from ww.tables.resonator import (
 from ww.utils.number import get_number, get_string
 
 
-def get_buffs(row: TemplateRowModel) -> TemplateRowBuffModel:
+def get_buffs(
+    row: TemplateRowModel,
+    ignore_buffs: List[str] = [],
+) -> TemplateRowBuffModel:
     buffs = TemplateRowBuffModel()
     for buff in row.buffs:
+        if buff.name in ignore_buffs:
+            continue
+
         if buff.type == TemplateRowBuffTypeEnum.MAGNIFIER.value:
             buffs.bonus_magnifier += get_number(buff.value) * get_number(buff.stack)
         elif buff.type == TemplateRowBuffTypeEnum.AMPLIFIER.value:
@@ -163,7 +169,10 @@ class Damage:
         return table
 
     def get_calculated_row(
-        self, resonator_id: Optional[str], row: TemplateRowModel
+        self,
+        resonator_id: Optional[str],
+        row: TemplateRowModel,
+        ignore_buffs: List[str] = [],
     ) -> Optional[CalculatedTemplateRowModel]:
         if resonator_id is None:
             return
@@ -312,10 +321,15 @@ class Damage:
             f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
         )
 
-        return self.get_calculated_row_with_resonator(resonator, row)
+        return self.get_calculated_row_with_resonator(
+            resonator, row, ignore_buffs=ignore_buffs
+        )
 
     def get_calculated_row_with_resonator(
-        self, resonator: ToCalculateResonatorModel, row: TemplateRowModel
+        self,
+        resonator: ToCalculateResonatorModel,
+        row: TemplateRowModel,
+        ignore_buffs: List[str] = [],
     ) -> Optional[CalculatedTemplateRowModel]:
 
         resonator_name = row.resonator_name
@@ -339,7 +353,7 @@ class Damage:
         calculated_row.time_end = row.time_end
 
         # Buffs
-        buffs = get_buffs(row)
+        buffs = get_buffs(row, ignore_buffs=ignore_buffs)
         calculated_row.buffs = row.buffs
 
         # Skill
@@ -656,6 +670,7 @@ class Damage:
         r_id_3: str,
         monster_id: Optional[str] = None,
         is_default: bool = False,
+        ignore_buffs: List[str] = [],
     ) -> List[CalculatedTemplateRowModel]:
         self.init()
         if monster_id is not None:
@@ -675,7 +690,9 @@ class Damage:
             resonator_id = resonators_name2id.get(resonator_name, None)
             if resonator_id is None:
                 continue
-            calculated_row = self.get_calculated_row(resonator_id, row)
+            calculated_row = self.get_calculated_row(
+                resonator_id, row, ignore_buffs=ignore_buffs
+            )
             if calculated_row is not None:
                 calculated_rows.append(calculated_row)
             elif is_default:
@@ -893,6 +910,47 @@ class Damage:
         return self.extract_damage_distributions_from_rows_with_labels(
             resonators_name2id, template_id, monster_id, rows, labels=labels
         )
+
+    def get_damage_distributions_with_buffs(
+        self,
+        template_id: str,
+        r_id_1: str,
+        r_id_2: str,
+        r_id_3: str,
+        monster_id: Optional[str] = None,
+    ) -> Tuple[str, TemplateDamageDistributionModel]:
+        template = get_template(template_id)
+        if template is None:
+            return {}
+
+        damage_distributions = []
+        r_ids = [r_id_1, r_id_2, r_id_3]
+        resonators_name2id = self.get_resonator_name_to_id(r_ids)
+        buff_names = template.get_buff_names()
+        for buff_name in buff_names:
+            rows = self.get_calculated_rows(
+                template_id,
+                r_id_1,
+                r_id_2,
+                r_id_3,
+                monster_id,
+                ignore_buffs=[buff_name],
+            )
+            damage_distribution = (
+                self.extract_damage_distributions_from_rows_with_labels(
+                    resonators_name2id, template_id, monster_id, rows
+                ).get("", None)
+            )
+            if damage_distribution is None:
+                continue
+
+            damage_distributions.append((buff_name, damage_distribution))
+
+        damage_distributions.sort(
+            key=lambda damage_distribution: damage_distribution[1].damage
+        )
+
+        return damage_distributions
 
     def get_damage_distribution(
         self,

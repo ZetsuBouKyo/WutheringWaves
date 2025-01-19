@@ -175,7 +175,7 @@ class Docs:
         template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
         template = get_jinja2_template(template_fpath)
 
-        calculated_resonators = simulated_resonators.get_calculated_resonators_table(
+        calculated_resonators = simulated_resonators.get_calculated_resonators(
             resonators_table
         )
         calculated_resonators_table = calculated_resonators.get_table()
@@ -315,7 +315,7 @@ class Docs:
         template = get_jinja2_template(template_damage_fpath)
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
 
-        calculated_resonators = simulated_resonators.get_calculated_resonators_table(
+        calculated_resonators = simulated_resonators.get_calculated_resonators(
             resonators_table
         )
         calculated_resonators_table = calculated_resonators.get_table()
@@ -348,6 +348,13 @@ class Docs:
         damage_distribution: Optional[TemplateDamageDistributionModel] = (
             damage_distributions.get("", None)
         )
+        damage_distributions_with_buffs = damage.get_damage_distributions_with_buffs(
+            resonator_template.id,
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
+            monster_id=monster_id,
+        )
 
         # Detailed damage
         calculated_rows = damage.get_calculated_rows(
@@ -363,6 +370,7 @@ class Docs:
             template=resonator_template,
             resonator_models=resonator_models,
             damage_distribution=damage_distribution,
+            damage_distributions_with_buffs=damage_distributions_with_buffs,
             calculated_rows=calculated_rows,
             output_methods=output_methods,
             get_percentage_str=get_percentage_str,

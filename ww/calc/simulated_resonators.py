@@ -881,7 +881,7 @@ class SimulatedResonators:
         table = get_resonators_table(resonators, self.resonators_table_column_names)
         return resonator_ids, table
 
-    def get_calculated_resonators_table(
+    def get_calculated_resonators(
         self, resonators_table: ResonatorsTable
     ) -> CalculatedResonators:
         echoes_table = self.simulated_echoes.get_simulated_table_with_echoes(

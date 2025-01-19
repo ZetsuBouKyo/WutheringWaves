@@ -692,15 +692,14 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
             simulated_resonators = SimulatedResonators(template)
             resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
-            calculated_resonators = (
-                simulated_resonators.get_calculated_resonators_table(resonators_table)
+            calculated_resonators = simulated_resonators.get_calculated_resonators(
+                resonators_table
             )
             calculated_resonators_table = calculated_resonators.get_table()
             id_to_name = calculated_resonators.get_id_to_name()
             resonator_name_to_id = OrderedDict()
             for id, name in id_to_name.items():
                 resonator_name_to_id[name] = id
-            
 
             resonator_id = resonator_name_to_id.get(resonator_name, None)
             if resonator_id is None:
