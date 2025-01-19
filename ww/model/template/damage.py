@@ -1,9 +1,10 @@
 from collections import OrderedDict
 from decimal import Decimal
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Union
 
 from pydantic import BaseModel, ConfigDict
 
+from ww.model.buff import SkillBonusTypeEnum
 from ww.model.resonator import ResonatorName
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.utils.number import get_number, to_number_string, to_percentage_str
@@ -95,6 +96,14 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
         )
         return skills
 
+    def get_resonator_skill_base_damage(
+        cls, skill_enum: Union[SkillBonusTypeEnum, ResonatorSkillTypeEnum]
+    ) -> Decimal:
+        base_damage = Decimal("0.0")
+        for e in skill_enum:
+            base_damage += cls.get_damage(e.name.lower())
+        return base_damage
+
 
 class TemplateDamageDistributionModel(BaseModel):
     template_id: str = ""
@@ -166,3 +175,9 @@ class TemplateDamageDistributionModel(BaseModel):
         max_dps = cls.get_max_dps()
         dps = max_dps * resonator.damage / cls.damage
         return dps
+
+    def get_team_resonator_damages(cls) -> List[Decimal]:
+        damages = []
+        for _, resonator in cls.resonators.items():
+            damages.append(resonator.damage)
+        return damages

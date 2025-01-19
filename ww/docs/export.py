@@ -1,7 +1,7 @@
 import os
 from decimal import Decimal
 from pathlib import Path
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import yaml
 
@@ -10,10 +10,6 @@ from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.resonator import get_resonator_names
 from ww.crud.template import get_template
 from ww.docs.mkdocs_settings import MkdocsSettings
-from ww.html.image.damage import get_max_damage
-from ww.html.image.damage_distribution import (
-    _get_resonator_damages as get_team_resonator_damages,
-)
 from ww.html.image.output_method import (
     RIGHT_ARROW_ICON_FPATH,
     get_asset,
@@ -35,9 +31,14 @@ from ww.model.simulation import SimulationTypeEnum
 from ww.model.template import (
     TemplateDamageDistributionModel,
     TemplateHtmlOutputMethodModel,
+    TemplateHtmlResonatorModel,
     TemplateModel,
 )
-from ww.tables.resonator import ResonatorSkillTable, get_resonator_information
+from ww.tables.resonator import (
+    ResonatorSkillTable,
+    ResonatorsTable,
+    get_resonator_information,
+)
 from ww.utils import get_jinja2_template
 from ww.utils.number import (
     get_percentage_str,
@@ -58,16 +59,6 @@ DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
 TIER_HALF_BUILT_SMALL_URL: str = "/tier/half_built_small/index.html"
 TIER_HALF_BUILT_SKILL_BONUS_URL: str = "/tier/half_built_skill_bonus/index.html"
-
-
-def get_resonator_skill_base_damage(
-    resonator_damage_distribution,
-    skill_enum: Union[SkillBonusTypeEnum, ResonatorSkillTypeEnum],
-) -> Decimal:
-    base_damage = Decimal("0.0")
-    for e in skill_enum:
-        base_damage += resonator_damage_distribution.get_damage(e.name.lower())
-    return base_damage
 
 
 def get_resonator_outline_url(no: str) -> str:
@@ -179,7 +170,7 @@ class Docs:
         resonator_template: TemplateModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
-        resonators_table,
+        resonators_table: ResonatorsTable,
     ):
         template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
         template = get_jinja2_template(template_fpath)
@@ -326,7 +317,7 @@ class Docs:
         output_methods: TemplateHtmlOutputMethodModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
-        resonators_table,
+        resonators_table: ResonatorsTable,
     ) -> TemplateDamageDistributionModel:
         template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
         template = get_jinja2_template(template_damage_fpath)
@@ -336,7 +327,7 @@ class Docs:
             resonators_table
         )
         calculated_resonators_table = calculated_resonators.get_table()
-        resonator_ids = calculated_resonators.get_ids()
+        resonator_ids = calculated_resonators.get_3_ids()
 
         # Resonator skill damage distribution
         damage = Damage(
@@ -345,44 +336,44 @@ class Docs:
             calculated_resonators_table=calculated_resonators_table,
         )
 
-        _resonator_ids = ["", "", ""]
-        for i in range(len(resonator_ids)):
-            _resonator_ids[i] = resonator_ids[i]
+        resonator_models: Dict[str, TemplateHtmlResonatorModel] = {}
+        for resonator_id in resonator_ids:
+            resonator_model = merge_resonator_model(
+                resonator_id,
+                resonators_table,
+                calculated_resonators_table,
+                is_docs=True,
+            )
+            resonator_models[resonator_model.name] = resonator_model
 
         damage_distributions = damage.get_damage_distributions_with_labels(
             resonator_template.id,
-            _resonator_ids[0],
-            _resonator_ids[1],
-            _resonator_ids[2],
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
             monster_id=monster_id,
         )
-        damage_distribution = damage_distributions.get("", None)
+        damage_distribution: Optional[TemplateDamageDistributionModel] = (
+            damage_distributions.get("", None)
+        )
 
         # Detailed damage
         calculated_rows = damage.get_calculated_rows(
             resonator_template.id,
-            _resonator_ids[0],
-            _resonator_ids[1],
-            _resonator_ids[2],
+            resonator_ids[0],
+            resonator_ids[1],
+            resonator_ids[2],
             monster_id,
             is_default=True,
         )
 
         html_str = template.render(
             template=resonator_template,
-            resonators_table=resonators_table,
-            resonator_ids=resonator_ids,  # 1 <= len(resonator_ids) <= 3
-            calculated_resonators_table=calculated_resonators_table,
+            resonator_models=resonator_models,
             damage_distribution=damage_distribution,
             calculated_rows=calculated_rows,
             output_methods=output_methods,
-            merge_resonator_model=merge_resonator_model,
-            get_element_class_name=get_element_class_name,
-            get_max_damage=get_max_damage,
             get_percentage_str=get_percentage_str,
-            get_resonator_icon_url=get_resonator_icon_url,
-            get_resonator_skill_base_damage=get_resonator_skill_base_damage,
-            get_team_resonator_damages=get_team_resonator_damages,
             to_number_string=to_number_string,
             to_percentage_str=to_percentage_str,
             to_trimmed_number_string=to_trimmed_number_string,

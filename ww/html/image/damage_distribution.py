@@ -23,15 +23,6 @@ TEMPLATE_RESONATOR_SKILL_DAMAGE_DISTRIBUTION_HTML_PATH = (
 )
 
 
-def _get_resonator_damages(
-    damage_distribution: TemplateDamageDistributionModel,
-) -> List[Decimal]:
-    damages = []
-    for _, resonator in damage_distribution.resonators.items():
-        damages.append(resonator.damage)
-    return damages
-
-
 def export_resonator_skill_damage_distribution_as_png(
     resonator_name: str,
     damage_distribution: TemplateDamageDistributionModel,
@@ -107,7 +98,7 @@ def export_team_damage_distribution_as_png(
     template = get_jinja2_template(TEMPLATE_TEAM_DAMAGE_DISTRIBUTION_HTML_PATH)
 
     if max_damage is None:
-        max_damage = get_max_damage(_get_resonator_damages(damage_distribution))
+        max_damage = get_max_damage(damage_distribution.get_team_resonator_damages())
 
     html_str = template.render(
         damage_distributions=[damage_distribution],

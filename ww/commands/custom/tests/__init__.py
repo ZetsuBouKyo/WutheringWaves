@@ -19,7 +19,7 @@ def get_resonator_example() -> TemplateHtmlResonatorModel:
     resonator_src = get_resonator_icon_fpath(resonator_name)
 
     element = _(ZhTwEnum.GLACIO)
-    element_class_name = get_element_class_name(element)
+    element_en = get_element_class_name(element)
     element_src = get_element_icon_fpath(element)
 
     return TemplateHtmlResonatorModel(
@@ -63,7 +63,7 @@ def get_resonator_example() -> TemplateHtmlResonatorModel:
         inherent_skill_1="✓",
         inherent_skill_2="✓",
         element_src=element_src,
-        element_class_name=element_class_name,
+        element_en=element_en,
         resonator_src=resonator_src,
     )
 

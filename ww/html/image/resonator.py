@@ -74,7 +74,7 @@ def merge_resonator_model(
     if not resonator_data:
         return
     resonator_element = resonator_data.element
-    element_class_name = get_element_class_name(resonator_element)
+    element_en = get_element_class_name(resonator_element)
 
     if is_docs:
         element_src = get_element_icon_url(resonator_element)
@@ -82,9 +82,12 @@ def merge_resonator_model(
         element_src = get_element_icon_fpath(resonator_element)
 
     template_html_model = TemplateHtmlResonatorModel(
+        resonator_src=str(resonator_src),
+        element=str(resonator_element),
+        element_src=str(element_src),
+        element_en=str(element_en),
         name=str(resonator.name),
         chain=str(resonator.resonance_chain),
-        element=str(resonator_element),
         weapon_name=str(resonator.weapon_name),
         weapon_rank=str(resonator.weapon_rank),
         weapon_level=str(resonator.weapon_level),
@@ -153,9 +156,49 @@ def merge_resonator_model(
         intro_skill_lv=str(resonator.intro_skill_lv),
         inherent_skill_1=str(resonator.inherent_skill_1),
         inherent_skill_2=str(resonator.inherent_skill_2),
-        resonator_src=str(resonator_src),
-        element_class_name=str(element_class_name),
-        element_src=str(element_src),
+        echo_hp=to_number_string(calculated_resonator.echo_hp),
+        echo_hp_p=to_percentage_str(calculated_resonator.echo_hp_p),
+        echo_atk=to_number_string(calculated_resonator.echo_atk),
+        echo_atk_p=to_percentage_str(calculated_resonator.echo_atk_p),
+        echo_def=to_number_string(calculated_resonator.echo_def),
+        echo_def_p=to_percentage_str(calculated_resonator.echo_def_p),
+        echo_crit_rate=to_percentage_str(calculated_resonator.echo_crit_rate),
+        echo_crit_dmg=to_percentage_str(calculated_resonator.echo_crit_dmg),
+        echo_energy_regen=to_percentage_str(calculated_resonator.echo_energy_regen),
+        echo_sonata_1=calculated_resonator.echo_sonata_1,
+        echo_sonata_2=calculated_resonator.echo_sonata_2,
+        echo_sonata_3=calculated_resonator.echo_sonata_3,
+        echo_sonata_4=calculated_resonator.echo_sonata_4,
+        echo_sonata_5=calculated_resonator.echo_sonata_5,
+        echo_resonance_skill_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_resonance_skill_dmg_bonus
+        ),
+        echo_basic_attack_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_basic_attack_dmg_bonus
+        ),
+        echo_heavy_attack_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_heavy_attack_dmg_bonus
+        ),
+        echo_resonance_liberation_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_resonance_liberation_dmg_bonus
+        ),
+        echo_healing_bonus=to_percentage_str(calculated_resonator.echo_healing_bonus),
+        echo_glacio_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_glacio_dmg_bonus
+        ),
+        echo_fusion_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_fusion_dmg_bonus
+        ),
+        echo_electro_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_electro_dmg_bonus
+        ),
+        echo_aero_dmg_bonus=to_percentage_str(calculated_resonator.echo_aero_dmg_bonus),
+        echo_spectro_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_spectro_dmg_bonus
+        ),
+        echo_havoc_dmg_bonus=to_percentage_str(
+            calculated_resonator.echo_havoc_dmg_bonus
+        ),
     )
     return template_html_model
 

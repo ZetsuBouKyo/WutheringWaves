@@ -972,6 +972,13 @@ class CalculatedResonators:
     def get_id_to_name(self) -> Dict[str, str]:
         return self._id_to_name
 
+    def get_3_ids(self) -> List[str]:
+        ids = self.get_ids()
+        ids_3 = ["", "", ""]
+        for i in range(len(ids_3)):
+            ids_3[i] = ids[i]
+        return ids_3
+
     def get_df(self) -> pd.DataFrame:
         return self._df
 
