@@ -188,6 +188,12 @@ templates:
     is_tier: false
     echo_comparison:
       - "今汐"
+  - id: "[競速]+0今汐+1時和歲稔,+0長離+1赫奕流明,+0守岸人+1星序協響"
+    is_tier: false
+    echo_comparison:
+      - "今汐"
+      - "長離"
+      - "守岸人"
   # 長離
   - id: "[腦測]+0長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏"
     is_tier: true
