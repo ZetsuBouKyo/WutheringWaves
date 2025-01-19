@@ -330,12 +330,19 @@ class Docs:
 
         resonator_models: Dict[str, TemplateHtmlResonatorModel] = {}
         for resonator_id in resonator_ids:
+            if not resonator_id:
+                continue
+
             resonator_model = merge_resonator_model(
                 resonator_id,
                 resonators_table,
                 calculated_resonators_table,
                 is_docs=True,
             )
+
+            if resonator_model is None:
+                continue
+
             resonator_models[resonator_model.name] = resonator_model
 
         damage_distributions = damage.get_damage_distributions_with_labels(

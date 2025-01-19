@@ -280,7 +280,11 @@ class TemplateModel(BaseModel):
         return None
 
     def get_resonator_names(cls) -> List[str]:
-        return [resonator.resonator_name for resonator in cls.resonators]
+        return [
+            resonator.resonator_name
+            for resonator in cls.resonators
+            if resonator.resonator_name
+        ]
 
     def get_sonatas(cls, resonator_name: str) -> List[str]:
         for resonator in cls.resonators:
