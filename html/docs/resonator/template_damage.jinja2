@@ -494,13 +494,14 @@
               style="width: {{get_percentage_str(damage, base_damage)}};">
               {% if percentage >= in_out -%}
               <div class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}"
-                title="{{skill.type}}">
+                title="{{skill.type}} {{skill.name}} {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})">
                 {{skill.name}}
                 {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
               </div>
               {% endif -%}
             </div>
-            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out" title="{{skill.type}}">
+            {% if percentage < in_out -%} <div class="wuwa-barh-damage-value-out"
+              title="{{skill.type}} {{skill.name}} {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})">
               {{skill.name}}
               {{to_number_string(damage)}} ({{get_percentage_str(damage, base_damage)}})
           </div>
