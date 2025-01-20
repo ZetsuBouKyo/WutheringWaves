@@ -729,6 +729,9 @@ class Docs:
             not in [_(ZhTwEnum.ROVER_SPECTRO_FEMALE), _(ZhTwEnum.ROVER_HAVOC_FEMALE)]
         ]
         calculated_resonator_names = list(resonator_name_to_template_ids.keys())
+        calculated_resonator_names.sort(
+            key=lambda name: self._get_resonator_information(name).no
+        )
         resonator_names.sort(key=lambda name: self._get_resonator_information(name).no)
 
         html_str = template.render(
