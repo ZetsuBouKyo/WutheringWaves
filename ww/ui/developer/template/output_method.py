@@ -686,7 +686,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
 
             damage = Damage(monster_id=monster_id)
         else:
-            prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+            prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
             template: TemplateModel = self.q_template_basic_tab.get_template()
 
             simulated_resonators = SimulatedResonators(template)

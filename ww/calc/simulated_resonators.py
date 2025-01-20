@@ -79,13 +79,13 @@ def get_resonators_table(resonators: List[dict], columns: List[str]) -> Resonato
 
 def get_prefix_by_resonator_skill_bonus(skill_bonus: str) -> Optional[str]:
     if skill_bonus == ResonatorSkillBonusTypeEnum.BASIC.value:
-        prefix = EchoesModelEnum.HALF_BUILT_BASIC_ATK.value
+        prefix = EchoesModelEnum.AFFIXES_20_BASIC_ATK.value
     elif skill_bonus == ResonatorSkillBonusTypeEnum.HEAVY.value:
-        prefix = EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value
+        prefix = EchoesModelEnum.AFFIXES_20_HEAVY_ATK.value
     elif skill_bonus == ResonatorSkillBonusTypeEnum.RESONANCE_SKILL.value:
-        prefix = EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value
+        prefix = EchoesModelEnum.AFFIXES_20_RESONANCE_SKILL.value
     elif skill_bonus == ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value:
-        prefix = EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value
+        prefix = EchoesModelEnum.AFFIXES_20_RESONANCE_LIBERATION.value
     else:
         return
     return prefix

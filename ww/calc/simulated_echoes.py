@@ -265,7 +265,7 @@ class SimulatedEchoes:
         )
 
     # def update_echoes_with_theory_1(self, echoes: List[dict], sonata: str):
-    #     prefix = EchoesModelEnum.THEORY_1.value
+    #     prefix = EchoesModelEnum.AFFIXES_15_1.value
     #     echoes = self.get_base_echoes(prefix, sonata)
     #     for echo in echoes:
     #         self.update_echo_sub_affix_with_theory_1(echo)
@@ -295,7 +295,7 @@ class SimulatedEchoes:
                 self.echo_sub_affixes.def_p
             )
 
-        if prefix == EchoesModelEnum.HALF_BUILT_SMALL.value:
+        if prefix == EchoesModelEnum.AFFIXES_20_SMALL.value:
             if base_attr == _(ZhTwEnum.HP):
                 echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = mean(
                     self.echo_sub_affixes.hp
@@ -309,23 +309,23 @@ class SimulatedEchoes:
                     self.echo_sub_affixes.def_
                 )
 
-        elif prefix == EchoesModelEnum.HALF_BUILT_BASIC_ATK.value:
+        elif prefix == EchoesModelEnum.AFFIXES_20_BASIC_ATK.value:
             echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = mean(
                 self.echo_sub_affixes.basic_attack
             )
-        elif prefix == EchoesModelEnum.HALF_BUILT_BASIC_ATK.value:
+        elif prefix == EchoesModelEnum.AFFIXES_20_BASIC_ATK.value:
             echo[ResonatorEchoTsvColumnEnum.SUB_BASIC_ATTACK_DMG_BONUS.value] = mean(
                 self.echo_sub_affixes.basic_attack
             )
-        elif prefix == EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value:
+        elif prefix == EchoesModelEnum.AFFIXES_20_HEAVY_ATK.value:
             echo[ResonatorEchoTsvColumnEnum.SUB_HEAVY_ATTACK_DMG_BONUS.value] = mean(
                 self.echo_sub_affixes.heavy_attack
             )
-        elif prefix == EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value:
+        elif prefix == EchoesModelEnum.AFFIXES_20_RESONANCE_SKILL.value:
             echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = mean(
                 self.echo_sub_affixes.resonance_skill
             )
-        elif prefix == EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value:
+        elif prefix == EchoesModelEnum.AFFIXES_20_RESONANCE_LIBERATION.value:
             echo[
                 ResonatorEchoTsvColumnEnum.SUB_RESONANCE_LIBERATION_DMG_BONUS.value
             ] = mean(self.echo_sub_affixes.resonance_liberation)
@@ -347,11 +347,11 @@ class SimulatedEchoes:
     #         self.update_echoes_with_theory_1(echoes, sonata)
 
     #     half_built_prefixes = [
-    #         EchoesModelEnum.HALF_BUILT_SMALL.value,
-    #         EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
-    #         EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
-    #         EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
-    #         EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
+    #         EchoesModelEnum.AFFIXES_20_SMALL.value,
+    #         EchoesModelEnum.AFFIXES_20_BASIC_ATK.value,
+    #         EchoesModelEnum.AFFIXES_20_HEAVY_ATK.value,
+    #         EchoesModelEnum.AFFIXES_20_RESONANCE_SKILL.value,
+    #         EchoesModelEnum.AFFIXES_20_RESONANCE_LIBERATION.value,
     #     ]
     #     for prefix in half_built_prefixes:
     #         for sonata_enum in EchoSonataEnum:
@@ -464,13 +464,13 @@ class SimulatedEchoes:
             return echo
 
         half_built_prefixes = [
-            EchoesModelEnum.HALF_BUILT_SMALL.value,
-            EchoesModelEnum.HALF_BUILT_BASIC_ATK.value,
-            EchoesModelEnum.HALF_BUILT_HEAVY_ATK.value,
-            EchoesModelEnum.HALF_BUILT_RESONANCE_SKILL.value,
-            EchoesModelEnum.HALF_BUILT_RESONANCE_LIBERATION.value,
+            EchoesModelEnum.AFFIXES_20_SMALL.value,
+            EchoesModelEnum.AFFIXES_20_BASIC_ATK.value,
+            EchoesModelEnum.AFFIXES_20_HEAVY_ATK.value,
+            EchoesModelEnum.AFFIXES_20_RESONANCE_SKILL.value,
+            EchoesModelEnum.AFFIXES_20_RESONANCE_LIBERATION.value,
         ]
-        if prefix == EchoesModelEnum.THEORY_1.value:
+        if prefix == EchoesModelEnum.AFFIXES_15_1.value:
             self.update_echo_sub_affix_with_theory_1(echo, base_attr)
         elif prefix in half_built_prefixes:
             self.update_echo_sub_affix_with_half_built(echo, prefix, base_attr)

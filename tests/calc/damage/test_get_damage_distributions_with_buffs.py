@@ -5,7 +5,7 @@ from ww.locale import ZhTwEnum, _
 
 
 def test_get_damage_distributions_with_buffs():
-    prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+    prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
     monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
     template_id = (
         "[腦測]+3漂泊者·湮滅(男)+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-2套A"

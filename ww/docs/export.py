@@ -266,7 +266,7 @@ class Docs:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1/echo_damage_comparison/{resonator_no}.md"
 
-        prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+        prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
 
         self.export_resonator_echo_damage_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
@@ -278,7 +278,7 @@ class Docs:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/echo_damage_comparison/{resonator_no}.md"
 
-        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)
+        prefix = _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)
         self.export_resonator_echo_damage_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
         )
@@ -427,7 +427,7 @@ class Docs:
         )
 
         # Simulation
-        prefix = _(ZhTwEnum.ECHOES_THEORY_1)
+        prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
         simulated_resonators = SimulatedResonators(resonator_template)
 
         return self.export_template_damage_analysis_with_prefix(
@@ -447,7 +447,7 @@ class Docs:
         output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/damage_analysis.md"
 
         # Simulation
-        prefix = _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)
+        prefix = _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)
         simulated_resonators = SimulatedResonators(resonator_template)
 
         return self.export_template_damage_analysis_with_prefix(
@@ -687,7 +687,7 @@ class Docs:
             for comparison in resonator_comparisons:
                 self.export_resonator_comparison(
                     comparison.title,
-                    SimulationTypeEnum.THEORY_1.value,
+                    SimulationTypeEnum.AFFIXES_15_1.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
@@ -697,7 +697,7 @@ class Docs:
                 )
                 self.export_resonator_comparison(
                     comparison.title,
-                    SimulationTypeEnum.HALF_BUILT_SMALL.value,
+                    SimulationTypeEnum.AFFIXES_20_SMALL.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
@@ -872,7 +872,7 @@ class Docs:
     ):
         theory_1_fpath = "./build/html/docs/tier/theory_1.md"
         self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_THEORY_1),
+            _(ZhTwEnum.ECHOES_AFFIXES_15_1),
             template_ids,
             template_id_to_relative_url,
             template_id_to_theory_1,
@@ -881,7 +881,7 @@ class Docs:
 
         half_built_small_fpath = "./build/html/docs/tier/half_built_small.md"
         self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_HALF_BUILT_SMALL),
+            _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL),
             template_ids,
             template_id_to_relative_url,
             template_id_to_half_built_small,
@@ -892,7 +892,7 @@ class Docs:
             "./build/html/docs/tier/half_built_skill_bonus.md"
         )
         self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS),
+            _(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS),
             template_ids,
             template_id_to_relative_url,
             template_id_to_half_built_skill_bonus,

@@ -584,14 +584,14 @@ class ZhTwEnum(str, Enum):
     ABBR_RESONANCE_LIBERATION: str = "共解"
     ABBR_HEALING: str = "治"
 
-    ECHOES_THEORY_1: str = "理論1"
-    ECHOES_HALF_BUILT_SMALL: str = "小畢業[小Ｏ]"
+    ECHOES_AFFIXES_15_1: str = "15有效-1"
+    ECHOES_AFFIXES_20_SMALL: str = "20有效-小Ｏ"
 
-    ECHOES_HALF_BUILT_SKILL_BONUS: str = "小畢業[技能加成]"
-    ECHOES_HALF_BUILT_RESONANCE_SKILL: str = "小畢業[共技]"
-    ECHOES_HALF_BUILT_BASIC_ATK: str = "小畢業[普攻]"
-    ECHOES_HALF_BUILT_HEAVY_ATK: str = "小畢業[重擊]"
-    ECHOES_HALF_BUILT_RESONANCE_LIBERATION: str = "小畢業[共解]"
+    ECHOES_AFFIXES_20_SKILL_BONUS: str = "20有效-技能加成"
+    ECHOES_AFFIXES_20_RESONANCE_SKILL: str = "20有效-共技"
+    ECHOES_AFFIXES_20_BASIC_ATK: str = "20有效-普攻"
+    ECHOES_AFFIXES_20_HEAVY_ATK: str = "20有效-重擊"
+    ECHOES_AFFIXES_20_RESONANCE_LIBERATION: str = "20有效-共解"
 
     MONSTER_LV_90_RES_10: str = "90等抗性10白板"
     MONSTER_LV_90_RES_20: str = "90等抗性20白板"
