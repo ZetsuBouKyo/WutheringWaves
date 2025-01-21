@@ -1,4 +1,5 @@
-from typing import Dict, List, Tuple
+from decimal import Decimal
+from typing import Dict, List, Optional, Tuple
 
 from pydantic import BaseModel
 
@@ -119,3 +120,11 @@ class TemplateHtmlDamageAnalysisModel(BaseModel):
     ] = []
     calculated_rows: List[CalculatedTemplateRowModel] = []
     output_methods: List[TemplateHtmlOutputMethodModel] = []
+
+
+class TemplateHtmlEchoComparisonModel(BaseModel):
+    resonator_template: TemplateModel = TemplateModel()
+    resonator_ids: List[str] = []
+    resonator_models: Dict[str, TemplateHtmlResonatorModel] = {}
+    damage_distributions: List[TemplateDamageDistributionModel] = []
+    base_damage: Decimal = Decimal("0.0")

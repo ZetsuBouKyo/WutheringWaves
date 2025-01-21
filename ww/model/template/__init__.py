@@ -20,6 +20,7 @@ from ww.model.template.damage import (
 )
 from ww.model.template.html import (
     TemplateHtmlDamageAnalysisModel,
+    TemplateHtmlEchoComparisonModel,
     TemplateHtmlOutputMethodActionModel,
     TemplateHtmlOutputMethodModel,
     TemplateHtmlResonatorModel,
@@ -44,6 +45,7 @@ __all__ = [
     "TemplateDamageDistributionModel",
     "TemplateEnum",
     "TemplateHtmlDamageAnalysisModel",
+    "TemplateHtmlEchoComparisonModel",
     "TemplateHtmlOutputMethodActionModel",
     "TemplateHtmlOutputMethodModel",
     "TemplateHtmlResonatorModel",

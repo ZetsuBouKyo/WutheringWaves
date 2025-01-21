@@ -1,11 +1,11 @@
 import json
 import os
-from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import yaml
+from pydantic import BaseModel
 
 from ww.calc.damage import Damage
 from ww.calc.simulated_resonators import SimulatedResonators
@@ -34,6 +34,7 @@ from ww.model.simulation import SimulationTypeEnum
 from ww.model.template import (
     TemplateDamageDistributionModel,
     TemplateHtmlDamageAnalysisModel,
+    TemplateHtmlEchoComparisonModel,
     TemplateHtmlOutputMethodModel,
     TemplateHtmlResonatorModel,
     TemplateModel,
@@ -88,8 +89,8 @@ def get_damage_analysis_url(md5: str, prefix: str) -> str:
     return f"/resonator/template/{md5}/{prefix}/damage_analysis/index.html"
 
 
-def get_echo_damage_comparison_url(md5: str, prefix: str, no: str) -> str:
-    return f"/resonator/template/{md5}/{prefix}/echo_damage_comparison/{no}/index.html"
+def get_echo_comparison_url(md5: str, prefix: str, no: str) -> str:
+    return f"/resonator/template/{md5}/{prefix}/echo_comparison/{no}/index.html"
 
 
 def get_tier_url(field_name: str, model_name: str) -> str:
@@ -113,21 +114,20 @@ def get_cache_fpath_by_md_fpath(
     return cache_fpath.with_suffix(".json")
 
 
-def save_damage_analysis_cache(
-    damage_analysis: TemplateHtmlDamageAnalysisModel, md_fpath: str
+def save_cache(
+    model: Union[TemplateHtmlDamageAnalysisModel, TemplateHtmlEchoComparisonModel],
+    md_fpath: str,
 ):
     cache_fpath = get_cache_fpath_by_md_fpath(md_fpath)
     os.makedirs(cache_fpath.parent, exist_ok=True)
     with cache_fpath.open(mode="w", encoding="utf-8") as fp:
-        d = damage_analysis.model_dump(
-            mode="json", serialize_as_any=True, warnings=False
-        )
+        d = model.model_dump(mode="json", serialize_as_any=True, warnings=False)
         json.dump(d, fp, indent=4, ensure_ascii=False)
 
 
-def get_damage_analysis(
-    resonator_tempalte: TemplateModel, md_fpath: str
-) -> Optional[TemplateHtmlDamageAnalysisModel]:
+def get_cache(
+    resonator_tempalte: TemplateModel, md_fpath: str, pydantic_model: BaseModel
+) -> Optional[Union[TemplateHtmlDamageAnalysisModel, TemplateHtmlEchoComparisonModel]]:
     cache_fpath = get_cache_fpath_by_md_fpath(md_fpath)
     if not cache_fpath.exists():
         return None
@@ -146,8 +146,20 @@ def get_damage_analysis(
     with cache_fpath.open(mode="r", encoding="utf-8") as fp:
         d = json.load(fp)
 
-    damage_analysis = TemplateHtmlDamageAnalysisModel(**d)
-    return damage_analysis
+    cache = pydantic_model(**d)
+    return cache
+
+
+def get_damage_analysis_cache(
+    resonator_tempalte: TemplateModel, md_fpath: str
+) -> Optional[TemplateHtmlDamageAnalysisModel]:
+    return get_cache(resonator_tempalte, md_fpath, TemplateHtmlDamageAnalysisModel)
+
+
+def get_echo_comparison_cache(
+    resonator_tempalte: TemplateModel, md_fpath: str
+) -> Optional[TemplateHtmlEchoComparisonModel]:
+    return get_cache(resonator_tempalte, md_fpath, TemplateHtmlEchoComparisonModel)
 
 
 def export_html(fpath: Union[str, Path], html_str: str):
@@ -219,16 +231,41 @@ class Docs:
             template_id_to_affixes_20_skill_bonus,
         )
 
-    def export_resonator_echo_damage_comparison(
+    def export_resonator_echo_comparison(
+        self,
+        echo_comparison_model: TemplateHtmlEchoComparisonModel,
+        output_fpath: str,
+    ):
+        template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
+        template = get_jinja2_template(template_fpath)
+
+        resonator_template = echo_comparison_model.resonator_template
+        resonator_ids = echo_comparison_model.resonator_ids
+        resonator_models = echo_comparison_model.resonator_models
+        damage_distributions = echo_comparison_model.damage_distributions
+        base_damage = echo_comparison_model.base_damage
+
+        html_str = template.render(
+            template=resonator_template,
+            resonator_ids=resonator_ids,
+            resonator_models=resonator_models,
+            damage_distributions=damage_distributions,
+            base_damage=base_damage,
+            get_percentage_str=get_percentage_str,
+            to_number_string=to_number_string,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+        )
+
+        export_html(output_fpath, html_str)
+
+    def export_resonator_echo_comparison_without_cache(
         self,
         resonator_template: TemplateModel,
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
         resonators_table: ResonatorsTable,
     ):
-        template_fpath = "./html/docs/resonator/template_echo_damage_compare.jinja2"
-        template = get_jinja2_template(template_fpath)
-
         calculated_resonators = simulated_resonators.get_calculated_resonators(
             resonators_table
         )
@@ -279,27 +316,35 @@ class Docs:
 
         base_damage = max(damages)
 
-        html_str = template.render(
-            template=resonator_template,
+        echo_comparison_model = TemplateHtmlEchoComparisonModel(
+            resonator_template=resonator_template,
             resonator_ids=resonator_ids,
             resonator_models=resonator_models,
             damage_distributions=damage_distributions,
             base_damage=base_damage,
-            get_percentage_str=get_percentage_str,
-            to_number_string=to_number_string,
-            ZhTwEnum=ZhTwEnum,
-            _=_,
+        )
+        save_cache(echo_comparison_model, output_fpath)
+
+        return self.export_resonator_echo_comparison(
+            echo_comparison_model, output_fpath
         )
 
-        export_html(output_fpath, html_str)
-
-    def export_resonator_echo_damage_comparison_with_prefix(
+    def export_resonator_echo_comparison_with_prefix(
         self,
         prefix: str,
         resonator_name: str,
         resonator_template: TemplateModel,
         output_fpath: str,
     ):
+        if not self._force:
+            echo_comparison_model = get_echo_comparison_cache(
+                resonator_template, output_fpath
+            )
+            if echo_comparison_model is not None:
+                return self.export_resonator_echo_comparison(
+                    echo_comparison_model, output_fpath
+                )
+
         simulated_resonators = SimulatedResonators(resonator_template)
         _, resonators_table = (
             simulated_resonators.get_resonators_for_echo_comparison_with_prefix(
@@ -307,41 +352,49 @@ class Docs:
             )
         )
 
-        self.export_resonator_echo_damage_comparison(
+        return self.export_resonator_echo_comparison_without_cache(
             resonator_template,
             output_fpath,
             simulated_resonators,
             resonators_table,
         )
 
-    def export_resonator_echo_damage_comparison_with_affixes_15_1(
+    def export_resonator_echo_comparison_with_affixes_15_1(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_15_1/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_15_1/echo_comparison/{resonator_no}.md"
 
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
 
-        self.export_resonator_echo_damage_comparison_with_prefix(
+        self.export_resonator_echo_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
         )
 
-    def export_resonator_echo_damage_comparison_with_affixes_20_small(
+    def export_resonator_echo_comparison_with_affixes_20_small(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_small/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_small/echo_comparison/{resonator_no}.md"
 
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)
-        self.export_resonator_echo_damage_comparison_with_prefix(
+        self.export_resonator_echo_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
         )
 
-    def export_resonator_echo_damage_comparison_with_affixes_20_skill_bonus(
+    def export_resonator_echo_comparison_with_affixes_20_skill_bonus(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/echo_comparison/{resonator_no}.md"
+        if not self._force:
+            echo_comparison_model = get_echo_comparison_cache(
+                resonator_template, output_fpath
+            )
+            if echo_comparison_model is not None:
+                return self.export_resonator_echo_comparison(
+                    echo_comparison_model, output_fpath
+                )
 
         simulated_resonators = SimulatedResonators(resonator_template)
         _, resonators_table = (
@@ -350,7 +403,7 @@ class Docs:
             )
         )
 
-        self.export_resonator_echo_damage_comparison(
+        return self.export_resonator_echo_comparison_without_cache(
             resonator_template,
             output_fpath,
             simulated_resonators,
@@ -476,7 +529,7 @@ class Docs:
             output_methods=output_methods,
         )
 
-        save_damage_analysis_cache(damage_analysis_model, output_fpath)
+        save_cache(damage_analysis_model, output_fpath)
 
         return self.export_template_damage_analysis(damage_analysis_model, output_fpath)
 
@@ -489,7 +542,7 @@ class Docs:
         simulated_resonators: SimulatedResonators,
     ) -> TemplateDamageDistributionModel:
         if not self._force:
-            damage_analysis_model = get_damage_analysis(
+            damage_analysis_model = get_damage_analysis_cache(
                 resonator_template, output_fpath
             )
             if damage_analysis_model is not None:
@@ -556,7 +609,7 @@ class Docs:
         output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/damage_analysis.md"
 
         if not self._force:
-            damage_analysis_model = get_damage_analysis(
+            damage_analysis_model = get_damage_analysis_cache(
                 resonator_template, output_fpath
             )
             if damage_analysis_model is not None:
@@ -647,17 +700,17 @@ class Docs:
 
                 resonator_no = self._get_resonator_information(resonator_name).no
 
-                self.export_resonator_echo_damage_comparison_with_affixes_15_1(
+                self.export_resonator_echo_comparison_with_affixes_15_1(
                     resonator_no, resonator_name, resonator_template
                 )
                 logger_cli.debug("Echo damage comparison: Affixes 15-1 finished.")
 
-                self.export_resonator_echo_damage_comparison_with_affixes_20_small(
+                self.export_resonator_echo_comparison_with_affixes_20_small(
                     resonator_no, resonator_name, resonator_template
                 )
                 logger_cli.debug("Echo damage comparison: Affixes 20 Small finished.")
 
-                self.export_resonator_echo_damage_comparison_with_affixes_20_skill_bonus(
+                self.export_resonator_echo_comparison_with_affixes_20_skill_bonus(
                     resonator_no, resonator_name, resonator_template
                 )
                 logger_cli.debug(
@@ -681,7 +734,7 @@ class Docs:
                 output_methods=output_methods,
                 right_arrow_src=get_asset(RIGHT_ARROW_ICON_FPATH),
                 get_damage_analysis_url=get_damage_analysis_url,
-                get_echo_damage_comparison_url=get_echo_damage_comparison_url,
+                get_echo_comparison_url=get_echo_comparison_url,
                 ZhTwEnum=ZhTwEnum,
                 _=_,
             )
