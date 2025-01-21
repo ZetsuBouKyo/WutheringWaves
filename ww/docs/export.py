@@ -17,6 +17,7 @@ from ww.html.image.output_method import (
 )
 from ww.html.image.resonator import (
     get_element_class_name,
+    get_element_icon_url,
     get_resonator_icon_url,
     merge_resonator_model,
 )
@@ -781,9 +782,10 @@ class Docs:
         html_str = template.render(
             resonator_names=resonator_names,
             calculated_resonator_names=calculated_resonator_names,
+            get_element_icon_url=get_element_icon_url,
             get_resonator_icon_url=get_resonator_icon_url,
-            get_resonator_outline_url=get_resonator_outline_url,
             get_resonator_information=self._get_resonator_information,
+            get_resonator_outline_url=get_resonator_outline_url,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )

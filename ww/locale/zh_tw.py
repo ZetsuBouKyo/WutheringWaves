@@ -616,7 +616,7 @@ class ZhTwEnum(str, Enum):
     DOCS_RESONATOR_OUTLINE_3_1: str = "以"
     DOCS_RESONATOR_OUTLINE_3_2: str = "為基準比較DPS"
 
-    DOCS_TIER_0_1_TITLE: str = "5星0鏈 Tier List"
+    DOCS_TIER_0_1_TITLE: str = "5星 0鏈 Tier List"
     DOCS_TIER_0_1_MSG_1: str = (
         "排行裡五星輸出位大多為0鏈，部分角色1鏈效果不直接涉及傷害數值，亦會被列入此排行，另外漂泊者、四星角色，0~6鏈皆列入此排行。"
     )

@@ -1,7 +1,9 @@
 # Tier
 
 {% for field_name in field_names -%}
-{%set docs_tier = getattr(docs_tiers, field_name) -%}
+
+{% set docs_tier = getattr(docs_tiers, field_name) -%}
+{% if docs_tier.ids|length > 0 -%}
 
 ## {{docs_tier.title}}
 
@@ -9,6 +11,8 @@
 
 - [{{_(ZhTwEnum.ECHOES_AFFIXES_15_1)}}]({{get_tier_url(field_name, SimulationTypeEnum.AFFIXES_15_1.value)}})
 - [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)}}]({{get_tier_url(field_name, SimulationTypeEnum.AFFIXES_20_SMALL.value)}})
-- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}}]({{get_tier_url(field_name, SimulationTypeEnum.AFFIXES_20_SKILL_BONUS.value)}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}}]({{get_tier_url(field_name,
+SimulationTypeEnum.AFFIXES_20_SKILL_BONUS.value)}})
 
+{% endif -%}
 {% endfor %}

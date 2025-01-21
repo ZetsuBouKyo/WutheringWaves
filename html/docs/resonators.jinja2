@@ -4,11 +4,25 @@
 
 <div class="wuwa-container">
     <div class="wuwa-flex-wrap">
-        {% for name in calculated_resonator_names %}
-        {% set no = get_resonator_information(name).no %}
-        <a href="{{get_resonator_outline_url(no)}}">
-            <img class="wuwa-resonator-outline-icon" src="{{get_resonator_icon_url(name)}}" title="{{name}}" />
-        </a>
+        {% for name in calculated_resonator_names -%}
+        {% set resonator_information = get_resonator_information(name) -%}
+        {% set no = resonator_information.no -%}
+        {% set element = resonator_information.element -%}
+        <div class="wuwa-flex-col wuwa-flex-y-center wuwa-py4">
+            <div class="wuwa-flex wuwa-flex-x-center">
+                <a href="{{get_resonator_outline_url(no)}}">
+                    <img class="wuwa-resonator-outline-icon" src="{{get_resonator_icon_url(name)}}" title="{{name}}" />
+                </a>
+            </div>
+            <div class="wuwa-flex-row wuwa-flex-x-center wuwa-flex-y-center">
+                <div class="wuwa-flex wuwa-h30">
+                    <img src="{{get_element_icon_url(element)}}" />
+                </div>
+                <div class="wuwa-flex wuwa-white">
+                    {{element}}
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>
@@ -17,11 +31,25 @@
 
 <div class="wuwa-container">
     <div class="wuwa-flex-wrap">
-        {% for name in resonator_names %}
-        {% set no = get_resonator_information(name).no %}
-        <a href="{{get_resonator_outline_url(no)}}">
-            <img class="wuwa-resonator-outline-icon" src="{{get_resonator_icon_url(name)}}" title="{{name}}" />
-        </a>
+        {% for name in resonator_names -%}
+        {% set resonator_information = get_resonator_information(name) -%}
+        {% set no = resonator_information.no -%}
+        {% set element = resonator_information.element -%}
+        <div class="wuwa-flex-col wuwa-flex-y-center wuwa-py4">
+            <div class="wuwa-flex wuwa-flex-x-center">
+                <a href="{{get_resonator_outline_url(no)}}">
+                    <img class="wuwa-resonator-outline-icon" src="{{get_resonator_icon_url(name)}}" title="{{name}}" />
+                </a>
+            </div>
+            <div class="wuwa-flex-row wuwa-flex-x-center wuwa-flex-y-center">
+                <div class="wuwa-flex wuwa-h30">
+                    <img src="{{get_element_icon_url(element)}}" />
+                </div>
+                <div class="wuwa-flex wuwa-white">
+                    {{element}}
+                </div>
+            </div>
+        </div>
         {% endfor %}
     </div>
 </div>

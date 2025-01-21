@@ -13,6 +13,10 @@ div.wuwa-container {
   overflow-x: auto;
 }
 
+.wuwa-h24 {
+  height: 24px;
+}
+
 .wuwa-h30 {
   height: 30px;
 }
@@ -134,7 +138,16 @@ th.wuwa-middle {
 }
 
 .wuwa-flex-wrap {
+  display: flex;
   flex-wrap: wrap;
+}
+
+.wuwa-flex-y-center {
+  align-items: center;
+}
+
+.wuwa-flex-x-center {
+  justify-content: center;
 }
 
 .wuwa-border-left {
@@ -167,6 +180,11 @@ th.wuwa-middle {
 
 .wuwa-margin-bottom-24 {
   margin-bottom: 24px;
+}
+
+.wuwa-py4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .wuwa-black {
