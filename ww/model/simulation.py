@@ -2,6 +2,6 @@ from enum import Enum
 
 
 class SimulationTypeEnum(str, Enum):
-    AFFIXES_15_1: str = "theory_1"
-    AFFIXES_20_SMALL: str = "half_built_small"
-    HALF_BUILT_SKILL_BONUS: str = "half_built_skill_bonus"
+    AFFIXES_15_1: str = "affixes_15_1"
+    AFFIXES_20_SMALL: str = "affixes_20_small"
+    AFFIXES_20_SKILL_BONUS: str = "affixes_20_skill_bonus"

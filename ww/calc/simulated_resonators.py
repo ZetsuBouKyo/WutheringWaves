@@ -833,7 +833,7 @@ class SimulatedResonators:
         table = get_resonators_table(resonators, self.resonators_table_column_names)
         return table
 
-    def get_3_resonators_with_half_built_skill_bonus(self) -> ResonatorsTable:
+    def get_3_resonators_with_affixes_20_skill_bonus(self) -> ResonatorsTable:
         resonators = []
         for resonator in self.template.resonators:
             prefix = get_prefix_by_resonator_skill_bonus(
@@ -864,7 +864,7 @@ class SimulatedResonators:
         table = get_resonators_table(resonators, self.resonators_table_column_names)
         return resonator_ids, table
 
-    def get_resonators_for_echo_comparison_with_half_built_skill_bonus(
+    def get_resonators_for_echo_comparison_with_affixes_20_skill_bonus(
         self, resonator_name: str
     ) -> Tuple[List[str], ResonatorsTable]:
         resonator = self.template.get_resonator(resonator_name)

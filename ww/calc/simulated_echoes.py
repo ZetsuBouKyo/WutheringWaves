@@ -15,7 +15,7 @@ from ww.model.element import ElementEnum
 from ww.tables.echo import EchoesTable, EchoMainAffixesTable, EchoSubAffixesTable
 from ww.utils.pd import get_empty_df
 
-ECHOES_THEORY_1_FPATH = "./data/v1/zh_tw/echoes_theory_1.tsv"
+ECHOES_THEORY_1_FPATH = "./data/v1/zh_tw/echoes_affixes_15_1.tsv"
 
 
 def get_simulated_echo_id(
@@ -28,8 +28,8 @@ def get_simulated_echo_id(
 
 class SimulatedEchoes:
 
-    def __init__(self, echoes_theory_1_fpath: str = ECHOES_THEORY_1_FPATH):
-        self.echoes_theory_1_fpath = echoes_theory_1_fpath
+    def __init__(self, echoes_affixes_15_1_fpath: str = ECHOES_THEORY_1_FPATH):
+        self.echoes_affixes_15_1_fpath = echoes_affixes_15_1_fpath
 
         echo_main_affixes_table = EchoMainAffixesTable()
         echo_sub_affixes_table = EchoSubAffixesTable()
@@ -235,7 +235,7 @@ class SimulatedEchoes:
 
         return echoes
 
-    def update_echo_sub_affix_with_theory_1(self, echo: dict, base_attr: str):
+    def update_echo_sub_affix_with_affixes_15_1(self, echo: dict, base_attr: str):
         # Base attribute
         if base_attr == _(ZhTwEnum.HP):
             echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = Decimal("450")
@@ -264,11 +264,11 @@ class SimulatedEchoes:
             Decimal("0.016")
         )
 
-    # def update_echoes_with_theory_1(self, echoes: List[dict], sonata: str):
+    # def update_echoes_with_affixes_15_1(self, echoes: List[dict], sonata: str):
     #     prefix = EchoesModelEnum.AFFIXES_15_1.value
     #     echoes = self.get_base_echoes(prefix, sonata)
     #     for echo in echoes:
-    #         self.update_echo_sub_affix_with_theory_1(echo)
+    #         self.update_echo_sub_affix_with_affixes_15_1(echo)
 
     #         echoes.append(echo)
 
@@ -344,7 +344,7 @@ class SimulatedEchoes:
 
     #     for sonata_enum in EchoSonataEnum:
     #         sonata = sonata_enum.value
-    #         self.update_echoes_with_theory_1(echoes, sonata)
+    #         self.update_echoes_with_affixes_15_1(echoes, sonata)
 
     #     half_built_prefixes = [
     #         EchoesModelEnum.AFFIXES_20_SMALL.value,
@@ -471,7 +471,7 @@ class SimulatedEchoes:
             EchoesModelEnum.AFFIXES_20_RESONANCE_LIBERATION.value,
         ]
         if prefix == EchoesModelEnum.AFFIXES_15_1.value:
-            self.update_echo_sub_affix_with_theory_1(echo, base_attr)
+            self.update_echo_sub_affix_with_affixes_15_1(echo, base_attr)
         elif prefix in half_built_prefixes:
             self.update_echo_sub_affix_with_half_built(echo, prefix, base_attr)
 

@@ -150,30 +150,30 @@
 
 ### {{_(ZhTwEnum.ECHO_CONFIGURATION)}}
 
-#### [{{_(ZhTwEnum.ECHOES_THEORY_1)}}](/simulated_echo/index.html)
+#### [{{_(ZhTwEnum.ECHOES_AFFIXES_15_1)}}](/simulated_echo/index.html)
 
-{% set _prefix = "theory_1" -%}
+{% set _prefix = "affixes_15_1" -%}
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-{% set _url = get_echo_damage_comparison_url(template.get_md5(), "theory_1", no) -%}
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "affixes_15_1", no) -%}
 - [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
-#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}](/simulated_echo/index.html)
+#### [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)}}](/simulated_echo/index.html)
 
-{% set _prefix = "half_built_small" -%}
+{% set _prefix = "affixes_20_small" -%}
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_small", no) -%}
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "affixes_20_small", no) -%}
 - [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 
-#### [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}](/simulated_echo/index.html)
+#### [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}}](/simulated_echo/index.html)
 
-{% set _prefix = "half_built_skill_bonus" -%}
+{% set _prefix = "affixes_20_skill_bonus" -%}
 - [{{_(ZhTwEnum.DAMAGE_ANALYSIS)}}]({{get_damage_analysis_url(template.get_md5(), _prefix)}})
 {% for no, name in echo_comparisons -%}
-{% set _url = get_echo_damage_comparison_url(template.get_md5(), "half_built_skill_bonus", no) -%}
+{% set _url = get_echo_damage_comparison_url(template.get_md5(), "affixes_20_skill_bonus", no) -%}
 - [{{name}} {{_(ZhTwEnum.ECHO_DAMAGE_COMPARISON)}}]({{_url}})
 {% endfor %}
 

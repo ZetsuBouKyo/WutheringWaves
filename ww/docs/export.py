@@ -56,9 +56,9 @@ DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
 
 # url
-TIER_THEORY_1_URL: str = "/tier/theory_1/index.html"
-TIER_HALF_BUILT_SMALL_URL: str = "/tier/half_built_small/index.html"
-TIER_HALF_BUILT_SKILL_BONUS_URL: str = "/tier/half_built_skill_bonus/index.html"
+TIER_AFFIXES_15_1_URL: str = "/tier/affixes_15_1/index.html"
+TIER_AFFIXES_20_SMALL_URL: str = "/tier/affixes_20_small/index.html"
+TIER_AFFIXES_20_SKILL_BONUS_URL: str = "/tier/affixes_20_skill_bonus/index.html"
 
 
 def get_resonator_outline_url(no: str) -> str:
@@ -141,18 +141,18 @@ class Docs:
 
         (
             template_id_to_relative_url,
-            template_id_to_theory_1,
-            template_id_to_half_built_small,
-            template_id_to_half_built_skill_bonus,
+            template_id_to_affixes_15_1,
+            template_id_to_affixes_20_small,
+            template_id_to_affixes_20_skill_bonus,
             template_ids_tier,
             resonator_name_to_template_ids,
         ) = self.export_resonator_templates()
         self.export_resonator_outline(
             resonator_name_to_template_ids,
             template_id_to_relative_url,
-            template_id_to_theory_1,
-            template_id_to_half_built_small,
-            template_id_to_half_built_skill_bonus,
+            template_id_to_affixes_15_1,
+            template_id_to_affixes_20_small,
+            template_id_to_affixes_20_skill_bonus,
         )
         self.export_resonators(resonator_name_to_template_ids)
 
@@ -160,9 +160,9 @@ class Docs:
         self.export_3_resonators_tier_barhs(
             template_ids_tier,
             template_id_to_relative_url,
-            template_id_to_theory_1,
-            template_id_to_half_built_small,
-            template_id_to_half_built_skill_bonus,
+            template_id_to_affixes_15_1,
+            template_id_to_affixes_20_small,
+            template_id_to_affixes_20_skill_bonus,
         )
 
     def export_resonator_echo_damage_comparison(
@@ -260,11 +260,11 @@ class Docs:
             resonators_table,
         )
 
-    def export_resonator_echo_damage_comparison_with_theory_1(
+    def export_resonator_echo_damage_comparison_with_affixes_15_1(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/theory_1/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_15_1/echo_damage_comparison/{resonator_no}.md"
 
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
 
@@ -272,26 +272,26 @@ class Docs:
             prefix, resonator_name, resonator_template, output_fpath
         )
 
-    def export_resonator_echo_damage_comparison_with_half_built_small(
+    def export_resonator_echo_damage_comparison_with_affixes_20_small(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_small/echo_damage_comparison/{resonator_no}.md"
 
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)
         self.export_resonator_echo_damage_comparison_with_prefix(
             prefix, resonator_name, resonator_template, output_fpath
         )
 
-    def export_resonator_echo_damage_comparison_with_half_built_skill_bonus(
+    def export_resonator_echo_damage_comparison_with_affixes_20_skill_bonus(
         self, resonator_no: str, resonator_name: str, resonator_template: TemplateModel
     ):
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/echo_damage_comparison/{resonator_no}.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/echo_damage_comparison/{resonator_no}.md"
 
         simulated_resonators = SimulatedResonators(resonator_template)
         _, resonators_table = (
-            simulated_resonators.get_resonators_for_echo_comparison_with_half_built_skill_bonus(
+            simulated_resonators.get_resonators_for_echo_comparison_with_affixes_20_skill_bonus(
                 resonator_name
             )
         )
@@ -416,15 +416,13 @@ class Docs:
             resonators_table,
         )
 
-    def export_template_damage_analysis_with_theory_1(
+    def export_template_damage_analysis_with_affixes_15_1(
         self,
         resonator_template: TemplateModel,
         output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
-        output_fpath = (
-            f"./build/html/docs/resonator/template/{md5}/theory_1/damage_analysis.md"
-        )
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_15_1/damage_analysis.md"
 
         # Simulation
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_15_1)
@@ -438,13 +436,13 @@ class Docs:
             simulated_resonators,
         )
 
-    def export_template_damage_analysis_with_half_built_small(
+    def export_template_damage_analysis_with_affixes_20_small(
         self,
         resonator_template: TemplateModel,
         output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_small/damage_analysis.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_small/damage_analysis.md"
 
         # Simulation
         prefix = _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)
@@ -458,18 +456,18 @@ class Docs:
             simulated_resonators,
         )
 
-    def export_template_damage_analysis_with_half_built_skill_bonus(
+    def export_template_damage_analysis_with_affixes_20_skill_bonus(
         self,
         resonator_template: TemplateModel,
         output_methods: TemplateHtmlOutputMethodModel,
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
-        output_fpath = f"./build/html/docs/resonator/template/{md5}/half_built_skill_bonus/damage_analysis.md"
+        output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/damage_analysis.md"
 
         simulated_resonators = SimulatedResonators(resonator_template)
 
         resonators_table = (
-            simulated_resonators.get_3_resonators_with_half_built_skill_bonus()
+            simulated_resonators.get_3_resonators_with_affixes_20_skill_bonus()
         )
 
         return self.export_template_damage_analysis(
@@ -491,9 +489,9 @@ class Docs:
         Dict[str, List[str]],
     ]:
         template_id_to_relative_url = {}
-        template_id_to_theory_1 = {}
-        template_id_to_half_built_small = {}
-        template_id_to_half_built_skill_bonus = {}
+        template_id_to_affixes_15_1 = {}
+        template_id_to_affixes_20_small = {}
+        template_id_to_affixes_20_skill_bonus = {}
         template_ids_tier = []
         resonator_name_to_template_ids: Dict[str, List[str]] = {}
 
@@ -523,21 +521,21 @@ class Docs:
 
                 resonator_no = self._get_resonator_information(resonator_name).no
 
-                self.export_resonator_echo_damage_comparison_with_theory_1(
+                self.export_resonator_echo_damage_comparison_with_affixes_15_1(
                     resonator_no, resonator_name, resonator_template
                 )
-                logger_cli.debug("Echo damage comparison: Theory 1 finished.")
+                logger_cli.debug("Echo damage comparison: Affixes 15-1 finished.")
 
-                self.export_resonator_echo_damage_comparison_with_half_built_small(
+                self.export_resonator_echo_damage_comparison_with_affixes_20_small(
                     resonator_no, resonator_name, resonator_template
                 )
-                logger_cli.debug("Echo damage comparison: Half built Small finished.")
+                logger_cli.debug("Echo damage comparison: Affixes 20 Small finished.")
 
-                self.export_resonator_echo_damage_comparison_with_half_built_skill_bonus(
+                self.export_resonator_echo_damage_comparison_with_affixes_20_skill_bonus(
                     resonator_no, resonator_name, resonator_template
                 )
                 logger_cli.debug(
-                    "Echo damage comparison: Half built Skill Bonus finished."
+                    "Echo damage comparison: Affixes 20 Skill BonusSkill Bonus finished."
                 )
 
                 echo_comparisons.append((resonator_no, resonator_name))
@@ -571,33 +569,35 @@ class Docs:
             url = f"/resonator/template/{md5}/index.html"
             template_id_to_relative_url[template_id] = url
 
-            theory_1_damage_distribution = (
-                self.export_template_damage_analysis_with_theory_1(
+            affixes_15_1_damage_distribution = (
+                self.export_template_damage_analysis_with_affixes_15_1(
                     resonator_template, output_methods
                 )
             )
-            logger_cli.debug("Damage analysis: Theory 1 finished.")
+            logger_cli.debug("Damage analysis: Affixes 15-1 finished.")
 
-            half_built_small_damage_distribution = (
-                self.export_template_damage_analysis_with_half_built_small(
+            affixes_20_small_damage_distribution = (
+                self.export_template_damage_analysis_with_affixes_20_small(
                     resonator_template, output_methods
                 )
             )
-            logger_cli.debug("Damage analysis: Half built Small finished.")
+            logger_cli.debug("Damage analysis: Affixes 20 Small finished.")
 
-            half_built_skill_bonus_damage_distribution = (
-                self.export_template_damage_analysis_with_half_built_skill_bonus(
+            affixes_20_skill_bonus_damage_distribution = (
+                self.export_template_damage_analysis_with_affixes_20_skill_bonus(
                     resonator_template, output_methods
                 )
             )
-            logger_cli.debug("Damage analysis: Half built Skill Bonus finished.")
-
-            template_id_to_theory_1[template_id] = theory_1_damage_distribution
-            template_id_to_half_built_small[template_id] = (
-                half_built_small_damage_distribution
+            logger_cli.debug(
+                "Damage analysis: Affixes 20 Skill BonusSkill Bonus finished."
             )
-            template_id_to_half_built_skill_bonus[template_id] = (
-                half_built_skill_bonus_damage_distribution
+
+            template_id_to_affixes_15_1[template_id] = affixes_15_1_damage_distribution
+            template_id_to_affixes_20_small[template_id] = (
+                affixes_20_small_damage_distribution
+            )
+            template_id_to_affixes_20_skill_bonus[template_id] = (
+                affixes_20_skill_bonus_damage_distribution
             )
 
             if template.is_tier:
@@ -607,9 +607,9 @@ class Docs:
 
         return (
             template_id_to_relative_url,
-            template_id_to_theory_1,
-            template_id_to_half_built_small,
-            template_id_to_half_built_skill_bonus,
+            template_id_to_affixes_15_1,
+            template_id_to_affixes_20_small,
+            template_id_to_affixes_20_skill_bonus,
             template_ids_tier,
             resonator_name_to_template_ids,
         )
@@ -648,9 +648,9 @@ class Docs:
         self,
         resonator_name_to_template_ids: Dict[str, List[str]],
         template_id_to_relative_url: Dict[str, str],
-        template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_small: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_skill_bonus: Dict[
+        template_id_to_affixes_15_1: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_affixes_20_small: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_affixes_20_skill_bonus: Dict[
             str, TemplateDamageDistributionModel
         ],
     ):
@@ -693,7 +693,7 @@ class Docs:
                     resonator_name,
                     comparison.template_ids,
                     template_id_to_relative_url,
-                    template_id_to_theory_1,
+                    template_id_to_affixes_15_1,
                 )
                 self.export_resonator_comparison(
                     comparison.title,
@@ -703,17 +703,17 @@ class Docs:
                     resonator_name,
                     comparison.template_ids,
                     template_id_to_relative_url,
-                    template_id_to_half_built_small,
+                    template_id_to_affixes_20_small,
                 )
                 self.export_resonator_comparison(
                     comparison.title,
-                    SimulationTypeEnum.HALF_BUILT_SKILL_BONUS.value,
+                    SimulationTypeEnum.AFFIXES_20_SKILL_BONUS.value,
                     comparison.get_md5(),
                     resonator_no,
                     resonator_name,
                     comparison.template_ids,
                     template_id_to_relative_url,
-                    template_id_to_half_built_skill_bonus,
+                    template_id_to_affixes_20_skill_bonus,
                 )
 
     def export_resonators(self, resonator_name_to_template_ids: Dict[str, List[str]]):
@@ -753,9 +753,9 @@ class Docs:
         template = get_jinja2_template(template_fpath)
 
         html_str = template.render(
-            TIER_THEORY_1_URL=TIER_THEORY_1_URL,
-            TIER_HALF_BUILT_SMALL_URL=TIER_HALF_BUILT_SMALL_URL,
-            TIER_HALF_BUILT_SKILL_BONUS_URL=TIER_HALF_BUILT_SKILL_BONUS_URL,
+            TIER_AFFIXES_15_1_URL=TIER_AFFIXES_15_1_URL,
+            TIER_AFFIXES_20_SMALL_URL=TIER_AFFIXES_20_SMALL_URL,
+            TIER_AFFIXES_20_SKILL_BONUS_URL=TIER_AFFIXES_20_SKILL_BONUS_URL,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )
@@ -864,37 +864,37 @@ class Docs:
         self,
         template_ids: List[str],
         template_id_to_relative_url: Dict[str, str],
-        template_id_to_theory_1: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_small: Dict[str, TemplateDamageDistributionModel],
-        template_id_to_half_built_skill_bonus: Dict[
+        template_id_to_affixes_15_1: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_affixes_20_small: Dict[str, TemplateDamageDistributionModel],
+        template_id_to_affixes_20_skill_bonus: Dict[
             str, TemplateDamageDistributionModel
         ],
     ):
-        theory_1_fpath = "./build/html/docs/tier/theory_1.md"
+        affixes_15_1_fpath = "./build/html/docs/tier/affixes_15_1.md"
         self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_AFFIXES_15_1),
             template_ids,
             template_id_to_relative_url,
-            template_id_to_theory_1,
-            theory_1_fpath,
+            template_id_to_affixes_15_1,
+            affixes_15_1_fpath,
         )
 
-        half_built_small_fpath = "./build/html/docs/tier/half_built_small.md"
+        affixes_20_small_fpath = "./build/html/docs/tier/affixes_20_small.md"
         self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL),
             template_ids,
             template_id_to_relative_url,
-            template_id_to_half_built_small,
-            half_built_small_fpath,
+            template_id_to_affixes_20_small,
+            affixes_20_small_fpath,
         )
 
-        half_built_skill_bonus_fpath = (
-            "./build/html/docs/tier/half_built_skill_bonus.md"
+        affixes_20_skill_bonus_fpath = (
+            "./build/html/docs/tier/affixes_20_skill_bonus.md"
         )
         self.export_3_resonators_tier_barh(
             _(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS),
             template_ids,
             template_id_to_relative_url,
-            template_id_to_half_built_skill_bonus,
-            half_built_skill_bonus_fpath,
+            template_id_to_affixes_20_skill_bonus,
+            affixes_20_skill_bonus_fpath,
         )

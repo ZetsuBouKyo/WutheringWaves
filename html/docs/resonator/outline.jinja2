@@ -20,16 +20,16 @@
 
 {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_2)}}
 
-- [{{_(ZhTwEnum.ECHOES_THEORY_1)}}]({{get_team_dps_comparison_url(_md5, "theory_1", no)}})
-- [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}]({{get_team_dps_comparison_url(_md5, "half_built_small", no)}})
-- [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}]({{get_team_dps_comparison_url(_md5, "half_built_skill_bonus", no)}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_15_1)}}]({{get_team_dps_comparison_url(_md5, "affixes_15_1", no)}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)}}]({{get_team_dps_comparison_url(_md5, "affixes_20_small", no)}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}}]({{get_team_dps_comparison_url(_md5, "affixes_20_skill_bonus", no)}})
 
 {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_3_1)}} {{resonator_name}} {{_(ZhTwEnum.DOCS_RESONATOR_OUTLINE_3_2)}}
 
-- [{{_(ZhTwEnum.ECHOES_THEORY_1)}}]({{get_resonator_dps_comparison_url(_md5, "theory_1", no)}})
-- [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SMALL)}}]({{get_resonator_dps_comparison_url(_md5, "half_built_small", no)}})
-{% set _url = get_resonator_dps_comparison_url(_md5, "half_built_skill_bonus", no) -%}
-- [{{_(ZhTwEnum.ECHOES_HALF_BUILT_SKILL_BONUS)}}]({{_url}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_15_1)}}]({{get_resonator_dps_comparison_url(_md5, "affixes_15_1", no)}})
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)}}]({{get_resonator_dps_comparison_url(_md5, "affixes_20_small", no)}})
+{% set _url = get_resonator_dps_comparison_url(_md5, "affixes_20_skill_bonus", no) -%}
+- [{{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}}]({{_url}})
 {% endfor %}
 {% endif %}
 
