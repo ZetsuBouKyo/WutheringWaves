@@ -54,9 +54,9 @@ class CalculatedTemplateRowModel(BaseModel):
     resonator_name: str = ""
     skill_id: str = ""
 
-    resonator_level: Optional[ElementEnum] = None
+    resonator_level: Optional[str] = None
 
-    resonator_skill_level: str = ""
+    resonator_skill_level: Optional[str] = None
     resonator_skill_element: Optional[ElementEnum] = None
     resonator_skill_base_attr: Optional[SkillBaseAttrEnum] = None
     resonator_skill_type: Optional[ResonatorSkillTypeEnum] = None

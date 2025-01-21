@@ -19,6 +19,7 @@ from ww.model.template.damage import (
     TemplateResonatorSkillDamageDistributionModel,
 )
 from ww.model.template.html import (
+    TemplateHtmlDamageAnalysisModel,
     TemplateHtmlOutputMethodActionModel,
     TemplateHtmlOutputMethodModel,
     TemplateHtmlResonatorModel,
@@ -42,6 +43,7 @@ __all__ = [
     "TemplateColumnEnum",
     "TemplateDamageDistributionModel",
     "TemplateEnum",
+    "TemplateHtmlDamageAnalysisModel",
     "TemplateHtmlOutputMethodActionModel",
     "TemplateHtmlOutputMethodModel",
     "TemplateHtmlResonatorModel",

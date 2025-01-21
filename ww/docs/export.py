@@ -1,4 +1,6 @@
+import json
 import os
+from datetime import datetime
 from decimal import Decimal
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union
@@ -8,7 +10,7 @@ import yaml
 from ww.calc.damage import Damage
 from ww.calc.simulated_resonators import SimulatedResonators
 from ww.crud.resonator import get_resonator_names
-from ww.crud.template import get_template
+from ww.crud.template import get_template, get_template_path
 from ww.docs.mkdocs_settings import MkdocsSettings
 from ww.html.image.output_method import (
     RIGHT_ARROW_ICON_FPATH,
@@ -31,6 +33,7 @@ from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.simulation import SimulationTypeEnum
 from ww.model.template import (
     TemplateDamageDistributionModel,
+    TemplateHtmlDamageAnalysisModel,
     TemplateHtmlOutputMethodModel,
     TemplateHtmlResonatorModel,
     TemplateModel,
@@ -52,8 +55,10 @@ from ww.utils.number import (
 DEFAULT_MKDOCS_FPATH = "./mkdocs.yml"
 MKDOCS_FPATH = "./build/html/mkdocs.yml"
 
+CACHE_HOME_PATH = "./build/html/cache"
 
 DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
+DOCS_HOME_PATH = "./build/html/docs"
 
 
 # url
@@ -95,6 +100,56 @@ def get_tier_md_fpath(field_name: str, model_name: str) -> str:
     return f"./build/html/docs/tier/{field_name}/{model_name}.md"
 
 
+def get_cache_fpath_by_md_fpath(
+    md_fpath: str,
+    cache_home_path: str = CACHE_HOME_PATH,
+    docs_home_path: str = DOCS_HOME_PATH,
+) -> Path:
+    cache_home_path = Path(CACHE_HOME_PATH)
+    docs_home_path = Path(DOCS_HOME_PATH)
+    md_fpath = Path(md_fpath)
+    relative_md_fpath = md_fpath.relative_to(docs_home_path)
+    cache_fpath = cache_home_path / relative_md_fpath
+    return cache_fpath.with_suffix(".json")
+
+
+def save_damage_analysis_cache(
+    damage_analysis: TemplateHtmlDamageAnalysisModel, md_fpath: str
+):
+    cache_fpath = get_cache_fpath_by_md_fpath(md_fpath)
+    os.makedirs(cache_fpath.parent, exist_ok=True)
+    with cache_fpath.open(mode="w", encoding="utf-8") as fp:
+        d = damage_analysis.model_dump(
+            mode="json", serialize_as_any=True, warnings=False
+        )
+        json.dump(d, fp, indent=4, ensure_ascii=False)
+
+
+def get_damage_analysis(
+    resonator_tempalte: TemplateModel, md_fpath: str
+) -> Optional[TemplateHtmlDamageAnalysisModel]:
+    cache_fpath = get_cache_fpath_by_md_fpath(md_fpath)
+    if not cache_fpath.exists():
+        return None
+
+    resonator_tempalte_id = resonator_tempalte.id
+    resonator_tempalte_fpath = get_template_path(resonator_tempalte_id)
+    if resonator_tempalte_fpath is None:
+        return None
+
+    cache_file_mtime = cache_fpath.stat().st_mtime
+    resonator_tempalte_mtime = resonator_tempalte_fpath.stat().st_mtime
+
+    if resonator_tempalte_mtime > cache_file_mtime:
+        return None
+
+    with cache_fpath.open(mode="r", encoding="utf-8") as fp:
+        d = json.load(fp)
+
+    damage_analysis = TemplateHtmlDamageAnalysisModel(**d)
+    return damage_analysis
+
+
 def export_html(fpath: Union[str, Path], html_str: str):
     if type(fpath) is str:
         fpath = Path(fpath)
@@ -109,27 +164,22 @@ class Docs:
         docs_fpath: str = DOCS_FPATH,
         default_mkdocs_fpath: str = DEFAULT_MKDOCS_FPATH,
         mkdocs_fpath: str = MKDOCS_FPATH,
+        force: bool = False,
     ):
 
         with open(default_mkdocs_fpath, encoding="utf-8") as fp:
-            try:
-                mkdocs_settings = yaml.safe_load(fp)
-            except yaml.YAMLError as exc:
-                print(exc)
-                return
+            mkdocs_settings = yaml.safe_load(fp)
 
         with open(docs_fpath, encoding="utf-8") as fp:
-            try:
-                docs_settings = yaml.safe_load(fp)
-            except yaml.YAMLError as exc:
-                print(exc)
-                return
+            docs_settings = yaml.safe_load(fp)
 
         self._docs_model = DocsModel(**docs_settings)
         self._docs_model.check()
 
         self._mkdocs_settings = MkdocsSettings(mkdocs_settings, mkdocs_fpath)
         self._resonator_name_to_info: Dict[str, ResonatorInformationModel] = {}
+
+        self._force = force
 
     def _get_resonator_information(
         self, resonator_name: str
@@ -309,14 +359,54 @@ class Docs:
 
     def export_template_damage_analysis(
         self,
+        damage_analysis_model: TemplateHtmlDamageAnalysisModel,
+        output_fpath: str,
+    ) -> TemplateDamageDistributionModel:
+        template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
+        template = get_jinja2_template(template_damage_fpath)
+
+        resonator_template = damage_analysis_model.resonator_template
+        resonator_models = damage_analysis_model.resonator_models
+        damage_distribution = damage_analysis_model.damage_distribution
+        damage_distributions_with_buffs = (
+            damage_analysis_model.damage_distributions_with_buffs
+        )
+        calculated_rows = damage_analysis_model.calculated_rows
+        output_methods = damage_analysis_model.output_methods
+
+        html_str = template.render(
+            template=resonator_template,
+            resonator_models=resonator_models,
+            damage_distribution=damage_distribution,
+            damage_distributions_with_buffs=damage_distributions_with_buffs,
+            calculated_rows=calculated_rows,
+            output_methods=output_methods,
+            get_percentage_str=get_percentage_str,
+            to_number_string=to_number_string,
+            to_percentage_str=to_percentage_str,
+            to_trimmed_number_string=to_trimmed_number_string,
+            right_arrow_src=get_asset(RIGHT_ARROW_ICON_FPATH),
+            ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,
+            SkillBaseAttrEnum=SkillBaseAttrEnum,
+            SkillBonusTypeEnum=SkillBonusTypeEnum,
+            ZhTwEnum=ZhTwEnum,
+            _=_,
+            str=str,
+            Decimal=Decimal,
+        )
+
+        export_html(output_fpath, html_str)
+
+        return damage_distribution
+
+    def export_template_damage_analysis_without_cache(
+        self,
         resonator_template: TemplateModel,
-        output_methods: TemplateHtmlOutputMethodModel,
+        output_methods: List[TemplateHtmlOutputMethodModel],
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
         resonators_table: ResonatorsTable,
     ) -> TemplateDamageDistributionModel:
-        template_damage_fpath = "./html/docs/resonator/template_damage.jinja2"
-        template = get_jinja2_template(template_damage_fpath)
         monster_id = _(ZhTwEnum.MONSTER_LV_90_RES_20)
 
         calculated_resonators = simulated_resonators.get_calculated_resonators(
@@ -377,42 +467,39 @@ class Docs:
             is_default=True,
         )
 
-        html_str = template.render(
-            template=resonator_template,
+        damage_analysis_model = TemplateHtmlDamageAnalysisModel(
+            resonator_template=resonator_template,
             resonator_models=resonator_models,
             damage_distribution=damage_distribution,
             damage_distributions_with_buffs=damage_distributions_with_buffs,
             calculated_rows=calculated_rows,
             output_methods=output_methods,
-            get_percentage_str=get_percentage_str,
-            to_number_string=to_number_string,
-            to_percentage_str=to_percentage_str,
-            to_trimmed_number_string=to_trimmed_number_string,
-            right_arrow_src=get_asset(RIGHT_ARROW_ICON_FPATH),
-            ResonatorSkillTypeEnum=ResonatorSkillTypeEnum,
-            SkillBaseAttrEnum=SkillBaseAttrEnum,
-            SkillBonusTypeEnum=SkillBonusTypeEnum,
-            ZhTwEnum=ZhTwEnum,
-            _=_,
-            str=str,
-            Decimal=Decimal,
         )
 
-        export_html(output_fpath, html_str)
+        save_damage_analysis_cache(damage_analysis_model, output_fpath)
 
-        return damage_distribution
+        return self.export_template_damage_analysis(damage_analysis_model, output_fpath)
 
     def export_template_damage_analysis_with_prefix(
         self,
         prefix: str,
         resonator_template: TemplateModel,
-        output_methods: TemplateHtmlOutputMethodModel,
+        output_methods: List[TemplateHtmlOutputMethodModel],
         output_fpath: str,
         simulated_resonators: SimulatedResonators,
     ) -> TemplateDamageDistributionModel:
+        if not self._force:
+            damage_analysis_model = get_damage_analysis(
+                resonator_template, output_fpath
+            )
+            if damage_analysis_model is not None:
+                return self.export_template_damage_analysis(
+                    damage_analysis_model, output_fpath
+                )
+
         resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
-        return self.export_template_damage_analysis(
+        return self.export_template_damage_analysis_without_cache(
             resonator_template,
             output_methods,
             output_fpath,
@@ -423,7 +510,7 @@ class Docs:
     def export_template_damage_analysis_with_affixes_15_1(
         self,
         resonator_template: TemplateModel,
-        output_methods: TemplateHtmlOutputMethodModel,
+        output_methods: List[TemplateHtmlOutputMethodModel],
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_15_1/damage_analysis.md"
@@ -443,7 +530,7 @@ class Docs:
     def export_template_damage_analysis_with_affixes_20_small(
         self,
         resonator_template: TemplateModel,
-        output_methods: TemplateHtmlOutputMethodModel,
+        output_methods: List[TemplateHtmlOutputMethodModel],
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_small/damage_analysis.md"
@@ -463,10 +550,19 @@ class Docs:
     def export_template_damage_analysis_with_affixes_20_skill_bonus(
         self,
         resonator_template: TemplateModel,
-        output_methods: TemplateHtmlOutputMethodModel,
+        output_methods: List[TemplateHtmlOutputMethodModel],
     ) -> TemplateDamageDistributionModel:
         md5 = resonator_template.get_md5()
         output_fpath = f"./build/html/docs/resonator/template/{md5}/affixes_20_skill_bonus/damage_analysis.md"
+
+        if not self._force:
+            damage_analysis_model = get_damage_analysis(
+                resonator_template, output_fpath
+            )
+            if damage_analysis_model is not None:
+                return self.export_template_damage_analysis(
+                    damage_analysis_model, output_fpath
+                )
 
         simulated_resonators = SimulatedResonators(resonator_template)
 
@@ -474,7 +570,7 @@ class Docs:
             simulated_resonators.get_3_resonators_with_affixes_20_skill_bonus()
         )
 
-        return self.export_template_damage_analysis(
+        return self.export_template_damage_analysis_without_cache(
             resonator_template,
             output_methods,
             output_fpath,

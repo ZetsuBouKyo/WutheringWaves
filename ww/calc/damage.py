@@ -918,7 +918,7 @@ class Damage:
         r_id_2: str,
         r_id_3: str,
         monster_id: Optional[str] = None,
-    ) -> Tuple[str, TemplateDamageDistributionModel]:
+    ) -> List[Tuple[str, TemplateDamageDistributionModel]]:
         template = get_template(template_id)
         if template is None:
             return {}

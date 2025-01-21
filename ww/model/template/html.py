@@ -1,6 +1,10 @@
-from typing import List
+from typing import Dict, List, Tuple
 
 from pydantic import BaseModel
+
+from ww.model.template.base import TemplateModel
+from ww.model.template.calculated_row import CalculatedTemplateRowModel
+from ww.model.template.damage import TemplateDamageDistributionModel
 
 
 class TemplateHtmlResonatorModel(BaseModel):
@@ -102,3 +106,16 @@ class TemplateHtmlOutputMethodModel(BaseModel):
         if not cls.resonator_name or len(cls.actions) == 0:
             return True
         return False
+
+
+class TemplateHtmlDamageAnalysisModel(BaseModel):
+    resonator_template: TemplateModel = TemplateModel()
+    resonator_models: Dict[str, TemplateHtmlResonatorModel] = {}
+    damage_distribution: TemplateDamageDistributionModel = (
+        TemplateDamageDistributionModel()
+    )
+    damage_distributions_with_buffs: List[
+        Tuple[str, TemplateDamageDistributionModel]
+    ] = []
+    calculated_rows: List[CalculatedTemplateRowModel] = []
+    output_methods: List[TemplateHtmlOutputMethodModel] = []
