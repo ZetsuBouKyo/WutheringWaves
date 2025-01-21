@@ -9,6 +9,13 @@ from ww.utils import get_md5
 class DocsTemplateModel(BaseModel):
     id: str = ""
     is_tier: bool = False
+    is_1_1_tier: bool = False
+    is_2_1_tier: bool = False
+    is_3_1_tier: bool = False
+    is_4_1_tier: bool = False
+    is_5_1_tier: bool = False
+    is_6_1_tier: bool = False
+    is_6_5_tier: bool = False
     echo_comparison: List[str] = []
 
 
@@ -48,3 +55,21 @@ class DocsModel(BaseModel):
             for resonator in template.resonators:
                 assert resonator.check(), template_id
         return True
+
+
+class DocsTierModel(BaseModel):
+    title: str = ""
+    msg: str = ""
+
+    ids: List[str] = []
+
+
+class DocsTiersModel(BaseModel):
+    t: DocsTierModel = DocsTierModel()
+    t_1_1: DocsTierModel = DocsTierModel()
+    t_2_1: DocsTierModel = DocsTierModel()
+    t_3_1: DocsTierModel = DocsTierModel()
+    t_4_1: DocsTierModel = DocsTierModel()
+    t_5_1: DocsTierModel = DocsTierModel()
+    t_6_1: DocsTierModel = DocsTierModel()
+    t_6_5: DocsTierModel = DocsTierModel()

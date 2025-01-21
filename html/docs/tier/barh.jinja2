@@ -1,13 +1,17 @@
 # {{title}}
 
+{% if message -%}
+{{message}}
+{% endif %}
+
 <div class="wuwa-container">
     <div class="wuwa-flex-col">
         <div class="wuwa-barh">
             <div class="wuwa-flex-col">
-                {% for template_id in template_ids %}
-                {% set damage_distribution = template_id_to_damage_distribution[template_id] %}
+                {% for template_id in template_ids -%}
+                {% set damage_distribution = template_id_to_damage_distribution[template_id] -%}
                 <div class="wuwa-flex-row">
-                    {% for resonator in damage_distribution.resonators.values() %}
+                    {% for resonator in damage_distribution.resonators.values() -%}
                     <div class="wuwa-barh-resonator-icon">
                         <img src="{{get_resonator_icon_url(resonator.resonator_name)}}" />
                     </div>
@@ -29,22 +33,22 @@
                 </div>
                 <div class="wuwa-tier-barh">
                     <div class="wuwa-tier-resonator-barh">
-                        {% for resonator in damage_distribution.resonators.values() %}
+                        {% for resonator in damage_distribution.resonators.values() -%}
                         {% set element =
-                        get_element_class_name(get_resonator_information(resonator.resonator_name).element) %}
+                        get_element_class_name(get_resonator_information(resonator.resonator_name).element) -%}
                         {% set percentage = damage_distribution.get_resonator_max_dps(resonator.resonator_name)
-                        / max_dps %}
-                        {% set in_out = 0.10 %}
-                        {% set black_elements = ['aero', 'spectro'] %}
+                        / max_dps -%}
+                        {% set in_out = 0.10 -%}
+                        {% set black_elements = ['aero', 'spectro'] -%}
                         <div title="DPS: {{to_number_string(damage_distribution.get_resonator_max_dps(resonator.resonator_name))}}"
                             class="wuwa-barh-damage wuwa-h30 wuwa-bg-{{element}} {{'wuwa-barh-corner' if loop.index == damage_distribution.resonators.values()|length else 'wuwa-barh-divide'}}"
                             style="width: {{get_percentage_str(damage_distribution.get_resonator_max_dps(resonator.resonator_name), max_dps)}};">
-                            {% if percentage >= in_out %}
+                            {% if percentage >= in_out -%}
                             <div
                                 class="wuwa-barh-damage-value-in {{'wuwa-black' if element in black_elements else 'wuwa-white'}}">
                                 {{damage_distribution.get_resonator_max_dps_percentage_string(resonator.resonator_name)}}
                             </div>
-                            {% else %}
+                            {% else -%}
                             &nbsp;
                             {% endif %}
                         </div>

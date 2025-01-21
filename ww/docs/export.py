@@ -24,7 +24,7 @@ from ww.locale import ZhTwEnum, _
 from ww.logging import logger_cli
 from ww.model import SkillBaseAttrEnum
 from ww.model.buff import SkillBonusTypeEnum
-from ww.model.docs import DocsModel
+from ww.model.docs import DocsModel, DocsTierModel, DocsTiersModel
 from ww.model.resonator import ResonatorInformationModel
 from ww.model.resonator_skill import ResonatorSkillTypeEnum
 from ww.model.simulation import SimulationTypeEnum
@@ -56,11 +56,6 @@ DOCS_FPATH = "./data/v1/zh_tw/docs.yml"
 
 
 # url
-TIER_AFFIXES_15_1_URL: str = "/tier/affixes_15_1/index.html"
-TIER_AFFIXES_20_SMALL_URL: str = "/tier/affixes_20_small/index.html"
-TIER_AFFIXES_20_SKILL_BONUS_URL: str = "/tier/affixes_20_skill_bonus/index.html"
-
-
 def get_resonator_outline_url(no: str) -> str:
     return f"/resonator/{no}/outline/index.html"
 
@@ -89,6 +84,14 @@ def get_damage_analysis_url(md5: str, prefix: str) -> str:
 
 def get_echo_damage_comparison_url(md5: str, prefix: str, no: str) -> str:
     return f"/resonator/template/{md5}/{prefix}/echo_damage_comparison/{no}/index.html"
+
+
+def get_tier_url(field_name: str, model_name: str) -> str:
+    return f"/tier/{field_name}/{model_name}/index.html"
+
+
+def get_tier_md_fpath(field_name: str, model_name: str) -> str:
+    return f"./build/html/docs/tier/{field_name}/{model_name}.md"
 
 
 def export_html(fpath: Union[str, Path], html_str: str):
@@ -144,7 +147,7 @@ class Docs:
             template_id_to_affixes_15_1,
             template_id_to_affixes_20_small,
             template_id_to_affixes_20_skill_bonus,
-            template_ids_tier,
+            template_tiers,
             resonator_name_to_template_ids,
         ) = self.export_resonator_templates()
         self.export_resonator_outline(
@@ -156,9 +159,9 @@ class Docs:
         )
         self.export_resonators(resonator_name_to_template_ids)
 
-        self.export_tier_outline()
+        self.export_tier_outline(template_tiers)
         self.export_3_resonators_tier_barhs(
-            template_ids_tier,
+            template_tiers,
             template_id_to_relative_url,
             template_id_to_affixes_15_1,
             template_id_to_affixes_20_small,
@@ -485,14 +488,40 @@ class Docs:
         Dict[str, TemplateDamageDistributionModel],
         Dict[str, TemplateDamageDistributionModel],
         Dict[str, TemplateDamageDistributionModel],
-        List[str],
+        DocsTiersModel,
         Dict[str, List[str]],
     ]:
         template_id_to_relative_url = {}
         template_id_to_affixes_15_1 = {}
         template_id_to_affixes_20_small = {}
         template_id_to_affixes_20_skill_bonus = {}
-        template_ids_tier = []
+        template_tiers = DocsTiersModel(
+            t=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_0_1_TITLE),
+                msg=_(ZhTwEnum.DOCS_TIER_0_1_MSG_1),
+            ),
+            t_1_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_1_1_TITLE),
+            ),
+            t_2_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_2_1_TITLE),
+            ),
+            t_3_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_3_1_TITLE),
+            ),
+            t_4_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_4_1_TITLE),
+            ),
+            t_5_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_5_1_TITLE),
+            ),
+            t_6_1=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_6_1_TITLE),
+            ),
+            t_6_5=DocsTierModel(
+                title=_(ZhTwEnum.DOCS_TIER_6_5_TITLE),
+            ),
+        )
         resonator_name_to_template_ids: Dict[str, List[str]] = {}
 
         template_fpath = "./html/docs/resonator/template.jinja2"
@@ -601,7 +630,21 @@ class Docs:
             )
 
             if template.is_tier:
-                template_ids_tier.append(template_id)
+                template_tiers.t.ids.append(template_id)
+            if template.is_1_1_tier:
+                template_tiers.t_1_1.ids.append(template_id)
+            if template.is_2_1_tier:
+                template_tiers.t_2_1.ids.append(template_id)
+            if template.is_3_1_tier:
+                template_tiers.t_3_1.ids.append(template_id)
+            if template.is_4_1_tier:
+                template_tiers.t_4_1.ids.append(template_id)
+            if template.is_5_1_tier:
+                template_tiers.t_5_1.ids.append(template_id)
+            if template.is_6_1_tier:
+                template_tiers.t_6_1.ids.append(template_id)
+            if template.is_6_5_tier:
+                template_tiers.t_6_5.ids.append(template_id)
 
             logger_cli.debug(f"Template ID: {template_id} calculated.")
 
@@ -610,7 +653,7 @@ class Docs:
             template_id_to_affixes_15_1,
             template_id_to_affixes_20_small,
             template_id_to_affixes_20_skill_bonus,
-            template_ids_tier,
+            template_tiers,
             resonator_name_to_template_ids,
         )
 
@@ -625,6 +668,7 @@ class Docs:
         template_id_to_relative_url: Dict[str, str],
         template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
     ):
+        title = f"[{resonator_name}] {title}"
         team_fpath = get_team_dps_comparison_md(md5, prefix, resonator_no)
         self.export_3_resonators_tier_barh(
             title,
@@ -746,16 +790,23 @@ class Docs:
 
         export_html(output_fpath, html_str)
 
-    def export_tier_outline(self):
+    def export_tier_outline(
+        self,
+        docs_tiers: DocsTiersModel,
+    ):
         template_fpath = "./html/docs/tier/outline.jinja2"
         output_fpath = "./build/html/docs/tier/outline.md"
 
         template = get_jinja2_template(template_fpath)
 
+        field_names = docs_tiers.model_fields.keys()
+
         html_str = template.render(
-            TIER_AFFIXES_15_1_URL=TIER_AFFIXES_15_1_URL,
-            TIER_AFFIXES_20_SMALL_URL=TIER_AFFIXES_20_SMALL_URL,
-            TIER_AFFIXES_20_SKILL_BONUS_URL=TIER_AFFIXES_20_SKILL_BONUS_URL,
+            docs_tiers=docs_tiers,
+            field_names=field_names,
+            getattr=getattr,
+            get_tier_url=get_tier_url,
+            SimulationTypeEnum=SimulationTypeEnum,
             ZhTwEnum=ZhTwEnum,
             _=_,
         )
@@ -819,6 +870,7 @@ class Docs:
         template_id_to_relative_url: Dict[str, str],
         template_id_to_damage_distribution: Dict[str, TemplateDamageDistributionModel],
         output_fpath: str,
+        message: str = "",
     ):
         template_fpath = "./html/docs/tier/barh.jinja2"
 
@@ -845,6 +897,7 @@ class Docs:
 
         html_str = template.render(
             title=title,
+            message=message,
             template_ids=template_ids,
             template_id_to_relative_url=template_id_to_relative_url,
             template_id_to_damage_distribution=template_id_to_damage_distribution,
@@ -862,7 +915,7 @@ class Docs:
 
     def export_3_resonators_tier_barhs(
         self,
-        template_ids: List[str],
+        docs_tiers: DocsTiersModel,
         template_id_to_relative_url: Dict[str, str],
         template_id_to_affixes_15_1: Dict[str, TemplateDamageDistributionModel],
         template_id_to_affixes_20_small: Dict[str, TemplateDamageDistributionModel],
@@ -870,31 +923,53 @@ class Docs:
             str, TemplateDamageDistributionModel
         ],
     ):
-        affixes_15_1_fpath = "./build/html/docs/tier/affixes_15_1.md"
-        self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_AFFIXES_15_1),
-            template_ids,
-            template_id_to_relative_url,
-            template_id_to_affixes_15_1,
-            affixes_15_1_fpath,
-        )
+        field_names = docs_tiers.model_fields.keys()
 
-        affixes_20_small_fpath = "./build/html/docs/tier/affixes_20_small.md"
-        self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_AFFIXES_20_SMALL),
-            template_ids,
-            template_id_to_relative_url,
-            template_id_to_affixes_20_small,
-            affixes_20_small_fpath,
-        )
+        for field_name in field_names:
+            docs_tier: DocsTierModel = getattr(docs_tiers, field_name)
+            title = docs_tier.title
+            message = docs_tier.msg
+            template_ids = docs_tier.ids
+            if len(template_ids) == 0:
+                continue
 
-        affixes_20_skill_bonus_fpath = (
-            "./build/html/docs/tier/affixes_20_skill_bonus.md"
-        )
-        self.export_3_resonators_tier_barh(
-            _(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS),
-            template_ids,
-            template_id_to_relative_url,
-            template_id_to_affixes_20_skill_bonus,
-            affixes_20_skill_bonus_fpath,
-        )
+            affixes_15_1_title = f"[{_(ZhTwEnum.ECHOES_AFFIXES_15_1)}] {title}"
+            affixes_15_1_fpath = get_tier_md_fpath(
+                field_name, SimulationTypeEnum.AFFIXES_15_1.value
+            )
+            self.export_3_resonators_tier_barh(
+                affixes_15_1_title,
+                template_ids,
+                template_id_to_relative_url,
+                template_id_to_affixes_15_1,
+                affixes_15_1_fpath,
+                message=message,
+            )
+
+            affixes_20_small_title = f"[{_(ZhTwEnum.ECHOES_AFFIXES_20_SMALL)}] {title}"
+            affixes_20_small_fpath = get_tier_md_fpath(
+                field_name, SimulationTypeEnum.AFFIXES_20_SMALL.value
+            )
+            self.export_3_resonators_tier_barh(
+                affixes_20_small_title,
+                template_ids,
+                template_id_to_relative_url,
+                template_id_to_affixes_20_small,
+                affixes_20_small_fpath,
+                message=message,
+            )
+
+            affixes_20_skill_bonus = (
+                f"[{_(ZhTwEnum.ECHOES_AFFIXES_20_SKILL_BONUS)}] {title}"
+            )
+            affixes_20_skill_bonus_fpath = get_tier_md_fpath(
+                field_name, SimulationTypeEnum.AFFIXES_20_SKILL_BONUS.value
+            )
+            self.export_3_resonators_tier_barh(
+                affixes_20_skill_bonus,
+                template_ids,
+                template_id_to_relative_url,
+                template_id_to_affixes_20_skill_bonus,
+                affixes_20_skill_bonus_fpath,
+                message=message,
+            )
