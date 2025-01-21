@@ -107,21 +107,27 @@ templates:
       - "忌炎"
       - "莫特斐"
   - id: "[腦測]+2忌炎+1蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_2_1_tier: true
     echo_comparison:
       - "忌炎"
   - id: "[腦測]+3忌炎+1蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_3_1_tier: true
     echo_comparison:
       - "忌炎"
   - id: "[腦測]+4忌炎+1蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_4_1_tier: true
     echo_comparison:
       - "忌炎"
   - id: "[腦測]+5忌炎+1蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_5_1_tier: true
     echo_comparison:
       - "忌炎"
   - id: "[腦測]+6忌炎+1蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_6_1_tier: true
     echo_comparison:
       - "忌炎"
   - id: "[腦測]+6忌炎+5蒼鱗千嶂,+6莫特斐+1停駐之煙,+0維里奈+1奇幻變奏-5套2E"
+    is_6_5_tier: true
     echo_comparison:
       - "忌炎"
   # 今汐
@@ -153,24 +159,31 @@ templates:
       - "今汐"
       - "折枝"
   - id: "[腦測]+1今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_1_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+2今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_2_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+3今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_3_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+4今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_4_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+5今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_5_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+6今汐+1時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_6_1_tier: true
     echo_comparison:
       - "今汐"
   - id: "[腦測]+6今汐+5時和歲稔,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-25s雙噴"
+    is_6_5_tier: true
     echo_comparison:
       - "今汐"
   - id: "[競速]+0今汐+1時和歲稔,+0長離+1赫奕流明,+0守岸人+1星序協響"
@@ -189,24 +202,31 @@ templates:
       - "長離"
       - "散華"
   - id: "[腦測]+1長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_1_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+2長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_2_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+3長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_3_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+4長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_4_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+5長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_5_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+6長離+1赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_6_1_tier: true
     echo_comparison:
       - "長離"
   - id: "[腦測]+6長離+5赫奕流明,+6散華+1千古洑流,+0維里奈+1奇幻變奏-長軸"
+    is_6_5_tier: true
     echo_comparison:
       - "長離"
   - id: "[內鬼]+0長離+1赫奕流明,+0布蘭特+1不滅航路,+0維里奈+1奇幻變奏-長軸"
@@ -234,24 +254,31 @@ templates:
       - "相里要"
       - "吟霖"
   - id: "[腦測]+1相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_1_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+2相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_2_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+3相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_3_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+4相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_4_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+5相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_5_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+6相里要+1諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_6_1_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+6相里要+5諸方玄樞,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
+    is_6_5_tier: true
     echo_comparison:
       - "相里要"
   - id: "[腦測]+0相里要+1金掌,+0吟霖+1掣傀之手,+0維里奈+1奇幻變奏-暖機-3套-徹空"
@@ -277,24 +304,31 @@ templates:
     echo_comparison:
       - "椿"
   - id: "[腦測]+1椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_1_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+2椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_2_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+3椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_3_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+4椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_4_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+5椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_5_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+6椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_6_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+6椿+5裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-25s-無延奏"
+    is_6_5_tier: true
     echo_comparison:
       - "椿"
   - id: "[腦測]+0椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-30s-延奏"
@@ -306,24 +340,31 @@ templates:
     echo_comparison:
       - "椿"
   - id: "[理論]+1椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_1_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+2椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_2_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+3椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_3_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+4椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_4_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+5椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_5_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+6椿+1裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_6_1_tier: true
     echo_comparison:
       - "椿"
   - id: "[理論]+6椿+5裁春,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-暖機"
+    is_6_5_tier: true
     echo_comparison:
       - "椿"
   # 珂萊塔
@@ -336,24 +377,31 @@ templates:
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+1珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_1_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+2珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_2_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+3珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_3_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+4珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_4_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+5珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_5_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+6珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_6_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+6珂萊塔+5死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
+    is_6_5_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+0珂萊塔+1停駐之煙,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏"
@@ -392,24 +440,31 @@ templates:
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+1珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_1_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+2珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_2_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+3珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_3_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+4珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_4_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+5珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_5_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+6珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_6_1_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+6珂萊塔+5死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手"
+    is_6_5_tier: true
     echo_comparison:
       - "珂萊塔"
   - id: "[腦測]+0珂萊塔+1死與舞,+0折枝+1瓊枝冰綃,+0維里奈+1奇幻變奏-EE起手-凝夜白霜"
