@@ -344,6 +344,7 @@ class Docs:
                 return self.export_resonator_echo_comparison(
                     echo_comparison_model, output_fpath
                 )
+            logger_cli.debug("Echo damage comparison: updating...")
 
         simulated_resonators = SimulatedResonators(resonator_template)
         _, resonators_table = (
@@ -395,6 +396,7 @@ class Docs:
                 return self.export_resonator_echo_comparison(
                     echo_comparison_model, output_fpath
                 )
+            logger_cli.debug("Echo damage comparison: updating...")
 
         simulated_resonators = SimulatedResonators(resonator_template)
         _, resonators_table = (
@@ -549,6 +551,7 @@ class Docs:
                 return self.export_template_damage_analysis(
                     damage_analysis_model, output_fpath
                 )
+            logger_cli.debug("Damage analysis: updating...")
 
         resonators_table = simulated_resonators.get_3_resonators_with_prefix(prefix)
 
@@ -616,6 +619,7 @@ class Docs:
                 return self.export_template_damage_analysis(
                     damage_analysis_model, output_fpath
                 )
+            logger_cli.debug("Damage analysis: updating...")
 
         simulated_resonators = SimulatedResonators(resonator_template)
 
