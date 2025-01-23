@@ -1,5 +1,7 @@
 from enum import Enum
 
+from pydantic import BaseModel
+
 from ww.locale import ZhTwEnum, _
 
 
@@ -37,3 +39,11 @@ class WeaponRankEnum(str, Enum):
     CRIT_RATE: str = _(ZhTwEnum.WEAPON_CRIT_RATE_INCREASE)
     ATTRIBUTE_DMG_BONUS: str = _(ZhTwEnum.WEAPON_ATTRIBUTE_DMG_BONUS_INCREASE)
     ENERGY_REGEN: str = _(ZhTwEnum.WEAPON_ENERGY_REGEN_INCREASE)
+
+
+class WeaponInfo(BaseModel):
+    no: str = ""
+    name: str = ""
+    star: str = ""
+    skill_name: str = ""
+    skill_description: str = ""

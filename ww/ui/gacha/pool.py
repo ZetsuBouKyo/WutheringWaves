@@ -1,34 +1,15 @@
 from copy import deepcopy
+from typing import List
 
 from ww.model.pool import GachaPoolTypeEnum, PoolModel
 from ww.model.pool.id_to_name import resonators, weapons
 
 
-def parse(data: dict):
-    pool = PoolModel()
-
-    d = data.get("data", [])
-    if len(d) == 0:
-        return pool
-    d = d[0]
-
-    properties = d.get("properties", None)
-    if properties is None:
-        return pool
-
-    gacha_item_id = properties.get("gacha_item_id", None)
-    if gacha_item_id is None:
-        return pool
-
-    gacha_item_ids = gacha_item_id.split(",")
-    gacha_item_ids = gacha_item_ids[::-1]
-    pool.total = len(gacha_item_ids)
-    if pool.total < 160:
-        return pool
-
+def get_pool_by_ids(ids: List[str], pool: PoolModel = PoolModel()):
+    pool.total = len(ids)
     count_4_or_5 = 0
     count_5 = 0
-    for id in gacha_item_ids:
+    for id in ids:
         count_4_or_5 += 1
         count_5 += 1
         resonator = deepcopy(resonators.get(id, None))
@@ -79,3 +60,28 @@ def parse(data: dict):
         pool.pool_type = GachaPoolTypeEnum.STANDARD_RESONATOR_CONVENE.value
 
     return pool
+
+
+def parse(data: dict):
+    pool = PoolModel()
+
+    d = data.get("data", [])
+    if len(d) == 0:
+        return pool
+    d = d[0]
+
+    properties = d.get("properties", None)
+    if properties is None:
+        return pool
+
+    gacha_item_id = properties.get("gacha_item_id", None)
+    if gacha_item_id is None:
+        return pool
+
+    gacha_item_ids = gacha_item_id.split(",")
+    gacha_item_ids = gacha_item_ids[::-1]
+    pool.total = len(gacha_item_ids)
+    if pool.total < 160:
+        return pool
+
+    return get_pool_by_ids(gacha_item_ids, pool=pool)

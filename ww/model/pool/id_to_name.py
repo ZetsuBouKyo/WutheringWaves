@@ -19,10 +19,12 @@ resonators = {
     "1104": GachaResonatorModel(id="1104", star=5, name="凌陽", permanent=True),
     "1105": GachaResonatorModel(id="1105", star=5, name="折枝", permanent=False),
     "1106": GachaResonatorModel(id="1106", star=4, name="釉瑚", permanent=True),
+    "1107": GachaResonatorModel(id="1107", star=5, name="珂萊塔", permanent=False),
     "1202": GachaResonatorModel(id="1202", star=4, name="熾霞", permanent=True),
     "1203": GachaResonatorModel(id="1203", star=5, name="安可", permanent=True),
     "1204": GachaResonatorModel(id="1204", star=4, name="莫特斐", permanent=True),
     "1205": GachaResonatorModel(id="1205", star=5, name="長離", permanent=False),
+    "1206": GachaResonatorModel(id="1206", star=5, name="布蘭特", permanent=False),
     "1301": GachaResonatorModel(id="1301", star=5, name="卡卡羅", permanent=True),
     "1302": GachaResonatorModel(id="1302", star=5, name="吟霖", permanent=False),
     "1303": GachaResonatorModel(id="1303", star=4, name="淵武", permanent=True),
@@ -50,6 +52,7 @@ resonators = {
     "1605": GachaResonatorModel(
         id="1605", star=None, name="漂泊者·湮滅", permanent=None
     ),
+    "1606": GachaResonatorModel(id="1606", star=5, name="洛可可", permanent=False),
 }
 
 weapons = {
@@ -103,6 +106,7 @@ weapons = {
     "21030011": "教學佩槍",
     "21030012": "原初佩槍·穿林",
     "21030013": "暗夜佩槍·暗星",
+    "21030016": GachaWeaponModel(id="21030016", star=5, name="死與舞", permanent=False),
     "21030053": "戍關佩槍·平雲",
     "21030023": "源能佩槍·測叁",
     "21030043": "遠行者佩槍·洞察",

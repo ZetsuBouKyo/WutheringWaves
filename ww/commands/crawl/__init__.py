@@ -7,7 +7,7 @@ from typer import Typer
 from ww.commands.crawl.echo import EchoParser
 from ww.commands.crawl.id_parser import id_parser
 from ww.commands.crawl.resonator import ResonatorParser
-from ww.commands.crawl.weapon import WeaponParser
+from ww.commands.crawl.weapon import WeaponParser, save_weapons
 
 app = Typer(name="crawl")
 
@@ -69,6 +69,11 @@ def get_weapon(home: str):
         os.makedirs(fpath_out.parent, exist_ok=True)
         with fpath_out.open(mode="w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def get_weapon_2(home: str):
+    save_weapons(home)
 
 
 @app.command()

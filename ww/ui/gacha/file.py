@@ -1,36 +1,18 @@
 import json
-import sys
-from copy import deepcopy
-from enum import Enum
-from functools import partial
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Optional
 
-from pydantic import BaseModel, ConfigDict
 from PySide2.QtWidgets import (
-    QApplication,
     QFileDialog,
     QHBoxLayout,
     QLabel,
-    QMainWindow,
     QMessageBox,
-    QProgressBar,
     QPushButton,
-    QTableWidget,
-    QTableWidgetItem,
-    QTabWidget,
     QVBoxLayout,
     QWidget,
 )
 
 from ww.locale import ZhTwEnum, _
-from ww.model.pool import GachaPoolTypeEnum
-from ww.model.pool.id_to_name import (
-    GachaResonatorModel,
-    GachaWeaponModel,
-    resonators,
-    weapons,
-)
 from ww.ui.gacha.pool import parse
 from ww.ui.gacha.result import QGachaResultsTabs
 
