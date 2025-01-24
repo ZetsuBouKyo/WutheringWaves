@@ -845,14 +845,38 @@
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle wuwa-h60 wuwa-w120">{{_(ZhTwEnum.REGION_BASE_ATTR)}}</td>
           <td class="wuwa wuwa-px16 wuwa-py4 wuwa-middle">{% if
             row.result_skill_base_attribute==SkillBaseAttrEnum.ATK.value -%}
+            {% if row.result_atk_p and row.result_atk_addition -%}
             [{{to_trimmed_number_string(row.result_atk)}} × (1 + {{to_trimmed_number_string(row.result_atk_p)}}) +
             {{to_trimmed_number_string(row.result_atk_addition)}}]
+            {% elif row.result_atk_p and not row.result_atk_addition -%}
+            [{{to_trimmed_number_string(row.result_atk)}} × (1 + {{to_trimmed_number_string(row.result_atk_p)}})]
+            {% elif not row.result_atk_p and not row.result_atk_addition -%}
+            [{{to_trimmed_number_string(row.result_atk)}}]
+            {% elif not row.result_atk_p and row.result_atk_addition -%}
+            [{{to_trimmed_number_string(row.result_atk)}} + {{to_trimmed_number_string(row.result_atk_addition)}}]
+            {% endif -%}
             {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.DEF.value -%}
+            {% if row.result_def_p and row.result_def_addition -%}
             [{{to_trimmed_number_string(row.result_def)}} × (1 + {{to_trimmed_number_string(row.result_def_p)}}) +
             {{to_trimmed_number_string(row.result_def_addition)}}]
+            {% elif row.result_def_p and not row.result_def_addition -%}
+            [{{to_trimmed_number_string(row.result_def)}} × (1 + {{to_trimmed_number_string(row.result_def_p)}})]
+            {% elif not row.result_def_p and not row.result_def_addition -%}
+            [{{to_trimmed_number_string(row.result_def)}}]
+            {% elif not row.result_def_p and row.result_def_addition -%}
+            [{{to_trimmed_number_string(row.result_def)}} + {{to_trimmed_number_string(row.result_def_addition)}}]
+            {% endif -%}
             {% elif row.result_skill_base_attribute==SkillBaseAttrEnum.HP.value -%}
+            {% if row.result_hp_p and row.result_hp_addition %}
             [{{to_trimmed_number_string(row.result_hp)}} × (1 + {{to_trimmed_number_string(row.result_hp_p)}}) +
             {{to_trimmed_number_string(row.result_hp_addition)}}]
+            {% elif row.result_hp_p and not row.result_hp_addition %}
+            [{{to_trimmed_number_string(row.result_hp)}} × (1 + {{to_trimmed_number_string(row.result_hp_p)}})]
+            {% elif not row.result_hp_p and not row.result_hp_addition %}
+            [{{to_trimmed_number_string(row.result_hp)}}]
+            {% elif not row.result_hp_p and row.result_hp_addition %}
+            [{{to_trimmed_number_string(row.result_hp)}} + {{to_trimmed_number_string(row.result_hp_addition)}}]
+            {% endif -%}
             {% endif -%}</td>
         </tr>
         <tr>
