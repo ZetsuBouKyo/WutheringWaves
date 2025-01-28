@@ -462,8 +462,9 @@
   </div>
 </div>
 
-#### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
 {% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
+{% if resonator_damage_distribution.damage -%}
+#### {{_(ZhTwEnum.SKILL_DAMAGE_DISTRIBUTION)}}
 {% set resonator_skill_damage_distribution = damage_distribution.resonators[resonator_model.name].get_skill_damages()
 -%}
 <div class="wuwa-container">
@@ -515,7 +516,6 @@
 </div>
 
 #### {{_(ZhTwEnum.SKILL_TYPE_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -564,7 +564,6 @@
 </div>
 
 #### {{_(ZhTwEnum.SKILL_BONUS_DAMAGE_DISTRIBUTION)}}
-{% set resonator_damage_distribution = damage_distribution.resonators[resonator_model.name] -%}
 <div class="wuwa-container">
   <div class="wuwa-flex-col">
     <div class="wuwa-barh">
@@ -611,6 +610,8 @@
   </div>
 </div>
 </div>
+{% endif -%}
+
 {% endfor %}
 
 ## {{_(ZhTwEnum.OUTPUT_METHOD)}}

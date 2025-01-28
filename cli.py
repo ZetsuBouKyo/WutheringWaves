@@ -114,38 +114,45 @@ def docs(
     config_file: str = Option("./build/html/mkdocs.yml"),
     debug_level: int = Option(DEBUG),
 ):
-    fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
-    logging_fpath = "./build/cli.log"
+    import traceback
 
-    stream_handler = RichHandler()
+    try:
+        fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
+        logging_fpath = "./build/cli.log"
 
-    rotating_file_formatter = Formatter(fmt=fmt)
-    rotating_file_handler = RotatingFileHandler(
-        logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
-    )
-    rotating_file_handler.setFormatter(rotating_file_formatter)
+        stream_handler = RichHandler()
 
-    logger_cli.setLevel(debug_level)
-    logger_cli.addHandler(stream_handler)
-    logger_cli.addHandler(rotating_file_handler)
+        rotating_file_formatter = Formatter(fmt=fmt)
+        rotating_file_handler = RotatingFileHandler(
+            logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+        )
+        rotating_file_handler.setFormatter(rotating_file_formatter)
 
-    logger_cli.debug(f"Making docs...")
+        logger_cli.setLevel(debug_level)
+        logger_cli.addHandler(stream_handler)
+        logger_cli.addHandler(rotating_file_handler)
 
-    # Copy the assets
-    assets_src_path = "./assets"
-    assets_dest_path = "./build/html/docs/assets"
-    os.makedirs(assets_dest_path, exist_ok=True)
-    shutil.copytree(assets_src_path, assets_dest_path, dirs_exist_ok=True)
+        logger_cli.debug(f"Making docs...")
 
-    # Copy the docs
-    docs_src_path = "./docs/html"
-    docs_dest_path = "./build/html/docs"
-    shutil.copytree(docs_src_path, docs_dest_path, dirs_exist_ok=True)
+        # Copy the assets
+        assets_src_path = "./assets"
+        assets_dest_path = "./build/html/docs/assets"
+        os.makedirs(assets_dest_path, exist_ok=True)
+        shutil.copytree(assets_src_path, assets_dest_path, dirs_exist_ok=True)
 
-    docs = Docs()
-    docs.export()
+        # Copy the docs
+        docs_src_path = "./docs/html"
+        docs_dest_path = "./build/html/docs"
+        shutil.copytree(docs_src_path, docs_dest_path, dirs_exist_ok=True)
 
-    logger_cli.debug(f"Markdown files created.")
+        docs = Docs()
+        docs.export()
+
+        logger_cli.debug(f"Markdown files created.")
+
+    except:
+        print(traceback.format_exc())
+        return
 
     try:
         # Build the mkdocs command
