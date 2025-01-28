@@ -277,6 +277,10 @@ class CalculatedResonator:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
             ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_MOURNING_AIX):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_SPECTRO_DMG_BONUS.value
+            ] += get_number("0.12")
         elif echo_name == _(ZhTwEnum.ECHO_DRAGON_OF_DIRGE):
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value

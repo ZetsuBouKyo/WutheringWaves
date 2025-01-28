@@ -1,0 +1,8 @@
+{
+    "no": "1506",
+    "name": "菲比",
+    "element": "衍射",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_dmg": "0.16" }
+}

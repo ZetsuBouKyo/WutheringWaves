@@ -609,6 +609,7 @@ class ZhTwEnum(str, Enum):
     ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
     ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"
     ECHO_NIGHTMARE_THUNDERING_MEPHIS: str = "夢魘·雲閃之鱗"
+    ECHO_NIGHTMARE_MOURNING_AIX: str = "夢魘·哀聲鷙"
 
     DOCS_RESONATOR_OUTLINE_1: str = (
         "各模板內有詳細的傷害分析，不同數值聲骸傷害試算、3C與4C聲骸比較、技能占比、技能種類占比、技能加成種類占比、輸出手法流程摘要與秒數、技能傷害計算及公式。"
