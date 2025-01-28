@@ -100,6 +100,9 @@ resonators = {
     _(ZhTwEnum.SHOREKEEPER): BaseResonatorModel(
         name=_(ZhTwEnum.SHOREKEEPER), element=_(ZhTwEnum.SPECTRO)
     ),
+    _(ZhTwEnum.PHOEBE): BaseResonatorModel(
+        name=_(ZhTwEnum.PHOEBE), element=_(ZhTwEnum.SPECTRO)
+    ),
     _(ZhTwEnum.TAOQI): BaseResonatorModel(
         name=_(ZhTwEnum.TAOQI), element=_(ZhTwEnum.HAVOC)
     ),

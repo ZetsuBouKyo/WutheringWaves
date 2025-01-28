@@ -306,7 +306,8 @@ class Docs:
                     calculated_resonators_table,
                     is_docs=True,
                 )
-                resonator_models[resonator_id] = resonator_model
+                if resonator_model:
+                    resonator_models[resonator_id] = resonator_model
 
                 damages.append(resonator_damage_distribution.damage)
 

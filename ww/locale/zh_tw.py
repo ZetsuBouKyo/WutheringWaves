@@ -561,6 +561,7 @@ class ZhTwEnum(str, Enum):
     ROVER_SPECTRO_FEMALE: str = "漂泊者·衍射(女)"
     VERINA: str = "維里奈"
     SHOREKEEPER: str = "守岸人"
+    PHOEBE: str = "菲比"
     TAOQI: str = "桃祈"
     DANJIN: str = "丹瑾"
     CAMELLYA: str = "椿"

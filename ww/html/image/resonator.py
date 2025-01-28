@@ -2,11 +2,14 @@ from pathlib import Path
 from typing import Optional
 
 from ww.crud.resonator import ELEMENT_ICON_HOME_PATH, RESONATOR_ICON_HOME_PATH
-from ww.data.resonator import resonators
 from ww.html.image.export import export_to_template
 from ww.locale import ZhTwEnum, _
 from ww.model.template import TemplateHtmlResonatorModel
-from ww.tables.resonator import CalculatedResonatorsTable, ResonatorsTable
+from ww.tables.resonator import (
+    CalculatedResonatorsTable,
+    ResonatorsTable,
+    get_resonator_information,
+)
 from ww.utils import get_jinja2_template, get_local_file_url
 from ww.utils.number import to_number_string, to_percentage_str
 
@@ -70,10 +73,10 @@ def merge_resonator_model(
     if resonator_src is None:
         return
 
-    resonator_data = resonators.get(resonator.name, "")
-    if not resonator_data:
+    resonator_information = get_resonator_information(resonator.name)
+    if not resonator_information:
         return
-    resonator_element = resonator_data.element
+    resonator_element = resonator_information.element
     element_en = get_element_class_name(resonator_element)
 
     if is_docs:
