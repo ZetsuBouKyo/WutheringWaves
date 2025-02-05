@@ -23,6 +23,7 @@ templates:
       - "秋水"
   # 凌陽
   - id: "[腦測]+1凌陽+1諸方玄樞,+0長離+1赫奕流明,+0維里奈+1奇幻變奏"
+    is_tier: true
     echo_comparison:
       - "凌陽"
       - "長離"
