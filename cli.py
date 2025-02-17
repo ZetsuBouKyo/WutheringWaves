@@ -16,6 +16,7 @@ from typer import Option, Typer
 from ww.commands.analyze import app as analyze
 from ww.commands.crawl import app as crawl
 from ww.commands.custom import app as custom
+from ww.commands.migrate import app as migrate
 from ww.commands.resonator import app as resonator
 from ww.commands.weapon import app as weapon
 from ww.docs.export import Docs
@@ -30,6 +31,7 @@ app = Typer(rich_markup_mode="rich", help=_help)
 app.add_typer(analyze)
 app.add_typer(crawl)
 app.add_typer(custom)
+app.add_typer(migrate)
 app.add_typer(resonator)
 app.add_typer(weapon)
 
