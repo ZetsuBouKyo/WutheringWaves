@@ -7,6 +7,7 @@ import pandas as pd
 from ww.calc.calculated_resonators import CalculatedResonators
 from ww.calc.simulated_echoes import SimulatedEchoes
 from ww.locale import ZhTwEnum, _
+from ww.logging import logger_cli
 from ww.model.echo import EchoesModelEnum, ResonatorEchoTsvColumnEnum
 from ww.model.resonator import (
     CalculatedResonatorTsvColumnEnum,
@@ -129,12 +130,16 @@ def filter_calculated_resonators(
     )
 
     # Check maximum energy regen
-    if (
-        calculated_resonator_energy_regen + get_number(0.124) * 5
-    ) < resonator_energy_regen:
-        raise ValueError(
-            f"{calculated_resonator_energy_regen} < {resonator_energy_regen} (required)"
+    max_calculated_resonator_energy_regen = (
+        calculated_resonator_energy_regen + get_number(0.124) * get_number(5.0)
+    )
+    if (resonator_energy_regen - max_calculated_resonator_energy_regen) > 0.00001:
+        logger_cli.debug(f"Origin energy regen: {calculated_resonator_energy_regen}")
+        logger_cli.debug(f"Max energy regen: {max_calculated_resonator_energy_regen}")
+        logger_cli.debug(
+            f"{max_calculated_resonator_energy_regen} < {resonator_energy_regen}"
         )
+        return False
 
     return True
 

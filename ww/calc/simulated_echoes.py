@@ -7,7 +7,6 @@ import pandas as pd
 from ww.locale import ZhTwEnum, _
 from ww.model.echo import (
     EchoesModelEnum,
-    EchoSonataEnum,
     ResonatorEchoTsvColumnEnum,
     get_resonator_echo_main_dmg_bonus,
 )
@@ -249,7 +248,6 @@ class SimulatedEchoes:
 
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_RATE.value] = Decimal("0.084")
         echo[ResonatorEchoTsvColumnEnum.SUB_CRIT_DMG.value] = Decimal("0.1008")
-        echo[ResonatorEchoTsvColumnEnum.SUB_ENERGY_REGEN.value] = Decimal("0.0192")
 
         echo[ResonatorEchoTsvColumnEnum.SUB_RESONANCE_SKILL_DMG_BONUS.value] = Decimal(
             "0.016"
