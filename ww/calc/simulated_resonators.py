@@ -132,7 +132,9 @@ def filter_calculated_resonators(
     if (
         calculated_resonator_energy_regen + get_number(0.124) * 5
     ) < resonator_energy_regen:
-        return False
+        raise ValueError(
+            f"{calculated_resonator_energy_regen} < {resonator_energy_regen} (required)"
+        )
 
     return True
 
