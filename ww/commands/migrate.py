@@ -74,3 +74,21 @@ def docs():
     new_fpath = Path(f"./build/migrate/templates.json")
     with new_fpath.open(mode="w", encoding="utf-8") as fp:
         json.dump(new_docs, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def templates():
+    home = Path("./cache/v1/zh_tw/custom/template")
+    for fpath in home.glob("*.json"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            template = json.load(fp)
+        hashed_id = get_md5(template["id"])
+        new_template = {}
+        new_template["hashed_id"] = hashed_id
+        for key, value in template.items():
+            new_template[key] = value
+
+        new_fpath = Path(f"./build/migrate/templates/{hashed_id}.json")
+        os.makedirs(new_fpath.parent, exist_ok=True)
+        with new_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_template, fp, indent=4, ensure_ascii=False)
