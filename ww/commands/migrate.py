@@ -1,7 +1,9 @@
 import json
 import os
+import re
 from pathlib import Path
 
+import pandas as pd
 import yaml
 from typer import Typer
 
@@ -26,10 +28,18 @@ def resonator_info():
     home = Path(home)
     names = []
     name2no = {}
-    for info_fpath in home.glob("*/基本資料.json"):
+    for resonator_folder_path in home.glob("*"):
+        info_fpath = resonator_folder_path / "基本資料.json"
         with info_fpath.open(mode="r", encoding="utf-8") as fp:
             info = json.load(fp)
-            print(info)
+            print(info["name"])
+            new_stat_bonus = {}
+            for key, value in info["stat_bonus"].items():
+                if key not in ["crit_rate", "crit_dmg", "hp_p", "atk_p", "def_p"]:
+                    key = f"bonus_{key}"
+                new_stat_bonus[key] = value
+            info["stat_bonus"] = new_stat_bonus
+
         no = info["no"]
         info["element_zh_tw"] = info["element"]
         info["element_en"] = elements[info["element"]]
@@ -37,11 +47,138 @@ def resonator_info():
         names.append(info["name"])
         name2no[info["name"]] = no
 
+        # attr
+        attr_fpath = resonator_folder_path / "屬性.tsv"
+        if attr_fpath.exists():
+            attr_df = pd.read_csv(attr_fpath, sep="\t", keep_default_na=False)
+            attr_list = []
+            for _, row in attr_df.iterrows():
+                data = row.to_dict()
+                new_row = {
+                    "lv": data["等級"],
+                    "hp": data["生命"],
+                    "atk": str(data["攻擊"]),
+                    "def": data["防禦"],
+                }
+                attr_list.append(new_row)
+            info["attrs"] = attr_list
+
+        # skill
+        skill_fpath = resonator_folder_path / "技能.tsv"
+        if skill_fpath.exists():
+            skill_df = pd.read_csv(skill_fpath, sep="\t", keep_default_na=False)
+            skill_list = []
+            for _, row in skill_df.iterrows():
+                data = row.to_dict()
+                new_row = {
+                    "id": data["代稱"],
+                    "type": data["Type"],
+                    "skill_type": data["種類"],
+                    "element": data["屬性"],
+                    "base_attr": data["Base Attribute"],
+                    "lv1": data["LV1"],
+                    "lv2": data["LV2"],
+                    "lv3": data["LV3"],
+                    "lv4": data["LV4"],
+                    "lv5": data["LV5"],
+                    "lv6": data["LV6"],
+                    "lv7": data["LV7"],
+                    "lv8": data["LV8"],
+                    "lv9": data["LV8"],
+                    "lv10": data["LV10"],
+                    "_resonance_energy": data["共鳴解放能量"],
+                    "_concerto_energy": data["協奏能量"],
+                    "_hardness": data["共振度上限"],
+                    "_toughness": data["韌性"],
+                    "_type": data["Type.1"],
+                    "coordinated": data["Coordinated"],
+                    "sta_regen": data["回復耐力值"],
+                    "resonance_energy_regen": data["回復共鳴能量"],
+                    "concerto_regen": data["回復協奏能量"],
+                    "sta_cost": data["耐力消耗"],
+                    "concerto_cost": data["消耗協奏能量"],
+                    "resonance_cost": data["消耗共鳴能量"],
+                    "cd": data["冷卻時間"],
+                    "duration": data["持續時間"],
+                }
+                skill_list.append(new_row)
+            info["skills"] = skill_list
+
+        # skill_info
+        skill_info_fpath = resonator_folder_path / "技能文本.json"
+        if skill_info_fpath.exists():
+            skill_info_dict = {}
+            with skill_info_fpath.open(mode="r", encoding="utf-8") as fp:
+                skill_info = json.load(fp)
+                skill_info_dict["normal_attack"] = {
+                    "name": skill_info["常態攻擊"]["名稱"],
+                    "description": skill_info["常態攻擊"]["描述"],
+                }
+                skill_info_dict["resonance_skill"] = {
+                    "name": skill_info["共鳴技能"]["名稱"],
+                    "description": skill_info["共鳴技能"]["描述"],
+                }
+                skill_info_dict["chain1"] = {
+                    "name": skill_info["共鳴回路"]["名稱"],
+                    "description": skill_info["共鳴回路"]["描述"],
+                }
+                skill_info_dict["resonance_liberation"] = {
+                    "name": skill_info["共鳴解放"]["名稱"],
+                    "description": skill_info["共鳴解放"]["描述"],
+                }
+                skill_info_dict["intro_skill"] = {
+                    "name": skill_info["變奏技能"]["名稱"],
+                    "description": skill_info["變奏技能"]["描述"],
+                }
+                skill_info_dict["outro_skill"] = {
+                    "name": skill_info["延奏技能"]["名稱"],
+                    "description": skill_info["延奏技能"]["描述"],
+                }
+
+                skill_info_dict["inherent_skill_1"] = {
+                    "name": skill_info["固有技能1"]["名稱"],
+                    "description": skill_info["固有技能1"]["描述"],
+                }
+                skill_info_dict["inherent_skill_2"] = {
+                    "name": skill_info["固有技能2"]["名稱"],
+                    "description": skill_info["固有技能2"]["描述"],
+                }
+
+                skill_info_dict["chain1"] = {
+                    "name": skill_info["共鳴鏈1"]["名稱"],
+                    "description": skill_info["共鳴鏈1"]["描述"],
+                }
+                skill_info_dict["chain2"] = {
+                    "name": skill_info["共鳴鏈2"]["名稱"],
+                    "description": skill_info["共鳴鏈2"]["描述"],
+                }
+                skill_info_dict["chain3"] = {
+                    "name": skill_info["共鳴鏈3"]["名稱"],
+                    "description": skill_info["共鳴鏈3"]["描述"],
+                }
+                skill_info_dict["chain4"] = {
+                    "name": skill_info["共鳴鏈4"]["名稱"],
+                    "description": skill_info["共鳴鏈4"]["描述"],
+                }
+                skill_info_dict["chain5"] = {
+                    "name": skill_info["共鳴鏈5"]["名稱"],
+                    "description": skill_info["共鳴鏈5"]["描述"],
+                }
+                skill_info_dict["chain6"] = {
+                    "name": skill_info["共鳴鏈6"]["名稱"],
+                    "description": skill_info["共鳴鏈6"]["描述"],
+                }
+
+            info["skill_infos"] = skill_info_dict
+
+        # save
         new_info_fpath = Path(f"./build/migrate/resonators/{no}/info.json")
         os.makedirs(new_info_fpath.parent, exist_ok=True)
 
+        print(info)
+
         with new_info_fpath.open(mode="w", encoding="utf-8") as fp:
-            json.dump(info, fp, indent=4, ensure_ascii=False)
+            json.dump(info, fp, ensure_ascii=False)
 
     names.sort(key=lambda name: name2no[name])
     new_name2no = {}
@@ -52,7 +189,106 @@ def resonator_info():
     os.makedirs(new_fpath.parent, exist_ok=True)
 
     with new_fpath.open(mode="w", encoding="utf-8") as fp:
-        json.dump(new_name2no, fp, indent=4, ensure_ascii=False)
+        json.dump(new_name2no, fp, ensure_ascii=False)
+
+
+@app.command()
+def weapon_cn():
+    home = Path("./dev/wiki/zh_cn/weapon")
+    name2no = {}
+    for fpath in home.glob("*.html"):
+        fname = fpath.stem
+        pattern = r"^(.*?)\s*\((\d+)\)$"
+        match = re.search(pattern, fname)
+        if match:
+            name2no[match[1]] = match[2]
+
+    names = list(name2no.keys())
+    names.sort(key=lambda name: name2no[name])
+    new_name2no = {}
+    name2name = {}
+    for name in names:
+        name2name[name] = name
+        new_name2no[name] = name2no[name]
+
+    new_fpath = Path(f"./build/migrate/cache/weapon_name_to_no.json")
+    os.makedirs(new_fpath.parent, exist_ok=True)
+    with new_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(new_name2no, fp, ensure_ascii=False)
+
+    new_fpath = Path(f"./build/migrate/locale/zh_TW/weapon/name.json")
+    os.makedirs(new_fpath.parent, exist_ok=True)
+    with new_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(name2name, fp, ensure_ascii=False)
+
+
+@app.command()
+def weapon_tw():
+    weapons_fpath = Path("cache/v1/zh_tw/output/weapons_info_tw.json")
+    no2weapon = {}
+    with weapons_fpath.open(mode="r", encoding="utf-8") as fp:
+        weapons = json.load(fp)
+        for weapon in weapons:
+            no2weapon[weapon["no"]] = weapon
+
+    fpath = Path("./build/migrate/cache/weapon_name_to_no_tw.json")
+    with fpath.open(mode="r", encoding="utf-8") as fp:
+        name2no = json.load(fp)
+
+    home = Path("./data/v1/zh_tw/武器")
+    weapon_stat_bonus = set()
+    weapon_stat_bonus_to_eng = {
+        "生命百分比": "hp_p",
+        "暴擊傷害": "crit_dmg",
+        "防禦百分比": "def_p",
+        "暴擊": "crit_rate",
+        "攻擊%": "atk_p",
+        "攻擊百分比": "atk_p",
+        "共鳴效率": "energy_regen",
+    }
+    for weapon_folder_path in home.glob("*"):
+        weapon_name = weapon_folder_path.name
+        print(weapon_name)
+        no = name2no[weapon_name]
+
+        new_info = {}
+        info_fpath = weapon_folder_path / "基本資料.json"
+        with info_fpath.open(mode="r", encoding="utf-8") as fp:
+            info = json.load(fp)
+            new_info["no"] = no
+            new_info["name"] = weapon_name
+            new_info["star"] = no2weapon[no]["star"]
+            new_info["type"] = no2weapon[no]["type"]
+            new_info["passive"] = {"name": info["名稱"], "description": info["描述"]}
+
+        attr_fpath = weapon_folder_path / "屬性.tsv"
+        if attr_fpath.exists():
+            attr_df = pd.read_csv(attr_fpath, sep="\t", keep_default_na=False)
+            attr_list = []
+            column_names = attr_df.columns.values
+            weapon_stat_bonus_name = column_names[-1]
+            weapon_stat_bonus.add(weapon_stat_bonus_name)
+            for _, row in attr_df.iterrows():
+                data = row.to_dict()
+                new_row = {
+                    "lv": data["等級"],
+                    "atk": str(data["攻擊"]),
+                    "stat_bonus": {
+                        weapon_stat_bonus_to_eng[weapon_stat_bonus_name]: data[
+                            weapon_stat_bonus_name
+                        ]
+                    },
+                }
+                attr_list.append(new_row)
+            new_info["attrs"] = attr_list
+
+        new_info_path = Path((f"./build/migrate/data/weapons/{no}/info.json"))
+        os.makedirs(new_info_path.parent, exist_ok=True)
+        with new_info_path.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_info, fp, ensure_ascii=False)
+
+    print(weapon_stat_bonus)
+    return
 
 
 @app.command()
@@ -107,7 +343,44 @@ def templates():
         new_fpath = Path(f"./build/migrate/templates/{hashed_id}.json")
         os.makedirs(new_fpath.parent, exist_ok=True)
         with new_fpath.open(mode="w", encoding="utf-8") as fp:
-            json.dump(new_template, fp, indent=4, ensure_ascii=False)
+            json.dump(new_template, fp, ensure_ascii=False)
+
+
+@app.command()
+def minify_damage_analysis():
+    home = Path("./build/html/cache/resonator/template")
+    new_home = Path("./build/migrate/data/calculation/template")
+
+    for hashed_id_folder_path in home.glob("*"):
+        hashed_id = hashed_id_folder_path.stem
+        for affix_policy_folder_path in hashed_id_folder_path.glob("*"):
+            affix_policy = affix_policy_folder_path.stem
+            damage_analysis_fpath = affix_policy_folder_path / "damage_analysis.json"
+            with damage_analysis_fpath.open(mode="r", encoding="utf-8") as fp:
+                damage_analysis = json.load(fp)
+                del damage_analysis["output_methods"]
+
+            new_damage_analysis_fpath = (
+                new_home / hashed_id / affix_policy / "damage_analysis.json"
+            )
+            os.makedirs(new_damage_analysis_fpath.parent, exist_ok=True)
+            with new_damage_analysis_fpath.open(mode="w", encoding="utf-8") as fp:
+                json.dump(damage_analysis, fp, ensure_ascii=False)
+
+            for echo_comparison_fpath in affix_policy_folder_path.glob(
+                "echo_comparison/*.json"
+            ):
+                fname = echo_comparison_fpath.name
+                with echo_comparison_fpath.open(mode="r", encoding="utf-8") as fp:
+                    echo_comparison = json.load(fp)
+                    del echo_comparison["base_damage"]
+
+                new_echo_comparison_fpath = (
+                    new_home / hashed_id / affix_policy / "echo_comparison" / fname
+                )
+                os.makedirs(new_echo_comparison_fpath.parent, exist_ok=True)
+                with new_echo_comparison_fpath.open(mode="w", encoding="utf-8") as fp:
+                    json.dump(damage_analysis, fp, ensure_ascii=False)
 
 
 @app.command()

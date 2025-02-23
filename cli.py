@@ -2,6 +2,7 @@ import json
 import os
 import shutil
 import subprocess
+import traceback
 from logging import DEBUG, Formatter
 from logging.handlers import RotatingFileHandler
 from pathlib import Path
@@ -110,50 +111,77 @@ def build(version: str = Option(get_version())):
     shutil.make_archive(zip_2_fpath, "zip", version_2_path)
 
 
+def _calculate():
+    try:
+        docs = Docs()
+        docs.export()
+        logger_cli.debug(f"Markdown files created.")
+    except:
+        print(traceback.format_exc())
+        return False
+
+
+@app.command()
+def calculate(
+    version: str = Option(get_version()),
+    config_file: str = Option("./build/html/mkdocs.yml"),
+    debug_level: int = Option(DEBUG),
+):
+    fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
+    logging_fpath = "./build/cli.log"
+
+    stream_handler = RichHandler()
+
+    rotating_file_formatter = Formatter(fmt=fmt)
+    rotating_file_handler = RotatingFileHandler(
+        logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    rotating_file_handler.setFormatter(rotating_file_formatter)
+
+    logger_cli.setLevel(debug_level)
+    logger_cli.addHandler(stream_handler)
+    logger_cli.addHandler(rotating_file_handler)
+
+    logger_cli.debug(f"Calculating docs...")
+
+    _calculate()
+
+
 @app.command()
 def docs(
     version: str = Option(get_version()),
     config_file: str = Option("./build/html/mkdocs.yml"),
     debug_level: int = Option(DEBUG),
 ):
-    import traceback
+    fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
+    logging_fpath = "./build/cli.log"
 
-    try:
-        fmt = "%(asctime)s - %(name)s - %(filename)s - %(lineno)d - %(levelname)s - %(message)s"
-        logging_fpath = "./build/cli.log"
+    stream_handler = RichHandler()
 
-        stream_handler = RichHandler()
+    rotating_file_formatter = Formatter(fmt=fmt)
+    rotating_file_handler = RotatingFileHandler(
+        logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
+    )
+    rotating_file_handler.setFormatter(rotating_file_formatter)
 
-        rotating_file_formatter = Formatter(fmt=fmt)
-        rotating_file_handler = RotatingFileHandler(
-            logging_fpath, maxBytes=2 * 1024 * 1024, backupCount=3, encoding="utf-8"
-        )
-        rotating_file_handler.setFormatter(rotating_file_formatter)
+    logger_cli.setLevel(debug_level)
+    logger_cli.addHandler(stream_handler)
+    logger_cli.addHandler(rotating_file_handler)
 
-        logger_cli.setLevel(debug_level)
-        logger_cli.addHandler(stream_handler)
-        logger_cli.addHandler(rotating_file_handler)
+    logger_cli.debug(f"Making docs...")
 
-        logger_cli.debug(f"Making docs...")
+    # Copy the assets
+    assets_src_path = "./assets"
+    assets_dest_path = "./build/html/docs/assets"
+    os.makedirs(assets_dest_path, exist_ok=True)
+    shutil.copytree(assets_src_path, assets_dest_path, dirs_exist_ok=True)
 
-        # Copy the assets
-        assets_src_path = "./assets"
-        assets_dest_path = "./build/html/docs/assets"
-        os.makedirs(assets_dest_path, exist_ok=True)
-        shutil.copytree(assets_src_path, assets_dest_path, dirs_exist_ok=True)
+    # Copy the docs
+    docs_src_path = "./docs/html"
+    docs_dest_path = "./build/html/docs"
+    shutil.copytree(docs_src_path, docs_dest_path, dirs_exist_ok=True)
 
-        # Copy the docs
-        docs_src_path = "./docs/html"
-        docs_dest_path = "./build/html/docs"
-        shutil.copytree(docs_src_path, docs_dest_path, dirs_exist_ok=True)
-
-        docs = Docs()
-        docs.export()
-
-        logger_cli.debug(f"Markdown files created.")
-
-    except:
-        print(traceback.format_exc())
+    if not _calculate():
         return
 
     try:

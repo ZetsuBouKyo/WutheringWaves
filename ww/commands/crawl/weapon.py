@@ -71,6 +71,7 @@ class WeaponsParser:
 
     def parse(self):
         for fpath in self.home.glob("*.html"):
+            print(fpath)
             with fpath.open(mode="r", encoding="utf-8") as fp:
                 html_str = fp.read()
             tree = html.fromstring(html_str)
@@ -94,13 +95,64 @@ class WeaponsParser:
         raw = raw[0].replace("品质: ", "").replace("-star", "")
         return raw
 
+    def get_weapon_type(self, tree) -> str:
+        raw = get_text(tree, '//span[@class="baseinfo"]')
+        raw = raw.split("\n")
+        raw = raw[1].replace("武器: ", "")
+        return raw
+
+    def get_attrs(self, tree):
+        weapon_stat_bonus_to_eng = {
+            "生命": "hp_p",
+            "生命百分比": "hp_p",
+            "暴击伤害": "crit_dmg",
+            "防御": "def_p",
+            "防御百分比": "def_p",
+            "暴击": "crit_rate",
+            "攻击": "atk_p",
+            "攻击%": "atk_p",
+            "攻击百分比": "atk_p",
+            "共鸣效率": "energy_regen",
+        }
+
+        tables = tree.xpath('//table[@class="stats"]')
+        table = tables[0]
+        ths = table.xpath("//th")
+        h = html.tostring(ths[2], pretty_print=True, method="html", encoding=str)
+        h_text = html2text(h)
+        h_text = clear_text(h_text)
+        stat_bonus_name = weapon_stat_bonus_to_eng[h_text]
+        trs = table.xpath("//tr")
+        attrs = []
+        tds = trs[0].xpath("//td")
+        attr = {}
+        for i, td in enumerate(tds):
+            h = html.tostring(td, pretty_print=True, method="html", encoding=str)
+            h_text = html2text(h)
+            h_text = clear_text(h_text)
+            if i % 3 == 0:
+                attr["lv"] = h_text
+            elif i % 3 == 1:
+                attr["atk"] = h_text
+            elif i % 3 == 2:
+                attr[stat_bonus_name] = h_text
+                attrs.append(attr)
+                attr = {}
+        print(attrs)
+        return attrs
+
     def get_weapon(self, tree) -> dict:
+        attrs = self.get_attrs(tree)
         weapon = {
             "no": self.get_weapon_no(tree),
             "name": get_text(tree, '//span[@class="name"]'),
             "star": self.get_weapon_star(tree),
-            "skill_name": get_text(tree, '//span[@class="skillname"]'),
-            "skill_description": get_text(tree, '//span[@class="skilldescription"]'),
+            "type": self.get_weapon_type(tree).lower(),
+            "passive": {
+                "name": get_text(tree, '//span[@class="skillname"]'),
+                "description": get_text(tree, '//span[@class="skilldescription"]'),
+            },
+            "attrs": attrs,
         }
         return weapon
 
