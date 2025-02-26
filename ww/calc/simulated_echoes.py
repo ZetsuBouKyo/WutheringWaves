@@ -237,7 +237,7 @@ class SimulatedEchoes:
     def update_echo_sub_affix_with_affixes_15_1(self, echo: dict, base_attr: str):
         # Base attribute
         if base_attr == _(ZhTwEnum.HP):
-            echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = Decimal("450")
+            echo[ResonatorEchoTsvColumnEnum.SUB_HP.value] = Decimal("270")
             echo[ResonatorEchoTsvColumnEnum.SUB_HP_P.value] = Decimal("0.054")
         elif base_attr == _(ZhTwEnum.ATK):
             echo[ResonatorEchoTsvColumnEnum.SUB_ATK.value] = Decimal("24")
