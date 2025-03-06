@@ -76,6 +76,8 @@ def resonator_info():
                     "skill_type": data["種類"],
                     "element": data["屬性"],
                     "base_attr": data["Base Attribute"],
+                    "bonus_type": data["技能加成種類"],
+                    "coordinated": data["Coordinated"],
                     "lv1": data["LV1"],
                     "lv2": data["LV2"],
                     "lv3": data["LV3"],
@@ -90,8 +92,6 @@ def resonator_info():
                     "_concerto_energy": data["協奏能量"],
                     "_hardness": data["共振度上限"],
                     "_toughness": data["韌性"],
-                    "_type": data["Type.1"],
-                    "coordinated": data["Coordinated"],
                     "sta_regen": data["回復耐力值"],
                     "resonance_energy_regen": data["回復共鳴能量"],
                     "concerto_regen": data["回復協奏能量"],
@@ -118,7 +118,7 @@ def resonator_info():
                     "name": skill_info["共鳴技能"]["名稱"],
                     "description": skill_info["共鳴技能"]["描述"],
                 }
-                skill_info_dict["chain1"] = {
+                skill_info_dict["forte_circuit"] = {
                     "name": skill_info["共鳴回路"]["名稱"],
                     "description": skill_info["共鳴回路"]["描述"],
                 }
@@ -225,70 +225,15 @@ def weapon_cn():
 @app.command()
 def weapon_tw():
     weapons_fpath = Path("cache/v1/zh_tw/output/weapons_info_tw.json")
-    no2weapon = {}
     with weapons_fpath.open(mode="r", encoding="utf-8") as fp:
         weapons = json.load(fp)
-        for weapon in weapons:
-            no2weapon[weapon["no"]] = weapon
 
-    fpath = Path("./build/migrate/cache/weapon_name_to_no_tw.json")
-    with fpath.open(mode="r", encoding="utf-8") as fp:
-        name2no = json.load(fp)
-
-    home = Path("./data/v1/zh_tw/武器")
-    weapon_stat_bonus = set()
-    weapon_stat_bonus_to_eng = {
-        "生命百分比": "hp_p",
-        "暴擊傷害": "crit_dmg",
-        "防禦百分比": "def_p",
-        "暴擊": "crit_rate",
-        "攻擊%": "atk_p",
-        "攻擊百分比": "atk_p",
-        "共鳴效率": "energy_regen",
-    }
-    for weapon_folder_path in home.glob("*"):
-        weapon_name = weapon_folder_path.name
-        print(weapon_name)
-        no = name2no[weapon_name]
-
-        new_info = {}
-        info_fpath = weapon_folder_path / "基本資料.json"
-        with info_fpath.open(mode="r", encoding="utf-8") as fp:
-            info = json.load(fp)
-            new_info["no"] = no
-            new_info["name"] = weapon_name
-            new_info["star"] = no2weapon[no]["star"]
-            new_info["type"] = no2weapon[no]["type"]
-            new_info["passive"] = {"name": info["名稱"], "description": info["描述"]}
-
-        attr_fpath = weapon_folder_path / "屬性.tsv"
-        if attr_fpath.exists():
-            attr_df = pd.read_csv(attr_fpath, sep="\t", keep_default_na=False)
-            attr_list = []
-            column_names = attr_df.columns.values
-            weapon_stat_bonus_name = column_names[-1]
-            weapon_stat_bonus.add(weapon_stat_bonus_name)
-            for _, row in attr_df.iterrows():
-                data = row.to_dict()
-                new_row = {
-                    "lv": data["等級"],
-                    "atk": str(data["攻擊"]),
-                    "stat_bonus": {
-                        weapon_stat_bonus_to_eng[weapon_stat_bonus_name]: data[
-                            weapon_stat_bonus_name
-                        ]
-                    },
-                }
-                attr_list.append(new_row)
-            new_info["attrs"] = attr_list
-
+    for weapon in weapons:
+        no = weapon["no"]
         new_info_path = Path((f"./build/migrate/data/weapons/{no}/info.json"))
         os.makedirs(new_info_path.parent, exist_ok=True)
         with new_info_path.open(mode="w", encoding="utf-8") as fp:
-            json.dump(new_info, fp, ensure_ascii=False)
-
-    print(weapon_stat_bonus)
-    return
+            json.dump(weapon, fp, ensure_ascii=False)
 
 
 @app.command()
@@ -380,7 +325,7 @@ def minify_damage_analysis():
                 )
                 os.makedirs(new_echo_comparison_fpath.parent, exist_ok=True)
                 with new_echo_comparison_fpath.open(mode="w", encoding="utf-8") as fp:
-                    json.dump(damage_analysis, fp, ensure_ascii=False)
+                    json.dump(echo_comparison, fp, ensure_ascii=False)
 
 
 @app.command()

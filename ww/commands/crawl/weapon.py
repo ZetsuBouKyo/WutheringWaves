@@ -1,4 +1,5 @@
 import json
+import re
 from pathlib import Path
 
 from html2text import html2text
@@ -68,6 +69,7 @@ class WeaponsParser:
         self.home = Path(home)
         self.weapons_info_fpath = Path(weapons_info_fpath)
         self._weapons = []
+        self._passive_stat_bonus = set()
 
     def parse(self):
         for fpath in self.home.glob("*.html"):
@@ -77,6 +79,7 @@ class WeaponsParser:
             tree = html.fromstring(html_str)
             weapon = self.get_weapon(tree)
             self._weapons.append(weapon)
+        print(self._passive_stat_bonus)
 
     def save(self):
         if len(self._weapons) == 0:
@@ -138,11 +141,63 @@ class WeaponsParser:
                 attr[stat_bonus_name] = h_text
                 attrs.append(attr)
                 attr = {}
-        print(attrs)
         return attrs
+
+    def get_passive_buffs(self, description: str):
+        first_line = description.split("，")[0].split("。")[0]
+        # print(first_line)
+        if "/" not in first_line:
+            return []
+
+        pattern = r"[\u4e00-\u9fff]+"
+        matches = re.findall(pattern, first_line)
+        text = "".join(matches)
+        self._passive_stat_bonus.add(text)
+
+        pattern = r"(\d+%)|(\d+\.\d+%)"
+        percentages = re.findall(pattern, first_line)
+        print(percentages)
+
+        buffs = []
+        for ps in percentages:
+            p = ps[0]
+            if not p:
+                p = ps[1]
+            if not p:
+                return buffs
+            buff = {}
+            if text == "生命提升":
+                buff = {"hp_p": p}
+            elif text == "共鸣效率提升":
+                buff = {"energy_regen": p}
+            elif text == "共鸣解放伤害加成提升":
+                buff = {"bonus_resonance_liberation": p}
+            elif text == "普攻和重击伤害加成提升":
+                buff = {"bonus_basic_attack": p, "bonus_heavy_attack": p}
+            elif text == "共鸣技能伤害加成提升":
+                buff = {"bonus_resonance_skill": p}
+            elif text == "暴击提升":
+                buff = {"crit_rate": p}
+            elif text == "攻击提升":
+                buff = {"atk_p": p}
+            elif text == "全属性伤害加成提升":
+                buff = {
+                    "bonus_glacio": p,
+                    "bonus_fusion": p,
+                    "bonus_electro": p,
+                    "bonus_aero": p,
+                    "bonus_spectro": p,
+                    "bonus_havoc": p,
+                }
+            if buff:
+                buffs.append(buff)
+
+        return buffs
 
     def get_weapon(self, tree) -> dict:
         attrs = self.get_attrs(tree)
+        description = get_text(tree, '//span[@class="skilldescription"]')
+        buffs = self.get_passive_buffs(description)
         weapon = {
             "no": self.get_weapon_no(tree),
             "name": get_text(tree, '//span[@class="name"]'),
@@ -150,7 +205,8 @@ class WeaponsParser:
             "type": self.get_weapon_type(tree).lower(),
             "passive": {
                 "name": get_text(tree, '//span[@class="skillname"]'),
-                "description": get_text(tree, '//span[@class="skilldescription"]'),
+                "description": description,
+                "passive_buffs": buffs,
             },
             "attrs": attrs,
         }
