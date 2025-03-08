@@ -720,10 +720,6 @@ templates:
     is_5_1_tier: true
     echo_comparison:
       - "布蘭特"
-  - id: "[腦測]+5布蘭特+1不滅航路,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-無懼-250共效-無爆炸"
-    is_5_1_tier: true
-    echo_comparison:
-      - "布蘭特"
   - id: "[腦測]+6布蘭特+1不滅航路,+6散華+1赫奕流明,+0維里奈+1奇幻變奏-無懼-250共效-無爆炸"
     is_6_1_tier: true
     echo_comparison:

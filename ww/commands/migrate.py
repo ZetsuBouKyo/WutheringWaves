@@ -238,7 +238,7 @@ def weapon_tw():
 
 
 @app.command()
-def docs():
+def docs(new_fpath: str = "./build/migrate/templates.json"):
     fpath = Path("./data/v1/zh_tw/docs.yml")
     with fpath.open(mode="r", encoding="utf-8") as stream:
         docs_ = yaml.safe_load(stream)
@@ -266,7 +266,7 @@ def docs():
 
     new_docs["comparisons"] = docs_["comparisons"]
 
-    new_fpath = Path(f"./build/migrate/templates.json")
+    new_fpath = Path(new_fpath)
     with new_fpath.open(mode="w", encoding="utf-8") as fp:
         json.dump(new_docs, fp, indent=4, ensure_ascii=False)
 
