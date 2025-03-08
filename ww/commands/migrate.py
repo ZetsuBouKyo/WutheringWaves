@@ -24,11 +24,12 @@ elements = {
 
 
 @app.command()
-def resonator_info():
+def resonator_info(new_home: str = "./build/migrate/resonators/"):
     home = "./data/v1/zh_tw/角色"
     home = Path(home)
     names = []
     name2no = {}
+    new_home: Path = Path(new_home)
     for resonator_folder_path in home.glob("*"):
         info_fpath = resonator_folder_path / "基本資料.json"
         with info_fpath.open(mode="r", encoding="utf-8") as fp:
@@ -173,7 +174,7 @@ def resonator_info():
             info["skill_infos"] = skill_info_dict
 
         # save
-        new_info_fpath = Path(f"./build/migrate/resonators/{no}/info.json")
+        new_info_fpath = new_home / no / "info.json"
         os.makedirs(new_info_fpath.parent, exist_ok=True)
 
         print(info)
