@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shutil
 from pathlib import Path
 
 import pandas as pd
@@ -271,8 +272,10 @@ def docs():
 
 
 @app.command()
-def templates():
-    home = Path("./cache/v1/zh_tw/custom/template")
+def templates(force: bool = False, new_home: str = "./build/migrate/templates/"):
+    home: Path = Path("./cache/v1/zh_tw/custom/template")
+    new_home: Path = Path(new_home)
+    new_set = set()
     id2hashed_id = {}
     for fpath in home.glob("*.json"):
         with fpath.open(mode="r", encoding="utf-8") as fp:
@@ -285,36 +288,64 @@ def templates():
         for key, value in template.items():
             new_template[key] = value
 
-        new_fpath = Path(f"./build/migrate/templates/{hashed_id}.json")
-        os.makedirs(new_fpath.parent, exist_ok=True)
-        with new_fpath.open(mode="w", encoding="utf-8") as fp:
-            json.dump(new_template, fp, ensure_ascii=False)
+        new_fpath = new_home / f"{hashed_id}.json"
+        new_set.add(hashed_id)
+        skip = False
+        if new_fpath.exists():
+            t0 = fpath.stat().st_mtime
+            t1 = new_fpath.stat().st_mtime
+            if t1 > t0:
+                skip = True
+        if not skip or force:
+            os.makedirs(new_fpath.parent, exist_ok=True)
+            with new_fpath.open(mode="w", encoding="utf-8") as fp:
+                json.dump(new_template, fp, ensure_ascii=False)
+    for fpath in new_home.glob("*.json"):
+        hashed_id = fpath.stem
+        if hashed_id not in new_set:
+            fpath.unlink()
 
 
 @app.command()
-def minify_damage_analysis():
-    home = Path("./build/html/cache/resonator/template")
-    new_home = Path("./build/migrate/data/calculation/template")
+def minify_damage_analysis(
+    force: bool = False, new_home: str = "./build/migrate/data/calculation/template"
+):
+    home: Path = Path("./build/html/cache/resonator/template")
+    new_home: Path = Path(new_home)
 
+    hashed_ids = set()
+    new_set = set()
     for hashed_id_folder_path in home.glob("*"):
         hashed_id = hashed_id_folder_path.stem
+        hashed_ids.add(hashed_id)
         for affix_policy_folder_path in hashed_id_folder_path.glob("*"):
+            # Damage analysis
             affix_policy = affix_policy_folder_path.stem
             damage_analysis_fpath = affix_policy_folder_path / "damage_analysis.json"
             with damage_analysis_fpath.open(mode="r", encoding="utf-8") as fp:
                 damage_analysis = json.load(fp)
                 del damage_analysis["output_methods"]
 
+            skip_damage_analysis = False
             new_damage_analysis_fpath = (
                 new_home / hashed_id / affix_policy / "damage_analysis.json"
             )
-            os.makedirs(new_damage_analysis_fpath.parent, exist_ok=True)
-            with new_damage_analysis_fpath.open(mode="w", encoding="utf-8") as fp:
-                json.dump(damage_analysis, fp, ensure_ascii=False)
+            new_set.add(f"{hashed_id}/{affix_policy}/damage_analysis.json")
+            if new_damage_analysis_fpath.exists():
+                t0 = damage_analysis_fpath.stat().st_mtime
+                t1 = new_damage_analysis_fpath.stat().st_mtime
+                if t1 > t0:
+                    skip_damage_analysis = True
+            if not skip_damage_analysis or force:
+                os.makedirs(new_damage_analysis_fpath.parent, exist_ok=True)
+                with new_damage_analysis_fpath.open(mode="w", encoding="utf-8") as fp:
+                    json.dump(damage_analysis, fp, ensure_ascii=False)
 
+            # Echo comparison
             for echo_comparison_fpath in affix_policy_folder_path.glob(
                 "echo_comparison/*.json"
             ):
+                skip_echo_comparison = False
                 fname = echo_comparison_fpath.name
                 with echo_comparison_fpath.open(mode="r", encoding="utf-8") as fp:
                     echo_comparison = json.load(fp)
@@ -323,9 +354,41 @@ def minify_damage_analysis():
                 new_echo_comparison_fpath = (
                     new_home / hashed_id / affix_policy / "echo_comparison" / fname
                 )
-                os.makedirs(new_echo_comparison_fpath.parent, exist_ok=True)
-                with new_echo_comparison_fpath.open(mode="w", encoding="utf-8") as fp:
-                    json.dump(echo_comparison, fp, ensure_ascii=False)
+                new_set.add(f"{hashed_id}/{affix_policy}/echo_comparison/{fname}")
+                if new_echo_comparison_fpath.exists():
+                    t0 = echo_comparison_fpath.stat().st_mtime
+                    t1 = new_echo_comparison_fpath.stat().st_mtime
+                    if t1 > t0:
+                        skip_echo_comparison = True
+
+                if not skip_echo_comparison or force:
+                    os.makedirs(new_echo_comparison_fpath.parent, exist_ok=True)
+                    with new_echo_comparison_fpath.open(
+                        mode="w", encoding="utf-8"
+                    ) as fp:
+                        json.dump(echo_comparison, fp, ensure_ascii=False)
+
+    # clean
+    for hashed_id_folder_path in new_home.glob("*"):
+        hashed_id = hashed_id_folder_path.stem
+        if hashed_id not in hashed_ids:
+            shutil.rmtree(hashed_id_folder_path, ignore_errors=True)
+            continue
+        for affix_policy_folder_path in hashed_id_folder_path.glob("*"):
+            affix_policy = affix_policy_folder_path.stem
+            damage_analysis_fpath = affix_policy_folder_path / "damage_analysis.json"
+            if damage_analysis_fpath.exists():
+                id = f"{hashed_id}/{affix_policy}/damage_analysis.json"
+                if id not in new_set:
+                    damage_analysis_fpath.unlink()
+            for echo_comparison_fpath in affix_policy_folder_path.glob(
+                "echo_comparison/*.json"
+            ):
+                fname = echo_comparison_fpath.name
+                if echo_comparison_fpath.exists():
+                    id = f"{hashed_id}/{affix_policy}/echo_comparison/{fname}"
+                    if id not in new_set:
+                        echo_comparison_fpath.unlink()
 
 
 @app.command()
