@@ -1,3 +1,4 @@
+import json
 from enum import Enum
 from typing import Union
 
@@ -233,3 +234,66 @@ class ResonatorParser:
         self.get_inherent_skills()
         self.get_chains()
         return self.data
+
+
+class ResonatorParser2:
+    def __init__(self, text):
+        self.data = json.loads(text)
+
+        no = self.data["Id"]
+        rank = self.data["Rarity"]
+        name = self.data["Name"]
+        print(name)
+
+        self.info = {"no": no, "rank": rank, "name": name}
+        self._parse_stat()
+        self._parse_element()
+
+    def get_stat(self):
+        stat = set()
+        for s in self.data["SkillTrees"].values():
+            node_type = s["NodeType"]
+            if node_type == 4:
+                name = s["Skill"]["Name"]
+                stat.add(name)
+        return stat
+
+    def _parse_stat(self):
+        for s in self.data["SkillTrees"].values():
+            node_type = s["NodeType"]
+            name = s["Skill"]["Name"]
+            if node_type == 4:
+                if name == "冷凝伤害加成提升":
+                    ...
+                elif name == "热熔伤害加成提升":
+                    ...
+                elif name == "导电伤害加成提升":
+                    ...
+                elif name == "气动伤害加成提升":
+                    ...
+
+    def _parse_element(self):
+        element_id = self.data["Element"]
+        if element_id == 1:
+            element_zh_tw = "冷凝"
+            element_en = "glacio"
+        elif element_id == 2:
+            element_zh_tw = "熱熔"
+            element_en = "fusion"
+        elif element_id == 3:
+            element_zh_tw = "導電"
+            element_en = "electro"
+        elif element_id == 4:
+            element_zh_tw = "氣動"
+            element_en = "aero"
+        elif element_id == 5:
+            element_zh_tw = "衍射"
+            element_en = "spectro"
+        elif element_id == 6:
+            element_zh_tw = "湮滅"
+            element_en = "havoc"
+        else:
+            return
+
+        self.info["element_zh_tw"] = element_zh_tw
+        self.info["element_en"] = element_en

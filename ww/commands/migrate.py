@@ -427,3 +427,105 @@ def locale():
     os.makedirs(comparison_titles_fpath.parent, exist_ok=True)
     with comparison_titles_fpath.open(mode="w", encoding="utf-8") as fp:
         json.dump(comparison_titles, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def buffs(new_home: str = "./build/migrate/buffs"):
+    new_home_path = Path(new_home)
+    os.makedirs(new_home_path, exist_ok=True)
+
+    echo_sonata_fpath = "./data/v1/zh_tw/buff/echo_sonata.tsv"
+    echo_sonata_df = pd.read_csv(echo_sonata_fpath, sep="\t", keep_default_na=False)
+    echo_sonata = []
+    for _, row in echo_sonata_df.iterrows():
+        data = row.to_dict()
+        new_row = {
+            "id": data["代稱"],
+            "category": "合鳴",
+            "source": data["名稱"],
+            "suffix": data["字尾"],
+            "type": data["增益種類"],
+            "value": str(data["數值"]),
+            "stack": "1",
+            "duration": data["持續時間(s)"],
+            "target": data["對象"],
+            "element": data["增益屬性"],
+            "skill_bonus_type": data["技能加成種類"],
+        }
+        echo_sonata.append(new_row)
+
+    new_echo_sonata_fpath = new_home_path / "echo_sonata.json"
+    with new_echo_sonata_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(echo_sonata, fp, indent=4, ensure_ascii=False)
+
+    echo_fpath = "./data/v1/zh_tw/buff/echo.tsv"
+    echo_df = pd.read_csv(echo_fpath, sep="\t", keep_default_na=False)
+    echo = []
+    for _, row in echo_df.iterrows():
+        data = row.to_dict()
+        new_row = {
+            "id": data["代稱"],
+            "category": "聲骸",
+            "source": data["名稱"],
+            "suffix": data["字尾"],
+            "type": data["增益種類"],
+            "value": str(data["數值"]),
+            "stack": "1",
+            "duration": data["持續時間(s)"],
+            "target": data["對象"],
+            "element": data["增益屬性"],
+            "skill_bonus_type": data["技能加成種類"],
+        }
+        echo.append(new_row)
+
+    new_echo_fpath = new_home_path / "echo.json"
+    with new_echo_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(echo, fp, indent=4, ensure_ascii=False)
+
+    resonator_fpath = "./data/v1/zh_tw/buff/resonator.tsv"
+    resonator_df = pd.read_csv(resonator_fpath, sep="\t", keep_default_na=False)
+    resonator = []
+    for _, row in resonator_df.iterrows():
+        data = row.to_dict()
+        new_row = {
+            "id": data["代稱"],
+            "category": "共鳴者",
+            "source": f"{data['名稱']}-{data['來源']}",
+            "suffix": data["字尾"],
+            "type": data["增益種類"],
+            "value": str(data["數值"]),
+            "stack": "1",
+            "duration": data["持續時間(s)"],
+            "target": data["對象"],
+            "element": data["增益屬性"],
+            "skill_bonus_type": data["技能加成種類"],
+        }
+        resonator.append(new_row)
+
+    new_resonator_fpath = new_home_path / "resonator.json"
+    with new_resonator_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(resonator, fp, indent=4, ensure_ascii=False)
+
+    weapon_fpath = "./data/v1/zh_tw/buff/weapon.tsv"
+    weapon_df = pd.read_csv(weapon_fpath, sep="\t", keep_default_na=False)
+    weapon = []
+    for _, row in weapon_df.iterrows():
+        data = row.to_dict()
+        new_row = {
+            "id": data["代稱"],
+            "category": "武器",
+            "source": f"{data['名稱']}-{data['諧振']}諧振",
+            "suffix": data["字尾"],
+            "type": data["增益種類"],
+            "value": str(data["數值"]),
+            "stack": "1",
+            "duration": data["持續時間(s)"],
+            "target": "",
+            "element": data["增益屬性"],
+            "skill_bonus_type": data["技能加成種類"],
+        }
+        weapon.append(new_row)
+
+    new_weapon_fpath = new_home_path / "weapon.json"
+    with new_weapon_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(weapon, fp, indent=4, ensure_ascii=False)

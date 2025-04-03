@@ -2,11 +2,12 @@ import json
 import os
 from pathlib import Path
 
+import requests
 from typer import Typer
 
 from ww.commands.crawl.echo import EchoParser
 from ww.commands.crawl.id_parser import id_parser
-from ww.commands.crawl.resonator import ResonatorParser
+from ww.commands.crawl.resonator import ResonatorParser, ResonatorParser2
 from ww.commands.crawl.weapon import WeaponParser, save_weapons
 
 app = Typer(name="crawl")
@@ -50,6 +51,50 @@ def get_resonator(home: str):
         fpath_out = Path(RESONATORS_HOME_PATH) / f"{fpath.stem}.json"
         os.makedirs(fpath_out.parent, exist_ok=True)
         with fpath_out.open(mode="w", encoding="utf-8") as fp:
+            json.dump(data, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def parse_resonators(home: str):
+    home = Path(home)
+    for fpath in home.glob("*.json"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            text = fp.read()
+        parser = ResonatorParser2(text)
+        # return
+
+
+@app.command()
+def parse_resonator_stat(home: str):
+    home = Path(home)
+    s = set()
+    for fpath in home.glob("*.json"):
+        with fpath.open(mode="r", encoding="utf-8") as fp:
+            text = fp.read()
+        parser = ResonatorParser2(text)
+        s |= parser.get_stat()
+    s = list(s)
+    s.sort()
+    print(s)
+
+
+@app.command()
+def get_resonator_jsons(host: str, home: str):
+    if not host.endswith("/"):
+        host += "/"
+    resp = requests.get(f"{host}ww/data/character.json")
+    data = resp.json()
+    nos = list(data.keys())
+    nos.sort()
+
+    home: Path = Path(home)
+    os.makedirs(home, exist_ok=True)
+    for no in nos:
+        api = f"{host}ww/data/zh/character/{no}.json"
+        resp = requests.get(api)
+        data = resp.json()
+        fpath = home / f"{no}.json"
+        with fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(data, fp, indent=4, ensure_ascii=False)
 
 
