@@ -1,0 +1,8 @@
+{
+    "no": "1507",
+    "name": "贊尼",
+    "element": "衍射",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}
