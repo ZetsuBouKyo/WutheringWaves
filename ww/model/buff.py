@@ -8,6 +8,7 @@ class BuffTargetEnum(str, Enum):
     NEXT: str = _(ZhTwEnum.BUFF_TARGET_NEXT)
     SELF: str = _(ZhTwEnum.BUFF_TARGET_SELF)
     ACTIVE: str = _(ZhTwEnum.BUFF_ACTIVE)
+    OTHERS: str = _(ZhTwEnum.BUFF_OTHERS)
 
 
 class BuffSourceEnum(str, Enum):
@@ -87,4 +88,5 @@ class SkillBonusTypeEnum(str, Enum):
     OUTRO: str = _(ZhTwEnum.OUTRO)
     ECHO: str = _(ZhTwEnum.ECHO)
     COORDINATED_ATTACK: str = _(ZhTwEnum.COORDINATED_ATTACK)
+    SPECTRO_FRAZZLE: str = _(ZhTwEnum.SPECTRO_FRAZZLE)
     NONE: str = _(ZhTwEnum.NONE)
