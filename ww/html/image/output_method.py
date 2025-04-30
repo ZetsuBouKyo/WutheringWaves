@@ -41,6 +41,12 @@ _action_icons_file = {
     ),
     TemplateRowActionEnum.RESONANCE_SKILL.value: get_local_file_url(E_ICON_FPATH),
     TemplateRowActionEnum.RESONANCE_LIBERATION.value: get_local_file_url(R_ICON_FPATH),
+    TemplateRowActionEnum.PRESSED_RESONANCE_SKILL.value: get_local_file_url(
+        E_ICON_FPATH
+    ),
+    TemplateRowActionEnum.PRESSED_RESONANCE_LIBERATION.value: get_local_file_url(
+        R_ICON_FPATH
+    ),
     TemplateRowActionEnum.ECHO.value: get_local_file_url(Q_ICON_FPATH),
     TemplateRowActionEnum.OUTRO.value: get_local_file_url(NUM_ICON_FPATH),
     TemplateRowActionEnum.SWITCH.value: get_local_file_url(NUM_ICON_FPATH),
