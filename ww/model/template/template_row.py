@@ -61,6 +61,7 @@ class TemplateColumnEnum(str, Enum):
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     SKILL_BONUS_TYPE: str = "[實戰]技能加成種類"
+    SKILL_BONUS_TYPE_2: str = "[實戰]技能加成種類2"
     HIT: str = _(ZhTwEnum.HITS)
 
     TIME_START: str = "[實戰]起手秒數"

@@ -100,6 +100,7 @@ class ResonatorSkillTable:
     def get_row(self, id: str) -> Optional[pd.DataFrame]:
         return get_row(self.df, id, ResonatorSkillTsvColumnEnum.PRIMARY_KEY.value)
 
+    # TODO: refactor
     def get_skills_model(self) -> List[ResonatorSkillModel]:
         skills = []
         for _, row in self.df.iterrows():

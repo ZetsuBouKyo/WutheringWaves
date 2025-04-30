@@ -8,6 +8,7 @@ class TemplateEnum(str, Enum):
     ACTION: str = "[實戰]操作"
     SKILL_ID: str = "[實戰]技能代稱"
     BONUS_TYPE: str = "[實戰]技能加成種類"
+    BONUS_TYPE_2: str = "[實戰]技能加成種類2"
     BONUS_MAGNIFIER: str = "[額外]倍率"
     BONUS_AMPLIFIER: str = "[額外]加深"
     BONUS_ATK_P: str = "[額外]攻擊百分比"

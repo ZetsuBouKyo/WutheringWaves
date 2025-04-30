@@ -385,6 +385,7 @@ class ZhTwEnum(str, Enum):
     RESONATOR_SKILL_BASE_ATTR_ZH_TW: str = "基礎屬性"
 
     RESONATOR_SKILL_BONUS_TYPE: str = "技能加成種類"
+    RESONATOR_SKILL_BONUS_TYPE_2: str = "技能加成種類2"
     RESONATOR_SKILL_PRIMARY_KEY: str = "代稱"
     RESONATOR_SKILL_TYPE_ZH_TW: str = "種類"
     RESONATOR_SKILL_ENTRY: str = "Entry#"

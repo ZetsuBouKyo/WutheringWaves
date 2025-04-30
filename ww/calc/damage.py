@@ -384,6 +384,9 @@ class Damage:
         resonator_skill_bonus_type = resonator_skill_table.search(
             template_row_skill_id, ResonatorSkillTsvColumnEnum.SKILL_BONUS_TYPE
         )
+        resonator_skill_bonus_type_2 = resonator_skill_table.search(
+            template_row_skill_id, ResonatorSkillTsvColumnEnum.SKILL_BONUS_TYPE_2
+        )
         resonator_skill_is_coordinated = resonator_skill_table.search(
             template_row_skill_id, ResonatorSkillTsvColumnEnum.COORDINATED
         )
@@ -475,6 +478,10 @@ class Damage:
         if resonator_skill_is_coordinated:
             calculated_row.result_bonus_types.append(
                 SkillBonusTypeEnum.COORDINATED_ATTACK.value
+            )
+        if resonator_skill_bonus_type_2:
+            calculated_row.result_bonus_types.append(
+                SkillBonusTypeEnum.SPECTRO_FRAZZLE.value
             )
 
         # Monster
@@ -812,6 +819,10 @@ class Damage:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].coordinated_attack += damage
+                if SkillBonusTypeEnum.SPECTRO_FRAZZLE.value in skill_bonus_types:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].spectro_frazzle += damage
 
                 # Skill type
                 resonator_skill_type = row.resonator_skill_type

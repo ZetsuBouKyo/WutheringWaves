@@ -79,6 +79,7 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
                     "element": data["屬性"],
                     "base_attr": data["Base Attribute"],
                     "bonus_type": data["技能加成種類"],
+                    "bonus_type_2": data["技能加成種類2"],
                     "coordinated": data["Coordinated"],
                     "lv1": data["LV1"],
                     "lv2": data["LV2"],
