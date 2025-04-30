@@ -327,6 +327,7 @@ class SimulatedResonators:
         resonator_chain = template_resonator.resonator_chain
         weapon_name = template_resonator.resonator_weapon_name
         weapon_tune = template_resonator.resonator_weapon_rank
+        # TODO: how about 34311?
         echo_name_1 = template_resonator.resonator_echo_1
 
         resonator = self._get_empty_resonator(
