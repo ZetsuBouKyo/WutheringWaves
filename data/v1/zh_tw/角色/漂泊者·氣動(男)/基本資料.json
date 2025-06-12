@@ -1,0 +1,8 @@
+{
+    "no": "1406",
+    "name": "漂泊者·氣動(男)",
+    "element": "氣動",
+    "rank": 5,
+    "is_permanent": true,
+    "stat_bonus": { "atk_p": "0.12", "healing": "0.12" }
+}

@@ -88,5 +88,6 @@ class SkillBonusTypeEnum(str, Enum):
     OUTRO: str = _(ZhTwEnum.OUTRO)
     ECHO: str = _(ZhTwEnum.ECHO)
     COORDINATED_ATTACK: str = _(ZhTwEnum.COORDINATED_ATTACK)
+    AERO_EROSION: str = _(ZhTwEnum.AERO_EROSION)
     SPECTRO_FRAZZLE: str = _(ZhTwEnum.SPECTRO_FRAZZLE)
     NONE: str = _(ZhTwEnum.NONE)

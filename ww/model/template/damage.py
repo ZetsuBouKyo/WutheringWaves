@@ -48,6 +48,7 @@ class TemplateResonatorDamageDistributionModel(BaseModel):
     coordinated_attack: Decimal = Decimal("0.0")
     none: Decimal = Decimal("0.0")
 
+    aero_erosion: Decimal = Decimal("0.0")
     spectro_frazzle: Decimal = Decimal("0.0")
 
     normal_attack: Decimal = Decimal("0.0")

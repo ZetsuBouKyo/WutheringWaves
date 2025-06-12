@@ -1,0 +1,8 @@
+{
+    "no": "1407",
+    "name": "夏空",
+    "element": "氣動",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_dmg": "0.16" }
+}

@@ -226,14 +226,15 @@ def weapon_cn():
 
 
 @app.command()
-def weapon_tw():
+def weapon_tw(new_home: str = "./build/migrate/data/weapons/"):
     weapons_fpath = Path("cache/v1/zh_tw/output/weapons_info_tw.json")
     with weapons_fpath.open(mode="r", encoding="utf-8") as fp:
         weapons = json.load(fp)
 
+    new_home_path = Path(new_home)
     for weapon in weapons:
         no = weapon["no"]
-        new_info_path = Path((f"./build/migrate/data/weapons/{no}/info.json"))
+        new_info_path = new_home_path / no / "info.json"
         os.makedirs(new_info_path.parent, exist_ok=True)
         with new_info_path.open(mode="w", encoding="utf-8") as fp:
             json.dump(weapon, fp, ensure_ascii=False)

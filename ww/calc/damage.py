@@ -479,9 +479,13 @@ class Damage:
             calculated_row.result_bonus_types.append(
                 SkillBonusTypeEnum.COORDINATED_ATTACK.value
             )
-        if resonator_skill_bonus_type_2:
+        if resonator_skill_bonus_type_2 == SkillBonusTypeEnum.SPECTRO_FRAZZLE.value:
             calculated_row.result_bonus_types.append(
                 SkillBonusTypeEnum.SPECTRO_FRAZZLE.value
+            )
+        elif resonator_skill_bonus_type_2 == SkillBonusTypeEnum.AERO_EROSION.value:
+            calculated_row.result_bonus_types.append(
+                SkillBonusTypeEnum.AERO_EROSION.value
             )
 
         # Monster
@@ -819,6 +823,10 @@ class Damage:
                     damage_distributions[label].resonators[
                         resonator_name
                     ].coordinated_attack += damage
+                if SkillBonusTypeEnum.AERO_EROSION.value in skill_bonus_types:
+                    damage_distributions[label].resonators[
+                        resonator_name
+                    ].aero_erosion += damage
                 if SkillBonusTypeEnum.SPECTRO_FRAZZLE.value in skill_bonus_types:
                     damage_distributions[label].resonators[
                         resonator_name

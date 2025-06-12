@@ -297,6 +297,24 @@ class CalculatedResonator:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
             ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_REMINISCENCE_FLEURDELYS):
+            resonator_name = self._new_row[CalculatedResonatorTsvColumnEnum.NAME.value]
+            if resonator_name == _(ZhTwEnum.RESONATOR_AERO) or resonator_name == _(
+                ZhTwEnum.RESONATOR_CARTETHYIA
+            ):
+                self._new_row[
+                    CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+                ] += get_number("0.1")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.1")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARES_KELPIE):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.12")
 
     def _update_by_echo(self, echo_id: str, index: int):
         # Name
@@ -599,6 +617,21 @@ class CalculatedResonator:
         if count_sonatas[EchoSonataEnum.TIDEBREAKING_COURAGE.value] >= 2:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_ENERGY_REGEN.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.GUSTS_OF_WELKIN.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.WINDWARD_PILGRIMAGE.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.1")
+
+        if count_sonatas[EchoSonataEnum.FLAMING_CLAWPRINT.value] >= 2:
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
             ] += get_number("0.1")
 
     def _update_calculated(self):
