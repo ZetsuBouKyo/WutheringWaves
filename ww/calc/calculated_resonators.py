@@ -315,6 +315,20 @@ class CalculatedResonator:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
             ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_LIONESS_OF_GLORY):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_FEILIAN_BERINGAL):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            ] += get_number("0.12")
 
     def _update_by_echo(self, echo_id: str, index: int):
         # Name
