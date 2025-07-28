@@ -1,0 +1,8 @@
+{
+    "no": "1607",
+    "name": "坎特蕾拉",
+    "element": "湮滅",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}
