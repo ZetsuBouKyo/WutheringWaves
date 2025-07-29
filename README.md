@@ -4,6 +4,8 @@ Damage calculator for Wuthering Waves, analysis of gacha pool records, resource 
 
 鳴潮傷害計算機、分析抽卡卡池紀錄、資源規劃、攻略圖片輸出。短期開發以繁中為主，未來考慮加入多語系。
 
+專案慢慢地遷移到[WutheringWavesGuideSrc](https://github.com/ZetsuBouKyo/WutheringWavesGuideSrc)，改成以 Javascript 開發，方便直接部署到[攻略網站](https://wutheringwavesguide.netlify.app/)。
+
 ## Build
 
 ```bash
