@@ -32,6 +32,7 @@ class TemplateHtmlResonatorModel(BaseModel):
     basic_attack_dmg_bonus: str = ""
     heavy_attack_dmg_bonus: str = ""
     resonance_liberation_dmg_bonus: str = ""
+    echo_dmg_bonus: str = ""
     healing_bonus: str = ""
 
     physical_dmg_bonus: str = ""

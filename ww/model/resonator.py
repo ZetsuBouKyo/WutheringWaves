@@ -177,6 +177,7 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     CALCULATED_RESONANCE_LIBERATION_DMG_BONUS: str = _(
         ZhTwEnum.CALCULATED_RESONATOR_RESONANCE_LIBERATION_DMG_BONUS
     )
+    CALCULATED_ECHO_DMG_BONUS: str = _(ZhTwEnum.CALCULATED_RESONATOR_ECHO_DMG_BONUS)
 
     CALCULATED_PHYSICAL_DMG_BONUS: str = _(
         ZhTwEnum.CALCULATED_RESONATOR_PHYSICAL_DMG_BONUS
@@ -249,6 +250,9 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     ECHO_RESONANCE_LIBERATION_DMG_BONUS: str = _(
         ZhTwEnum.RESONATOR_ECHO_RESONANCE_LIBERATION_DMG_BONUS
     )
+
+    ECHO_ECHO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_ECHO_DMG_BONUS)
+
     ECHO_GLACIO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_GLACIO_DMG_BONUS)
     ECHO_FUSION_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_FUSION_DMG_BONUS)
     ECHO_ELECTRO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_ELECTRO_DMG_BONUS)
@@ -355,6 +359,7 @@ class ToCalculateResonatorModel(BaseModel):
     calculated_heavy_bonus: str = ""
     calculated_resonance_skill_bonus: str = ""
     calculated_resonance_liberation_bonus: str = ""
+    calculated_echo_bonus: str = ""
 
     def get_calculated_skill_bonus(
         cls, bonus_type: Union[str, ResonatorSkillBonusTypeEnum]
@@ -368,6 +373,8 @@ class ToCalculateResonatorModel(BaseModel):
             value = cls.calculated_resonance_skill_bonus
         elif bonus_type == ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value:
             value = cls.calculated_resonance_liberation_bonus
+        elif bonus_type == ResonatorSkillBonusTypeEnum.ECHO.value:
+            value = cls.calculated_echo_bonus
 
         return get_number(value)
 
@@ -401,6 +408,7 @@ class CalculatedResonatorModel(BaseModel):
     calculated_basic_attack_dmg_bonus: str = ""
     calculated_heavy_attack_dmg_bonus: str = ""
     calculated_resonance_liberation_dmg_bonus: str = ""
+    calculated_echo_dmg_bonus: str = ""
 
     calculated_physical_dmg_bonus: str = ""
     calculated_glacio_dmg_bonus: str = ""

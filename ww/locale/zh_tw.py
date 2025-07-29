@@ -488,6 +488,8 @@ class ZhTwEnum(str, Enum):
         "角色共鳴解放傷害加成面板"
     )
 
+    CALCULATED_RESONATOR_ECHO_DMG_BONUS: str = "角色聲骸傷害加成面板"
+
     CALCULATED_RESONATOR_PHYSICAL_DMG_BONUS: str = "角色物理傷害加成面板"
     CALCULATED_RESONATOR_GLACIO_DMG_BONUS: str = "角色冷凝傷害加成面板"
     CALCULATED_RESONATOR_FUSION_DMG_BONUS: str = "角色熱熔傷害加成面板"
@@ -536,6 +538,9 @@ class ZhTwEnum(str, Enum):
     RESONATOR_ECHO_BASIC_ATTACK_DMG_BONUS: str = "聲骸普攻傷害加成"
     RESONATOR_ECHO_HEAVY_ATTACK_DMG_BONUS: str = "聲骸重擊傷害加成"
     RESONATOR_ECHO_RESONANCE_LIBERATION_DMG_BONUS: str = "聲骸共鳴解放傷害加成"
+
+    RESONATOR_ECHO_ECHO_DMG_BONUS: str = "聲骸聲骸技能傷害加成"
+
     RESONATOR_ECHO_GLACIO_DMG_BONUS: str = "聲骸冷凝加成"
     RESONATOR_ECHO_FUSION_DMG_BONUS: str = "聲骸熱熔加成"
     RESONATOR_ECHO_ELECTRO_DMG_BONUS: str = "聲骸導電加成"
@@ -614,16 +619,18 @@ class ZhTwEnum(str, Enum):
     RESONATOR_AERO: str = "漂泊者·氣動"
     RESONATOR_CARTETHYIA: str = "卡提希婭"
 
-    ECHO_SENTRY_CONSTRUCT: str = "異構武裝"
-    ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
-    ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"
-    ECHO_NIGHTMARE_THUNDERING_MEPHIS: str = "夢魘·雲閃之鱗"
-    ECHO_NIGHTMARE_MOURNING_AIX: str = "夢魘·哀聲鷙"
-    ECHO_NIGHTMARE_FEILIAN_BERINGAL: str = "夢魘·飛廉之猩"
     ECHO_CAPITANEUS: str = "榮光節使"
-    ECHO_REMINISCENCE_FLEURDELYS: str = "共鳴迴響·芙露德莉斯"
-    ECHO_NIGHTMARES_KELPIE: str = "夢魘·凱爾匹"
+    ECHO_DRAGON_OF_DIRGE: str = "嘆息古龍"
     ECHO_LIONESS_OF_GLORY: str = "榮耀獅像"
+    ECHO_NIGHTMARE_FEILIAN_BERINGAL: str = "夢魘·飛廉之猩"
+    ECHO_NIGHTMARE_INFERNO_RIDER: str = "夢魘·燎照之騎"
+    ECHO_NIGHTMARE_MOURNING_AIX: str = "夢魘·哀聲鷙"
+    ECHO_NIGHTMARE_THUNDERING_MEPHIS: str = "夢魘·雲閃之鱗"
+    ECHO_NIGHTMARES_HECATE: str = "夢魘·赫卡忒"
+    ECHO_NIGHTMARES_KELPIE: str = "夢魘·凱爾匹"
+    ECHO_REMINISCENCE_FENRICO: str = "共鳴迴響·芬萊克"
+    ECHO_REMINISCENCE_FLEURDELYS: str = "共鳴迴響·芙露德莉斯"
+    ECHO_SENTRY_CONSTRUCT: str = "異構武裝"
 
     DOCS_RESONATOR_OUTLINE_1: str = (
         "各模板內有詳細的傷害分析，不同數值聲骸傷害試算、3C與4C聲骸比較、技能占比、技能種類占比、技能加成種類占比、輸出手法流程摘要與秒數、技能傷害計算及公式。"

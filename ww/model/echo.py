@@ -37,6 +37,7 @@ class EchoSonataEnum(str, Enum):
     GUSTS_OF_WELKIN: str = "流雲逝盡之空"
     WINDWARD_PILGRIMAGE: str = "願戴榮光之旅"
     FLAMING_CLAWPRINT: str = "奔狼燎原之焰"
+    DREAM_OF_THE_LOST: str = "失序彼岸之夢"
 
 
 class ResonatorEchoTsvColumnEnum(str, Enum):

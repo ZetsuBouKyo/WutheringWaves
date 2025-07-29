@@ -320,6 +320,10 @@ class Damage:
             resonator_id,
             f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.RESONANCE_LIBERATION.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
         )
+        resonator.calculated_echo_bonus = self._calculated_resonators_table.search(
+            resonator_id,
+            f"{CALCULATED_RESONATORS_DMG_BONUS_PREFIX}{ResonatorSkillBonusTypeEnum.ECHO.value}{CALCULATED_RESONATORS_DMG_BONUS_SUFFIX}",
+        )
 
         return self.get_calculated_row_with_resonator(
             resonator, row, ignore_buffs=ignore_buffs

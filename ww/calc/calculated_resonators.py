@@ -94,6 +94,7 @@ class CalculatedResonator:
             CalculatedResonatorTsvColumnEnum.CALCULATED_BASIC_ATTACK_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.CALCULATED_HEAVY_ATTACK_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.CALCULATED_RESONANCE_LIBERATION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ECHO_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.CALCULATED_PHYSICAL_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.CALCULATED_GLACIO_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.CALCULATED_FUSION_DMG_BONUS.value,
@@ -139,6 +140,7 @@ class CalculatedResonator:
             CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_RESONANCE_LIBERATION_DMG_BONUS.value,
+            CalculatedResonatorTsvColumnEnum.ECHO_ECHO_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_FUSION_DMG_BONUS.value,
             CalculatedResonatorTsvColumnEnum.ECHO_ELECTRO_DMG_BONUS.value,
@@ -308,6 +310,20 @@ class CalculatedResonator:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
             ] += get_number("0.1")
+        elif echo_name == _(ZhTwEnum.ECHO_REMINISCENCE_FENRICO):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARES_HECATE):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_ECHO_DMG_BONUS.value
+            ] += get_number("0.2")
         elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARES_KELPIE):
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
@@ -807,6 +823,11 @@ class CalculatedResonator:
             ]
             + stat_bonus_resonance_liberation_bonus
         )
+
+        # Echo DMG Bonus
+        self._new_row[
+            CalculatedResonatorTsvColumnEnum.CALCULATED_ECHO_DMG_BONUS.value
+        ] = self._new_row[CalculatedResonatorTsvColumnEnum.ECHO_ECHO_DMG_BONUS.value]
 
         # Glacio DMG Bonus
         stat_bonus_glacio_dmg_bonus = get_number(

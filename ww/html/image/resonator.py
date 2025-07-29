@@ -113,6 +113,9 @@ def merge_resonator_model(
         resonance_liberation_dmg_bonus=to_percentage_str(
             calculated_resonator.calculated_resonance_liberation_dmg_bonus
         ),
+        echo_dmg_bonus=to_percentage_str(
+            calculated_resonator.calculated_echo_dmg_bonus
+        ),
         healing_bonus=to_percentage_str(calculated_resonator.calculated_healing_bonus),
         physical_dmg_bonus=to_percentage_str(
             calculated_resonator.calculated_physical_dmg_bonus
