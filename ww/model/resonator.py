@@ -469,6 +469,9 @@ class CalculatedResonatorModel(BaseModel):
     echo_basic_attack_dmg_bonus: str = ""
     echo_heavy_attack_dmg_bonus: str = ""
     echo_resonance_liberation_dmg_bonus: str = ""
+
+    echo_echo_dmg_bonus: str = ""
+
     echo_glacio_dmg_bonus: str = ""
     echo_fusion_dmg_bonus: str = ""
     echo_electro_dmg_bonus: str = ""
