@@ -26,7 +26,7 @@ def set_uneditable_cell(
     elif type(value) is not str:
         value = str(value)
 
-    item_color = QColor(*UNEDITABLE_CELL_COLOR)
+    item_color = QColor(40, 40, 40)
     item = QTableWidgetItem(value)
     item.setBackgroundColor(item_color)
     item.setFlags(~Qt.ItemIsEditable)

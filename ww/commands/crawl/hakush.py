@@ -107,6 +107,8 @@ class HakushResonator:
 
                 skill_name = skill.get("Name", "")
                 skill_desc = skill.get("Desc", "")
+                skill_param = skill.get("Param", [])
+                skill_desc = skill_desc.format(*skill_param)
 
                 skill_type = skill.get("Type", None)
                 if skill_type is None:
