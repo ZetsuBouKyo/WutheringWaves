@@ -656,8 +656,7 @@ class QTemplateTabOutputMethodTable(QDraggableTableWidget):
                 else:
                     sonata_count[sonata] += 1
             for sonata, count in sonata_count.items():
-                if count >= 5:
-                    sonatas.add(sonata)
+                sonatas.add(sonata)
 
         echo_sonata_buffs = []
         for sonata in sonatas:

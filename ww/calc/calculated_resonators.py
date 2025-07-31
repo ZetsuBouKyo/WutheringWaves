@@ -317,14 +317,14 @@ class CalculatedResonator:
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_AERO_DMG_BONUS.value
             ] += get_number("0.12")
-        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARES_HECATE):
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_HECATE):
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
             ] += get_number("0.12")
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_ECHO_DMG_BONUS.value
             ] += get_number("0.2")
-        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARES_KELPIE):
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_KELPIE):
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_GLACIO_DMG_BONUS.value
             ] += get_number("0.12")
@@ -344,6 +344,27 @@ class CalculatedResonator:
             ] += get_number("0.12")
             self._new_row[
                 CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_IMPERMANENCE_HERON):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HEAVY_ATTACK_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_NIGHTMARE_CROWNLESS):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
+            ] += get_number("0.12")
+        elif echo_name == _(ZhTwEnum.ECHO_LORELEI):
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_HAVOC_DMG_BONUS.value
+            ] += get_number("0.12")
+            self._new_row[
+                CalculatedResonatorTsvColumnEnum.ECHO_BASIC_ATTACK_DMG_BONUS.value
             ] += get_number("0.12")
 
     def _update_by_echo(self, echo_id: str, index: int):
