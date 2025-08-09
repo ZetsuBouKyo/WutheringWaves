@@ -31,23 +31,42 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
     name2no = {}
     new_home: Path = Path(new_home)
     for resonator_folder_path in home.glob("*"):
-        info_fpath = resonator_folder_path / "基本資料.json"
+        new_info = {}
+
+        info_fpath = resonator_folder_path / "info.json"
         with info_fpath.open(mode="r", encoding="utf-8") as fp:
             info = json.load(fp)
-            print(info["name"])
+
+        basic_info_fpath = resonator_folder_path / "基本資料.json"
+        with basic_info_fpath.open(mode="r", encoding="utf-8") as fp:
+            basic_info = json.load(fp)
+            print(basic_info["name"])
+
             new_stat_bonus = {}
-            for key, value in info["stat_bonus"].items():
+            for key, value in basic_info["stat_bonus"].items():
                 if key not in ["crit_rate", "crit_dmg", "hp_p", "atk_p", "def_p"]:
                     key = f"bonus_{key}"
                 new_stat_bonus[key] = value
-            info["stat_bonus"] = new_stat_bonus
 
-        no = info["no"]
-        info["element_zh_tw"] = info["element"]
-        info["element_en"] = elements[info["element"]]
-        del info["element"]
-        names.append(info["name"])
-        name2no[info["name"]] = no
+        id = str(info["id"])
+        new_info["id"] = id
+        new_info["no"] = id
+        new_info["rarity"] = info["rarity"]
+        new_info["rank"] = info["rarity"]
+        new_info["name"] = basic_info["name"]
+        new_info["nick_name"] = info["nick_name"]
+        new_info["desc"] = info["desc"]
+        new_info["tags"] = info["tags"]
+        new_info["is_permanent"] = basic_info["is_permanent"]
+
+        new_info["stat_bonus"] = new_stat_bonus
+
+        new_info["weapon_no"] = info["weapon_no"]
+        new_info["element_no"] = info["element_no"]
+        new_info["element_zh_tw"] = basic_info["element"]
+        new_info["element_en"] = elements[basic_info["element"]]
+        names.append(new_info["name"])
+        name2no[new_info["name"]] = id
 
         # attr
         attr_fpath = resonator_folder_path / "屬性.tsv"
@@ -63,7 +82,7 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
                     "def": data["防禦"],
                 }
                 attr_list.append(new_row)
-            info["attrs"] = attr_list
+            new_info["attrs"] = attr_list
 
         # skill
         skill_fpath = resonator_folder_path / "技能.tsv"
@@ -105,7 +124,7 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
                     "duration": data["持續時間"],
                 }
                 skill_list.append(new_row)
-            info["skills"] = skill_list
+            new_info["skills"] = skill_list
 
         # skill_info
         skill_info_fpath = resonator_folder_path / "技能文本.json"
@@ -116,35 +135,43 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
                 skill_info_dict["normal_attack"] = {
                     "name": skill_info["常態攻擊"]["名稱"],
                     "description": skill_info["常態攻擊"]["描述"],
+                    "skill_list": skill_info["常態攻擊"]["技能列表"],
                 }
                 skill_info_dict["resonance_skill"] = {
                     "name": skill_info["共鳴技能"]["名稱"],
                     "description": skill_info["共鳴技能"]["描述"],
+                    "skill_list": skill_info["共鳴技能"]["技能列表"],
                 }
                 skill_info_dict["forte_circuit"] = {
                     "name": skill_info["共鳴回路"]["名稱"],
                     "description": skill_info["共鳴回路"]["描述"],
+                    "skill_list": skill_info["共鳴回路"]["技能列表"],
                 }
                 skill_info_dict["resonance_liberation"] = {
                     "name": skill_info["共鳴解放"]["名稱"],
                     "description": skill_info["共鳴解放"]["描述"],
+                    "skill_list": skill_info["共鳴解放"]["技能列表"],
                 }
                 skill_info_dict["intro_skill"] = {
                     "name": skill_info["變奏技能"]["名稱"],
                     "description": skill_info["變奏技能"]["描述"],
+                    "skill_list": skill_info["變奏技能"]["技能列表"],
                 }
                 skill_info_dict["outro_skill"] = {
                     "name": skill_info["延奏技能"]["名稱"],
                     "description": skill_info["延奏技能"]["描述"],
+                    "skill_list": skill_info["延奏技能"]["技能列表"],
                 }
 
                 skill_info_dict["inherent_skill_1"] = {
                     "name": skill_info["固有技能1"]["名稱"],
                     "description": skill_info["固有技能1"]["描述"],
+                    "skill_list": skill_info["固有技能1"]["技能列表"],
                 }
                 skill_info_dict["inherent_skill_2"] = {
                     "name": skill_info["固有技能2"]["名稱"],
                     "description": skill_info["固有技能2"]["描述"],
+                    "skill_list": skill_info["固有技能2"]["技能列表"],
                 }
 
                 skill_info_dict["chain1"] = {
@@ -172,16 +199,22 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
                     "description": skill_info["共鳴鏈6"]["描述"],
                 }
 
-            info["skill_infos"] = skill_info_dict
+            new_info["skill_infos"] = skill_info_dict
+
+        new_info["total_exp"] = info["total_exp"]
+        new_info["stats"] = info["stats"]
+        new_info["special_cook"] = info["special_cook"]
+        new_info["chara_info"] = info["chara_info"]
+        new_info["stories"] = info["stories"]
+        new_info["voices"] = info["voices"]
+        new_info["goods"] = info["goods"]
 
         # save
-        new_info_fpath = new_home / no / "info.json"
+        new_info_fpath = new_home / id / "info.json"
         os.makedirs(new_info_fpath.parent, exist_ok=True)
 
-        print(info)
-
         with new_info_fpath.open(mode="w", encoding="utf-8") as fp:
-            json.dump(info, fp, ensure_ascii=False)
+            json.dump(new_info, fp, ensure_ascii=False, indent=4)
 
     names.sort(key=lambda name: name2no[name])
     new_name2no = {}
@@ -531,3 +564,28 @@ def buffs(new_home: str = "./build/migrate/buffs"):
     new_weapon_fpath = new_home_path / "weapon.json"
     with new_weapon_fpath.open(mode="w", encoding="utf-8") as fp:
         json.dump(weapon, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def hakush_resonators(
+    hakush_home: str = "./build/hakush/resonators",
+    data_home: str = "./data/v1/zh_tw/角色",
+):
+    hakush_home_path = Path(hakush_home)
+    data_home_path = Path(data_home)
+    for resonator_home_path in data_home_path.glob("*"):
+        print(resonator_home_path)
+        resonator_basic_info_fpath = resonator_home_path / "基本資料.json"
+        if not resonator_basic_info_fpath.exists():
+            continue
+        with resonator_basic_info_fpath.open(mode="r", encoding="utf-8") as fp:
+            resonator_basic_info_data = json.load(fp)
+            resonator_id = resonator_basic_info_data["no"]
+
+        hakush_resonator_info_fpath = hakush_home_path / resonator_id / "info.json"
+        data_resonator_info_fpath = resonator_home_path / "info.json"
+        shutil.copy(hakush_resonator_info_fpath, data_resonator_info_fpath)
+
+        hakush_skill_docs_fpath = hakush_home_path / resonator_id / "技能文本.json"
+        data_skill_docs_fpath = resonator_home_path / "技能文本.json"
+        shutil.copy(hakush_skill_docs_fpath, data_skill_docs_fpath)

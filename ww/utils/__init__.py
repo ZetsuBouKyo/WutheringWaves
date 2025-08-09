@@ -1,4 +1,5 @@
 import hashlib
+import re
 from pathlib import Path
 from typing import Union
 
@@ -29,3 +30,11 @@ def get_jinja2_template(path: str) -> Template:
 
 def get_md5(s: str, digit: int = 8):
     return hashlib.md5(s.encode("utf-8")).hexdigest()[:digit]
+
+
+def get_plain_text(text) -> str:
+    text = re.sub(
+        r"<\s*(color|size)=.*?>|</\s*(color|size)\s*>", "", text, flags=re.IGNORECASE
+    )
+    text = text.replace(" ", "")
+    return text

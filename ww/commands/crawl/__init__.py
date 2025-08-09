@@ -1,5 +1,6 @@
 import json
 import os
+from collections import defaultdict
 from pathlib import Path
 
 import requests
@@ -142,8 +143,73 @@ def get_echo(home: str):
 
 
 @app.command()
-def get_hakush_resonator(source: str, target: str):
-    hakush = HakushResonator(source, target)
+def get_hakush_resonator(source: str, target: str, cn2tw: str):
+    hakush = HakushResonator(source, target, cn2tw)
+    hakush.save_info()
     hakush.save_py_attr()
     hakush.save_py_tsv()
     hakush.save_py_skill_info()
+
+
+@app.command()
+def get_hakush_resonators(source_home: str, target: str, cn2tw: str):
+    source_home_path = Path(source_home)
+    for source in source_home_path.glob("*.json"):
+        hakush = HakushResonator(source, target, cn2tw)
+        hakush.save_info()
+        hakush.save_py_attr()
+        hakush.save_py_tsv()
+        hakush.save_py_skill_info()
+
+
+def get_text2key(fpath: str):
+    p = Path(fpath)
+
+    with p.open(mode="r", encoding="utf-8") as fp:
+        data = json.load(fp)
+
+    text2key = defaultdict(list)
+    for row in data:
+        key = row["Id"]
+        text = row["Content"]
+        text2key[text].append(key)
+    return text2key
+
+
+def get_key2text(fpath: str):
+    p = Path(fpath)
+
+    with p.open(mode="r", encoding="utf-8") as fp:
+        data = json.load(fp)
+
+    key2text = {}
+    for row in data:
+        key = row["Id"]
+        text = row["Content"]
+        key2text[key] = text
+    return key2text
+
+
+@app.command()
+def cn_text2key(cn: str = "./dev/lang/cn.json"):
+    cn_text2key = get_text2key(cn)
+
+    cn_text2key_fpath = "./dev/lang/cn_text2key.json"
+    cn_text2key_fpath = Path(cn_text2key_fpath)
+    with cn_text2key_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(cn_text2key, fp, indent=4, ensure_ascii=False)
+
+
+@app.command()
+def cn2tw(cn: str = "./dev/lang/cn.json", tw: str = "./dev/lang/tw.json"):
+    cn_text2key = get_text2key(cn)
+    tw_key2text = get_key2text(tw)
+
+    cn2tw = {}
+    for key, value in cn_text2key.items():
+        cn2tw[key] = tw_key2text[value[0]]
+
+    cn2tw_fpath = "./dev/lang/cn2tw.json"
+    cn2tw_fpath = Path(cn2tw_fpath)
+    with cn2tw_fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(cn2tw, fp, indent=4, ensure_ascii=False)

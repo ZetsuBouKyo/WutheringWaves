@@ -188,6 +188,7 @@ def merge_resonator_model(
         echo_resonance_liberation_dmg_bonus=to_percentage_str(
             calculated_resonator.echo_resonance_liberation_dmg_bonus
         ),
+        echo_echo_dmg_bonus=to_percentage_str(calculated_resonator.echo_echo_dmg_bonus),
         echo_healing_bonus=to_percentage_str(calculated_resonator.echo_healing_bonus),
         echo_glacio_dmg_bonus=to_percentage_str(
             calculated_resonator.echo_glacio_dmg_bonus

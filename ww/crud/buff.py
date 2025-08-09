@@ -15,6 +15,7 @@ from ww.tables.echo import (
 )
 from ww.tables.resonator import get_resonator_skill_information_fpath
 from ww.tables.weapon import get_weapon_information_fpath
+from ww.utils import get_plain_text
 
 
 def get_buff_targets() -> List[str]:
@@ -40,7 +41,7 @@ def get_resonator_buff_description(name: str, source: str) -> str:
 
     skill = data.get(source, {})
     name = skill.get(_(ZhTwEnum.NAME), "")
-    description = skill.get(_(ZhTwEnum.DESCRIPTION), "")
+    description = get_plain_text(skill.get(_(ZhTwEnum.DESCRIPTION), ""))
     return f"{name}\n\n{description}"
 
 

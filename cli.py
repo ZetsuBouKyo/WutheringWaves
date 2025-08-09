@@ -27,7 +27,7 @@ _help = """
 The CLI for ZetsuBou
 """
 
-app = Typer(rich_markup_mode="rich", help=_help)
+app = Typer(rich_markup_mode="rich", help=_help, pretty_exceptions_show_locals=False)
 
 app.add_typer(analyze)
 app.add_typer(crawl)
