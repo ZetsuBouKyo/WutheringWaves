@@ -1,8 +1,8 @@
 {
     "id": 1206,
     "rarity": 5,
-    "weapon_no": 2,
-    "element_no": 2,
+    "weapon_id": 2,
+    "element_id": 2,
     "tags": [
         {
             "name": "生存治療",
@@ -34,6 +34,122 @@
     "desc": "<a href=850096>黎那汐塔</a><a href=850108>愚人劇團</a>的劇團長布蘭特，為人浪漫灑脫，多變生動。是劇團的主心骨和領袖。\n舞台之上，他為故事更換面具，為戲劇調整表情。但在舞台之下，他待人只憑一顆真心。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_44_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_Bulante_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020011": {
+                "id": 43020011,
+                "name": "惰性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_1_UI.webp",
+                "value": 25
+            },
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020012": {
+                "id": 43020012,
+                "name": "活性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_2_UI.webp",
+                "value": 28
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 28
+            },
+            "43020013": {
+                "id": 43020013,
+                "name": "極化金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_3_UI.webp",
+                "value": 55
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 40
+            },
+            "41400194": {
+                "id": 41400194,
+                "name": "冥扉的歡覷",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_007_UI.webp",
+                "value": 26
+            },
+            "43020014": {
+                "id": 43020014,
+                "name": "異構金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_4_UI.webp",
+                "value": 67
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400184": {
+                "id": 41400184,
+                "name": "焚磷厄骨",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_008_UI.webp",
+                "value": 46
+            },
+            "42601140": {
+                "id": 42601140,
+                "name": "「金羊毛」",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_045_UI.webp",
+                "value": 60
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 12
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 12
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "未知",
         "sex": "男",

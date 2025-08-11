@@ -1,8 +1,8 @@
 {
     "id": 1409,
     "rarity": 5,
-    "weapon_no": 2,
-    "element_no": 4,
+    "weapon_id": 2,
+    "element_id": 4,
     "tags": [
         {
             "name": "主力輸出",
@@ -34,6 +34,122 @@
     "desc": "於<a href=850096>黎那汐塔</a>四處旅行的流浪騎士卡提希婭。她是曾經的聖女，是神之容器，是風潮之王。她曾被喚作芙露德莉斯，但現在，她只是一介自由自在的流浪騎士。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_40_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_katixiya_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020011": {
+                "id": 43020011,
+                "name": "惰性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_1_UI.webp",
+                "value": 25
+            },
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020012": {
+                "id": 43020012,
+                "name": "活性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_2_UI.webp",
+                "value": 28
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 28
+            },
+            "43020013": {
+                "id": 43020013,
+                "name": "極化金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_3_UI.webp",
+                "value": 55
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 40
+            },
+            "41400204": {
+                "id": 41400204,
+                "name": "鳶尾盛開之日",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_017_UI.webp",
+                "value": 26
+            },
+            "43020014": {
+                "id": 43020014,
+                "name": "異構金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_4_UI.webp",
+                "value": 67
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400214": {
+                "id": 41400214,
+                "name": "不朽榮耀",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_018_UI.webp",
+                "value": 46
+            },
+            "42601220": {
+                "id": 42601220,
+                "name": "扁竹花",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_bianzhuhua_UI.webp",
+                "value": 60
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 12
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 12
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "未知",
         "sex": "女",

@@ -7,7 +7,7 @@ import requests
 from typer import Typer
 
 from ww.commands.crawl.echo import EchoParser
-from ww.commands.crawl.hakush import HakushResonator
+from ww.commands.crawl.hakush import HakushEchoes, HakushResonator
 from ww.commands.crawl.id_parser import id_parser
 from ww.commands.crawl.resonator import ResonatorParser, ResonatorParser2
 from ww.commands.crawl.weapon import WeaponParser, save_weapons
@@ -143,8 +143,8 @@ def get_echo(home: str):
 
 
 @app.command()
-def get_hakush_resonator(source: str, target: str, cn2tw: str):
-    hakush = HakushResonator(source, target, cn2tw)
+def get_hakush_resonator(source: str, target: str, cn2tw: str, items: str):
+    hakush = HakushResonator(source, target, cn2tw, items)
     hakush.save_info()
     hakush.save_py_attr()
     hakush.save_py_tsv()
@@ -152,14 +152,36 @@ def get_hakush_resonator(source: str, target: str, cn2tw: str):
 
 
 @app.command()
-def get_hakush_resonators(source_home: str, target: str, cn2tw: str):
+def get_hakush_resonators(source_home: str, target: str, cn2tw: str, items: str):
     source_home_path = Path(source_home)
     for source in source_home_path.glob("*.json"):
-        hakush = HakushResonator(source, target, cn2tw)
+        hakush = HakushResonator(source, target, cn2tw, items)
         hakush.save_info()
         hakush.save_py_attr()
         hakush.save_py_tsv()
         hakush.save_py_skill_info()
+
+
+@app.command()
+def get_hakush_echoes(
+    source_home: str,
+    target: str,
+    cn2tw: str,
+    monsterinfo: str,
+    phantomitem: str,
+    phantomskill: str,
+    damage: str,
+):
+    hakush = HakushEchoes(
+        source_home,
+        target,
+        cn2tw,
+        monsterinfo,
+        phantomitem,
+        phantomskill,
+        damage,
+    )
+    hakush.save()
 
 
 def get_text2key(fpath: str):

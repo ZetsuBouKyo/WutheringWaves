@@ -1,8 +1,8 @@
 {
     "id": 1607,
     "rarity": 5,
-    "weapon_no": 5,
-    "element_no": 6,
+    "weapon_id": 5,
+    "element_id": 6,
     "tags": [
         {
             "name": "生存治療",
@@ -46,6 +46,122 @@
     "desc": "<a href=850094>翡薩烈</a>現任家主，「毒藥」坎特蕾拉。\n神秘、高貴、美艷、劇毒……她居於山巔的冠冕，而山崖間流淌著的，都是由她編織的幻夢。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_34_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_kanteleila_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020031": {
+                "id": 43020031,
+                "name": "慢板渦流",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_005_UI.webp",
+                "value": 25
+            },
+            "41100041": {
+                "id": 41100041,
+                "name": "低頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020032": {
+                "id": 43020032,
+                "name": "柔板渦流",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_006_UI.webp",
+                "value": 28
+            },
+            "41100042": {
+                "id": 41100042,
+                "name": "中頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_2_UI.webp",
+                "value": 28
+            },
+            "43020033": {
+                "id": 43020033,
+                "name": "行板渦流",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_007_UI.webp",
+                "value": 55
+            },
+            "41100043": {
+                "id": 41100043,
+                "name": "高頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_3_UI.webp",
+                "value": 40
+            },
+            "41400204": {
+                "id": 41400204,
+                "name": "鳶尾盛開之日",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_017_UI.webp",
+                "value": 26
+            },
+            "43020034": {
+                "id": 43020034,
+                "name": "急板渦流",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_008_UI.webp",
+                "value": 67
+            },
+            "41100044": {
+                "id": 41100044,
+                "name": "全頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100041": {
+                "id": 41100041,
+                "name": "低頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400164": {
+                "id": 41400164,
+                "name": "滌罪音螺",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_009_UI.webp",
+                "value": 46
+            },
+            "42601170": {
+                "id": 42601170,
+                "name": "海浮棘",
+                "icon": "/assets/UI/UIResources/Common/Image/IconTask/T_IconTask_Task_144_UI.webp",
+                "value": 60
+            },
+            "41100042": {
+                "id": 41100042,
+                "name": "中頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_2_UI.webp",
+                "value": 12
+            },
+            "41100043": {
+                "id": 41100043,
+                "name": "高頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_3_UI.webp",
+                "value": 12
+            },
+            "41100044": {
+                "id": 41100044,
+                "name": "全頻聚方聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_004_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "6月18日",
         "sex": "女",

@@ -1,8 +1,8 @@
 {
     "id": 1202,
     "rarity": 4,
-    "weapon_no": 3,
-    "element_no": 2,
+    "weapon_id": 3,
+    "element_id": 2,
     "tags": [
         {
             "name": "主力輸出",
@@ -16,6 +16,122 @@
     "desc": "<a href=850112>今巡尉</a>熾霞，她的熱情就像燃不盡的熾火，永遠活力滿滿地躍動在<a href=850091>今州</a>的大街小巷。\n她能將這份熱情化作源源不斷的子彈，從指尖傾瀉而出。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_2_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_maxiaofang_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020021": {
+                "id": 43020021,
+                "name": "含雜晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_01_UI.webp",
+                "value": 25
+            },
+            "41100011": {
+                "id": 41100011,
+                "name": "低頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020022": {
+                "id": 43020022,
+                "name": "粗萃晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_02_UI.webp",
+                "value": 28
+            },
+            "41100012": {
+                "id": 41100012,
+                "name": "中頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_2_UI.webp",
+                "value": 28
+            },
+            "43020023": {
+                "id": 43020023,
+                "name": "精餾晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_03_UI.webp",
+                "value": 55
+            },
+            "41100013": {
+                "id": 41100013,
+                "name": "高頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_3_UI.webp",
+                "value": 40
+            },
+            "41400094": {
+                "id": 41400094,
+                "name": "碑趺古鐘",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_003_1_UI.webp",
+                "value": 26
+            },
+            "43020024": {
+                "id": 43020024,
+                "name": "高純晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_04_UI.webp",
+                "value": 67
+            },
+            "41100014": {
+                "id": 41100014,
+                "name": "全頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100011": {
+                "id": 41100011,
+                "name": "低頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400044": {
+                "id": 41400044,
+                "name": "怒號聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_008_UI.webp",
+                "value": 46
+            },
+            "42300070": {
+                "id": 42300070,
+                "name": "妙弋花",
+                "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_29A_UI.webp",
+                "value": 60
+            },
+            "41100012": {
+                "id": 41100012,
+                "name": "中頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_2_UI.webp",
+                "value": 12
+            },
+            "41100013": {
+                "id": 41100013,
+                "name": "高頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_3_UI.webp",
+                "value": 12
+            },
+            "41100014": {
+                "id": 41100014,
+                "name": "全頻囈語聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_002_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "4月18日",
         "sex": "女",

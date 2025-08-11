@@ -1,8 +1,8 @@
 {
     "id": 1301,
     "rarity": 5,
-    "weapon_no": 1,
-    "element_no": 3,
+    "weapon_id": 1,
+    "element_id": 3,
     "tags": [
         {
             "name": "主力輸出",
@@ -22,6 +22,122 @@
     "desc": "跨國獨立傭兵組織「幽靈獵犬」的團長，心狠手辣，睚眥必報。擁有召喚特殊<a href=850081>殘象</a>進行協同攻擊的手段。\n想要僱傭他，必須有付出相應代價的覺悟。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_18_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_kakaluo_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020041": {
+                "id": 43020041,
+                "name": "海蝕嵌合體210",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_009_UI.webp",
+                "value": 25
+            },
+            "41100031": {
+                "id": 41100031,
+                "name": "簡陋鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020042": {
+                "id": 43020042,
+                "name": "海蝕嵌合體226",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_010_UI.webp",
+                "value": 28
+            },
+            "41100032": {
+                "id": 41100032,
+                "name": "基準鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_2_UI.webp",
+                "value": 28
+            },
+            "43020043": {
+                "id": 43020043,
+                "name": "海蝕嵌合體235",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_011_UI.webp",
+                "value": 55
+            },
+            "41100033": {
+                "id": 41100033,
+                "name": "改造鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_3_UI.webp",
+                "value": 40
+            },
+            "41400094": {
+                "id": 41400094,
+                "name": "碑趺古鐘",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_003_1_UI.webp",
+                "value": 26
+            },
+            "43020044": {
+                "id": 43020044,
+                "name": "海蝕嵌合體239",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_012_UI.webp",
+                "value": 67
+            },
+            "41100034": {
+                "id": 41100034,
+                "name": "特製鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100031": {
+                "id": 41100031,
+                "name": "簡陋鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400024": {
+                "id": 41400024,
+                "name": "霍閃聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_001_1_UI.webp",
+                "value": 46
+            },
+            "42300030": {
+                "id": 42300030,
+                "name": "鳶尾花",
+                "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_SM_Gat_33A_UI.webp",
+                "value": 60
+            },
+            "41100032": {
+                "id": 41100032,
+                "name": "基準鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_2_UI.webp",
+                "value": 12
+            },
+            "41100033": {
+                "id": 41100033,
+                "name": "改造鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_3_UI.webp",
+                "value": 12
+            },
+            "41100034": {
+                "id": 41100034,
+                "name": "特製鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "7月8日",
         "sex": "男",

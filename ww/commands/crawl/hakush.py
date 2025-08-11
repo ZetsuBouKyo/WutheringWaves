@@ -15,7 +15,7 @@ def get_icon_fpath(icon: str) -> str:
 
 
 class HakushResonator:
-    def __init__(self, source: str, target: str, cn2tw: str):
+    def __init__(self, source: str, target: str, cn2tw: str, items: str):
         source_path = Path(source)
         if not source_path.exists():
             print(f"{source} not found.")
@@ -34,6 +34,12 @@ class HakushResonator:
                 self.cn2tw_data = json.load(fp)
         else:
             self.cn2tw_data = {}
+
+        items_fpath = Path(items)
+        self.items_data = {}
+        if items_fpath.exists():
+            with items_fpath.open(mode="r", encoding="utf-8") as fp:
+                self.items_data = json.load(fp)
 
     def get_skill_list(self, skill):
         level = skill.get("Level", {})
@@ -57,13 +63,13 @@ class HakushResonator:
         if id is None:
             return
         rarity = self.data.get("Rarity", "")
-        weapon_no = self.data.get("Weapon", "")
-        element_no = self.data.get("Element", "")
+        weapon_id = self.data.get("Weapon", "")
+        element_id = self.data.get("Element", "")
         info = {
             "id": id,
             "rarity": rarity,
-            "weapon_no": weapon_no,
-            "element_no": element_no,
+            "weapon_id": weapon_id,
+            "element_id": element_id,
         }
 
         tags = []
@@ -83,6 +89,86 @@ class HakushResonator:
         info["desc"] = self.cn2tw(self.data.get("Desc", ""))
         info["icon"] = get_icon_fpath(self.data.get("Icon", ""))
         info["background"] = get_icon_fpath(self.data.get("Background", ""))
+
+        # Consume
+        total_skill_consume = {}
+        info_skill_trees = self.data.get("SkillTrees", {})
+        for skill_tree in info_skill_trees.values():
+            skill = skill_tree.get("Skill", {})
+            skill_type = skill.get("Type", None)
+            if skill_type is None:
+                skill_tree_consume = skill_tree.get("Consume", {})
+                for consume in skill_tree_consume:
+                    item_id = consume["Key"]
+                    item_value = consume["Value"]
+
+                    item_id_str = str(item_id)
+                    item_data = self.items_data.get(item_id_str, {})
+                    item_name = self.cn2tw(item_data.get("name", ""))
+                    item_icon = get_icon_fpath(item_data.get("icon", ""))
+
+                    if total_skill_consume.get(item_id_str, None) is None:
+                        total_skill_consume[item_id_str] = {
+                            "id": item_id,
+                            "name": item_name,
+                            "icon": item_icon,
+                            "value": item_value,
+                        }
+                    else:
+                        total_skill_consume[item_id_str]["value"] += item_value
+            skill_consume = skill.get("Consume", {})
+            for consumes in skill_consume.values():
+                for consume in consumes:
+                    item_id = consume["Key"]
+                    item_value = consume["Value"]
+
+                    item_id_str = str(item_id)
+                    item_data = self.items_data.get(item_id_str, {})
+                    item_name = self.cn2tw(item_data.get("name", ""))
+                    item_icon = get_icon_fpath(item_data.get("icon", ""))
+
+                    if total_skill_consume.get(item_id_str, None) is None:
+                        total_skill_consume[item_id_str] = {
+                            "id": item_id,
+                            "name": item_name,
+                            "icon": item_icon,
+                            "value": item_value,
+                        }
+                    else:
+                        total_skill_consume[item_id_str]["value"] += item_value
+        total_ascension_consume = {}
+        info_ascensions = self.data.get("Ascensions", {})
+        for ascensions in info_ascensions.values():
+            for ascension in ascensions:
+                item_id = ascension["Key"]
+                item_value = ascension["Value"]
+
+                item_id_str = str(item_id)
+                item_data = self.items_data.get(item_id_str, {})
+                item_name = self.cn2tw(item_data.get("name", ""))
+                item_icon = get_icon_fpath(item_data.get("icon", ""))
+
+                if total_ascension_consume.get(item_id_str, None) is None:
+                    total_ascension_consume[item_id_str] = {
+                        "id": item_id,
+                        "name": item_name,
+                        "icon": item_icon,
+                        "value": item_value,
+                    }
+                else:
+                    total_ascension_consume[item_id_str]["value"] += item_value
+        info["consume"] = {
+            "levels": {
+                "2": {
+                    "id": 2,
+                    "name": "貝幣",
+                    "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                    "value": 853000,
+                }
+            },
+            "skills": total_skill_consume,
+            "ascensions": total_ascension_consume,
+        }
 
         chara_info = self.data.get("CharaInfo", {})
         new_chara_info = {}
@@ -278,6 +364,7 @@ class HakushResonator:
                 else:
                     continue
                 skill_list = self.get_skill_list(skill)
+
                 info_1[skill_type] = {
                     "名稱": self.cn2tw(skill_name),
                     "描述": skill_desc,
@@ -506,3 +593,250 @@ class HakushResonator:
         fpath = fhome / "技能.tsv"
         with fpath.open(mode="w", encoding="utf-8") as fp:
             fp.write(output)
+
+
+class HakushEchoes:
+
+    def __init__(
+        self,
+        source_home: str,
+        target: str,
+        cn2tw: str,
+        monsterinfo: str,
+        phantomitem: str,
+        phantomskill: str,
+        damage: str,
+    ):
+        self.source_home_path = Path(source_home)
+        if not self.source_home_path.exists():
+            print(f"{self.source_home_path} not found.")
+            return
+
+        self.target_path = Path(target)
+        if self.target_path.exists() and not self.target_path.is_dir():
+            return
+
+        cn2tw_fpath = Path(cn2tw)
+        if cn2tw_fpath.exists():
+            with cn2tw_fpath.open(mode="r", encoding="utf-8") as fp:
+                self.cn2tw_data = json.load(fp)
+        else:
+            self.cn2tw_data = {}
+
+        monsterinfo_fpath = Path(monsterinfo)
+        self.monsterinfo_data = {}
+        if monsterinfo_fpath.exists():
+            with monsterinfo_fpath.open(mode="r", encoding="utf-8") as fp:
+                monsterinfo_data = json.load(fp)
+            for m in monsterinfo_data:
+                if self.monsterinfo_data.get(m["Id"], None) is not None:
+                    print(m)
+                self.monsterinfo_data[m["Id"]] = m
+
+        phantomitem_fpath = Path(phantomitem)
+        self.phantomitem_data = {}
+        if phantomitem_fpath.exists():
+            with phantomitem_fpath.open(mode="r", encoding="utf-8") as fp:
+                phantomitem_data = json.load(fp)
+            for item in phantomitem_data:
+                monster_id = item["MonsterId"]
+                skill_id = self.phantomitem_data.get(monster_id, None)
+                new_skill_id = item["SkillId"]
+                if skill_id is not None and skill_id != new_skill_id:
+                    print("phantomitem", monster_id)
+                self.phantomitem_data[monster_id] = new_skill_id
+
+        phantomskill_fpath = Path(phantomskill)
+        self.phantomskill_data = {}
+        if phantomskill_fpath.exists():
+            with phantomskill_fpath.open(mode="r", encoding="utf-8") as fp:
+                phantomskill_data = json.load(fp)
+            for skill in phantomskill_data:
+                skill_id = skill["PhantomSkillId"]
+                damage_ids = skill["SettleIds"]
+                if self.phantomskill_data.get(skill_id, None) is not None:
+                    print("phantomskill", skill_id)
+                self.phantomskill_data[skill_id] = damage_ids
+
+        damage_fpath = Path(damage)
+        self.damage_data = {}
+        if damage_fpath.exists():
+            with damage_fpath.open(mode="r", encoding="utf-8") as fp:
+                damage_data = json.load(fp)
+            for damage in damage_data:
+                damage_id = damage["Id"]
+                self.damage_data[damage_id] = damage
+
+    def get_monster_element_ids(self, id: int):
+        info = self.monsterinfo_data.get(id, None)
+        if info is None:
+            return []
+        return info["ElementIdArray"]
+
+    def get_skill_id(self, monster_id: int):
+        return self.phantomitem_data.get(monster_id, None)
+
+    def get_damage_ids(self, skill_id: int):
+        return self.phantomskill_data.get(skill_id, [])
+
+    def get_damage(self, damage_id: int):
+        damage = self.damage_data.get(damage_id, None)
+        if damage is None:
+            return {}
+        return {
+            "id": damage["Id"],
+            "calculate_type_id": damage[
+                "CalculateType"
+            ],  # 0: Damage / 1: Healing / 2: ???
+            "element_id": damage["Element"],  # 冷凝
+            "type_id": damage["Type"],  # 普攻
+            "smash_type_id": damage["SmashType"],
+            "sub_type_ids": damage["SubType"],
+            "cure_base_value": damage["CureBaseValue"],
+            "related_property_id": damage["RelatedProperty"],  # 2: 生命 / 10: 防禦
+            "rate_lv": damage["RateLv"],
+            "energy": damage["Energy"],
+            "element_power_type_id": damage["ElementPowerType"],
+            "element_power": damage["ElementPower"],
+            "hardness_lv": damage["HardnessLv"],
+            "tough_lv": damage["ToughLv"],
+            "formula_type_id": damage["FormulaType"],  # 1: xxx%+xx
+            "immune_type_id": damage["ImmuneType"],
+        }
+
+    def cn2tw(self, cn: str) -> str:
+        if not cn:
+            return cn
+        return self.cn2tw_data.get(cn, cn)
+
+    def in_cn2tw(self, cn: str) -> bool:
+        found = self.cn2tw_data.get(cn, None)
+        return found is not None
+
+    def save(self):
+        sonata_table = []
+        sonatas = {}
+        rows = []
+        for echo_fpath in self.source_home_path.glob("*.json"):
+            with echo_fpath.open(mode="r", encoding="utf-8") as fp:
+                echo_data = json.load(fp)
+
+            id = echo_data["Id"]
+            try:
+                monster_info = echo_data["MonsterInfo"]
+                code = echo_data["Code"]
+                name = self.cn2tw(echo_data["Name"])
+                type = self.cn2tw(echo_data["Type"])
+                intensity = self.cn2tw(echo_data["Intensity"])
+                intensity_code = echo_data["IntensityCode"]
+                place = self.cn2tw(echo_data["Place"])
+                icon = get_icon_fpath(echo_data["Icon"])
+                element_ids = self.get_monster_element_ids(monster_info)
+                cost = ""
+                if intensity == "輕波級":
+                    cost = "1"
+                elif intensity == "巨浪級":
+                    cost = "3"
+                elif intensity == "怒濤級":
+                    cost = "4"
+                elif intensity == "海嘯級":
+                    cost = "4"
+
+                groups = echo_data["Group"].values()
+                echo_sonatas = []
+                echo_groups = []
+                for group in groups:
+                    group_id = group["Id"]
+
+                    if not self.in_cn2tw(group["Name"]):
+                        break
+                    group_name = self.cn2tw(group["Name"])
+                    if sonatas.get(group_name, None) is None:
+                        sonatas[group_name] = {}
+                        sonata_table.append((group_id, group_name))
+
+                    group_icon = get_icon_fpath(group["Icon"])
+                    group_color = group["Color"]
+                    group_new_set = {}
+                    group_set = group["Set"]
+
+                    for num, s in group_set.items():
+                        group_desc = self.cn2tw(s["Desc"])
+                        group_param = s["Param"]
+                        group_new_set[num] = {"desc": group_desc, "param": group_param}
+
+                        if sonatas[group_name].get(num, None) is None:
+                            sonatas[group_name][num] = group_desc
+
+                    echo_sonatas.append(group_name)
+                    new_group = {
+                        "id": group_id,
+                        "name": group_name,
+                        "icon": group_icon,
+                        "color": group_color,
+                        "set": group_new_set,
+                    }
+                    echo_groups.append(new_group)
+                else:
+                    format_skill_desc = self.cn2tw(echo_data["Skill"]["Desc"])
+                    skill_simple_desc = self.cn2tw(echo_data["Skill"]["SimpleDesc"])
+                    skill_params = echo_data["Skill"]["Param"]
+                    skill_param = skill_params[0]
+                    for i in range(1, len(skill_params)):
+                        next_skill_param = skill_params[i]
+                        for j in range(len(skill_param)):
+                            if skill_param[j] != next_skill_param[j]:
+                                skill_param[j] += f"/{next_skill_param[j]}"
+                    skill_desc = format_skill_desc.format(*skill_param)
+
+                    # Skill ID
+                    skill_id = self.get_skill_id(id)
+                    echo_skill_damages = []
+                    damage_ids = self.get_damage_ids(skill_id)
+                    for damage_id in damage_ids:
+                        echo_skill_damage = self.get_damage(damage_id)
+                        echo_skill_damages.append(echo_skill_damage)
+
+                    row = {
+                        "id": id,
+                        "monster_info": monster_info,
+                        "skill_id": skill_id,
+                        "damage_ids": damage_ids,
+                        "damage": echo_skill_damages,
+                        "code": code,
+                        "name": name,
+                        "type": type,
+                        "element_ids": element_ids,
+                        "cost": cost,
+                        "intensity": intensity,
+                        "intensity_code": intensity_code,
+                        "place": place,
+                        "icon": icon,
+                        "sonatas": echo_sonatas,
+                        "skill": {
+                            "description": skill_desc,
+                            "desc": format_skill_desc,
+                            "simple_desc": skill_simple_desc,
+                            "param": skill_params,
+                        },
+                        "groups": echo_groups,
+                    }
+                    rows.append(row)
+            except:
+                print(id)
+                return
+
+        sonata_table.sort(key=lambda sonata: sonata[0])
+        new_sonatas = {}
+        for _, sonata_name in sonata_table:
+            new_sonatas[sonata_name] = sonatas[sonata_name]
+
+        os.makedirs(self.target_path, exist_ok=True)
+
+        rows_fpath = self.target_path / "infos.json"
+        with rows_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(rows, fp, ensure_ascii=False, indent=4)
+
+        sonatas_fpath = self.target_path / "sonatas.json"
+        with sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_sonatas, fp, ensure_ascii=False, indent=4)

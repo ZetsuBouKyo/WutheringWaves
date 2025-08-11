@@ -1,8 +1,8 @@
 {
     "id": 1407,
     "rarity": 5,
-    "weapon_no": 3,
-    "element_no": 4,
+    "weapon_id": 3,
+    "element_id": 4,
     "tags": [
         {
             "name": "快速協奏",
@@ -28,6 +28,122 @@
     "desc": "<a href=850096>黎那汐塔</a>的吟遊詩人——夏空。她為神明而歌，也為平凡的人類而歌。\n她於旅途中記錄著故事，傳唱著故事，與故事的主人，故事的觀眾一同歡笑、感動、流淚。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_37_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_xiakong_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020021": {
+                "id": 43020021,
+                "name": "含雜晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_01_UI.webp",
+                "value": 25
+            },
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020022": {
+                "id": 43020022,
+                "name": "粗萃晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_02_UI.webp",
+                "value": 28
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 28
+            },
+            "43020023": {
+                "id": 43020023,
+                "name": "精餾晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_03_UI.webp",
+                "value": 55
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 40
+            },
+            "41400204": {
+                "id": 41400204,
+                "name": "鳶尾盛開之日",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_017_UI.webp",
+                "value": 26
+            },
+            "43020024": {
+                "id": 43020024,
+                "name": "高純晶化燃素",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_04_UI.webp",
+                "value": 67
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400184": {
+                "id": 41400184,
+                "name": "焚磷厄骨",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_008_UI.webp",
+                "value": 46
+            },
+            "42601140": {
+                "id": 42601140,
+                "name": "「金羊毛」",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_045_UI.webp",
+                "value": 60
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 12
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 12
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "未知",
         "sex": "女",

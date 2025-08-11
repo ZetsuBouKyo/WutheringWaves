@@ -1,8 +1,8 @@
 {
     "id": 1304,
     "rarity": 5,
-    "weapon_no": 1,
-    "element_no": 5,
+    "weapon_id": 1,
+    "element_id": 5,
     "tags": [
         {
             "name": "主力輸出",
@@ -22,6 +22,122 @@
     "desc": "<a href=850118>今令尹</a>今汐，萬丈天光被她化作點點輝芒，溫柔地照亮人們的願望。\n命運向她指明神靈的方向，但她腳下的道路，仍然通向人類的未來。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_24_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_jinxi_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020041": {
+                "id": 43020041,
+                "name": "海蝕嵌合體210",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_009_UI.webp",
+                "value": 25
+            },
+            "41100021": {
+                "id": 41100021,
+                "name": "低頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020042": {
+                "id": 43020042,
+                "name": "海蝕嵌合體226",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_010_UI.webp",
+                "value": 28
+            },
+            "41100022": {
+                "id": 41100022,
+                "name": "中頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_2_UI.webp",
+                "value": 28
+            },
+            "43020043": {
+                "id": 43020043,
+                "name": "海蝕嵌合體235",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_011_UI.webp",
+                "value": 55
+            },
+            "41100023": {
+                "id": 41100023,
+                "name": "高頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_3_UI.webp",
+                "value": 40
+            },
+            "41400144": {
+                "id": 41400144,
+                "name": "歲時之角刃",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_005_UI.webp",
+                "value": 26
+            },
+            "43020044": {
+                "id": 43020044,
+                "name": "海蝕嵌合體239",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_012_UI.webp",
+                "value": 67
+            },
+            "41100024": {
+                "id": 41100024,
+                "name": "全頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100021": {
+                "id": 41100021,
+                "name": "低頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400034": {
+                "id": 41400034,
+                "name": "哀歌聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_006_UI.webp",
+                "value": 46
+            },
+            "42310210": {
+                "id": 42310210,
+                "name": "龍吐珠",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_030_UI.webp",
+                "value": 60
+            },
+            "41100022": {
+                "id": 41100022,
+                "name": "中頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_2_UI.webp",
+                "value": 12
+            },
+            "41100023": {
+                "id": 41100023,
+                "name": "高頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_3_UI.webp",
+                "value": 12
+            },
+            "41100024": {
+                "id": 41100024,
+                "name": "全頻嘯叫聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_E_002_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "3月6日",
         "sex": "女",

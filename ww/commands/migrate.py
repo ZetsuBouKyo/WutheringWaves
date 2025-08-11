@@ -56,13 +56,15 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
         new_info["name"] = basic_info["name"]
         new_info["nick_name"] = info["nick_name"]
         new_info["desc"] = info["desc"]
+        new_info["icon"] = info["icon"]
+        new_info["background"] = info["background"]
         new_info["tags"] = info["tags"]
         new_info["is_permanent"] = basic_info["is_permanent"]
 
         new_info["stat_bonus"] = new_stat_bonus
 
-        new_info["weapon_no"] = info["weapon_no"]
-        new_info["element_no"] = info["element_no"]
+        new_info["weapon_id"] = info["weapon_id"]
+        new_info["element_id"] = info["element_id"]
         new_info["element_zh_tw"] = basic_info["element"]
         new_info["element_en"] = elements[basic_info["element"]]
         names.append(new_info["name"])
@@ -202,6 +204,7 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
             new_info["skill_infos"] = skill_info_dict
 
         new_info["total_exp"] = info["total_exp"]
+        new_info["consume"] = info["consume"]
         new_info["stats"] = info["stats"]
         new_info["special_cook"] = info["special_cook"]
         new_info["chara_info"] = info["chara_info"]
@@ -589,3 +592,14 @@ def hakush_resonators(
         hakush_skill_docs_fpath = hakush_home_path / resonator_id / "技能文本.json"
         data_skill_docs_fpath = resonator_home_path / "技能文本.json"
         shutil.copy(hakush_skill_docs_fpath, data_skill_docs_fpath)
+
+
+@app.command()
+def hakush_echoes(
+    hakush_home: str = "./build/hakush/echo",
+    data_home: str = "./dev/wiki/hakush/echo",
+):
+    data_home_path = Path(data_home)
+    for echo_fpath in data_home_path.glob("*"):
+        with echo_fpath.open(mode="r", encoding="utf-8") as fp:
+            echo_data = json.load(fp)

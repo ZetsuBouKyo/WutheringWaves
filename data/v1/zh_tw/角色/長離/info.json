@@ -1,8 +1,8 @@
 {
     "id": 1205,
     "rarity": 5,
-    "weapon_no": 2,
-    "element_no": 2,
+    "weapon_id": 2,
+    "element_id": 2,
     "tags": [
         {
             "name": "主力輸出",
@@ -34,6 +34,122 @@
     "desc": "<a href=850091>今州</a><a href=850084>令尹</a>參事，前明庭中政省長史。\n終生浴火，總有一日會將己身燃燒殆盡的策士。為達成心中夙願，她將自己置於棋盤之上，盡可能地算得更遠。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_26_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_changli_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020011": {
+                "id": 43020011,
+                "name": "惰性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_1_UI.webp",
+                "value": 25
+            },
+            "41100031": {
+                "id": 41100031,
+                "name": "簡陋鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020012": {
+                "id": 43020012,
+                "name": "活性金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_2_UI.webp",
+                "value": 28
+            },
+            "41100032": {
+                "id": 41100032,
+                "name": "基準鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_2_UI.webp",
+                "value": 28
+            },
+            "43020013": {
+                "id": 43020013,
+                "name": "極化金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_3_UI.webp",
+                "value": 55
+            },
+            "41100033": {
+                "id": 41100033,
+                "name": "改造鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_3_UI.webp",
+                "value": 40
+            },
+            "41400144": {
+                "id": 41400144,
+                "name": "歲時之角刃",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_005_UI.webp",
+                "value": 26
+            },
+            "43020014": {
+                "id": 43020014,
+                "name": "異構金屬液滴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_Setpup_004_4_UI.webp",
+                "value": 67
+            },
+            "41100034": {
+                "id": 41100034,
+                "name": "特製鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100031": {
+                "id": 41100031,
+                "name": "簡陋鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400044": {
+                "id": 41400044,
+                "name": "怒號聲核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_L_008_UI.webp",
+                "value": 46
+            },
+            "42310200": {
+                "id": 42310200,
+                "name": "雀翎果",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_029_UI.webp",
+                "value": 60
+            },
+            "41100032": {
+                "id": 41100032,
+                "name": "基準鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_2_UI.webp",
+                "value": 12
+            },
+            "41100033": {
+                "id": 41100033,
+                "name": "改造鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_3_UI.webp",
+                "value": 12
+            },
+            "41100034": {
+                "id": 41100034,
+                "name": "特製鐐環",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_003_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "6月6日",
         "sex": "女",

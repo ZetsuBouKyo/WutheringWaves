@@ -1,8 +1,8 @@
 {
     "id": 1606,
     "rarity": 5,
-    "weapon_no": 4,
-    "element_no": 6,
+    "weapon_id": 4,
+    "element_id": 6,
     "tags": [
         {
             "name": "快速協奏",
@@ -40,6 +40,122 @@
     "desc": "<a href=850108>愚人劇團</a>副手、萬能道具師兼即興喜劇演員洛可可將劇團打理得井井有條。\n她隨身攜帶的珍奇箱似乎裝有整個世界，又或者，是她用箱子構建了一個世界。",
     "icon": "/assets/UI/UIResources/Common/Image/IconRoleHead256/T_IconRoleHead256_33_UI.webp",
     "background": "/assets/UI/UIResources/Common/Image/IconRolePile/T_IconRole_Pile_luokeke_UI.webp",
+    "consume": {
+        "levels": {
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 853000
+            }
+        },
+        "skills": {
+            "43020051": {
+                "id": 43020051,
+                "name": "聲律種核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_013_UI.webp",
+                "value": 25
+            },
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 25
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 2030000
+            },
+            "43020052": {
+                "id": 43020052,
+                "name": "聲律萌芽",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_014_UI.webp",
+                "value": 28
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 28
+            },
+            "43020053": {
+                "id": 43020053,
+                "name": "聲律新葉",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_015_UI.webp",
+                "value": 55
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 40
+            },
+            "41400194": {
+                "id": 41400194,
+                "name": "冥扉的歡覷",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_007_UI.webp",
+                "value": 26
+            },
+            "43020054": {
+                "id": 43020054,
+                "name": "聲律花蕾",
+                "icon": "/assets/UI/UIResources/Common/Image/IconWup/T_IconWup_016_UI.webp",
+                "value": 67
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 57
+            }
+        },
+        "ascensions": {
+            "41100051": {
+                "id": 41100051,
+                "name": "低頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_1_UI.webp",
+                "value": 4
+            },
+            "2": {
+                "id": 2,
+                "name": "貝幣",
+                "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
+                "value": 170000
+            },
+            "41400164": {
+                "id": 41400164,
+                "name": "滌罪音螺",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_009_UI.webp",
+                "value": 46
+            },
+            "42601160": {
+                "id": 42601160,
+                "name": "禮花蒴",
+                "icon": "/assets/UI/UIResources/Common/Image/IconC/T_IconC_043_UI.webp",
+                "value": 60
+            },
+            "41100052": {
+                "id": 41100052,
+                "name": "中頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_2_UI.webp",
+                "value": 12
+            },
+            "41100053": {
+                "id": 41100053,
+                "name": "高頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_3_UI.webp",
+                "value": 12
+            },
+            "41100054": {
+                "id": 41100054,
+                "name": "全頻潮蝕帆核",
+                "icon": "/assets/UI/UIResources/Common/Image/IconMout/T_IconMout_O_005_4_UI.webp",
+                "value": 4
+            }
+        }
+    },
     "chara_info": {
         "birth": "1月31日",
         "sex": "女",
