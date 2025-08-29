@@ -1,0 +1,8 @@
+{
+    "no": "1306",
+    "name": "奧古斯塔",
+    "element": "導電",
+    "rank": 5,
+    "is_permanent": false,
+    "stat_bonus": { "atk_p": "0.12", "crit_rate": "0.08" }
+}

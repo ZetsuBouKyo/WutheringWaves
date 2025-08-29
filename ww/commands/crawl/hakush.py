@@ -14,7 +14,39 @@ def get_icon_fpath(icon: str) -> str:
     return icon
 
 
-class HakushResonator:
+def get_weapon_zh_tw_by_type(t: int) -> str:
+    weapon_zh_tw = ""
+    if t == 1:
+        weapon_zh_tw = "長刃"
+    elif t == 2:
+        weapon_zh_tw = "迅刀"
+    elif t == 3:
+        weapon_zh_tw = "佩槍"
+    elif t == 4:
+        weapon_zh_tw = "臂鎧"
+    elif t == 5:
+        weapon_zh_tw = "音感儀"
+    return weapon_zh_tw
+
+
+class Cn2Tw:
+    def cn2tw(self, cn: str) -> str:
+        if not cn:
+            return cn
+        if not hasattr(self, "cn2tw_data"):
+            return cn
+
+        return self.cn2tw_data.get(cn, cn)
+
+    def in_cn2tw(self, cn: str) -> bool:
+        if not hasattr(self, "cn2tw_data"):
+            return False
+
+        found = self.cn2tw_data.get(cn, None)
+        return found is not None
+
+
+class HakushResonator(Cn2Tw):
     def __init__(self, source: str, target: str, cn2tw: str, items: str):
         source_path = Path(source)
         if not source_path.exists():
@@ -53,28 +85,13 @@ class HakushResonator:
             skill_list.append(data)
         return skill_list
 
-    def cn2tw(self, cn: str) -> str:
-        if not cn:
-            return cn
-        return self.cn2tw_data.get(cn, cn)
-
     def save_info(self):
         id = self.data.get("Id", None)
         if id is None:
             return
         rarity = self.data.get("Rarity", "")
         weapon_id = self.data.get("Weapon", "")
-        weapon_zh_tw = ""
-        if weapon_id == 1:
-            weapon_zh_tw = "長刃"
-        elif weapon_id == 2:
-            weapon_zh_tw = "迅刀"
-        elif weapon_id == 3:
-            weapon_zh_tw = "佩槍"
-        elif weapon_id == 4:
-            weapon_zh_tw = "臂鎧"
-        elif weapon_id == 5:
-            weapon_zh_tw = "音感儀"
+        weapon_zh_tw = get_weapon_zh_tw_by_type(weapon_id)
 
         element_id = self.data.get("Element", "")
         info = {
@@ -634,7 +651,7 @@ class HakushResonator:
             fp.write(output)
 
 
-class HakushEchoes:
+class HakushEchoes(Cn2Tw):
 
     def __init__(
         self,
@@ -865,15 +882,6 @@ class HakushEchoes:
             # "immune_type_id": damage["ImmuneType"],
         }
 
-    def cn2tw(self, cn: str) -> str:
-        if not cn:
-            return cn
-        return self.cn2tw_data.get(cn, cn)
-
-    def in_cn2tw(self, cn: str) -> bool:
-        found = self.cn2tw_data.get(cn, None)
-        return found is not None
-
     def save(self):
         sonata_table = []
         sonatas = {}
@@ -962,6 +970,7 @@ class HakushEchoes:
                         for j in range(len(skill_param)):
                             if skill_param[j] != next_skill_param[j]:
                                 skill_param[j] += f"/{next_skill_param[j]}"
+                    print(format_skill_desc, skill_param)
                     skill_desc = format_skill_desc.format(*skill_param)
 
                     # Skill ID
@@ -1019,8 +1028,9 @@ class HakushEchoes:
                         "groups": echo_groups,
                     }
                     rows.append(row)
-            except:
+            except Exception as e:
                 print(id)
+                raise Exception
                 return
 
         sonata_table.sort(key=lambda sonata: sonata[0])
@@ -1045,3 +1055,331 @@ class HakushEchoes:
         new_sonatas_fpath = self.target_path / "sonatas.json"
         with new_sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_sonatas_2, fp, ensure_ascii=False, indent=4)
+
+
+class HakushWeapons(Cn2Tw):
+
+    def __init__(
+        self,
+        source_home: str,
+        target: str,
+        target_py: str,
+        cn2tw: str,
+    ):
+        self.source_home_path = Path(source_home)
+        if not self.source_home_path.exists():
+            print(f"{self.source_home_path} not found.")
+            return
+
+        self.target_path = Path(target)
+        if self.target_path.is_dir():
+            return
+
+        self.target_py_path = Path(target_py)
+        if self.target_py_path.exists() and not self.target_py_path.is_dir():
+            return
+
+        cn2tw_fpath = Path(cn2tw)
+        if cn2tw_fpath.exists():
+            with cn2tw_fpath.open(mode="r", encoding="utf-8") as fp:
+                self.cn2tw_data = json.load(fp)
+        else:
+            self.cn2tw_data = {}
+
+    def save(self):
+        passive_buffs_set = set()
+        weapon_stat_name_set = set()
+
+        new_weapons_data = []
+        for weapon_fpath in self.source_home_path.glob("*.json"):
+            print(weapon_fpath)
+            with weapon_fpath.open(mode="r", encoding="utf-8") as fp:
+                weapon_data = json.load(fp)
+            weapon_skin = weapon_data.get("Skin", None)
+            if weapon_skin:
+                continue
+
+            weapon_id = weapon_data["Id"]
+            weapon_no = str(weapon_id)  # deprecated
+            weapon_name = self.cn2tw(weapon_data["Name"])
+
+            if not weapon_name:
+                continue
+
+            weapon_rarity = weapon_data["Rarity"]
+            weapon_star = str(weapon_rarity)  # deprecated
+            weapon_type = weapon_data["Type"]
+            weapon_type_zh_tw = get_weapon_zh_tw_by_type(weapon_type)
+            weapon_effect_name = self.cn2tw(weapon_data["EffectName"])
+            weapon_effect = self.cn2tw(weapon_data["Effect"])
+
+            # Param
+            params = weapon_data["Param"]
+            param_str_list = []
+            for param in params:
+                param_str = param[0]
+                last_param_str = param[0]
+                for i in range(1, len(param)):
+                    current_param_str = param[i]
+                    if current_param_str != last_param_str:
+                        param_str += f"/{current_param_str}"
+                    last_param_str = current_param_str
+
+                if param_str:
+                    param_str_list.append(param_str)
+
+            weapon_description = weapon_effect.format(*param_str_list)
+
+            # Passive buffs
+            passive_buffs = []
+            passive_buffs_tsv_columns = ["等級", ""]
+            passive_buffs_tsv_rows = [passive_buffs_tsv_columns]
+            if weapon_rarity == 5:
+                passive_buff_type = weapon_effect.split("{0}。")[0]
+                passive_buffs_set.add(passive_buff_type)
+                passive_buffs_tsv_columns[1] = passive_buff_type
+                if passive_buff_type == "攻擊提升":
+                    for p in params[0]:
+                        passive_buffs.append({"atk_p": p})
+                elif passive_buff_type == "全屬性傷害加成提升":
+                    for p in params[0]:
+                        passive_buffs.append(
+                            {
+                                "bonus_glacio": p,
+                                "bonus_fusion": p,
+                                "bonus_electro": p,
+                                "bonus_aero": p,
+                                "bonus_spectro": p,
+                                "bonus_havoc": p,
+                            }
+                        )
+                elif passive_buff_type == "共鳴效率提升":
+                    for p in params[0]:
+                        passive_buffs.append({"energy_regen": p})
+                elif passive_buff_type == "暴擊提升":
+                    for p in params[0]:
+                        passive_buffs.append({"crit_rate": p})
+                elif passive_buff_type == "生命提升":
+                    for p in params[0]:
+                        passive_buffs.append({"hp_p": p})
+
+                for i, p in enumerate(params[0]):
+                    passive_buffs_tsv_rows.append([str(i + 1), p])
+
+            # Levels
+            weapon_levels_tsv_columns = ["等級", "攻擊", ""]
+            weapon_levels_tsv_rows = [weapon_levels_tsv_columns]
+            weapon_stats = weapon_data["Stats"]
+            weapon_attrs = []
+            for levels in weapon_stats.values():
+                is_first = True
+                hp = -float("inf")
+                for level, weapon_stat_list in levels.items():
+                    level_int = int(level)
+                    level_str = level
+                    if level_int % 10 == 0 and is_first:
+                        level_str += "+"
+                    weapon_attr = {"lv": level_str}
+                    weapon_levels_tsv_row = [level_str, "", ""]
+
+                    for weapon_stat in weapon_stat_list:
+                        weapon_stat_name = self.cn2tw(weapon_stat["Name"])
+                        weapon_stat_value = weapon_stat["Value"]
+                        weapon_stat_is_ratio = weapon_stat["IsRatio"]
+                        weapon_stat_is_percent = weapon_stat["IsPercent"]
+                        weapon_stat_name_set.add(weapon_stat_name)
+                        if weapon_stat_name == "攻擊":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "攻擊百分比"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                weapon_attr_value = int(weapon_stat_value)
+                                weapon_attr_value_str = str(weapon_attr_value)
+                                weapon_attr["atk"] = weapon_attr_value_str
+
+                                weapon_levels_tsv_row[1] = weapon_attr_value_str
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) * get_number(1000)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["atk_p"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                raise ValueError
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+                        elif weapon_stat_name == "生命":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "生命百分比"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) * get_number(1000)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["hp_p"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                raise ValueError
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+                        elif weapon_stat_name == "防禦":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "防禦百分比"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) * get_number(1000)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["def_p"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                raise ValueError
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+                        elif weapon_stat_name == "暴擊":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "暴擊"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) / get_number(10)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["crit_rate"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+                        elif weapon_stat_name == "暴擊傷害":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "暴擊傷害"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) / get_number(10)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["crit_dmg"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+                        elif weapon_stat_name == "共鳴效率":
+                            # For python project
+                            if level == "1":
+                                weapon_levels_tsv_columns[2] = "共鳴效率"
+
+                            if not weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif weapon_stat_is_ratio and not weapon_stat_is_percent:
+                                raise ValueError
+                            elif not weapon_stat_is_ratio and weapon_stat_is_percent:
+                                weapon_attr_value = int(
+                                    get_number(weapon_stat_value) / get_number(10)
+                                ) / get_number(1000)
+                                weapon_attr_value = f"{weapon_attr_value:.1%}"
+                                weapon_attr["energy_regen"] = weapon_attr_value
+
+                                weapon_levels_tsv_row[2] = weapon_attr_value
+                            elif (
+                                not weapon_stat_is_ratio and not weapon_stat_is_percent
+                            ):
+                                raise ValueError
+
+                    weapon_levels_tsv_rows.append(weapon_levels_tsv_row)
+
+                    if level == "1" or level_int % 10 == 0:
+                        weapon_attrs.append(weapon_attr)
+
+                    is_first = False
+
+            new_weapon_data = {
+                "id": weapon_id,
+                "no": weapon_no,
+                "name": weapon_name,
+                "rarity": weapon_rarity,
+                "star": weapon_star,
+                "type_zh_tw": weapon_type_zh_tw,
+                "passive": {
+                    "name": weapon_effect_name,
+                    "desc": weapon_effect,
+                    "description": weapon_description,
+                    "passive_buffs": passive_buffs,
+                },
+                "attrs": weapon_attrs,
+            }
+            new_weapons_data.append(new_weapon_data)
+
+            # if weapon_rarity == 5:
+            #     print(new_weapon_data)
+            #     return
+
+            # Python project
+            weapon_basic_information = {
+                "名稱": weapon_effect_name,
+                "描述": weapon_description,
+            }
+            weapon_basic_information_fpath = (
+                self.target_py_path / weapon_name / "基本資料.json"
+            )
+            os.makedirs(weapon_basic_information_fpath.parent, exist_ok=True)
+            with weapon_basic_information_fpath.open(mode="w", encoding="utf-8") as fp:
+                json.dump(weapon_basic_information, fp, ensure_ascii=False, indent=4)
+
+            weapon_levels_tsv_fpath = self.target_py_path / weapon_name / "屬性.tsv"
+            weapon_levels_tsv_lines = []
+            for row in weapon_levels_tsv_rows:
+                line = "\t".join(row)
+                weapon_levels_tsv_lines.append(line)
+            weapon_levels_tsv_str = "\n".join(weapon_levels_tsv_lines)
+
+            with weapon_levels_tsv_fpath.open(mode="w", encoding="utf-8") as fp:
+                fp.write(weapon_levels_tsv_str)
+
+            weapon_passive_buffs_fpath = self.target_py_path / weapon_name / "諧振.tsv"
+            passive_buffs_tsv_lines = []
+            for row in passive_buffs_tsv_rows:
+                line = "\t".join(row)
+                passive_buffs_tsv_lines.append(line)
+            passive_buffs_tsv_str = "\n".join(passive_buffs_tsv_lines)
+            with weapon_passive_buffs_fpath.open(mode="w", encoding="utf-8") as fp:
+                fp.write(passive_buffs_tsv_str)
+
+        print(passive_buffs_set)
+        print(weapon_stat_name_set)
+
+        with self.target_path.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_weapons_data, fp, ensure_ascii=False, indent=4)

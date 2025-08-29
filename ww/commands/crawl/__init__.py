@@ -7,7 +7,7 @@ import requests
 from typer import Typer
 
 from ww.commands.crawl.echo import EchoParser
-from ww.commands.crawl.hakush import HakushEchoes, HakushResonator
+from ww.commands.crawl.hakush import HakushEchoes, HakushResonator, HakushWeapons
 from ww.commands.crawl.id_parser import id_parser
 from ww.commands.crawl.resonator import ResonatorParser, ResonatorParser2
 from ww.commands.crawl.weapon import WeaponParser, save_weapons
@@ -160,6 +160,22 @@ def get_hakush_resonators(source_home: str, target: str, cn2tw: str, items: str)
         hakush.save_py_attr()
         hakush.save_py_tsv()
         hakush.save_py_skill_info()
+
+
+@app.command()
+def get_hakush_weapons(
+    source_home: str,
+    target: str,
+    target_py: str,
+    cn2tw: str,
+):
+    hakush = HakushWeapons(
+        source_home,
+        target,
+        target_py,
+        cn2tw,
+    )
+    hakush.save()
 
 
 @app.command()
