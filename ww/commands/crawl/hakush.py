@@ -1319,10 +1319,9 @@ class HakushWeapons(Cn2Tw):
                             ):
                                 raise ValueError
 
-                    weapon_levels_tsv_rows.append(weapon_levels_tsv_row)
-
                     if level == "1" or level_int % 10 == 0:
                         weapon_attrs.append(weapon_attr)
+                        weapon_levels_tsv_rows.append(weapon_levels_tsv_row)
 
                     is_first = False
 
@@ -1369,14 +1368,17 @@ class HakushWeapons(Cn2Tw):
             with weapon_levels_tsv_fpath.open(mode="w", encoding="utf-8") as fp:
                 fp.write(weapon_levels_tsv_str)
 
-            weapon_passive_buffs_fpath = self.target_py_path / weapon_name / "諧振.tsv"
-            passive_buffs_tsv_lines = []
-            for row in passive_buffs_tsv_rows:
-                line = "\t".join(row)
-                passive_buffs_tsv_lines.append(line)
-            passive_buffs_tsv_str = "\n".join(passive_buffs_tsv_lines)
-            with weapon_passive_buffs_fpath.open(mode="w", encoding="utf-8") as fp:
-                fp.write(passive_buffs_tsv_str)
+            if len(passive_buffs_tsv_rows) > 1:
+                weapon_passive_buffs_fpath = (
+                    self.target_py_path / weapon_name / "諧振.tsv"
+                )
+                passive_buffs_tsv_lines = []
+                for row in passive_buffs_tsv_rows:
+                    line = "\t".join(row)
+                    passive_buffs_tsv_lines.append(line)
+                passive_buffs_tsv_str = "\n".join(passive_buffs_tsv_lines)
+                with weapon_passive_buffs_fpath.open(mode="w", encoding="utf-8") as fp:
+                    fp.write(passive_buffs_tsv_str)
 
         print(passive_buffs_set)
         print(weapon_stat_name_set)
