@@ -64,11 +64,24 @@ class HakushResonator:
             return
         rarity = self.data.get("Rarity", "")
         weapon_id = self.data.get("Weapon", "")
+        weapon_zh_tw = ""
+        if weapon_id == 1:
+            weapon_zh_tw = "長刃"
+        elif weapon_id == 2:
+            weapon_zh_tw = "迅刀"
+        elif weapon_id == 3:
+            weapon_zh_tw = "佩槍"
+        elif weapon_id == 4:
+            weapon_zh_tw = "臂鎧"
+        elif weapon_id == 5:
+            weapon_zh_tw = "音感儀"
+
         element_id = self.data.get("Element", "")
         info = {
             "id": id,
             "rarity": rarity,
             "weapon_id": weapon_id,
+            "weapon_zh_tw": weapon_zh_tw,
             "element_id": element_id,
         }
 
@@ -164,7 +177,25 @@ class HakushResonator:
                     "name": "貝幣",
                     "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
                     "value": 853000,
-                }
+                },
+                "43010004": {
+                    "id": 43010004,
+                    "name": "特級共鳴促劑",
+                    "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_4_UI.webp",
+                    "value": 121,
+                },
+                "43010003": {
+                    "id": 43010003,
+                    "name": "高級共鳴促劑",
+                    "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_3_UI.webp",
+                    "value": 2,
+                },
+                "43010001": {
+                    "id": 43010001,
+                    "name": "初級共鳴促劑",
+                    "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_1_UI.webp",
+                    "value": 2,
+                },
             },
             "skills": total_skill_consume,
             "ascensions": total_ascension_consume,
@@ -230,7 +261,8 @@ class HakushResonator:
                         raise ValueError("HP order error")
                     hp = value
                 new_stat["exp"] = level_exp[level_exp_i]
-                info["total_exp"] += new_stat["exp"]
+                if level_exp_i < 90:
+                    info["total_exp"] += new_stat["exp"]
                 level_exp_i += 1
 
                 if level_int % 10 == 0 and is_first:
@@ -292,8 +324,16 @@ class HakushResonator:
 
     def save_py_skill_info(self):
         id = self.data.get("Id", None)
+        print(id)
         if id is None:
             return
+
+        fhome = self.target_path / str(id)
+        os.makedirs(fhome, exist_ok=True)
+
+        fpath = fhome / "技能文本.json"
+        # if fpath.exists():
+        #     return
 
         skill_trees: dict = self.data.get("SkillTrees", None)
         if skill_trees is None:
@@ -334,6 +374,8 @@ class HakushResonator:
                 skill_name = skill.get("Name", "")
                 skill_desc = self.cn2tw(skill.get("Desc", ""))
                 skill_param = skill.get("Param", [])
+                if " " in skill_desc:
+                    skill_desc = skill_desc.replace("{1 }", "{1}")
                 skill_desc = skill_desc.format(*skill_param)
 
                 skill_list = []
@@ -370,13 +412,14 @@ class HakushResonator:
                     "描述": skill_desc,
                     "技能列表": skill_list,
                 }
-                print(skill_type)
 
         chains: dict = self.data.get("Chains", {})
         for chain_index, chain in chains.items():
             chain_title = f"共鳴鏈{chain_index}"
             chain_name = self.cn2tw(chain.get("Name", ""))
             chain_desc = self.cn2tw(chain.get("Desc", ""))
+            chain_desc = chain_desc.replace("{ 0}", "{0}")
+            chain_desc = chain_desc.replace("{0 }", "{0}")
             chain_param = chain.get("Param", "")
             chain_desc = chain_desc.format(*chain_param)
             info_1[chain_title] = {
@@ -388,10 +431,6 @@ class HakushResonator:
         for key in key_order:
             info_2[key] = info_1[key]
 
-        fhome = self.target_path / str(id)
-        os.makedirs(fhome, exist_ok=True)
-
-        fpath = fhome / "技能文本.json"
         with fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(info_2, fp, ensure_ascii=False, indent=4)
 
@@ -640,11 +679,17 @@ class HakushEchoes:
                 phantomitem_data = json.load(fp)
             for item in phantomitem_data:
                 monster_id = item["MonsterId"]
-                skill_id = self.phantomitem_data.get(monster_id, None)
+                skill_id = self.phantomitem_data.get(monster_id, {}).get(
+                    "skill_id", None
+                )
                 new_skill_id = item["SkillId"]
+                rarity = item["Rarity"]
                 if skill_id is not None and skill_id != new_skill_id:
                     print("phantomitem", monster_id)
-                self.phantomitem_data[monster_id] = new_skill_id
+                self.phantomitem_data[monster_id] = {
+                    "skill_id": new_skill_id,
+                    "rarity": rarity,
+                }
 
         phantomskill_fpath = Path(phantomskill)
         self.phantomskill_data = {}
@@ -667,6 +712,9 @@ class HakushEchoes:
                 damage_id = damage["Id"]
                 self.damage_data[damage_id] = damage
 
+    def get_rarity(self, monster_id: int):
+        return self.phantomitem_data.get(monster_id, {}).get("rarity", "")
+
     def get_monster_element_ids(self, id: int):
         info = self.monsterinfo_data.get(id, None)
         if info is None:
@@ -674,7 +722,7 @@ class HakushEchoes:
         return info["ElementIdArray"]
 
     def get_skill_id(self, monster_id: int):
-        return self.phantomitem_data.get(monster_id, None)
+        return self.phantomitem_data.get(monster_id, {}).get("skill_id", "")
 
     def get_damage_ids(self, skill_id: int):
         return self.phantomskill_data.get(skill_id, [])
@@ -683,25 +731,138 @@ class HakushEchoes:
         damage = self.damage_data.get(damage_id, None)
         if damage is None:
             return {}
+
+        element_id = damage["Element"]
+        element_zh_tw = "-"
+        if element_id == 0:
+            element_zh_tw = "-"  # Healing
+        elif element_id == 1:
+            element_zh_tw = "冷凝"
+        elif element_id == 2:
+            element_zh_tw = "熱熔"
+        elif element_id == 3:
+            element_zh_tw = "導電"
+        elif element_id == 4:
+            element_zh_tw = "氣動"
+        elif element_id == 5:
+            element_zh_tw = "衍射"
+        elif element_id == 6:
+            element_zh_tw = "湮滅"
+        else:
+            raise ValueError(f"damage ID: {damage_id}, Element ID: {element_id}")
+
+        # Type
+        type_id = damage["Type"]
+        if type_id == 0:
+            type_en = "Basic"
+            type_zh_tw = "普攻"
+        elif type_id == 1:
+            type_en = "Heavy"
+            type_zh_tw = "重擊"
+        elif type_id == 2:
+            type_en = "Liberation"
+            type_zh_tw = "共鳴解放"
+        elif type_id == 3:
+            type_en = "Intro"
+            type_zh_tw = "變奏"
+        elif type_id == 4:
+            type_en = "Skill"
+            type_zh_tw = "共鳴技能"
+        elif type_id == 5:
+            type_en = "Echo"
+            type_zh_tw = "聲骸"
+        elif type_id == 7:
+            type_en = "Outro"
+            type_zh_tw = "延奏"
+        else:
+            raise ValueError(f"damage ID: {damage_id}, Type ID: {type_id}")
+
+        # SubType
+        sub_type_ids = damage["SubType"]
+        sub_types_zh_tw = []
+        for sub_type_id in sub_type_ids:
+            if sub_type_id == 0:
+                sub_type_zh_tw = "協同攻擊"
+            elif sub_type_id == 1001:
+                sub_type_zh_tw = "風蝕效應"
+            elif sub_type_id == 1005:
+                sub_type_zh_tw = "光噪效應"
+            else:
+                raise ValueError(f"damage ID: {damage_id}, SubType ID: {sub_type_id}")
+            sub_types_zh_tw.append(sub_type_zh_tw)
+
+        # Types
+        types_zh_tw = [type_zh_tw] + sub_types_zh_tw
+
+        # Base attr
+        related_property_id = damage["RelatedProperty"]
+        if related_property_id == 2:
+            related_property_zh_tw = "生命"
+        elif related_property_id == 7:
+            related_property_zh_tw = "攻擊"
+        elif related_property_id == 10:
+            related_property_zh_tw = "防禦"
+        else:
+            raise ValueError(
+                f"damage ID: {damage_id}, Related property ID: {related_property_id}"
+            )
+
+        # calculate_type_id = damage["CalculateType"]
+        # calculate_type_en = ""
+        # if calculate_type_id == 0:
+        #     calculate_type_en = "Damage"
+        # elif calculate_type_id == 1:
+        #     pass
+
+        # 判斷 Damage / Healing
+        hardness_lv = damage["HardnessLv"]
+        tough_lv = damage["ToughLv"]
+        if element_id == 0 and hardness_lv == 0 and tough_lv == 0:
+            pass
+
+        energy = ""
+        if len(damage["Energy"]) > 0:
+            energy = damage["Energy"][0]
+
+        element_power = ""
+        if len(damage["ElementPower"]) > 0:
+            element_power = damage["ElementPower"][0]
+
+        hardness_lv = ""
+        if len(damage["HardnessLv"]) > 0:
+            hardness_lv = damage["HardnessLv"][0]
+
+        tough_lv = ""
+        if len(damage["ToughLv"]) > 0:
+            tough_lv = damage["ToughLv"][0]
+
         return {
             "id": damage["Id"],
-            "calculate_type_id": damage[
-                "CalculateType"
-            ],  # 0: Damage / 1: Healing / 2: ???
+            # "calculate_type_id": damage[
+            #     "CalculateType"
+            # ],  # 0: Damage / 1: Healing / 2: ???
             "element_id": damage["Element"],  # 冷凝
+            "element_zh_tw": element_zh_tw,
             "type_id": damage["Type"],  # 普攻
-            "smash_type_id": damage["SmashType"],
+            "type_zh_tw": type_zh_tw,
+            "type_en": type_en,
+            "types_zh_tw": types_zh_tw,
+            # "smash_type_id": damage["SmashType"],
             "sub_type_ids": damage["SubType"],
+            "sub_types_zh_tw": sub_types_zh_tw,
             "cure_base_value": damage["CureBaseValue"],
-            "related_property_id": damage["RelatedProperty"],  # 2: 生命 / 10: 防禦
+            "related_property_id": damage[
+                "RelatedProperty"
+            ],  # 2: 生命 / 7: 攻擊 / 10: 防禦
+            "related_property_zh_tw": related_property_zh_tw,
             "rate_lv": damage["RateLv"],
-            "energy": damage["Energy"],
+            "energy": energy,
             "element_power_type_id": damage["ElementPowerType"],
-            "element_power": damage["ElementPower"],
-            "hardness_lv": damage["HardnessLv"],
-            "tough_lv": damage["ToughLv"],
-            "formula_type_id": damage["FormulaType"],  # 1: xxx%+xx
-            "immune_type_id": damage["ImmuneType"],
+            "element_power": element_power,
+            "hardness_lv": hardness_lv,
+            "tough_lv": tough_lv,
+            # "formula_type_id": damage["FormulaType"],  # 0: ??% / 1: 20.00%+40 / 3: ???
+            # "immune_type_id": damage["ImmuneType"],
         }
 
     def cn2tw(self, cn: str) -> str:
@@ -716,6 +877,10 @@ class HakushEchoes:
     def save(self):
         sonata_table = []
         sonatas = {}
+
+        # The latest data structure
+        all_sonatas = {}
+
         rows = []
         for echo_fpath in self.source_home_path.glob("*.json"):
             with echo_fpath.open(mode="r", encoding="utf-8") as fp:
@@ -725,6 +890,8 @@ class HakushEchoes:
             try:
                 monster_info = echo_data["MonsterInfo"]
                 code = echo_data["Code"]
+                if not self.in_cn2tw(echo_data["Name"]):
+                    continue
                 name = self.cn2tw(echo_data["Name"])
                 type = self.cn2tw(echo_data["Type"])
                 intensity = self.cn2tw(echo_data["Intensity"])
@@ -763,10 +930,15 @@ class HakushEchoes:
                     for num, s in group_set.items():
                         group_desc = self.cn2tw(s["Desc"])
                         group_param = s["Param"]
-                        group_new_set[num] = {"desc": group_desc, "param": group_param}
+                        group_description = group_desc.format(*group_param)
+                        group_new_set[num] = {
+                            "desc": group_desc,
+                            "description": group_description,
+                            "param": group_param,
+                        }
 
                         if sonatas[group_name].get(num, None) is None:
-                            sonatas[group_name][num] = group_desc
+                            sonatas[group_name][num] = group_description
 
                     echo_sonatas.append(group_name)
                     new_group = {
@@ -777,6 +949,9 @@ class HakushEchoes:
                         "set": group_new_set,
                     }
                     echo_groups.append(new_group)
+
+                    if all_sonatas.get(group_name, None) is None:
+                        all_sonatas[group_name] = new_group
                 else:
                     format_skill_desc = self.cn2tw(echo_data["Skill"]["Desc"])
                     skill_simple_desc = self.cn2tw(echo_data["Skill"]["SimpleDesc"])
@@ -797,28 +972,50 @@ class HakushEchoes:
                         echo_skill_damage = self.get_damage(damage_id)
                         echo_skill_damages.append(echo_skill_damage)
 
+                    # Rarity
+                    if not intensity_code:
+                        intensity_code = self.get_rarity(id)
+                    if not intensity:
+                        if intensity_code == 0:
+                            intensity = "輕波級"
+                        elif intensity_code == 1:
+                            intensity = "巨浪級"
+                        elif intensity_code == 2:
+                            intensity = "怒濤級"
+                        elif intensity_code == 3:
+                            intensity = "海嘯級"
+                    if not cost:
+                        if intensity == "輕波級":
+                            cost = "1"
+                        elif intensity == "巨浪級":
+                            cost = "3"
+                        elif intensity == "怒濤級":
+                            cost = "4"
+                        elif intensity == "海嘯級":
+                            cost = "4"
+
                     row = {
                         "id": id,
                         "monster_info": monster_info,
-                        "skill_id": skill_id,
-                        "damage_ids": damage_ids,
-                        "damage": echo_skill_damages,
                         "code": code,
                         "name": name,
                         "type": type,
                         "element_ids": element_ids,
                         "cost": cost,
-                        "intensity": intensity,
                         "intensity_code": intensity_code,
+                        "intensity_zh_tw": intensity,
                         "place": place,
                         "icon": icon,
                         "sonatas": echo_sonatas,
+                        "skill_id": skill_id,
                         "skill": {
                             "description": skill_desc,
                             "desc": format_skill_desc,
                             "simple_desc": skill_simple_desc,
                             "param": skill_params,
                         },
+                        "damage_ids": damage_ids,
+                        "damage": echo_skill_damages,
                         "groups": echo_groups,
                     }
                     rows.append(row)
@@ -837,6 +1034,14 @@ class HakushEchoes:
         with rows_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(rows, fp, ensure_ascii=False, indent=4)
 
-        sonatas_fpath = self.target_path / "sonatas.json"
+        sonatas_fpath = self.target_path / "old_sonatas.json"
         with sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_sonatas, fp, ensure_ascii=False, indent=4)
+
+        new_sonatas_2 = []
+        for _, sonata_name in sonata_table:
+            new_sonatas_2.append(all_sonatas[sonata_name])
+
+        new_sonatas_fpath = self.target_path / "sonatas.json"
+        with new_sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_sonatas_2, fp, ensure_ascii=False, indent=4)

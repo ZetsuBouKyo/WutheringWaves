@@ -223,7 +223,7 @@ def cn_text2key(cn: str = "./dev/lang/cn.json"):
 
 
 @app.command()
-def cn2tw(cn: str = "./dev/lang/cn.json", tw: str = "./dev/lang/tw.json"):
+def cn2tw(cn: str, tw: str, target_home: str):
     cn_text2key = get_text2key(cn)
     tw_key2text = get_key2text(tw)
 
@@ -231,7 +231,8 @@ def cn2tw(cn: str = "./dev/lang/cn.json", tw: str = "./dev/lang/tw.json"):
     for key, value in cn_text2key.items():
         cn2tw[key] = tw_key2text[value[0]]
 
-    cn2tw_fpath = "./dev/lang/cn2tw.json"
+    target_home_path = Path(target_home)
+    cn2tw_fpath = target_home_path / "cn2tw.json"
     cn2tw_fpath = Path(cn2tw_fpath)
     with cn2tw_fpath.open(mode="w", encoding="utf-8") as fp:
         json.dump(cn2tw, fp, indent=4, ensure_ascii=False)

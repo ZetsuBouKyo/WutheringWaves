@@ -2,6 +2,7 @@
     "id": 1301,
     "rarity": 5,
     "weapon_id": 1,
+    "weapon_zh_tw": "長刃",
     "element_id": 3,
     "tags": [
         {
@@ -29,6 +30,24 @@
                 "name": "貝幣",
                 "icon": "/assets/UI/UIResources/Common/Image/IconA/T_IconA_hsb_UI.webp",
                 "value": 853000
+            },
+            "43010004": {
+                "id": 43010004,
+                "name": "特級共鳴促劑",
+                "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_4_UI.webp",
+                "value": 121
+            },
+            "43010003": {
+                "id": 43010003,
+                "name": "高級共鳴促劑",
+                "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_3_UI.webp",
+                "value": 2
+            },
+            "43010001": {
+                "id": 43010001,
+                "name": "初級共鳴促劑",
+                "icon": "/assets/UI/UIResources/Common/Image/IconRup/T_IconRup_exp_1_UI.webp",
+                "value": 2
             }
         },
         "skills": {
@@ -1123,5 +1142,5 @@
             "exp": 125500
         }
     },
-    "total_exp": 3118700
+    "total_exp": 2438000
 }

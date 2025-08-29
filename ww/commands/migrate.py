@@ -64,6 +64,7 @@ def resonator_info(new_home: str = "./build/migrate/resonators/"):
         new_info["stat_bonus"] = new_stat_bonus
 
         new_info["weapon_id"] = info["weapon_id"]
+        new_info["weapon_zh_tw"] = info["weapon_zh_tw"]
         new_info["element_id"] = info["element_id"]
         new_info["element_zh_tw"] = basic_info["element"]
         new_info["element_en"] = elements[basic_info["element"]]
@@ -603,3 +604,37 @@ def hakush_echoes(
     for echo_fpath in data_home_path.glob("*"):
         with echo_fpath.open(mode="r", encoding="utf-8") as fp:
             echo_data = json.load(fp)
+
+
+def copy_data(source_home_path: Path, target_home_path: Path, rel: str):
+    rel_path = Path(rel)
+    filename = rel_path.name
+    if filename == "MultiText.json":
+        if "zh-Hant" in rel:
+            filename = "tw.json"
+        elif "zh-Hans" in rel:
+            filename = "cn.json"
+    source_fpath = source_home_path / rel_path
+    target_fpath = target_home_path / filename
+    shutil.copy(source_fpath, target_fpath)
+
+
+@app.command()
+def update_data(source_home: str, target_home: str):
+    source_home_path = Path(source_home)
+    target_home_path = Path(target_home)
+
+    rels = [
+        "BinData/property/baseproperty.json",
+        "BinData/damage/damage.json",
+        "BinData/monster_Info/monsterinfo.json",
+        "BinData/phantom/phantomitem.json",
+        "BinData/phantom/phantomskill.json",
+        "BinData/prefab/prefabconfig.json",
+        "BinData/role/roleinfo.json",
+        "Textmaps/zh-Hant/multi_text/MultiText.json",
+        "Textmaps/zh-Hans/multi_text/MultiText.json",
+    ]
+
+    for rel in rels:
+        copy_data(source_home_path, target_home_path, rel)
