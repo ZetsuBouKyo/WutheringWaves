@@ -1064,6 +1064,7 @@ class HakushWeapons(Cn2Tw):
         source_home: str,
         target: str,
         target_py: str,
+        weapon_info: str,
         cn2tw: str,
     ):
         self.source_home_path = Path(source_home)
@@ -1079,6 +1080,10 @@ class HakushWeapons(Cn2Tw):
         if self.target_py_path.exists() and not self.target_py_path.is_dir():
             return
 
+        self.weapon_info_fpath = Path(weapon_info)
+        if self.weapon_info_fpath.is_dir():
+            return
+
         cn2tw_fpath = Path(cn2tw)
         if cn2tw_fpath.exists():
             with cn2tw_fpath.open(mode="r", encoding="utf-8") as fp:
@@ -1090,6 +1095,7 @@ class HakushWeapons(Cn2Tw):
         passive_buffs_set = set()
         weapon_stat_name_set = set()
 
+        new_weapon_infos_py = []
         new_weapons_data = []
         for weapon_fpath in self.source_home_path.glob("*.json"):
             print(weapon_fpath)
@@ -1347,6 +1353,15 @@ class HakushWeapons(Cn2Tw):
             #     return
 
             # Python project
+            new_weapon_info_py = {
+                "no": str(weapon_id),
+                "name": weapon_name,
+                "star": str(weapon_rarity),
+                "skill_name": weapon_effect_name,
+                "skill_description": weapon_description,
+            }
+            new_weapon_infos_py.append(new_weapon_info_py)
+
             weapon_basic_information = {
                 "名稱": weapon_effect_name,
                 "描述": weapon_description,
@@ -1380,8 +1395,11 @@ class HakushWeapons(Cn2Tw):
                 with weapon_passive_buffs_fpath.open(mode="w", encoding="utf-8") as fp:
                     fp.write(passive_buffs_tsv_str)
 
-        print(passive_buffs_set)
-        print(weapon_stat_name_set)
-
         with self.target_path.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_weapons_data, fp, ensure_ascii=False, indent=4)
+
+        with self.weapon_info_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(new_weapon_infos_py, fp, ensure_ascii=False, indent=4)
+        
+        print(passive_buffs_set)
+        print(weapon_stat_name_set)

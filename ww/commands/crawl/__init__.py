@@ -167,12 +167,14 @@ def get_hakush_weapons(
     source_home: str,
     target: str,
     target_py: str,
+    weapon_info: str,
     cn2tw: str,
 ):
     hakush = HakushWeapons(
         source_home,
         target,
         target_py,
+        weapon_info,
         cn2tw,
     )
     hakush.save()
