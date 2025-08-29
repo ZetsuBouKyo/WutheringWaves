@@ -6,6 +6,17 @@ from pathlib import Path
 from ww.utils.number import get_number
 
 
+def save_tsv(rows, fpath: Path):
+    lines = []
+    for row in rows:
+        line = "\t".join(row)
+        lines.append(line)
+    s = "\n".join(lines)
+
+    with fpath.open(mode="w", encoding="utf-8") as fp:
+        fp.write(s)
+
+
 def get_icon_fpath(icon: str) -> str:
     if not icon:
         return ""
@@ -657,12 +668,21 @@ class HakushEchoes(Cn2Tw):
         self,
         source_home: str,
         target: str,
+        echo_list_tsv: str,
+        echo_skill_descriptions: str,
+        echo_sonata_descriptions: str,
+        echo: str,
         cn2tw: str,
         monsterinfo: str,
         phantomitem: str,
         phantomskill: str,
         damage: str,
     ):
+        self.echo_list_tsv_fpath = Path(echo_list_tsv)
+        self.echo_skill_descriptions_fpath = Path(echo_skill_descriptions)
+        self.echo_sonata_descriptions_fpath = Path(echo_sonata_descriptions)
+        self.echo_fpath = Path(echo)
+
         self.source_home_path = Path(source_home)
         if not self.source_home_path.exists():
             print(f"{self.source_home_path} not found.")
@@ -889,6 +909,10 @@ class HakushEchoes(Cn2Tw):
         # The latest data structure
         all_sonatas = {}
 
+        echo_list_tsv_rows = [["名稱", "COST"]]
+        echo_skill_descriptions = {}
+        echoes_py = []
+
         rows = []
         for echo_fpath in self.source_home_path.glob("*.json"):
             with echo_fpath.open(mode="r", encoding="utf-8") as fp:
@@ -1028,6 +1052,10 @@ class HakushEchoes(Cn2Tw):
                         "groups": echo_groups,
                     }
                     rows.append(row)
+
+                echo_list_tsv_rows.append([name, cost])
+                echo_skill_descriptions[name] = skill_desc
+                echoes_py.append({"name": name, "cost": cost, "sonatas": echo_sonatas})
             except Exception as e:
                 print(id)
                 raise Exception
@@ -1044,8 +1072,7 @@ class HakushEchoes(Cn2Tw):
         with rows_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(rows, fp, ensure_ascii=False, indent=4)
 
-        sonatas_fpath = self.target_path / "old_sonatas.json"
-        with sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
+        with self.echo_sonata_descriptions_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_sonatas, fp, ensure_ascii=False, indent=4)
 
         new_sonatas_2 = []
@@ -1055,6 +1082,13 @@ class HakushEchoes(Cn2Tw):
         new_sonatas_fpath = self.target_path / "sonatas.json"
         with new_sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_sonatas_2, fp, ensure_ascii=False, indent=4)
+
+        save_tsv(echo_list_tsv_rows, self.echo_list_tsv_fpath)
+        with self.echo_skill_descriptions_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(echo_skill_descriptions, fp, ensure_ascii=False, indent=4)
+
+        with self.echo_fpath.open(mode="w", encoding="utf-8") as fp:
+            json.dump(echoes_py, fp, ensure_ascii=False, indent=4)
 
 
 class HakushWeapons(Cn2Tw):
@@ -1400,6 +1434,6 @@ class HakushWeapons(Cn2Tw):
 
         with self.weapon_info_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_weapon_infos_py, fp, ensure_ascii=False, indent=4)
-        
+
         print(passive_buffs_set)
         print(weapon_stat_name_set)

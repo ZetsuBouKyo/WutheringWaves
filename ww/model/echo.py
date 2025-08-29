@@ -38,6 +38,8 @@ class EchoSonataEnum(str, Enum):
     WINDWARD_PILGRIMAGE: str = "願戴榮光之旅"
     FLAMING_CLAWPRINT: str = "奔狼燎原之焰"
     DREAM_OF_THE_LOST: str = "失序彼岸之夢"
+    CROWN_OF_VALOR: str = "榮鬥鑄鋒之冠"
+    LAW_OF_HARMONY: str = "息界同調之律"
 
 
 class ResonatorEchoTsvColumnEnum(str, Enum):

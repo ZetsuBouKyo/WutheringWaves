@@ -184,6 +184,10 @@ def get_hakush_weapons(
 def get_hakush_echoes(
     source_home: str,
     target: str,
+    echo_list_tsv: str,
+    echo_skill_descriptions: str,
+    echo_sonata_descriptions: str,
+    echo: str,
     cn2tw: str,
     monsterinfo: str,
     phantomitem: str,
@@ -193,6 +197,10 @@ def get_hakush_echoes(
     hakush = HakushEchoes(
         source_home,
         target,
+        echo_list_tsv,
+        echo_skill_descriptions,
+        echo_sonata_descriptions,
+        echo,
         cn2tw,
         monsterinfo,
         phantomitem,
