@@ -79,6 +79,7 @@ class TemplateHtmlResonatorModel(BaseModel):
     echo_basic_attack_dmg_bonus: str = ""
     echo_heavy_attack_dmg_bonus: str = ""
     echo_resonance_liberation_dmg_bonus: str = ""
+    echo_coordinated_attack_dmg_bonus: str = ""
     echo_echo_dmg_bonus: str = ""
     echo_healing_bonus: str = ""
     echo_glacio_dmg_bonus: str = ""

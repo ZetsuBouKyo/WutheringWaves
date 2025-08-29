@@ -182,30 +182,39 @@ def get_hakush_weapons(
 
 @app.command()
 def get_hakush_echoes(
-    source_home: str,
-    target: str,
-    echo_list_tsv: str,
-    echo_skill_descriptions: str,
-    echo_sonata_descriptions: str,
-    echo: str,
-    cn2tw: str,
-    monsterinfo: str,
-    phantomitem: str,
-    phantomskill: str,
-    damage: str,
+    js_echo_infos: str,
+    js_sonatas: str,
+    js_echo_name_enum:str,
+    source_home: str = "./dev/wiki/hakush/echo",
+    target: str = "./build/hakush/echo",
+    cn2tw: str = "./dev/wiki/hakush/cn2tw.json",
+    cn2en: str = "./dev/wiki/hakush/cn2en.json",
+    monsterinfo: str = "./dev/wiki/hakush/monsterinfo.json",
+    phantomitem: str = "./dev/wiki/hakush/phantomitem.json",
+    phantomskill: str = "./dev/wiki/hakush/phantomskill.json",
+    damage: str = "./dev/wiki/hakush/damage.json",
+    py_echo_list_tsv: str = "./data/v1/zh_tw/echo_list.tsv",
+    py_echo_skill_descriptions: str = "./data/v1/zh_tw/echo_skill_descriptions.json",
+    py_echo_sonata_descriptions: str = "./data/v1/zh_tw/echo_sonata_descriptions.json",
+    py_echo: str = "./data/v1/zh_tw/echo.json",
 ):
+
     hakush = HakushEchoes(
         source_home,
         target,
-        echo_list_tsv,
-        echo_skill_descriptions,
-        echo_sonata_descriptions,
-        echo,
         cn2tw,
+        cn2en,
         monsterinfo,
         phantomitem,
         phantomskill,
         damage,
+        py_echo_list_tsv,
+        py_echo_skill_descriptions,
+        py_echo_sonata_descriptions,
+        py_echo,
+        js_sonatas,
+        js_echo_infos,
+        js_echo_name_enum,
     )
     hakush.save()
 
@@ -248,17 +257,34 @@ def cn_text2key(cn: str = "./dev/lang/cn.json"):
         json.dump(cn_text2key, fp, indent=4, ensure_ascii=False)
 
 
+def cn2lang(cn_text2key, lang_key2text, fpath: Path):
+    cn2tw = {}
+    for key, value in cn_text2key.items():
+        cn2tw[key] = lang_key2text[value[0]]
+
+    with fpath.open(mode="w", encoding="utf-8") as fp:
+        json.dump(cn2tw, fp, indent=4, ensure_ascii=False)
+
+
 @app.command()
-def cn2tw(cn: str, tw: str, target_home: str):
+def cn2others(
+    cn: str = "./dev/wiki/hakush/cn.json",
+    tw: str = "./dev/wiki/hakush/tw.json",
+    en: str = "./dev/wiki/hakush/en.json",
+    target_home: str = "./dev/wiki/hakush",
+):
     cn_text2key = get_text2key(cn)
     tw_key2text = get_key2text(tw)
+    en_key2text = get_key2text(en)
 
     cn2tw = {}
     for key, value in cn_text2key.items():
         cn2tw[key] = tw_key2text[value[0]]
 
     target_home_path = Path(target_home)
+
     cn2tw_fpath = target_home_path / "cn2tw.json"
-    cn2tw_fpath = Path(cn2tw_fpath)
-    with cn2tw_fpath.open(mode="w", encoding="utf-8") as fp:
-        json.dump(cn2tw, fp, indent=4, ensure_ascii=False)
+    cn2lang(cn_text2key, tw_key2text, cn2tw_fpath)
+
+    en2tw_fpath = target_home_path / "cn2en.json"
+    cn2lang(cn_text2key, en_key2text, en2tw_fpath)

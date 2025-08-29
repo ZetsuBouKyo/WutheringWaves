@@ -40,7 +40,7 @@ def get_weapon_zh_tw_by_type(t: int) -> str:
     return weapon_zh_tw
 
 
-class Cn2Tw:
+class Cn2Others:
     def cn2tw(self, cn: str) -> str:
         if not cn:
             return cn
@@ -56,8 +56,23 @@ class Cn2Tw:
         found = self.cn2tw_data.get(cn, None)
         return found is not None
 
+    def cn2en(self, cn: str) -> str:
+        if not cn:
+            return cn
+        if not hasattr(self, "cn2en_data"):
+            return cn
 
-class HakushResonator(Cn2Tw):
+        return self.cn2en_data.get(cn, cn)
+
+    def in_cn2en(self, cn: str) -> bool:
+        if not hasattr(self, "cn2en_data"):
+            return False
+
+        found = self.cn2en_data.get(cn, None)
+        return found is not None
+
+
+class HakushResonator(Cn2Others):
     def __init__(self, source: str, target: str, cn2tw: str, items: str):
         source_path = Path(source)
         if not source_path.exists():
@@ -662,26 +677,33 @@ class HakushResonator(Cn2Tw):
             fp.write(output)
 
 
-class HakushEchoes(Cn2Tw):
+class HakushEchoes(Cn2Others):
 
     def __init__(
         self,
         source_home: str,
         target: str,
-        echo_list_tsv: str,
-        echo_skill_descriptions: str,
-        echo_sonata_descriptions: str,
-        echo: str,
         cn2tw: str,
+        cn2en: str,
         monsterinfo: str,
         phantomitem: str,
         phantomskill: str,
         damage: str,
+        py_echo_list_tsv: str,
+        py_echo_skill_descriptions: str,
+        py_echo_sonata_descriptions: str,
+        py_echo: str,
+        js_sonatas: str,
+        js_echo_infos: str,
+        js_echo_name_enum: str,
     ):
-        self.echo_list_tsv_fpath = Path(echo_list_tsv)
-        self.echo_skill_descriptions_fpath = Path(echo_skill_descriptions)
-        self.echo_sonata_descriptions_fpath = Path(echo_sonata_descriptions)
-        self.echo_fpath = Path(echo)
+        self.py_echo_list_tsv_fpath = Path(py_echo_list_tsv)
+        self.py_echo_skill_descriptions_fpath = Path(py_echo_skill_descriptions)
+        self.py_echo_sonata_descriptions_fpath = Path(py_echo_sonata_descriptions)
+        self.py_echo_fpath = Path(py_echo)
+        self.js_sonatas_fpath = Path(js_sonatas)
+        self.js_echo_infos_fpath = Path(js_echo_infos)
+        self.js_echo_name_enum = Path(js_echo_name_enum)
 
         self.source_home_path = Path(source_home)
         if not self.source_home_path.exists():
@@ -698,6 +720,13 @@ class HakushEchoes(Cn2Tw):
                 self.cn2tw_data = json.load(fp)
         else:
             self.cn2tw_data = {}
+
+        cn2en_fpath = Path(cn2en)
+        if cn2en_fpath.exists():
+            with cn2en_fpath.open(mode="r", encoding="utf-8") as fp:
+                self.cn2en_data = json.load(fp)
+        else:
+            self.cn2en_data = {}
 
         monsterinfo_fpath = Path(monsterinfo)
         self.monsterinfo_data = {}
@@ -912,6 +941,7 @@ class HakushEchoes(Cn2Tw):
         echo_list_tsv_rows = [["名稱", "COST"]]
         echo_skill_descriptions = {}
         echoes_py = []
+        echo_1 = []
 
         rows = []
         for echo_fpath in self.source_home_path.glob("*.json"):
@@ -925,6 +955,7 @@ class HakushEchoes(Cn2Tw):
                 if not self.in_cn2tw(echo_data["Name"]):
                     continue
                 name = self.cn2tw(echo_data["Name"])
+                name_en = self.cn2en(echo_data["Name"])
                 type = self.cn2tw(echo_data["Type"])
                 intensity = self.cn2tw(echo_data["Intensity"])
                 intensity_code = echo_data["IntensityCode"]
@@ -994,7 +1025,6 @@ class HakushEchoes(Cn2Tw):
                         for j in range(len(skill_param)):
                             if skill_param[j] != next_skill_param[j]:
                                 skill_param[j] += f"/{next_skill_param[j]}"
-                    print(format_skill_desc, skill_param)
                     skill_desc = format_skill_desc.format(*skill_param)
 
                     # Skill ID
@@ -1032,6 +1062,7 @@ class HakushEchoes(Cn2Tw):
                         "monster_info": monster_info,
                         "code": code,
                         "name": name,
+                        "name_en": name_en,
                         "type": type,
                         "element_ids": element_ids,
                         "cost": cost,
@@ -1056,6 +1087,15 @@ class HakushEchoes(Cn2Tw):
                 echo_list_tsv_rows.append([name, cost])
                 echo_skill_descriptions[name] = skill_desc
                 echoes_py.append({"name": name, "cost": cost, "sonatas": echo_sonatas})
+
+                if "首位裝" in skill_desc:
+                    e = name_en.upper()
+                    e = e.replace(" ", "_")
+                    e = e.replace(":", "")
+                    t = name
+                    js_line = f'  {e}: "{t}",'
+                    echo_1.append(js_line)
+
             except Exception as e:
                 print(id)
                 raise Exception
@@ -1068,30 +1108,39 @@ class HakushEchoes(Cn2Tw):
 
         os.makedirs(self.target_path, exist_ok=True)
 
-        rows_fpath = self.target_path / "infos.json"
-        with rows_fpath.open(mode="w", encoding="utf-8") as fp:
+        with self.js_echo_infos_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(rows, fp, ensure_ascii=False, indent=4)
 
-        with self.echo_sonata_descriptions_fpath.open(mode="w", encoding="utf-8") as fp:
+        with self.py_echo_sonata_descriptions_fpath.open(
+            mode="w", encoding="utf-8"
+        ) as fp:
             json.dump(new_sonatas, fp, ensure_ascii=False, indent=4)
 
         new_sonatas_2 = []
         for _, sonata_name in sonata_table:
             new_sonatas_2.append(all_sonatas[sonata_name])
 
-        new_sonatas_fpath = self.target_path / "sonatas.json"
-        with new_sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
+        with self.js_sonatas_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(new_sonatas_2, fp, ensure_ascii=False, indent=4)
 
-        save_tsv(echo_list_tsv_rows, self.echo_list_tsv_fpath)
-        with self.echo_skill_descriptions_fpath.open(mode="w", encoding="utf-8") as fp:
+        save_tsv(echo_list_tsv_rows, self.py_echo_list_tsv_fpath)
+        with self.py_echo_skill_descriptions_fpath.open(
+            mode="w", encoding="utf-8"
+        ) as fp:
             json.dump(echo_skill_descriptions, fp, ensure_ascii=False, indent=4)
 
-        with self.echo_fpath.open(mode="w", encoding="utf-8") as fp:
+        with self.py_echo_fpath.open(mode="w", encoding="utf-8") as fp:
             json.dump(echoes_py, fp, ensure_ascii=False, indent=4)
 
+        echo_1_names = "\n".join(echo_1)
+        echo_1_template = "export const EchoNameEnum = {{\n{0}\n}} as const;"
 
-class HakushWeapons(Cn2Tw):
+        echo_1_text = echo_1_template.format(echo_1_names)
+        with self.js_echo_name_enum.open(mode="w", encoding="utf-8") as fp:
+            fp.write(echo_1_text)
+
+
+class HakushWeapons(Cn2Others):
 
     def __init__(
         self,

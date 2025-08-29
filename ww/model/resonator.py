@@ -177,6 +177,10 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
     CALCULATED_RESONANCE_LIBERATION_DMG_BONUS: str = _(
         ZhTwEnum.CALCULATED_RESONATOR_RESONANCE_LIBERATION_DMG_BONUS
     )
+
+    CALCULATED_COORDINATED_ATTACK_DMG_BONUS: str = _(
+        ZhTwEnum.CALCULATED_RESONATOR_COORDINATED_ATTACK_DMG_BONUS
+    )
     CALCULATED_ECHO_DMG_BONUS: str = _(ZhTwEnum.CALCULATED_RESONATOR_ECHO_DMG_BONUS)
 
     CALCULATED_PHYSICAL_DMG_BONUS: str = _(
@@ -251,6 +255,9 @@ class CalculatedResonatorTsvColumnEnum(str, Enum):
         ZhTwEnum.RESONATOR_ECHO_RESONANCE_LIBERATION_DMG_BONUS
     )
 
+    ECHO_COORDINATED_ATTACK_DMG_BONUS: str = _(
+        ZhTwEnum.RESONATOR_ECHO_COORDINATED_ATTACK_DMG_BONUS
+    )
     ECHO_ECHO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_ECHO_DMG_BONUS)
 
     ECHO_GLACIO_DMG_BONUS: str = _(ZhTwEnum.RESONATOR_ECHO_GLACIO_DMG_BONUS)
@@ -470,6 +477,7 @@ class CalculatedResonatorModel(BaseModel):
     echo_heavy_attack_dmg_bonus: str = ""
     echo_resonance_liberation_dmg_bonus: str = ""
 
+    echo_coordinated_attack_dmg_bonus: str = ""
     echo_echo_dmg_bonus: str = ""
 
     echo_glacio_dmg_bonus: str = ""

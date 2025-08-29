@@ -614,6 +614,8 @@ def copy_data(source_home_path: Path, target_home_path: Path, rel: str):
             filename = "tw.json"
         elif "zh-Hans" in rel:
             filename = "cn.json"
+        elif "Textmaps/en/multi_text/MultiText.json" == rel:
+            filename = "en.json"
     source_fpath = source_home_path / rel_path
     target_fpath = target_home_path / filename
     shutil.copy(source_fpath, target_fpath)
@@ -632,6 +634,7 @@ def update_data(source_home: str, target_home: str):
         "BinData/phantom/phantomskill.json",
         "BinData/prefab/prefabconfig.json",
         "BinData/role/roleinfo.json",
+        "Textmaps/en/multi_text/MultiText.json",
         "Textmaps/zh-Hant/multi_text/MultiText.json",
         "Textmaps/zh-Hans/multi_text/MultiText.json",
     ]
